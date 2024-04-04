@@ -1,0 +1,57 @@
+.THIS .margin-top-neg-1px{
+    margin-top:-1px;
+}
+
+.THIS .cellPadding {
+    padding: .25rem .2rem;
+}
+
+.THIS .successIconColor svg {
+    fill:green;
+}
+
+.THIS .relatedlist {
+    border-left: 1px solid rgb(221, 219, 218);
+    border-right: 1px solid rgb(221, 219, 218);
+}
+
+/* .THIS .relatedlist th{
+    word-wrap: break-word; 
+    word-break: break-all;
+    white-space: initial;
+} */
+
+.THIS .shrink {
+    padding: 0;
+    padding-right: 2px;
+    margin: 0;
+    width: 1px;
+    white-space: nowrap;   
+}
+
+.THIS .slds-text-grid {
+    display: grid !important;
+}
+
+.THIS .icon {
+    margin-right: .75rem;
+}
+
+.THIS lightning-icon.slds-icon-utility-close.slds-icon_container.padding-icon{
+    margin-left: -.35rem;
+}
+
+.THIS div.slds-datepicker.slds-dropdown.slds-dropdown_left{
+    max-width: inherit;
+}
+.THIS .display-inline-block{
+    display: inline-block;
+    min-width: 100%;
+}
+
+.THIS .buttonMenu{
+    margin-left: var(--lwc-spacingXxSmall,0.25rem);
+}
+.THIS .buttonLoadMore{
+    text-align: center;
+}

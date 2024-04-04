@@ -1,0 +1,797 @@
+<template>
+    <div class="slds-box slds-p-around_none slds-m-top_x-small slds-m-bottom_medium slds-m-horizontal_none">
+        <lightning-accordion allow-multiple-sections-open active-section-name="sec2">
+            <lightning-accordion-section name="sec2" label="選択情報">
+        <lightning-layout class="second-layout">
+            <div>
+                <p>
+                    <b>
+                        選択中見積項目：{deviceName}
+                    </b>
+                </p>
+                <p>
+                    <b>
+                        選択中条件：{specificationNameDisplay}
+                    </b>
+                </p>
+                <p></p>
+            </div>
+        </lightning-layout>
+        <lightning-layout class="expense-layout">
+            <lightning-layout-item padding="around-small">
+                <div class="slds-form-element">
+                    <label class="slds-form-element__label">
+                        <template if:true={expense_isRequired}>
+                            <abbr title="required">*</abbr>
+                        </template>
+                        <span class="">{expense_LabelName}</span>
+                    </label>
+                </div>
+            </lightning-layout-item>
+            <!-- 一般管理費有無 -->
+            <lightning-layout-item padding="around-small">
+                <div class="slds-form-element">
+                    <div class="slds-form-element__control">
+                        <div class="slds-select_container">
+                            <select class="slds-select" name="expense_select" onchange={expense_Handler} disabled={expense_Disabled}
+                                required={expense_isRequired}>
+                                <template for:each={expense_Options} for:item="option">
+                                    <template if:true={option.selected}>
+                                        <option key={option.label} class="uiInputSelectOption" value={option.value} selected> 
+                                            {option.label}</option>
+                                    </template>
+                                    <template if:false={option.selected}>
+                                        <option key={option.label} class="uiInputSelectOption" value={option.value}> 
+                                            {option.label}</option>
+                                    </template>
+                                </template>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+            </lightning-layout-item>
+        </lightning-layout>
+        <!-- 合計エリア -->
+        <lightning-layout horizontal-align="space" class="second-layout">
+            <lightning-layout-item padding="around-small">
+                <!-- WC金額 -->
+                <div class="header-column">
+                    <p class="field-title" title={wcTotal_Title}>{wcTotal_Title}</p>
+                    <p class="calculated-value-parent">
+                        <lightning-formatted-number class="calculated-value" value={wcTotal_Value}
+                            format-style="decimal" minimum-significant-digits="2"></lightning-formatted-number>
+                    </p>
+                </div>
+            </lightning-layout-item>
+            <!-- 客先回答金額 -->
+            <lightning-layout-item padding="around-small">
+                <div class="header-column">
+                    <p class="field-title" title={totalPrice_Title}>{totalPrice_Title}</p>
+                    <p class="calculated-value-parent">
+                        <lightning-formatted-number class="calculated-value" value={totalPrice_Value}
+                            format-style="decimal" minimum-significant-digits="2"></lightning-formatted-number>
+                    </p>
+                </div>
+            </lightning-layout-item>
+            <!-- 代理店提供価格合計 -->
+            <template  if:false={isWeight}>
+            <lightning-layout-item padding="around-small">
+                <div class="header-column">
+                    <p class="field-title" title={totalAgencyPrice_Title}>{totalAgencyPrice_Title}</p>
+                    <p class="calculated-value-parent">
+                        <lightning-formatted-number class="calculated-value" value={totalAgencyPrice_Value}
+                            format-style="decimal" minimum-significant-digits="2"></lightning-formatted-number>
+                    </p>
+                </div>
+            </lightning-layout-item>
+        </template>
+        <!-- 重量合計 -->
+        <template  if:true={isWeight}>
+            <lightning-layout-item padding="around-small">
+                <div class="header-column">
+                    <p class="field-title" title={totalWeight_Title}>{totalWeight_Title}</p>
+                    <p class="calculated-value-parent">
+                        <lightning-formatted-number class="calculated-value" value={totalWeight_Value}
+                            format-style="decimal" minimum-significant-digits="2"></lightning-formatted-number>
+                    </p>
+                </div>
+            </lightning-layout-item>
+        </template>
+            <!-- 積算金額 -->
+            <lightning-layout-item padding="around-small">
+                <div class="header-column">
+                    <p class="field-title" title={standardPriceTotal_Title}>{standardPriceTotal_Title}</p>
+                    <p class="calculated-value-parent">
+                        <lightning-formatted-number class="calculated-value" value={standardPriceTotal_Value}
+                            format-style="decimal" minimum-significant-digits="2"></lightning-formatted-number>
+                    </p>
+                </div>
+            </lightning-layout-item>
+            <!-- 一般管理費 -->
+            <lightning-layout-item padding="around-small">
+                <div class="header-column">
+                    <p class="field-title" title={expense_Title}>{expense_Title}</p>
+                    <p class="calculated-value-parent">
+                        <lightning-formatted-number class="calculated-value" value={expense_Value}
+                            format-style="decimal" minimum-significant-digits="2"></lightning-formatted-number>
+                    </p>
+                </div>
+            </lightning-layout-item>
+            <!-- 積算金額×価格係数 -->
+            <lightning-layout-item padding="around-small">
+                <div class="header-column">
+                    <p class="field-title" title={totalSellingBase_Title}>{totalSellingBase_Title}</p>
+                    <p class="calculated-value-parent">
+                        <lightning-formatted-number class="calculated-value" value={totalSellingBase_Value}
+                            format-style="decimal" minimum-significant-digits="2"></lightning-formatted-number>
+                    </p>
+                </div>
+            </lightning-layout-item>
+            <!-- 見積金額 -->
+            <lightning-layout-item padding="around-small">
+                <div class="header-column">
+                    <p class="field-title" title={totalSellingCost_Title}>{totalSellingCost_Title}</p>
+                    <p class="calculated-value-parent">
+                        <lightning-formatted-number class="calculated-value" value={totalSellingCost_Value}
+                            format-style="decimal" minimum-significant-digits="2"></lightning-formatted-number>
+                    </p>
+                </div>
+            </lightning-layout-item>
+        </lightning-layout>
+    </lightning-accordion-section>
+    </lightning-accordion>
+    </div>
+
+    <div class="slds-p-around_none slds-m-top_x-small slds-m-bottom_medium slds-m-horizontal_none">
+        <template if:true={loader}>
+            <lightning-spinner alternative-text="Loading..." size="small"></lightning-spinner>
+        </template>
+        <!-- 一覧ボタンエリア -->
+        <div class="slds-box slds-theme_default">
+            <lightning-card title="選択レコード" class="">
+                <lightning-layout>
+                    <lightning-layout-item size="4">
+                        <div class="slds-align_absolute-left">
+                            <lightning-layout>
+                                <lightning-layout-item>
+                                    <div class="slds-p-left_xx-small">
+                                        <lightning-button label="明細集約" variant="brand" 
+                                        style="white-space: nowrap;"
+                                        name="displayInputOnly"
+                                        disabled={isInputOnly}
+                                        onclick={handleDisplayInputOnly}
+                                        >
+                                        </lightning-button>
+                                    </div>
+                                </lightning-layout-item>
+                                <lightning-layout-item>
+                                    <div class="slds-p-left_xx-small">
+                                        <lightning-button label="集約解除" variant="brand" 
+                                        style="white-space: nowrap;"
+                                        name="displayAll"
+                                        disabled={isAll}
+                                        onclick={handleDisplayAll}
+                                        >
+                                        </lightning-button>
+                                    </div>
+                                </lightning-layout-item>
+                                <lightning-layout-item>
+                                    <div class="slds-p-left_xx-small">
+                                        <lightning-button label="行追加" variant="brand"  style="white-space: nowrap;"
+                                        onclick={handleRowCreate} name="rowCreate"  disabled={isCreate}>
+                                        </lightning-button>
+                                    </div>
+                                </lightning-layout-item>
+                                <lightning-layout-item>
+                                    <div class="slds-p-left_xx-small">
+                                        <lightning-button label="説明" variant="brand"  style="white-space: nowrap;"
+                                        onclick={handleShowAlert} name="showAlert" >
+                                        </lightning-button>
+                                    </div>
+                                </lightning-layout-item>
+                                <!--<lightning-layout-item>
+                                    <div class="slds-p-left_xx-small">
+                                        <lightning-button label="数量クリア" variant="brand" 
+                                        style="white-space: nowrap;"
+                                        name="clearQuantity"
+                                        onclick={clearAllQuantity}
+                                        >
+                                        </lightning-button>
+                                    </div>
+                                </lightning-layout-item>-->
+                            </lightning-layout>
+                        </div>
+                    </lightning-layout-item>
+                    <lightning-layout-item size="4">
+                        <div class="slds-align_absolute-center">
+                            <div class="slds-p-right_xx-small">
+        
+                                <lightning-button label="Prev" disabled={isPrev} onclick={handlePrev} variant="brand"
+                                    icon-name="utility:back" name="prev"></lightning-button>
+                            </div>
+                            <span class="slds-badge slds-badge_lightest">
+                                {recordStart}-{recordEnd} of {totalRecords} | Page {pageNumber} of {totalPages}
+                            </span>
+                            <div class="slds-p-left_xx-small">
+                                <lightning-button label="Next" disabled={isNext} onclick={handleNext} variant="brand"
+                                    icon-name="utility:forward" icon-position="right" name="next"></lightning-button>
+                            </div>
+                        </div>
+                    </lightning-layout-item>
+                </lightning-layout>
+
+                <lightning-layout>
+                     <div class="slds-m-around_medium " style="overflow: auto;height: 370px;">
+                        <template if:true={isDisplayNoRecords}>
+                            <div class="slds-align_absolute-left">
+                                指定条件により、明細データを取得できません。
+                                <br />
+                            </div>
+                        </template>
+                        <table class="slds-table slds-table_bordered slds-table_col-bordered " 
+                                style="width: 98%;" 
+                                role="grid">
+                            <thead >
+                                <tr class="slds-line-height_reset">
+                                    <th class="slds-is-resizable slds-text-title--caps"  scope="col">
+                                        <span class="slds-truncate" title="名称">名称</span>
+                                    </th>
+                                    <th class="slds-is-resizable slds-text-title--caps" scope="col">
+                                        <span class="slds-truncate" title="マスタコード">マスタコード</span>
+                                    </th>
+                                    <th class="slds-is-resizable slds-text-title--caps" scope="col">
+                                        <span class="slds-truncate" title="単位WC">WC単価(円)</span>
+                                    </th>
+                                    <th class="slds-is-resizable slds-text-title--caps" scope="col">
+                                        <span class="slds-truncate" title="WC係数">WC係数</span>
+                                    </th>
+                                    <th class="slds-is-resizable slds-text-title--caps" scope="col">
+                                        <span class="slds-truncate" title="単価">単価(円)</span>
+                                    </th>
+                                    <th class="slds-is-resizable slds-text-title--caps" scope="col">
+                                        <span class="slds-truncate" title="単価係数">単価係数</span>
+                                    </th>
+                                    <!-- 施設の場合に表示する。 -->
+                                    <template  if:false={isWeight}>
+                                        <th class="slds-is-resizable slds-text-title--caps" scope="col">
+                                            <span class="slds-truncate" title="提供単価">提供単価(円)</span>
+                                        </th>
+                                    </template>
+                                    <!-- 水環境、官需の場合に表示する。 -->
+                                    <template  if:true={isWeight}>
+                                        <th class="slds-is-resizable slds-text-title--caps" scope="col">
+                                            <span class="slds-truncate" title="単位重量">単位重量</span>
+                                        </th>
+                                    </template>
+
+                                    <th class="slds-is-resizable slds-text-title--caps" style="min-width:4rem;" scope="col">
+                                        <span class="slds-truncate" title="数量">数量</span>
+                                    </th>
+                                    <th class="slds-is-resizable slds-text-title--caps"  scope="col">
+                                        <span class="slds-truncate" title="WC">WC(円)</span>
+                                    </th>
+                                    <th class="slds-is-resizable slds-text-title--caps" scope="col">
+                                        <span class="slds-truncate" title="金額">金額(円)</span>
+                                    </th>
+                                    <!-- 施設の場合に表示する。 -->
+                                    <template  if:false={isWeight}>
+                                        <th class="slds-is-resizable slds-text-title--caps" scope="col">
+                                            <span class="slds-truncate" title="提供価格">提供価格(円)</span>
+                                            </th>
+                                    </template>
+                                    <!-- 水環境、官需の場合に表示する。 -->
+                                    <template  if:true={isWeight}>
+                                    <th class="slds-is-resizable slds-text-title--caps" scope="col">
+                                        <span class="slds-truncate" title="重量">重量</span>
+                                    </th>
+                                    </template>
+                                    <th class="slds-is-resizable slds-text-title--caps"  scope="col">
+                                        <span class="slds-truncate" title="備考">備考</span>
+                                    </th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                            <template iterator:row={detailRecords}>
+                                <template if:true={row.value.isCreate}>
+                                <tr key={row.value.Id} class="slds-hint-parent">
+                                    <!-- 名称 -->
+                                    <td class="slds-cell_action-mode" role="gridcell">
+                                        <div class="slds-truncate slds-text-align_center">
+                                            <input data-rowindex={row.value.Id} 
+                                                name="Name1" 
+                                                onchange={handleNewRow}
+                                                type="text" 
+                                                maxlength="80"
+                                                value={row.value.Name1} 
+                                                style="width: 100%;min-width:10em;"
+                                                autocomplete="off">
+                                        </div>
+                                    </td>
+                                    <!-- マスタコード -->
+                                    <td class="slds-cell_action-mode" role="gridcell">
+                                        <div class="slds-truncate slds-text-align_center">
+                                        <lightning-formatted-text
+                                                value={row.value.Name2}
+                                         ></lightning-formatted-text>
+                                        </div>
+                                    </td>
+                                    <!-- 単位WC -->
+                                    <td class="slds-cell_action-mode" role="gridcell">
+                                        <div class="slds-truncate slds-text-align_right">
+                                            <div class="number-container" >
+                                            <input class="number-input form-control"
+                                                data-rowindex={row.value.Id} 
+                                                data-id={row.value.CreditWCName}
+                                                pattern="^[1-9][0-9]*$" 
+                                                title="0以上の数字を入力してください。"
+                                                name="CreditWC"
+                                                size="11" maxlength="11"
+                                                onchange={handleNewRow}
+                                                type="text" 
+                                                value={row.value.CreditWC} 
+                                                style="text-align: right"
+                                                autocomplete="off">
+                                                <span class="number-overlap form-control">{row.value.CreditWCSpan}</span>
+                                            </div>
+                                        </div>
+                                    </td>
+                                    <!-- WC係数 -->
+                                    <td class="slds-cell_action-mode" role="gridcell">
+                                        <div class="slds-truncate slds-text-align_left">
+                                            <input data-rowindex={row.value.Id} 
+                                                data-id={row.value.WCCoefficientName}
+                                                pattern="([0-9]|[1-9][0-9])(\.([0-9]|[0-9][0-9]|[0-9][0-9][0-9]|[0-9][0-9][0-9][0-9]))?"
+                                                title="0.0000から99.9999までの数字を入力してください。"
+                                                name="WCCoefficient" 
+                                                size="7" maxlength="7"
+                                                onchange={handleNewRow}
+                                                type="text" 
+                                                value={row.value.WCCoefficient} 
+                                                style="text-align: right"
+                                                autocomplete="off">
+                                        </div>
+                                    </td>
+                                    <!-- 単価 -->
+                                    <td class="slds-cell_action-mode" role="gridcell">
+                                        <div class="slds-truncate slds-text-align_left">
+                                            <div class="number-container" >
+                                            <input class="number-input form-control"
+                                                data-rowindex={row.value.Id} 
+                                                name="UnitPrice" 
+                                                pattern="^[1-9][0-9]*$" 
+                                                title="0以上の数字を入力してください。"
+                                                size="11" maxlength="11"
+                                                onchange={handleNewRow}
+                                                type="text" 
+                                                value={row.value.UnitPrice} 
+                                                style="text-align: right"
+                                                autocomplete="off">
+                                                <span class="number-overlap form-control">{row.value.UnitPriceSpan}</span>
+                                            </div>
+                                        </div>
+                                    </td>
+                                    <!-- 単価係数 -->
+                                    <td class="slds-cell_action-mode" role="gridcell">
+                                        <div class="slds-truncate slds-text-align_left">
+                                            <input data-rowindex={row.value.Id} 
+                                                data-id={row.value.UnitPriceCoefficientName}
+                                                pattern="([0-9]|[1-9][0-9])(\.([0-9]|[0-9][0-9]|[0-9][0-9][0-9]|[0-9][0-9][0-9][0-9]))?"
+                                                title="0.0000から99.9999までの数字を入力してください。"
+                                                size="7" maxlength="7"
+                                                name="UnitPriceCoefficient" 
+                                                onchange={handleNewRow}
+                                                type="text" 
+                                                value={row.value.UnitPriceCoefficient} 
+                                                style="text-align: right"
+                                                autocomplete="off">
+                                        </div>
+                                    </td>
+                                    <!-- 施設の場合に表示する。 -->
+                                    <template  if:false={isWeight}>
+                                        <!-- 提供単価 -->
+                                        <td class="slds-cell_action-mode" role="gridcell">
+                                            <div class="slds-truncate slds-text-align_center">
+                                                <div class="number-container" >
+                                                <input class="number-input form-control"
+                                                    data-rowindex={row.value.Id} 
+                                                    data-id={row.value.ProvisionUnitPriceName}
+                                                    name="ProvisionUnitPrice" 
+                                                    pattern="^[1-9][0-9]*$" 
+                                                    title="0以上の数字を入力してください。"
+                                                    size="11" maxlength="11"
+                                                    onchange={handleNewRow}
+                                                    type="text" 
+                                                    value={row.value.ProvisionUnitPrice} 
+                                                    style="text-align: right"
+                                                    autocomplete="off">
+                                                    <span class="number-overlap form-control">{row.value.ProvisionUnitPriceSpan}</span>
+                                                </div>
+                                            </div>
+                                        </td>
+                                    </template>
+                                    <!-- 水環境、官需の場合に表示する。 -->
+                                    <template  if:true={isWeight}>
+                                        <!-- 単位重量 -->
+                                        <td class="slds-cell_action-mode" role="gridcell">
+                                            <div class="slds-truncate slds-text-align_center">
+                                                <div class="number-container" >
+                                                <input class="number-input form-control"
+                                                    data-rowindex={row.value.Id} 
+                                                    data-id={row.value.UnitWeightName}
+                                                    name="UnitWeight" 
+                                                    pattern="^([1-9][0-9]{0,8}|0)(\.[0-9])?$" 
+                                                    title="0.0から999999999.9までの数字を入力してください。"
+                                                    size="12" maxlength="12"
+                                                    onchange={handleNewRow}
+                                                    type="text" 
+                                                    value={row.value.UnitWeight} 
+                                                    style="text-align: right"
+                                                    autocomplete="off">
+                                                    <span class="number-overlap form-control">{row.value.UnitWeightSpan}</span>
+                                                </div>
+                                            </div>
+                                        </td>
+                                    </template>
+                                    <!-- 数量 -->
+                                    <td class="slds-cell_action-mode" role="gridcell">
+                                        <div class="slds-truncate slds-text-align_right">
+                                            <div class="number-container" >
+                                            <input class="number-input form-control"
+                                                data-rowindex={row.value.Id} 
+                                                data-id={row.value.QuantityName}
+                                                pattern="(^[1-9][0-9]*$|^[１-９][０-９]*$)" 
+                                                title="1から99999までの数字を入力してください。"
+                                                name="Quantity" 
+                                                size="5" maxlength="5"
+                                                onchange={handleNewRow}
+                                                type="text" 
+                                                value={row.value.Quantity} 
+                                                style="text-align: right"
+                                                autocomplete="off">
+                                                <span class="number-overlap form-control">{row.value.QuantitySpan}</span></div>
+                                        </div>
+                                    </td>
+                                    <!-- WC -->
+                                    <td class="slds-cell_action-mode" role="gridcell">
+                                        <div class="slds-truncate slds-text-align_right">
+                                            <lightning-formatted-number 
+                                                 value={row.value.WC}
+                                          ></lightning-formatted-number>
+                                        </div>
+                                    </td>
+                                    <!-- 価格 -->
+                                    <td class="slds-cell_action-mode" role="gridcell">
+                                        <div class="slds-truncate slds-text-align_right">
+                                            <lightning-formatted-number 
+                                                 value={row.value.Price}
+                                          ></lightning-formatted-number>
+                                        </div>
+                                    </td>
+                                    <!-- 施設の場合に表示する。 -->
+                                    <template  if:false={isWeight}>
+                                        <!-- 提供価格 -->
+                                        <td class="slds-cell_action-mode" role="gridcell">
+                                            <div class="slds-truncate slds-text-align_right">
+                                                <lightning-formatted-number 
+                                                    value={row.value.ProvisionPrice}
+                                            ></lightning-formatted-number>
+                                            </div>
+                                        </td>
+                                    </template>
+                                    <!-- 水環境、官需の場合に表示する。 -->
+                                    <template  if:true={isWeight}>
+                                    <!-- 重量 -->
+                                    <td class="slds-cell_action-mode" role="gridcell">
+                                        <div class="slds-truncate slds-text-align_right">
+                                            <lightning-formatted-number 
+                                                 value={row.value.Weight}
+                                          ></lightning-formatted-number>
+                                        </div>
+                                    </td>
+                                    </template>
+
+                                    <!-- 備考 -->
+                                    <td class="slds-cell_action-mode" role="gridcell">
+                                        <div class="slds-truncate slds-text-align_center">
+                                            <input data-rowindex={row.value.Id} 
+                                                name="Note" 
+                                                onchange={handleNewRow}
+                                                type="text" 
+                                                maxlength="255"
+                                                value={row.value.Note} 
+                                                style="width: 100%;min-width:15em;"
+                                                autocomplete="off">
+                                        </div>
+                                    </td>
+                                </tr>
+                                </template>
+
+                                <template if:false={row.value.isCreate}>
+                                
+                                <tr key={row.value.Id} class="slds-hint-parent">
+                                    <!-- 名称１ -->
+                                    <td class="slds-cell_action-mode" role="gridcell">
+                                        <div class="slds-truncate slds-text-align_left">
+                                            <lightning-formatted-text value={row.value.Name1} 
+                                            title={row.value.Name1}></lightning-formatted-text>
+                                        </div>
+                                    </td>
+                                    <!-- マスタコード -->
+                                    <td class="slds-cell_action-mode" role="gridcell">
+                                        <div class="slds-truncate slds-text-align_left">
+                                            <lightning-formatted-text value={row.value.Name2} 
+                                            title={row.value.Name2}></lightning-formatted-text>
+                                        </div>
+                                    </td>
+                                    <!-- 単位WC -->
+                                    <td class="slds-cell_action-mode" role="gridcell">
+                                        <div class="slds-truncate slds-text-align_right">
+                                            <div class="number-container" >
+                                                <template if:false={row.value.isPriceTableWC}>
+                                                    <input class="number-input form-control"
+                                                    type="text" pattern="^[1-9][0-9]*$" 
+                                                    title="0以上の数字を入力してください。"
+                                                    size="11" maxlength="11" 
+                                                    style="text-align: right "
+                                                    autocomplete="off"
+                                                    data-id={row.value.CreditWCName}
+                                                    data-rate={row.value.WcCalculationRate}
+                                                    value={row.value.CreditWC}
+                                                    onchange={handleCreditWCChange}></input>
+                                                    <span class="number-overlap form-control">{row.value.CreditWCSpan}</span>
+                                                </template>
+                                                <template if:true={row.value.isPriceTableWC}>
+                                                    <input class="number-input form-control input-readonly" readonly
+                                                        type="text" 
+                                                        title="0以上の数字を入力してください。"
+                                                        size="11" maxlength="11" style="text-align: right "
+                                                        data-id={row.value.CreditWCName}
+                                                        data-rate={row.value.WcCalculationRate}
+                                                        value={row.value.CreditWC}></input>
+                                                    <span class="number-overlap form-control">{row.value.CreditWCSpan}</span>
+                                                </template>
+                                            </div>
+                                        </div>
+                                    </td>
+                                    <!-- WC係数 -->
+                                    <td class="slds-cell_action-mode" role="gridcell">
+                                        <div class="slds-truncate slds-text-align_center">
+                                        <template if:false={row.value.isWCRate}>
+                                            <input type="text" pattern="([0-9]|[1-9][0-9])(\.([0-9]|[0-9][0-9]|[0-9][0-9][0-9]|[0-9][0-9][0-9][0-9]))?"
+                                            title="0.0000から99.9999までの数字を入力してください。"
+                                            size="7" maxlength="7" 
+                                            style="text-align: right "
+                                            autocomplete="off"
+                                            data-id={row.value.WCCoefficientName}
+                                            value={row.value.WCCoefficient}
+                                            onchange={handleWCCoefficientChange}></input>
+                                        </template>
+                                        <template if:true={row.value.isWCRate}>
+                                            <input type="text" class="input-readonly" readonly
+                                                data-id={row.value.WCCoefficientName}
+                                                size="7" maxlength="7" 
+                                                value={row.value.WCCoefficient} 
+                                                style="text-align: right"></input>
+                                        </template>
+                                        </div>
+                                    </td>
+                                    <!-- 単価 -->
+                                    <td class="slds-cell_action-mode" role="gridcell">
+                                        <div class="slds-truncate slds-text-align_right">
+                                            
+                                            <template if:false={row.value.isPriceEdit}>
+                                                <lightning-formatted-number 
+                                                value={row.value.UnitPrice}
+                                                ></lightning-formatted-number>
+                                            </template>
+                                            <!-- 名称2が「EP=標準価格×◯◯」と言う形式だった場合、
+                                                単価の欄を手入力出来るようにする -->
+                                            <template if:true={row.value.isPriceEdit}>
+                                                <div class="number-container" >
+                                                    <input class="number-input form-control"
+                                                        data-id={row.value.UnitPriceName}
+                                                        name="UnitPrice" 
+                                                        pattern="^[1-9][0-9]*$" 
+                                                        title="0以上の数字を入力してください。"
+                                                        size="11" maxlength="11"
+                                                        onchange={handleUnitPriceChange}
+                                                        type="text" 
+                                                        value={row.value.UnitPrice} 
+                                                        style="text-align: right"
+                                                        autocomplete="off">
+                                                        <span class="number-overlap form-control">{row.value.UnitPriceSpan}</span>
+                                                    </div>
+                                            </template>
+                                            <!-- format-style="currency" -->
+                                        </div>
+                                    </td>
+                                    <!-- 単価係数 width: 40px; -->
+                                    <td class="slds-cell_action-mode" role="gridcell">
+                                        <div class="slds-truncate slds-text-align_center">
+                                            <template if:false={row.value.isWCRate}>
+                                                <input type="text" pattern="([0-9]|[1-9][0-9])(\.([0-9]|[0-9][0-9]|[0-9][0-9][0-9]|[0-9][0-9][0-9][0-9]))?"
+                                                title="0.0000から99.9999までの数字を入力してください。"
+                                                size="7" maxlength="7" 
+                                                style=" text-align: right "
+                                                autocomplete="off"
+                                                data-id={row.value.UnitPriceCoefficientName}
+                                                value={row.value.UnitPriceCoefficient}
+                                                onchange={handleUnitPriceCoefficientChange}></input>
+                                            </template>
+
+                                            <template if:true={row.value.isWCRate}>
+                                                <input type="text" class="input-readonly"  data-id={row.value.UnitPriceCoefficientName}
+                                                size="7" maxlength="7" style="text-align: right " readonly></input>
+                                            </template>
+                                        </div>
+                                    </td>
+                                    <!-- 施設の場合に表示する。 -->
+                                    <template  if:false={isWeight}>
+                                        <!-- 提供単価 -->
+                                        <td class="slds-cell_action-mode" role="gridcell">
+                                            <div class="slds-truncate slds-text-align_left">
+                                                <div class="number-container" >
+                                                <template if:true={row.value.isWCRate}>
+                                                    <input type="text" class="input-readonly" data-id={row.value.ProvisionUnitPriceName}
+                                                    size="11" maxlength="11" style="text-align: right " readonly></input>
+                                                </template>
+
+                                                <template if:false={row.value.isWCRate}>
+                                                        <input class="number-input form-control"
+                                                        type="text" pattern="^[1-9][0-9]*$" 
+                                                        title="0以上の数字を入力してください。"
+                                                        size="11" maxlength="11" 
+                                                        style="text-align: right "
+                                                        autocomplete="off"
+                                                        data-id={row.value.ProvisionUnitPriceName}
+                                                        value={row.value.ProvisionUnitPrice}
+                                                        onchange={handleProvisionUnitPriceChange}></input>
+                                                        <span class="number-overlap form-control">{row.value.ProvisionUnitPriceSpan}</span>
+                                                </template>
+                                            </div>
+                                            </div>
+                                        </td>
+                                    </template>
+                                    <!-- 水環境、官需の場合に表示する。 -->
+                                    <template  if:true={isWeight}>
+                                        <!-- 単位重量 -->
+                                        <td class="slds-cell_action-mode" role="gridcell">
+                                            <div class="slds-truncate slds-text-align_right">
+                                                <lightning-formatted-number 
+                                                    value={row.value.UnitWeight}
+                                                ></lightning-formatted-number>
+                                                <!-- format-style="currency" -->
+                                            </div>
+                                        </td>
+                                    </template>
+                                    <!-- 数量 -->
+                                    <template if:false={row.value.SpecialFlag}>
+                                        <td class="slds-cell_action-mode" role="gridcell">
+                                            <div class="slds-truncate slds-text-align_right">
+                                                <div class="number-container" >
+                                                <input class="number-input form-control"
+                                                type="text" pattern="^[1-9][0-9]*$" 
+                                                title="1から99999までの数字を入力してください。"
+                                                size="5" maxlength="5"
+                                                style="text-align: right " 
+                                                autocomplete="off"
+                                                data-name={row.value.UnitPrice}
+                                                data-weight={row.value.UnitWeight}
+                                                value={row.value.Quantity} 
+                                                data-id={row.value.QuantityName}
+                                                onchange={handleQuantityChange}></input>
+                                                <span class="number-overlap form-control">{row.value.QuantitySpan}</span></div>
+                                            </div>
+                                        </td>
+                                    </template>
+                                    <template if:true={row.value.SpecialFlag}>
+                                        <td class="slds-cell_action-mode" role="gridcell">
+                                            <div class="slds-truncate slds-text-align_right">
+                                                <div class="number-container" >
+                                                <input class="number-input form-control"
+                                                type="text" pattern="([0-9]|[1-9][0-9]|[1-9][0-9][0-9]|[1-9][0-9][0-9][0-9]|[1-9][0-9][0-9][0-9][0-9])(\.([1-9]|[0-9][1-9]))?"
+                                                title="数字（整数5桁以下、小数点以下2桁まで）を入力してください。"
+                                                size="8" maxlength="8"
+                                                style="text-align: right " 
+                                                autocomplete="off"
+                                                data-name={row.value.UnitPrice}
+                                                data-weight={row.value.UnitWeight}
+                                                value={row.value.Quantity} 
+                                                data-id={row.value.QuantityName}
+                                                onchange={handleQuantityChange}></input>
+                                                <span class="number-overlap form-control">{row.value.QuantitySpan}</span></div>
+                                            </div>
+                                        </td>
+                                    </template>
+                                    <!-- WC -->
+                                    <td class="slds-cell_action-mode" role="gridcell">
+                                        <div class="slds-truncate slds-text-align_right">
+                                           <lightning-formatted-number 
+                                                 value={row.value.WC}
+                                          ></lightning-formatted-number>
+                                        </div>
+                                    </td>
+                                    <!-- 価格 -->
+                                    <td class="slds-cell_action-mode" role="gridcell">
+                                        <div class="slds-truncate slds-text-align_right">
+                                            <lightning-formatted-number 
+                                                 value={row.value.Price}
+                                          ></lightning-formatted-number>
+                                        </div>
+                                    </td>
+
+                                    <!-- 施設の場合に表示する。 -->
+                                    <template  if:false={isWeight}>
+                                        <!-- 提供価格 -->
+                                        <td class="slds-cell_action-mode" role="gridcell">
+                                            <div class="slds-truncate slds-text-align_right">
+                                                <lightning-formatted-number 
+                                                    value={row.value.ProvisionPrice}
+                                            ></lightning-formatted-number>
+                                            </div>
+                                        </td>
+                                    </template>
+                                    <!-- 水環境、官需の場合に表示する。 -->
+                                    <template  if:true={isWeight}>
+                                    <!-- 重量 -->
+                                    <td class="slds-cell_action-mode" role="gridcell">
+                                        <div class="slds-truncate slds-text-align_right">
+                                            <lightning-formatted-number 
+                                                 value={row.value.Weight}
+                                          ></lightning-formatted-number>
+                                        </div>
+                                    </td>
+                                    </template>
+
+                                    <!-- 備考 -->
+                                    <td class="slds-cell_action-mode" role="gridcell">
+                                        <div class="slds-truncate slds-text-align_left">
+                                            <lightning-formatted-text value={row.value.Note}></lightning-formatted-text>
+                                        </div>
+                                    </td>
+
+                                </tr></template>
+                            </template>
+                            </tbody>
+                        </table>
+                    </div>
+                </lightning-layout>
+            </lightning-card>
+        </div>
+    </div>
+
+    <!-- 見積項目　説明画面　ダイアログ-->
+    <template if:true={isShowDescription}>
+        <section role="dialog" tabindex="-1" aria-labelledby="modal-heading-01" aria-modal="true" aria-describedby="modal-content-id-2" 
+                        class="slds-modal slds-modal slds-fade-in-open">
+            <div class="slds-modal__container">
+                <header class="slds-modal__header">
+                    <button class="slds-button slds-button_icon slds-modal__close slds-button_icon-inverse" title="Close" onclick={handlerClose}>
+                        <lightning-icon icon-name="utility:close"
+                            alternative-text="close"
+                            variant="inverse"
+                            size="small" ></lightning-icon>
+                        <span class="slds-assistive-text">Close</span>
+                    </button>
+                    <h2 class="slds-text-heading_medium slds-hyphenate">見積項目説明</h2>
+                </header>
+                <div data-id="modal-content-id-2" class="slds-modal__content slds-p-around_medium">
+                    <div>
+                        <p if:true={quotationDescriptionImage}>
+                            <img src={quotationDescriptionImage}>
+                        </p>
+                        <p if:false={quotationDescriptionImage} class="no-image-description">
+                            この見積項目に対応する説明画像はありません。
+                        </p>
+                    </div>
+                </div>
+                <footer class="slds-modal__footer ">
+                    <div class="slds-grid slds-grid_align-center">
+                        <button class="slds-button slds-button_brand" onclick={handlerClose} title="OK">OK</button>
+                    </div>
+                </footer>
+            </div>
+        </section>
+        <div class="slds-backdrop slds-backdrop_open"></div>
+    </template>
+</template>

@@ -1,0 +1,133 @@
+<aura:component controller="RecordCloneController" implements="force:appHostable,flexipage:availableForAllPageTypes,flexipage:availableForRecordHome,force:hasRecordId,forceCommunity:availableForAllPageTypes,force:lightningQuickAction" access="global" >
+    <aura:attribute name="title" type="String" default="" />
+    <aura:attribute name="cloneButtonLabel" type="String" default="Clone" />
+    <aura:attribute name="nameInputLabel" type="String" default="" />
+    <aura:attribute name="showDetails" type="Boolean" default="true"/>
+    <aura:attribute name="sObjectSummary" type="Object" />
+    <aura:attribute name="templateRecordId" type="String" />
+    <aura:attribute name="isInitialized" type="Boolean" default="false"/>
+    <aura:attribute name="isCloning" type="Boolean" default="false"/>
+    <aura:attribute name="newParentRecordName" type="String" />
+    <aura:attribute name="excludedFieldNames" type="String" />
+    <aura:attribute name="childRelationshipNames" type="String" />
+    <aura:attribute name="clonableChildren" type="List" />
+    <aura:attribute name="notClonableChildren" type="List" />
+    <aura:attribute name="clonableFields" type="List" />
+    <aura:attribute name="notClonableFields" type="List" />
+    
+    <aura:handler name="init" value="{!this}" action="{!c.doInit}"/>
+    
+    <aura:attribute name="shouldShowChildren" type="Boolean" default="false"/>
+    <aura:attribute name="shouldShowExcludedFields" type="Boolean" default="false"/>
+    <aura:attribute name="shouldShowIncludedFields" type="Boolean" default="false"/>
+    
+    <article class="slds-card">
+        <aura:if isTrue="{!not(empty(v.title))}">
+            <div class="slds-card__header slds-grid">
+                <header class="slds-media slds-media_center slds-has-flexi-truncate">
+                    <div class="slds-media__body">
+                        <h2 class="slds-card__header-title">
+                            <span class="slds-truncate">{!v.title}</span>
+                        </h2>
+                    </div>
+                </header>
+            </div>
+        </aura:if>
+        
+        <div class="slds-card__body slds-card__body_inner">
+            <aura:if isTrue="{!v.isInitialized}">
+                <aura:if isTrue="{!v.sObjectSummary.isClonable}">
+                    <aura:if isTrue="{!v.isCloning}">
+                        <div>
+                            <lightning:spinner alternativeText="Loading" size="medium" />
+                            <h6>Cloning...</h6>
+                        </div>
+                    </aura:if>
+                    <aura:if isTrue="{!not(v.isCloning)}">
+                        
+                        <aura:if isTrue="{!v.sObjectSummary.isNamable}">
+                            <lightning:input class="slds-m-bottom_x-small" type="text" value="{!v.newParentRecordName}"
+                                             label="{!v.nameInputLabel}" placeholder="{!v.sObjectSummary.nameField}" 
+                                             variant="{!empty(v.nameInputLabel) ? 'label-hidden' : 'standard '}" />
+                        </aura:if>
+                        <lightning:button label="{!v.cloneButtonLabel}" onclick="{!c.onclickClone}" variant="brand" />
+                    </aura:if>
+                    
+                </aura:if>
+                
+                <aura:if isTrue="{!not(v.sObjectSummary.isClonable)}">
+                    <div>
+                        <h6>This sObject is not supported.</h6>
+                    </div>
+                </aura:if>
+            </aura:if>
+            <aura:if isTrue="{!not(v.isInitialized)}">
+                <div>
+                    <lightning:spinner alternativeText="Loading" size="medium" />
+                    <h6>Initializing...</h6>
+                </div>
+            </aura:if>
+        </div>
+        <aura:if isTrue="{!v.showDetails}">
+            <footer class="slds-card__footer">
+                    <ul>
+                        <aura:if isTrue="{!not(empty(v.sObjectSummary.children))}">
+                            <li class="details-item">
+                                <h4 onclick="{!c.toggleChildren}" class="details-item-title">
+                                    <lightning:icon class="toggle-icon" iconName="{! v.shouldShowChildren ? 'utility:contract_alt' : 'utility:expand_alt'}" size="x-small" />
+                                    Child objects included ({!v.clonableChildren.length})
+                                    <aura:if isTrue="{!greaterthan(v.clonableChildren.length, 20)}">
+                                        <br/><span class="child-rel-error">CANNOT Add include than 20 different child types</span>
+                                    </aura:if>
+                                </h4>
+                                <aura:if isTrue="{!v.shouldShowChildren}">
+                                    <ul class="details-item-elements">
+                                        <aura:iteration items="{!v.clonableChildren}" var="child">
+                                            <li>{!child.label} ({!child.apiName})</li>
+                                        </aura:iteration>
+                                        <aura:iteration items="{!v.notClonableChildren}" var="child">
+                                            <li>
+                                                <del>{!child.label} ({!child.apiName})</del> : 
+                                                <span class="ncf-reason">{!child.errorMessage}</span>
+                                            </li>
+                                        </aura:iteration>
+                                    </ul>
+                                </aura:if>
+                            </li>
+                        </aura:if>
+                        <aura:if isTrue="{!not(empty(v.notClonableFields))}">
+                            <li class="details-item">
+                                <h4 onclick="{!c.toggleExcluded}" class="details-item-title">
+                                    <lightning:icon class="toggle-icon" iconName="{! v.shouldShowExcludedFields ? 'utility:contract_alt' : 'utility:expand_alt'}" size="x-small" />
+                                    Fields excluded ({!v.notClonableFields.length})
+                                </h4>
+                                <aura:if isTrue="{!v.shouldShowExcludedFields}">
+                                    <ul class="details-item-elements">
+                                        <aura:iteration items="{!v.notClonableFields}" var="ncf">
+                                            <li>{!ncf.label} ({!ncf.apiName}) : <span class="ncf-reason">{!ncf.errorMessage}</span></li>
+                                        </aura:iteration>
+                                    </ul>
+                                </aura:if>
+                            </li>
+                        </aura:if>
+                        <aura:if isTrue="{!not(empty(v.clonableFields))}">
+                            <li class="details-item">
+                                <h4 onclick="{!c.toggleIncluded}"  class="details-item-title">
+                                    <lightning:icon class="toggle-icon" iconName="{! v.shouldShowIncludedFields ? 'utility:contract_alt' : 'utility:expand_alt'}" size="x-small" />
+                                    Fields included ({!v.clonableFields.length})
+                                </h4>
+                                <aura:if isTrue="{!v.shouldShowIncludedFields}">
+                                    <ul class="details-item-elements">
+                                        <aura:iteration items="{!v.clonableFields}" var="cf">
+                                            <li>{!cf.label} ({!cf.apiName})</li>
+                                        </aura:iteration>
+                                    </ul>
+                                </aura:if>
+                            </li>
+                        </aura:if>
+                    </ul>
+            </footer>
+            
+        </aura:if>
+    </article>
+</aura:component>

@@ -1,0 +1,735 @@
+<template>        
+    <div class="slds-box slds-p-around_none slds-m-top_x-small slds-m-bottom_medium slds-m-horizontal_none">
+        <lightning-accordion allow-multiple-sections-open >
+            <lightning-accordion-section name="sec1" label="検索条件">
+            <!-- 仕様条件の表示を制御 -->
+            <template if:true={isNameShow}>
+                <lightning-layout class="c-container" multiple-rows="true">
+                    <!-- 明細名称 -->
+                    <template if:true={isDetailNameShow}></template>
+                    <lightning-layout-item size="12" padding="around-small">
+                        <div class="header-column">
+                            <p class="field-title"><b>{detailName}</b></p>
+                        </div>
+                    </lightning-layout-item>
+                    <!-- １段 -->
+                    <lightning-layout-item size="2" padding="around-small">
+                        <template if:true={isName1Show}>
+                        <!-- 検索条件：仕様１ -->
+                        <div class="slds-form-element slds-form-element_horizontal">
+                            <label class="slds-form-element__label">{name1_LabelName}</label>
+                            <div class="slds-form-element__control">
+                                <template if:false={name1_isDisabled}>
+                                    <select class="slds-select" 
+                                            onchange={name1_Handler}
+                                            required={name1_isRequired}>
+                                        <option value=""></option>
+                                        <template for:each={name1_Options} for:item="option">
+                                            <template if:true={option.selected}>
+                                                <option key={option.label} class="uiInputSelectOption" value={option.value} selected>{option.value}</option>
+                                            </template>
+                                            <template if:false={option.selected}>
+                                                <option key={option.label} class="uiInputSelectOption" value={option.value}>{option.value}</option>
+                                            </template>
+                                        </template>
+                                    </select>
+                                </template>
+                                <template if:true={name1_isDisabled}>
+                                    <select class="slds-select" disabled>
+                                        <option value=""></option>
+                                    </select>
+                                </template>
+                            </div>
+                        </div>
+                        </template>
+                    </lightning-layout-item>
+                    <lightning-layout-item size="2" padding="around-small">
+                        <template if:true={isName2Show}>
+                        <!-- 検索条件：仕様２ -->
+                        <div class="slds-form-element slds-form-element_horizontal">
+                            <label class="slds-form-element__label">{name2_LabelName}</label>
+                            <div class="slds-form-element__control">
+                                <template if:false={name2_isDisabled}>
+                                    <select class="slds-select" 
+                                            onchange={name2_Handler} 
+                                            required={name2_isRequired}>
+                                        <option value=""></option>
+                                        <template for:each={name2_Options} for:item="option">
+                                            <option key={option.label} class="uiInputSelectOption" value={option.value}>{option.value}</option>
+                                        </template>
+                                    </select>
+                                </template>
+                                <template if:true={name2_isDisabled}>
+                                    <select class="slds-select" disabled>
+                                        <option value=""></option>
+                                    </select>
+                                </template>
+                            </div>
+                        </div>
+                    </template>
+                    </lightning-layout-item>
+                    <lightning-layout-item size="2" padding="around-small">
+                        <template if:true={isName3Show}>
+                        <!-- 検索条件：仕様３ -->
+                        <div class="slds-form-element slds-form-element_horizontal">
+                            <label class="slds-form-element__label">{name3_LabelName}</label>
+                            <div class="slds-form-element__control">
+                                <template if:false={name3_isDisabled}>
+                                    <select class="slds-select" 
+                                            onchange={name3_Handler}
+                                            required={name3_isRequired}>
+                                        <option value=""></option>
+                                        <template for:each={name3_Options} for:item="option">
+                                            <option key={option.label} class="uiInputSelectOption" value={option.value}>{option.value}</option>
+                                        </template>
+                                    </select>
+                                </template>
+                                <template if:true={name3_isDisabled}>
+                                    <select class="slds-select" disabled>
+                                        <option value=""></option>
+                                    </select>
+                                </template>
+                            </div>
+                        </div>
+                    </template>
+                    </lightning-layout-item>
+                    <lightning-layout-item size="2" padding="around-small">
+                        <template if:true={isName4Show}>
+                        <!-- 検索条件：仕様４ -->
+                        <div class="slds-form-element slds-form-element_horizontal">
+                            <label class="slds-form-element__label">{name4_LabelName}</label>
+
+                            <!-- 大型映像装置の場合　縦　横 テキストで表示-->
+                            <template if:true={isLargeScreen}>
+                                <lightning-input 
+                                data-type = "meta"
+                                data-code="meta4"
+                                type="text" variant="label-hidden" 
+                                maxlength="255"
+                                value={metadataValues.meta4}
+                                onblur={handleKeyUpmetaForLargeScreen}></lightning-input>
+                            </template>
+                            <!-- 大型映像装置の場合　以外の場合-->
+                            <template if:false={isLargeScreen}>
+                                <div class="slds-form-element__control">
+                                    <template if:false={name4_isDisabled}>
+                                        <select class="slds-select" 
+                                                onchange={name4_Handler} 
+                                                required={name4_isRequired}>
+                                            <option value=""></option>
+                                            <template for:each={name4_Options} for:item="option">
+                                                <option key={option.label} class="uiInputSelectOption" value={option.value}>{option.value}</option>
+                                            </template>
+                                        </select>
+                                    </template>
+                                    <template if:true={name4_isDisabled}>
+                                        <select class="slds-select" disabled>
+                                            <option value=""></option>
+                                        </select>
+                                    </template>
+                                </div>
+                            </template>
+                        </div>
+                    </template>
+                    </lightning-layout-item>
+                <lightning-layout-item size="2" padding="around-small">
+                    <template if:true={isName5Show}>
+                    <!-- 検索条件：仕様５ -->
+                    <div class="slds-form-element slds-form-element_horizontal">
+                        <label class="slds-form-element__label">{name5_LabelName}</label>
+                            <!-- 大型映像装置の場合　縦　横 テキストで表示-->
+                        <template if:true={isLargeScreen}>
+                                <lightning-input 
+                                data-type = "meta"
+                                data-code="meta5"
+                                type="text" variant="label-hidden" 
+                                maxlength="255"
+                                value={metadataValues.meta5}
+                                onblur={handleKeyUpmetaForLargeScreen}></lightning-input>
+                        </template>
+                            <!-- 大型映像装置の場合　以外の場合-->
+                        <template if:false={isLargeScreen}>
+                            <div class="slds-form-element__control">
+                                <template if:false={name5_isDisabled}>
+                                    <select class="slds-select" 
+                                            onchange={name5_Handler} 
+                                            required={name5_isRequired}>
+                                        <option value=""></option>
+                                        <template for:each={name5_Options} for:item="option">
+                                            <option key={option.label} class="uiInputSelectOption" value={option.value}>{option.value}</option>
+                                        </template>
+                                    </select>
+                                </template>
+                                <template if:true={name5_isDisabled}>
+                                    <select class="slds-select" disabled>
+                                        <option value=""></option>
+                                    </select>
+                                </template>
+                            </div>
+                        </template>
+                    </div>
+                </template>
+                </lightning-layout-item>
+                <lightning-layout-item size="2" padding="around-small">
+                <!-- 検索ボタン：仕様検索 -->
+                    <div>
+                        <button class="slds-button slds-align_absolute-center slds-button_brand search-button" onclick={onSpecSearch} title="Search">仕 様 検 索</button>
+                    </div>
+                </lightning-layout-item>
+
+                <!-- ２段 -->
+                <lightning-layout-item size="2" padding="around-small">
+                    <template if:true={isName6Show}>
+                        <!-- 検索条件：仕様6 -->
+                        <div class="slds-form-element slds-form-element_horizontal">
+                            <label class="slds-form-element__label">{name6_LabelName}</label>
+                            <div class="slds-form-element__control">
+                                <template if:false={name6_isDisabled}>
+                                    <select class="slds-select" 
+                                            onchange={name6_Handler}
+                                            required={name6_isRequired}>
+                                        <option value=""></option>
+                                        <template for:each={name6_Options} for:item="option">
+                                            <template if:true={option.selected}>
+                                                <option key={option.label} class="uiInputSelectOption" value={option.value} selected>{option.value}</option>
+                                            </template>
+                                            <template if:false={option.selected}>
+                                                <option key={option.label} class="uiInputSelectOption" value={option.value}>{option.value}</option>
+                                            </template>
+                                        </template>
+                                    </select>
+                                </template>
+                                <template if:true={name6_isDisabled}>
+                                    <select class="slds-select" disabled>
+                                        <option value=""></option>
+                                    </select>
+                                </template>
+                            </div>
+                        </div>
+                        </template>
+                </lightning-layout-item>
+                <lightning-layout-item size="2" padding="around-small">
+                    <!-- ラベル名7: -->
+                    <template if:true={isName7Show}>
+                        <!-- 検索条件：仕様7 -->
+                        <div class="slds-form-element slds-form-element_horizontal">
+                            <label class="slds-form-element__label">{name7_LabelName}</label>
+                            <div class="slds-form-element__control">
+                                <template if:false={name7_isDisabled}>
+                                    <select class="slds-select" 
+                                            onchange={name7_Handler}
+                                            required={name7_isRequired}>
+                                        <option value=""></option>
+                                        <template for:each={name7_Options} for:item="option">
+                                            <template if:true={option.selected}>
+                                                <option key={option.label} class="uiInputSelectOption" value={option.value} selected>{option.value}</option>
+                                            </template>
+                                            <template if:false={option.selected}>
+                                                <option key={option.label} class="uiInputSelectOption" value={option.value}>{option.value}</option>
+                                            </template>
+                                        </template>
+                                    </select>
+                                </template>
+                                <template if:true={name7_isDisabled}>
+                                    <select class="slds-select" disabled>
+                                        <option value=""></option>
+                                    </select>
+                                </template>
+                            </div>
+                        </div>
+                        </template>
+                </lightning-layout-item>
+                <lightning-layout-item size="2" padding="around-small">
+                    <!-- ラベル名8 -->
+                    <template if:true={isName8Show}>
+                        <!-- 検索条件：仕様8 -->
+                        <div class="slds-form-element slds-form-element_horizontal">
+                            <label class="slds-form-element__label">{name8_LabelName}</label>
+                            <div class="slds-form-element__control">
+                                <template if:false={name8_isDisabled}>
+                                    <select class="slds-select" 
+                                            onchange={name8_Handler}
+                                            required={name8_isRequired}>
+                                        <option value=""></option>
+                                        <template for:each={name8_Options} for:item="option">
+                                            <template if:true={option.selected}>
+                                                <option key={option.label} class="uiInputSelectOption" value={option.value} selected>{option.value}</option>
+                                            </template>
+                                            <template if:false={option.selected}>
+                                                <option key={option.label} class="uiInputSelectOption" value={option.value}>{option.value}</option>
+                                            </template>
+                                        </template>
+                                    </select>
+                                </template>
+                                <template if:true={name8_isDisabled}>
+                                    <select class="slds-select" disabled>
+                                        <option value=""></option>
+                                    </select>
+                                </template>
+                            </div>
+                        </div>
+                        </template>
+                </lightning-layout-item>
+                <lightning-layout-item size="2" padding="around-small">
+                    <!-- ラベル名9-->
+                    <template if:true={isName9Show}>
+                        <!-- 検索条件：仕様9 -->
+                        <div class="slds-form-element slds-form-element_horizontal">
+                            <label class="slds-form-element__label">{name9_LabelName}</label>
+                            <div class="slds-form-element__control">
+                                <template if:false={name9_isDisabled}>
+                                    <select class="slds-select" 
+                                            onchange={name9_Handler}
+                                            required={name9_isRequired}>
+                                        <option value=""></option>
+                                        <template for:each={name9_Options} for:item="option">
+                                            <template if:true={option.selected}>
+                                                <option key={option.label} class="uiInputSelectOption" value={option.value} selected>{option.value}</option>
+                                            </template>
+                                            <template if:false={option.selected}>
+                                                <option key={option.label} class="uiInputSelectOption" value={option.value}>{option.value}</option>
+                                            </template>
+                                        </template>
+                                    </select>
+                                </template>
+                                <template if:true={name9_isDisabled}>
+                                    <select class="slds-select" disabled>
+                                        <option value=""></option>
+                                    </select>
+                                </template>
+                            </div>
+                        </div>
+                        </template>
+                </lightning-layout-item>
+                <lightning-layout-item size="2" padding="around-small">
+                    <!-- ラベル名10-->
+                    <template if:true={isName10Show}>
+                        <!-- 検索条件：仕様10 -->
+                        <div class="slds-form-element slds-form-element_horizontal">
+                            <label class="slds-form-element__label">{name10_LabelName}</label>
+                            <div class="slds-form-element__control">
+                                <template if:false={name10_isDisabled}>
+                                    <select class="slds-select" 
+                                            onchange={name10_Handler}
+                                            required={name10_isRequired}>
+                                        <option value=""></option>
+                                        <template for:each={name10_Options} for:item="option">
+                                            <template if:true={option.selected}>
+                                                <option key={option.label} class="uiInputSelectOption" value={option.value} selected>{option.value}</option>
+                                            </template>
+                                            <template if:false={option.selected}>
+                                                <option key={option.label} class="uiInputSelectOption" value={option.value}>{option.value}</option>
+                                            </template>
+                                        </template>
+                                    </select>
+                                </template>
+                                <template if:true={name10_isDisabled}>
+                                    <select class="slds-select" disabled>
+                                        <option value=""></option>
+                                    </select>
+                                </template>
+                            </div>
+                        </div>
+                        </template>
+                </lightning-layout-item>
+                <lightning-layout-item size="2" padding="around-small">
+                    <!-- 空白　位置 -->
+                </lightning-layout-item>
+        </lightning-layout>
+        </template>
+            <!-- 盤条件⇒変圧器の場合だけ表示する -->
+            <template if:true={isBoardShow}>
+                <lightning-layout class="c-container">
+                    <lightning-layout-item size="2" padding="around-small">
+                        <!-- 検索条件：設置場所 -->
+                        <div class="slds-form-element slds-form-element_horizontal">
+                            <label class="slds-form-element__label">{board1_LabelName}</label>
+                            <div class="slds-form-element__control">
+                                <template if:false={board1_isDisabled}>
+                                    <select class="slds-select" 
+                                            onchange={board1_Handler}>
+                                        <option value=""></option>
+                                        <template for:each={board1_Options} for:item="option">
+                                            <template if:true={option.selected}>
+                                                <option key={option.label} class="uiInputSelectOption" value={option.value} selected>{option.value}</option>
+                                            </template>
+                                            <template if:false={option.selected}>
+                                                <option key={option.label} class="uiInputSelectOption" value={option.value}>{option.value}</option>
+                                            </template>
+                                        </template>
+                                    </select>
+                                </template>
+                                <template if:true={board1_isDisabled}>
+                                    <select class="slds-select" disabled>
+                                        <option value=""></option>
+                                    </select>
+                                </template>
+                            </div>
+                        </div>
+                    </lightning-layout-item>
+                    <lightning-layout-item size="2" padding="around-small">
+                        <!-- 検索条件：標準盤外形寸法 -->
+                        <div class="slds-form-element slds-form-element_horizontal">
+                            <label class="slds-form-element__label">{board2_LabelName}</label>
+                            <div class="slds-form-element__control">
+                                <template if:false={board2_isDisabled}>
+                                    <select class="slds-select" 
+                                            onchange={board2_Handler} >
+                                        <option value=""></option>
+                                        <template for:each={board2_Options} for:item="option">
+                                            <option key={option.label} class="uiInputSelectOption" value={option.value}>{option.value}</option>
+                                        </template>
+                                    </select>
+                                </template>
+                                <template if:true={board2_isDisabled}>
+                                    <select class="slds-select" disabled>
+                                        <option value=""></option>
+                                    </select>
+                                </template>
+                            </div>
+                        </div>
+                     </lightning-layout-item>
+                    <lightning-layout-item size="2" padding="around-small">
+                       <!-- 空白　位置 -->
+                    </lightning-layout-item>
+                    <lightning-layout-item size="2" padding="around-small">
+                       <!-- 空白　位置 -->
+                    </lightning-layout-item>
+                    <lightning-layout-item size="2" padding="around-small">
+                       <!-- 空白　位置 -->
+                    </lightning-layout-item>
+                    <lightning-layout-item size="2" padding="around-small">
+                    <!-- 検索ボタン：盤検索 -->
+                        <div>
+                            <button class="slds-button slds-align_absolute-center slds-button_brand search-button" onclick={onSpecSearch} title="Search">盤 検 索</button>
+                        </div>
+                    </lightning-layout-item>
+                </lightning-layout>                
+            </template>
+
+            <!-- ＭＡＣＴＵＳ または　ＭＥＬＦＬＥＸ -->
+            <template if:true={isMACTUS_OR_MELFLEX}>
+                <lightning-layout class="c-container" multiple-rows="true">
+                    <!-- 明細名称 -->
+                    <template if:true={isDetailNameShow}></template>
+                    <lightning-layout-item size="12" padding="around-small">
+                        <div class="header-column">
+                            <p class="field-title"><b>{detailName}</b></p>
+                        </div>
+                    </lightning-layout-item>
+                    <lightning-layout-item size="2" padding="around-small">
+                        <!-- ラベル名1: MACTUS⇒MACTUS(プルダウン) 　MELFLEX⇒DI(テキスト)-->
+                        <div class="slds-form-element slds-form-element_horizontal">
+                            <label class="slds-form-element__label">{name1_LabelName}</label>
+                            <div class="slds-form-element__control">
+                                <template if:true={isMACTUS}>
+                                    <select class="slds-select"  
+                                                        data-code="meta1"
+                                                        data-type = "meta"
+                                                        onchange={metaSelct_Handler}>
+                                        <option value=""></option>
+                                        <template for:each={meta1_Options} for:item="option">
+                                            <template if:true={option.selected}>
+                                                <option key={option.label} class="uiInputSelectOption" value={option.value} selected>{option.value}</option>
+                                            </template>
+                                            <template if:false={option.selected}>
+                                                <option key={option.label} class="uiInputSelectOption" value={option.value} >{option.value}</option>
+                                            </template>
+                                        </template>
+                                    </select>
+                                </template>
+                                <template if:true={isMELFLEX}>
+                                    <lightning-input 
+                                    data-code="meta1"
+                                    data-type = "meta"
+                                    type="text" variant="label-hidden" 
+                                    maxlength="255"
+                                    value={metadataValues.meta1}
+                                    onblur={handleKeyUpmeta}></lightning-input>
+                                </template>
+                            </div>
+                        </div>
+                    </lightning-layout-item>
+                    <lightning-layout-item size="2" padding="around-small">
+                         <!-- ラベル名2: MACTUS⇒CPU(プルダウン) 　MELFLEX⇒DO(テキスト)-->
+                        <div class="slds-form-element slds-form-element_horizontal">
+                            <label class="slds-form-element__label">{name2_LabelName}</label>
+                            <div class="slds-form-element__control">
+                                <template if:true={isMACTUS}>
+                                    <select class="slds-select"  
+                                                    data-type = "meta"
+                                                    data-code="meta2"
+                                                    onchange={metaSelct_Handler}>
+                                        <option value=""></option>
+                                        <template for:each={meta2_Options} for:item="option">
+                                            <template if:true={option.selected}>
+                                                <option key={option.label} class="uiInputSelectOption" value={option.value} selected>{option.value}</option>
+                                            </template>
+                                            <template if:false={option.selected}>
+                                                <option key={option.label} class="uiInputSelectOption" value={option.value} >{option.value}</option>
+                                            </template>
+                                        </template>
+                                    </select>
+                                </template>
+                                <template if:true={isMELFLEX}>
+                                    <lightning-input 
+                                        data-type = "meta"
+                                        data-code="meta2"
+                                        type="text" variant="label-hidden" 
+                                        maxlength="255"
+                                        value={metadataValues.meta2}
+                                        onblur={handleKeyUpmeta}></lightning-input>
+                                </template>
+                            </div>
+                        </div>
+                     </lightning-layout-item>
+                    <lightning-layout-item size="2" padding="around-small">
+                        <!-- ラベル名3: MACTUS⇒DI 　MELFLEX⇒AI-->
+                        <div class="slds-form-element slds-form-element_horizontal">
+                            <label class="slds-form-element__label">{name3_LabelName}</label>
+                            <div class="slds-form-element__control">
+                                <lightning-input 
+                                        data-type = "meta"
+                                        data-code="meta3"
+                                        type="text" variant="label-hidden" 
+                                        maxlength="255"
+                                        value={metadataValues.meta3}
+                                        onblur={handleKeyUpmeta}></lightning-input>
+                            </div>
+                            
+                        </div>
+                    </lightning-layout-item>
+                    <lightning-layout-item size="2" padding="around-small">
+                        <!-- ラベル名4: MACTUS⇒DO 　MELFLEX⇒AO-->
+                        <div class="slds-form-element slds-form-element_horizontal">
+                            <label class="slds-form-element__label">{name4_LabelName}</label>
+                            <div class="slds-form-element__control">
+                                <lightning-input 
+                                    data-type = "meta"
+                                    data-code="meta4"
+                                    type="text" variant="label-hidden" 
+                                    maxlength="255"
+                                    value={metadataValues.meta4}
+                                    onblur={handleKeyUpmeta}></lightning-input>
+                            </div>
+                            
+                        </div>
+                        <!-- </template> -->
+                    </lightning-layout-item>
+                    <lightning-layout-item size="2" padding="around-small">
+                         <!-- ラベル名5: MACTUS⇒AI 　MELFLEX⇒PI-->
+                         <div class="slds-form-element slds-form-element_horizontal">
+                            <label class="slds-form-element__label">{name5_LabelName}</label>
+                            <div class="slds-form-element__control">
+                                <lightning-input 
+                                    data-type = "meta"
+                                    data-code="meta5"
+                                    type="text" variant="label-hidden" 
+                                    maxlength="255"
+                                    value={metadataValues.meta5}
+                                    onblur={handleKeyUpmeta}></lightning-input>
+
+                            </div>
+                            
+                        </div>
+                        <!-- </template> -->
+                    </lightning-layout-item>
+                    <lightning-layout-item size="2" padding="around-small">
+                       <!-- 空白　位置 -->
+                    </lightning-layout-item>
+                    <!-- ２段 -->
+                    <lightning-layout-item size="2" padding="around-small">
+                        <!-- ラベル名6: MACTUS⇒AO(テキスト) 　MELFLEX⇒形態(プルダウン)-->
+                        <div class="slds-form-element slds-form-element_horizontal">
+                            <label class="slds-form-element__label">{name6_LabelName}</label>
+                            <div class="slds-form-element__control">
+                                <template if:true={isMELFLEX}>
+                                    <select class="slds-select"
+                                            data-type = "meta"
+                                            data-code="meta6"
+                                            onchange={metaSelct_Handler}>
+                                        <option value=""></option>
+                                        <template for:each={meta6_Options} for:item="option">
+                                            <template if:true={option.selected}>
+                                                <option key={option.label} class="uiInputSelectOption" value={option.value} selected>{option.value}</option>
+                                            </template>
+                                            <template if:false={option.selected}>
+                                                <option key={option.label} class="uiInputSelectOption" value={option.value} >{option.value}</option>
+                                            </template>
+                                        </template>
+                                    </select>
+                                </template>
+                                <template if:true={isMACTUS}>
+                                    <lightning-input 
+                                        data-type = "meta"
+                                        data-code="meta6"
+                                        type="text" variant="label-hidden" 
+                                        maxlength="255"
+                                        value={metadataValues.meta6}
+                                        onblur={handleKeyUpmeta}></lightning-input>
+                                </template>
+                            </div>
+                            
+                        </div>
+                        <!-- </template> -->
+                    </lightning-layout-item>
+                    <lightning-layout-item size="2" padding="around-small">
+                         <!-- ラベル名7: MACTUS⇒PI(テキスト) 　MELFLEX⇒非表示-->
+                         <template if:true={isMACTUS}>
+                            <div class="slds-form-element slds-form-element_horizontal">
+                                <label class="slds-form-element__label">{name7_LabelName}</label>
+                                <div class="slds-form-element__control">
+                                    <lightning-input 
+                                        data-type = "meta"
+                                        data-code="meta7"
+                                        type="text" variant="label-hidden" 
+                                        maxlength="255"
+                                        value={metadataValues.meta7}
+                                        onblur={handleKeyUpmeta}></lightning-input>
+                                </div>
+                                
+                            </div>
+                        </template>
+                     </lightning-layout-item>
+                    <lightning-layout-item size="2" padding="around-small">
+                        <!-- ラベル名8 MACTUS⇒DDC(ＣＴＲ)  、画面枚数（OPS） 　MELFLEX⇒非表示-->
+                        <template if:true={isMACTUS}>
+                            <div class="slds-form-element slds-form-element_horizontal">
+                                <label class="slds-form-element__label">{name8_LabelName}</label>
+                                <div class="slds-form-element__control">
+                                    <lightning-input 
+                                        data-type = "meta"
+                                        data-code="meta8"
+                                        type="text" variant="label-hidden" 
+                                        maxlength="255"
+                                        value={metadataValues.meta8}
+                                        onblur={handleKeyUpmeta}></lightning-input>
+                                </div>
+                                
+                            </div>
+                        </template>
+                    </lightning-layout-item>
+                    <lightning-layout-item size="2" padding="around-small">
+                        <!-- ラベル名9 MACTUS⇒帳票枚数（OPS） 　MELFLEX⇒非表示-->
+                        <template if:true={isMACTUS}>
+                            <template if:true={isOPS}>
+                                <div class="slds-form-element slds-form-element_horizontal">
+                                    <label class="slds-form-element__label">{name9_LabelName}</label>
+                                    <div class="slds-form-element__control">
+                                        <lightning-input 
+                                            data-type = "meta"
+                                            data-code="meta9"
+                                            type="text" variant="label-hidden" 
+                                            maxlength="255"
+                                            value={metadataValues.meta9}
+                                            onblur={handleKeyUpmeta}></lightning-input>
+                                    </div>
+                                </div>
+                            </template>
+                        </template>
+                    </lightning-layout-item>
+                    <lightning-layout-item size="2" padding="around-small">
+                          <!-- 空白　位置 -->
+                    </lightning-layout-item>
+                    <lightning-layout-item size="2" padding="around-small">
+                       <!-- 空白　位置 -->
+                    </lightning-layout-item>
+                </lightning-layout>                
+            </template>
+            <lightning-layout  class="c-container">
+                <lightning-layout-item size="2" padding="around-small">
+                    <!-- 検索条件：コード１ -->
+                    <div class="slds-form-element slds-form-element_horizontal">
+                        <label class="slds-form-element__label">{code1_LabelName}</label>
+                        <div class="slds-form-element__control">
+                            <lightning-input 
+                            data-code="code1"
+                            type="text" variant="label-hidden" 
+                            maxlength="15"
+                            value={code1_Value} 
+                            onblur={handleKeyUpCodeSearch1}></lightning-input>
+                        </div>
+                    </div>
+                </lightning-layout-item>
+                <lightning-layout-item size="2" padding="around-small">
+                    <!-- 検索条件：コード２ -->
+                    <div class="slds-form-element slds-form-element_horizontal">
+                        <label class="slds-form-element__label">{code2_LabelName}</label>
+                        <div class="slds-form-element__control">
+                            <lightning-input type="text" variant="label-hidden" 
+                            data-code="code2"
+                            maxlength="15"
+                            value={code2_Value} 
+                            onblur={handleKeyUpCodeSearch2}></lightning-input>
+                        </div>
+                    </div>
+
+                </lightning-layout-item>
+                <lightning-layout-item size="2" padding="around-small">
+                    <!-- 検索条件：コード３ -->
+                    <div class="slds-form-element slds-form-element_horizontal">
+                        <label class="slds-form-element__label">{code3_LabelName}</label>
+                        <div class="slds-form-element__control">
+                            <lightning-input type="text" 
+                            data-code="code3"
+                            variant="label-hidden" 
+                            maxlength="15"
+                            value={code3_Value} 
+                            onblur={handleKeyUpCodeSearch3}></lightning-input>
+                        </div>
+                    </div>
+                </lightning-layout-item>
+                <lightning-layout-item size="2" padding="around-small">
+                    <!-- 検索条件：コード４ -->
+                    <div class="slds-form-element slds-form-element_horizontal">
+                        <label class="slds-form-element__label">{code4_LabelName}</label>
+                        <div class="slds-form-element__control">
+                            <lightning-input
+                            data-code="code4"
+                            type="text" 
+                            variant="label-hidden" 
+                            maxlength="15"
+                            value={code4_Value} 
+                            onblur={handleKeyUpCodeSearch4}></lightning-input>
+                        </div>
+                    </div>
+                </lightning-layout-item>
+                <lightning-layout-item size="2"  padding="around-small">
+                    <!-- 空白 -->
+                </lightning-layout-item>
+                <lightning-layout-item size="2"  padding="around-small">
+                    <!-- 検索ボタン：コード検索 -->
+                    <div>
+                        <button class="slds-button slds-align_absolute-center slds-button_brand search-button" onclick={onCodeSearch} title="CodeSearch">コード 検 索</button>
+                    </div>
+                </lightning-layout-item>
+
+            </lightning-layout>
+            <lightning-layout  class="c-container">
+                <!-- 検索条件：名称 -->
+            <lightning-layout-item size="4" padding="around-small">
+                    <div class="slds-form-element slds-form-element_horizontal">
+                        <label class="slds-form-element__label">{nameSearch_LabelName}</label>
+                        <div class="slds-form-element__control" style="padding-left:5rem">
+                            <lightning-input type="text" variant="label-hidden" 
+                            value={nameSearch_Value} 
+                            maxlength="100"
+                            onkeyup={handleKeyUpNameSearch}></lightning-input>
+                        </div>
+                    </div>
+            </lightning-layout-item>
+            
+            <lightning-layout-item size="6" padding="around-small">
+                <!-- 空白　位置 -->
+            </lightning-layout-item>
+                <!-- 検索ボタン：名称検索 -->
+            <lightning-layout-item size="2" padding="around-small">
+                <div>
+                    <button class="slds-button slds-align_absolute-center slds-button_brand search-button" onclick={onNameSearch} title="CodeNameSearch">名 称 検 索</button>
+                </div>
+            </lightning-layout-item>
+        </lightning-layout>
+    </lightning-accordion-section>
+    </lightning-accordion>
+    </div>
+</template>

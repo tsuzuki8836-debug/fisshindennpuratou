@@ -1,0 +1,131 @@
+<template>
+    <div class="c-container slds-box slds-p-around_none slds-m-top_x-small slds-m-bottom_medium slds-m-horizontal_none">
+        <lightning-layout>
+            <lightning-layout-item padding="around-small">
+                <div class="header-column">
+                    <p>
+                        <b>選択仕様：{displayCondition}</b>
+                    </p>
+                    <p>
+                        <b>価格合計：<lightning-formatted-number value={displayTotal}></lightning-formatted-number></b>
+                    </p>
+                </div>
+            </lightning-layout-item>
+        </lightning-layout>
+    </div>
+
+    <div class="c-container slds-box slds-p-around_none slds-m-top_x-small slds-m-bottom_medium slds-m-horizontal_none">
+        <lightning-layout>
+            <lightning-layout-item padding="around-small">
+                <div class="slds-form-element">
+                    <label class="slds-form-element__label">
+                        <span class="">収納盤仕様</span>
+                    </label>
+                </div>
+            </lightning-layout-item>
+            
+            <lightning-layout-item size="3" padding="around-small">
+                <div class="slds-form-element">
+                    <div class="slds-form-element__control">
+                        <lightning-combobox 
+                            variant="label-hidden" 
+                            name="storageBoardCondition" 
+                            value={storageBoardValue} 
+                            options={storageBoardOptions}
+                            onchange={handleStorageBoard}>
+                        </lightning-combobox>
+                    </div>
+                </div>
+            </lightning-layout-item>
+
+            <lightning-layout-item padding="around-small">
+                <button class="slds-button slds-align_absolute-center slds-button_brand search-button" title="Search" onclick={onSearch}>検索</button>
+            </lightning-layout-item>
+        </lightning-layout>
+    </div>
+
+    <div class="c-container slds-box slds-p-around_none slds-m-top_x-small slds-m-bottom_medium slds-m-horizontal_none slds-scrollable_x">
+        <lightning-layout>
+            <template if:true={transformerLowVoltageTable}>
+                <c-common-table
+                    data-id="transformerLowVoltageTable"
+                    table-obj={transformerLowVoltageTable}
+                    oncommontableinputchange={onCommonTableInputChange}>
+                </c-common-table>
+            </template>
+        </lightning-layout>
+        <lightning-layout>
+            <template if:true={loadDisconnectorTable}>
+                <c-common-table
+                    data-id="loadDisconnectorTable"
+                    table-obj={loadDisconnectorTable}
+                    oncommontableinputchange={onCommonTableInputChange}>
+                </c-common-table>
+            </template>
+        </lightning-layout>
+        <lightning-layout>
+            <template if:true={transformerStoragePanelHighVoltageTable}>
+                <c-common-checkbox-table data-id="transformerStoragePanelHighVoltageTable" 
+                    table-obj={transformerStoragePanelHighVoltageTable}
+                    oncommoncheckboxtableinputchange={onCommonCheckboxTableInputChange}>
+                </c-common-checkbox-table>
+            </template>
+        </lightning-layout>
+        <lightning-layout>
+            <template if:true={transformerStoragePanelLowVoltageTable}>
+                <c-common-checkbox-table data-id="transformerStoragePanelLowVoltageTable" 
+                    table-obj={transformerStoragePanelLowVoltageTable}
+                    oncommoncheckboxtableinputchange={onCommonCheckboxTableInputChange}>
+                </c-common-checkbox-table>
+            </template>
+        </lightning-layout>
+        <lightning-layout>
+            <template if:true={groundTransformerTable}>
+                <c-common-table
+                    data-id="groundTransformerTable"
+                    table-obj={groundTransformerTable}
+                    oncommontableinputchange={onCommonTableInputChange}>
+                </c-common-table>
+            </template>
+        </lightning-layout>
+        <lightning-layout>
+            <template if:true={groundTransformerWithNeutralPointTable}>
+                <c-common-table
+                    data-id="groundTransformerWithNeutralPointTable"
+                    table-obj={groundTransformerWithNeutralPointTable}
+                    oncommontableinputchange={onCommonTableInputChange}>
+                </c-common-table>
+            </template>
+        </lightning-layout>
+        <lightning-layout>
+            <template if:true={transformersLightingAndBuildingTable}>
+                <c-common-table
+                    data-id="transformersLightingAndBuildingTable"
+                    table-obj={transformersLightingAndBuildingTable}
+                    oncommontableinputchange={onCommonTableInputChange}>
+                </c-common-table>
+            </template>
+        </lightning-layout>
+        <lightning-layout>
+            <template if:true={thunderResistantTable}>
+                <c-common-table
+                    data-id="thunderResistantTable"
+                    table-obj={thunderResistantTable}
+                    oncommontableinputchange={onCommonTableInputChange}>
+                </c-common-table>
+            </template>
+        </lightning-layout>
+        <lightning-layout>
+            <template if:true={transformerHighVoltagePowerReceivingTable}>
+                <c-common-table
+                    data-id="transformerHighVoltagePowerReceivingTable"
+                    table-obj={transformerHighVoltagePowerReceivingTable}
+                    oncommontableinputchange={onCommonTableInputChange}>
+                </c-common-table>
+            </template>
+        </lightning-layout>
+    </div>
+    <template if:true={loaded}>
+        <lightning-spinner alternative-text="Loading" size="small"></lightning-spinner>
+    </template>
+</template>

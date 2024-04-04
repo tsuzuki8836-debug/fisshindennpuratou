@@ -1,0 +1,211 @@
+<template>
+    <div class="slds-box slds-p-around_none slds-m-top_x-small slds-m-bottom_medium slds-m-horizontal_none">
+        <!-- <div> slds-scrollable_x -->
+        <template if:true={isDisplayError}>
+            <lightning-layout>
+                <lightning-layout-item padding="around-small">
+                    <div class="header-column">
+                        <p class="slds-text-body_regular"> 
+                            <b>{errorMsg}</b>
+                        </p>
+                    </div>
+                </lightning-layout-item>
+            </lightning-layout>
+        </template>
+        <template if:false={isDisplayError}>
+            <lightning-accordion allow-multiple-sections-open >
+                <lightning-accordion-section name="sec1" label="検索条件">
+                    <div>
+                        <lightning-layout multiple-rows class="c-container">
+                            <lightning-layout-item size="12"  padding="around-small">
+                                <lightning-layout>
+                                    <lightning-layout-item  padding="around-small" size="4">
+                                        <div class="header-column">
+                                            <lightning-combobox
+                                                    name="screenType"
+                                                    label="特高種類"
+                                                    value={screenType}
+                                                    options={optionsScreen}
+                                                    onchange={handleScreenTypeChange} ></lightning-combobox>
+                                        </div>
+                                    </lightning-layout-item>
+
+                                    <!-- 特高TRの条件 -->
+                                    <lightning-layout-item padding="around-small" size="4">
+                                        <div class="header-column">
+                                            <lightning-combobox
+                                                    name="priceCondition5"
+                                                    label={priceCondition5Label}
+                                                    value={priceCondition5}
+                                                    options={options5}
+                                                    onchange={handleCon5Change}></lightning-combobox>
+                                        </div>
+                                    </lightning-layout-item>
+                                    <lightning-layout-item padding="around-small" size="4">
+                                        <div class="header-column">
+                                            <lightning-combobox
+                                                    name="priceCondition3"
+                                                    label="OLTC"
+                                                    value={priceCondition3}
+                                                    options={options3}
+                                                    onchange={handleCon3Change}></lightning-combobox>
+                                        </div>
+                                    </lightning-layout-item>
+                                </lightning-layout>
+                            </lightning-layout-item>
+                            <lightning-layout-item size="12"  padding="around-small">
+                                <lightning-layout>
+                                    <template if:false={isMoldType}>
+                                        <lightning-layout-item padding="around-small" size="4">
+                                            <div class="header-column">
+                                                <lightning-combobox
+                                                        name="priceCondition1"
+                                                        label="設置場所"
+                                                        value={priceCondition1}
+                                                        options={options1}
+                                                        onchange={handleCon1Change}></lightning-combobox>
+                                            </div>
+                                        </lightning-layout-item>
+                                    </template>
+                                    <lightning-layout-item padding="around-small" size="4">
+                                        <div class="header-column">
+                                            <lightning-combobox
+                                                    name="priceCondition2"
+                                                    label="電圧仕様"
+                                                    value={priceCondition2}
+                                                    options={voltageSpecification}
+                                                    onchange={handleCon2Change}></lightning-combobox>
+                                        </div>
+                                    </lightning-layout-item>
+                                    <lightning-layout-item padding="around-small" size="4">
+                                        <div class="header-column">
+                                            <lightning-combobox
+                                                    name="priceCondition4"
+                                                    label="スポットネットワーク"
+                                                    value={priceCondition4}
+                                                    options={options4}
+                                                    onchange={handleCon4Change}></lightning-combobox>
+                                        </div>
+                                    </lightning-layout-item>
+                                </lightning-layout>
+                            </lightning-layout-item>
+
+                            <lightning-layout-item size="12" padding="around-small">
+                                <div>
+                                    <button class="slds-button slds-align_absolute-center slds-button_brand search-button" 
+                                    onclick={onSearch} title="Search">検索</button>
+                                </div>
+                            </lightning-layout-item>
+                        </lightning-layout>
+                    </div>
+                </lightning-accordion-section>
+                <lightning-accordion-section name="sec2" label="選択内容">
+                    <div  class="c-container">
+                        <lightning-layout>
+                            <lightning-layout-item padding="around-small">
+                                <div class="header-column">
+                                    <p> 
+                                        <b>選択仕様：{displayCondition}</b>
+                                    </p>
+                                    <p>
+                                        <b>本体価格：<lightning-formatted-number value={displayTotal}></lightning-formatted-number></b>
+                                    </p>
+                                </div>
+                            </lightning-layout-item>
+                        </lightning-layout>
+                    </div>
+
+                </lightning-accordion-section>
+            </lightning-accordion>
+
+        <!--内訳入力B_特高TR　油入 -->
+        <!-- 内訳入力B_特高TR　モールド -->
+        <!-- 内訳入力B_特高TR　ガス -->
+        <lightning-layout>
+            <div class="slds-m-around_medium">
+                <template if:true={isNoData}>
+                    <div class="slds-align_absolute-center">
+                        <br />
+                        指定条件により、明細データを取得できません。
+                    </div>
+                </template>
+
+                <template if:false={isNoData}>
+                    <b>{displayTableLabel}</b>
+                    <table class="slds-table slds-table_cell-buffer slds-table_bordered slds-table_col-bordered">
+                        <thead>
+                            <template iterator:row={headerList}>
+                                <tr key={row.value.cellList} class="slds-line-height_reset">
+                                    <template iterator:cell={row.value.cellList}>
+                                        <template if:true={cell.value.isRowSpan}>
+                                            <th key={cell.value.value} rowspan={cell.value.rowSpanCnt} scope="col" class="slds-is-resizable slds-text-align_center slds-text-title" >
+                                                <span class="slds-truncate" title={cell.value.value}>{cell.value.value}</span>
+                                            </th>
+    
+                                        </template>
+                                        <template if:true={cell.value.isColSpan}>
+                                            <th key={cell.value.value} colspan={cell.value.colSpanCnt} scope="col" class="slds-is-resizable slds-text-align_center slds-text-title" >
+                                                <span class="slds-truncate" title={cell.value.value}>{cell.value.value}</span>
+                                            </th>
+                                        </template>
+                                        <template if:false={cell.value.isRowSpan}>
+                                            <template if:false={cell.value.isColSpan}>
+                                                <th key={cell.value.value} scope="col" class="slds-is-resizable slds-text-align_center slds-text-title" >
+                                                    <span class="slds-truncate" title={cell.value.value}>{cell.value.value}</span>
+                                                </th>
+                                            </template>
+                                        </template>
+                                    </template>
+                                </tr>
+                            </template>
+                        </thead>
+                        <tbody>
+                            <template iterator:row={bodyList}>
+                                <tr key={row.value.cellList} class="slds-hint-parent">
+                                    <template iterator:cell={row.value.cellList}>
+                                        <template if:false={cell.value.isEdit}>
+    
+                                            <template if:true={cell.value.isColSpan}>
+                                                <td key={cell.value.value} colspan={cell.value.colSpanCnt}>
+                                                    <div class="slds-truncate slds-text-align_right"><lightning-formatted-text value={cell.value.value}></lightning-formatted-text></div>
+                                                </td>
+                                            </template>
+                                            <template if:false={cell.value.isColSpan}>
+                                                <td key={cell.value.value}>
+                                                    <div class="slds-truncate slds-text-align_right"><lightning-formatted-text value={cell.value.value}></lightning-formatted-text></div>
+                                                </td>
+                                            </template>
+    
+                                        </template>
+                                        <template if:true={cell.value.isEdit}>
+                                            <td key={cell.value.value}>
+                                                <div class="slds-truncate slds-text-align_center">
+                                                    <lightning-input type="checkbox" 
+                                                    data-id={cell.value.value.id} 
+                                                    data-name={cell.value.value.price}
+                                                    data-title={cell.value.value.title}
+                                                    variant="label-hidden" 
+                                                    onchange={handleScreenInputChange}  checked={cell.value.value.isChecked} ></lightning-input>
+                                                </div>
+                                            </td>
+                                        </template>
+                                    </template>
+                                </tr>
+                            </template>
+                        </tbody>
+                    </table>
+                </template>
+                <template if:false={isNoData}>
+                    <div class="slds-text-align_left footer-custom">
+                        {footer}
+                    </div>
+                </template>
+            </div>
+        </lightning-layout>
+
+        </template>
+        <template if:true={loaded}>
+            <lightning-spinner alternative-text="Loading" size="small"></lightning-spinner>
+        </template>
+    </div>
+</template>

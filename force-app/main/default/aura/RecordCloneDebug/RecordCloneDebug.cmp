@@ -1,0 +1,32 @@
+<aura:component controller="RecordCloneDebugController" implements="force:appHostable,flexipage:availableForAllPageTypes,flexipage:availableForRecordHome,force:hasRecordId,forceCommunity:availableForAllPageTypes,force:lightningQuickAction" access="global" >
+    <aura:attribute name="childrenList" type="List" />
+    <aura:attribute name="childrenListStr" type="String" />
+    <aura:attribute name="objectName" type="String" />
+    <aura:attribute name="targetSObject" type="String" />
+    <aura:attribute name="isInvalidObjectName" type="Boolean" default="false" />
+    <aura:handler name="init" value="{!this}" action="{!c.doInit}"/>
+    <div class="slds-card">
+        <div class="slds-card__body slds-card__body_inner">
+            <h1 class="title">RecordClone Configuration Reference</h1>
+            <div class="section" style="position:relative;min-height:80px;">
+                <aura:if isTrue="{!v.isInvalidObjectName}">
+                    <h4 class="slds-vertical-bottom_small">Error</h4>
+                </aura:if>
+                <aura:if isTrue="{!not(v.isInvalidObjectName)}">
+                    <aura:if isTrue="{!empty(v.objectName)}">
+                        <lightning:spinner size="small" assistiveText="initializing" />
+                    </aura:if>
+                    <aura:if isTrue="{!not(empty(v.objectName))}">
+                        <h4 class="section-title slds-m-bottom_small slds-p-bottom_small">Child objects related to {!v.objectName}</h4>
+                        <ul>
+                            <aura:iteration items="{!v.childrenList}" var="child">
+                                <li>{!child}</li>
+                            </aura:iteration>        
+                        </ul>
+                        <p class="slds-m-vertical_small" style="word-break: break-all;">{!v.childrenListStr}</p>
+                    </aura:if>
+                </aura:if>
+            </div>
+        </div>
+    </div>
+</aura:component>

@@ -1,0 +1,175 @@
+<aura:component controller="SF_RelatedListEditorCC"  >
+	<!--attributes from parent-->
+	<aura:attribute type="List" name="recordList"/>
+	<aura:attribute type="String" name="objectName" access="global" default="Account"/>
+	<aura:attribute type="String" name="fields" access="global" default="Id,Name"/>
+	<aura:attribute type="Integer" name="rowsToLoad" access="global" default="10"/>
+  <aura:attribute name="sortedBy" type="String" />
+  <aura:attribute name="sortedDirection" type="String" />
+  <aura:attribute name="recordId" type="Id"/>
+  <aura:attribute name="parentObject" type="String"/>
+  <aura:attribute name="parentList" type="List"/>
+	<aura:attribute name="parentField" type="String"/>
+  <aura:attribute type="Boolean" name="hasMoreRecord" default="false"/>
+  <aura:attribute type="String" name="defaultLabel" default=''/>
+  <aura:attribute type="Boolean" access="global" name="enableEditMode" default='false'/>
+  <aura:attribute type="String" access="global" name="defaultValueAddList" default='{}'/>
+  <aura:attribute type="Boolean" access="global" name="enableAddMode" default='false'/>
+  <aura:attribute type="Boolean" name="isHaveNoError" default='true'/>
+  <aura:attribute type="String" name="titleStyleClass" default='titleBlur'/>
+	<!--attributes internal using-->
+    <aura:attribute type="String" name="objectLabel"/>
+    <aura:attribute type="String" name="iconName" default="standard:related_list"/>
+    <aura:attribute name="columns" type="List" default="[]"/>
+    <aura:attribute name="data" type="List" default="[]"/>
+    <aura:attribute name="keyField" type="String" default="id"/>
+    <aura:attribute name="title" type="String" default="リストエディター"/>
+    <aura:attribute name='conditionsFilterList' type="String"/>
+    <aura:attribute name="originCondition" type="String"/>
+    <aura:attribute name="isOrderDESC" type="boolean"/>
+    <aura:attribute name="orderField" type="String"/>
+
+    <aura:attribute name="rawData" type="Object" access="PRIVATE" />
+	<aura:attribute name="selectedRowId" type="String" />
+    <aura:attribute name="isOpen" type="boolean" default="false"/>
+    <aura:attribute name="relationField" type="String"/>
+	<aura:attribute name="isChooseRecordType" type="boolean" default="false"/>
+	<aura:attribute name="isEditMode" type="boolean"/>
+  <aura:attribute name="recordTypes" type="List"/>
+  <aura:attribute name="recordTypeId" type="String"/>
+	<aura:attribute name="refreshRecords" type="Aura.Action"/>
+    <!-- handlers-->
+    <aura:handler name="change" value="{!v.recordList}" action="{!c.reloadData}"/>
+    <lightning:navigation aura:id="navService"/>
+    <aura:registerEvent name="refreshRecordList" type="c:SF_RefreshRecordListEvent"/>
+    <aura:registerEvent name="switchMode" type="c:SF_SwitchModeEvent"/>
+    <div class="bound-border">
+      <div class="header">
+        	<lightning:card aura:id="title">
+        		<aura:set attribute="title">
+                    <!-- <img src="{!v.iconUrl}" class="icon"/> -->
+                    <div class="{!v.titleStyleClass}">
+                        <lightning:icon class="icon" iconName="{!v.iconName}" alternativeText="emoji" size="small"/>
+                        {! v.title }
+                    </div>
+        	  </aura:set>
+            <aura:if isTrue="{!v.parentList.length > 1}">
+              <lightning:select name="parentField" label="親参照項目名" aura:id="parentNameSelect" value="{!v.parentField}" class="parentListDDL" onchange="{!c.onChangeParent}">
+                  <aura:iteration items="{!v.parentList}" var="parent">
+                      <option text="{!parent.label}" value="{!parent.apiName}" selected="{!parent.apiName == v.parentField}"/>
+                  </aura:iteration>
+              </lightning:select>
+            </aura:if>
+        	  <aura:set attribute="actions">
+              <!-- <lightning:button label="検索条件" onclick="{! c.toggleFilterPopup }"/> -->
+              <aura:if isTrue="{!v.enableAddMode == false}">
+                <lightning:button label="新規" class="addButton" onclick="{! c.addMode }"/>
+              </aura:if>
+              <!-- <lightning:buttonIcon iconName="utility:refresh"  alternativeText="Refresh" onclick="{!c.refresh}"/> -->
+              <aura:if isTrue="{!v.enableEditMode == false}">
+        	      <lightning:buttonIcon class="switchButton" iconName="utility:edit" variant="edit" onclick="{! c.switchMode }" alternativeText="Edit" />
+              </aura:if>
+        	  </aura:set>
+        	</lightning:card>
+      </div>
+      <div class="slds-is-relative clearfix">
+          <lightning:spinner aura:id="loadingSpinner" size="medium" alternativeText="loading"  class="slds-hide"/>
+            <!-- the container element determine the height of the datatable -->
+            <span aura:id='checkSizeBox' style="border: 0; padding: 0; display:inline-block;"></span>
+            <aura:if isTrue="{!v.recordList.length > 0}">
+              <div>
+                  
+                    <lightning:datatable aura:id="datatable"
+                          class="datatable"
+                          columns="{! v.columns }"
+                          data="{! v.data }"
+                          keyField="{! v.keyField }"
+                          showRowNumberColumn="false"
+                          hideCheckboxColumn="true"
+                          onsort="{!c.updateColumnSorting}"
+                          sortedBy="{!v.sortedBy}"
+                          sortedDirection="{!v.sortedDirection}"
+                          onrowaction="{! c.handleRowAction }"/>
+              </div>
+              <div class="viewAll">
+                  <a onclick="{!c.navigateToListView}">すべて表示</a>
+              </div>
+              <aura:set attribute="else">
+                  <div class="slds-m-bottom_large slds-align_absolute-center"> 表示するためのレコードがありません。 </div>
+              </aura:set>
+          </aura:if>
+      </div>
+	  </div>
+    <aura:if isTrue="{!v.isOpen}">
+        <!--###### MODAL BOX Start######--> 
+        <section role="dialog" tabindex="-1" aria-labelledby="modal-heading-01" aria-modal="true" aria-describedby="modal-content-id-1" class="slds-modal slds-fade-in-open">
+            <div class="slds-modal__container">
+                <!-- ###### MODAL BOX HEADER Start ######-->
+                <header class="slds-modal__header">
+                    <lightning:buttonIcon iconName="utility:close"
+                                          onclick="{! c.closeModel }"
+                                          alternativeText="Close"
+                                          variant="bare-inverse"
+                                          class="slds-modal__close"/>
+                    <h2 id="modal-heading-01" class="slds-text-heading_medium slds-hyphenate">{! v.objectLabel }を削除</h2>
+                </header>
+                <!--###### MODAL BOX BODY Part Start######-->
+                <div class="slds-modal__content slds-p-around_medium" id="modal-content-id-1">
+                    <p style="text-align: center">この{! v.objectLabel }の削除を実行しますか?
+                    </p>
+                </div>
+                <!--###### MODAL BOX FOOTER Part Start ######-->
+                <footer class="slds-modal__footer">
+                    <lightning:button variant="neutral" 
+                                      label="キャンセル"
+                                      title="キャンセル"
+                                      onclick="{! c.closeModel }"/>
+                    <lightning:button variant="brand" 
+                                      label="削除"
+                                      title="削除"
+                                      onclick="{! c.deleteRecord }"/>
+                </footer>
+            </div>
+        </section>
+        <div class="slds-backdrop slds-backdrop_open"></div>
+        <!--###### MODAL BOX Part END Here ######-->
+    </aura:if>
+    <aura:if isTrue="{!v.isChooseRecordType}">
+        <section role="dialog" tabindex="-1" aria-labelledby="modal-heading-02" aria-modal="true" aria-describedby="modal-content-id-2" class="slds-modal slds-modal_medium slds-fade-in-open">
+            <div class="slds-modal__container">
+              <header class="slds-modal__header">
+                <lightning:buttonIcon iconName="utility:close"
+                onclick="{! c.toggleChooseRecordTypePopup  }"
+                alternativeText="close"
+                variant="bare-inverse"
+                class="slds-modal__close"/>
+                <h2 id="modal-heading-02" class="slds-modal__title slds-hyphenate">新規 {!v.objectLabel}</h2>
+              </header>
+              <div class="slds-modal__content slds-p-around_medium" id="modal-content-id-2" style="overflow: visible;">
+                <div>
+                  <lightning:layout>
+                    <lightning:layoutItem size="4" padding='horizontal-small'>
+                      <div class="slds-text-align_right">レコードタイプを選択</div>
+                    </lightning:layoutItem>
+                  </lightning:layout>
+                  <lightning:layout>
+                    <lightning:layoutItem size="4" padding='horizontal-small'>
+                    </lightning:layoutItem>
+                    <lightning:layoutItem size="8" padding='horizontal-small'>
+                      <aura:iteration items="{!v.recordTypes}" var='rt'>
+                        <lightning:input type="radio" label='{!rt.label}' value="{!rt.value}" checked="{!rt.checked}" oncommit="{!c.changeRecordeTypeId}"/>
+                      </aura:iteration>
+                    </lightning:layoutItem>
+                  </lightning:layout>
+                  
+                </div>
+              </div>
+              <footer class="slds-modal__footer">
+                <lightning:button label="キャンセル" title="Neutral action" onclick="{! c.toggleChooseRecordTypePopup }"/>
+                <lightning:button label="次へ" variant="brand" title="Neutral action" onclick="{! c.createRecord }"/>
+              </footer>
+            </div>
+          </section>
+          <div class="slds-backdrop slds-backdrop_open"></div>
+    </aura:if>
+</aura:component>

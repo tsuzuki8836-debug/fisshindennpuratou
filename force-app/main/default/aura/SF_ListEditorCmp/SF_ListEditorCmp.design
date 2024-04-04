@@ -1,0 +1,39 @@
+<design:component>
+    <design:attribute name="objectName" label="オブジェクト" description="API name of the Object you want to show data."
+        required="true" />
+    <design:attribute name="fields" label="表示項目" description="API name of the columns you want to display."
+        required="true" />
+    <!-- Divide field in view mode and edit mode \
+        No1o
+        Turn on 2 attribute bellow to use
+        Set fields = "{!v.fieldsViewMode}"  for view mode
+        Set showFields ="{!v.fieldsEditMode}" for edit mode
+    -->
+    <!-- <design:attribute name="numOfFieldsViewMode" label="参照モードでの表示項目"
+        description="API name of the columns you want to display." required="true" />
+    <design:attribute name="numOfFieldsEditMode" label="表示項目" description="API name of the columns you want to display."
+        required="true" /> -->
+    <design:attribute name='orderField' label='デフォルトのソート項目'/>
+    <design:attribute name='isOrderDESC' label='降順でソート' default='true' />
+    <!-- Scrollable edit mode 
+        No12
+        Turn on a attribute bellow to use
+    -->
+    <!-- <design:attribute name='isScrollable' label='Scrollable' default='true'/> -->
+    <design:attribute name="viewRowsToLoad" label="表示行数（参照用）"
+        description="API name of the row you want to display in View mode." required="true" />
+    <design:attribute name="editRowsToLoad" label="表示行数（編集用）"
+        description="API name of the rows you want to display in Edit mode." required="true" />
+    <design:attribute name="parentField" label="親参照項目名(オプション)"
+        description="API name of the default parent field you want to select from child Object" required="false" />
+    <design:attribute name="conditionsFilterList" label="リストの絞り込み条件(SOQL filter)"
+        description="(例：Name='abc' AND Email= 'abc@bvc.com' OR Amount > 1000)" required="false" />
+    <design:attribute name="defaultValueAddList" label="項目ごとのデフォルト値(json形式)"
+        description='(例：{"Name":"abc","IsKeyman__c":true,"CategoryPickList__c":"「api_name」"})' required="false" />
+    <design:attribute name="defaultLabel" label="リストの表示ラベル名" description="Default label related list"
+        required="false" />
+    <design:attribute name="enableEditMode" label="編集を許可しない"
+        description="If selected will hide button edit on component related list" />
+    <design:attribute name="enableAddMode" label="新規作成を許可しない"
+        description="If selected will hide button add on component related list" />
+</design:component>

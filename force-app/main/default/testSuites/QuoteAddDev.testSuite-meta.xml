@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ApexTestSuite xmlns="http://soap.sforce.com/2006/04/metadata">
+    <testClassName>DetailControllerTest</testClassName>
+    <testClassName>DetailsAddControllerTest</testClassName>
+    <testClassName>DetailsInputControllerForHighVoltageTest</testClassName>
+    <testClassName>DetailsInputForEquipmentDivTest</testClassName>
+    <testClassName>DetailsInputForExtraHighControllerTest</testClassName>
+    <testClassName>DetailsInputForHighLowVoltageTest</testClassName>
+    <testClassName>DetailsInputForStorageBoardTest</testClassName>
+    <testClassName>DeviceTriggerTest</testClassName>
+    <testClassName>LedgerOutputCmpControllerTest</testClassName>
+    <testClassName>LedgerSheetOutputBizLogicTest</testClassName>
+    <testClassName>QuoteTriggerTest</testClassName>
+    <testClassName>SpecialPricingCreateActionTest</testClassName>
+    <testClassName>SpecialPricingCreateBatchTest</testClassName>
+</ApexTestSuite>

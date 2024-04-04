@@ -1,0 +1,49 @@
+.THIS .slds-card__header {
+    padding-top: .75rem;
+}
+.THIS .slds-card__footer {
+    padding: 0;
+}
+.THIS .slds-card__footer-action {
+    padding: 0.75rem 1rem;
+}
+.THIS .details-item {
+    text-align: left;
+    padding: .5rem .75rem;
+}
+.THIS .details-item:first-child {
+    border-bottom: 1px solid #f3f3f3;
+}
+.THIS .details-item-title {
+    line-height: 16px;
+    font-weight: bold;
+    cursor: pointer;
+}
+.THIS .toggle-icon {
+    vertical-align: text-top;
+    display: inline-block;
+    margin-right: .25rem;
+}
+.THIS .details-item-elements {
+    border-top: 1px dashed #dadada;
+    margin-top: .5rem;
+    padding-top: .5rem;
+}
+.THIS .details-item-elements > li {
+    padding: .25rem 0 .25rem .9rem;
+    line-height: 1rem;
+    position: relative;
+}
+.THIS .details-item-elements > li:before {
+    content: "・";
+    position: absolute;
+    top: .25rem;
+    left: 0;
+    font-weight: bold;
+}
+.THIS .child-rel-error {
+    color: #ff0000;
+}
+.THIS .ncf-reason {
+    color: #f14848;
+}

@@ -1,0 +1,295 @@
+<template>
+    <div
+        class="slds-box slds-p-around_none slds-m-top_x-small slds-m-bottom_medium slds-m-horizontal_none">
+        <!-- <div>  slds-scrollable_x-->
+        <div class="c-container">
+            <lightning-layout>
+                <lightning-layout-item size="3">
+                    <!-- 検索条件：筐体仕様 -->
+                    <lightning-layout>
+                        <lightning-layout-item size="6" padding="around-small">
+                            <div class="slds-form-element">
+                                <label class="slds-form-element__label">
+                                    <template if:true={name1_isRequired}>
+                                        <abbr title="required">*</abbr>
+                                    </template>
+                                    <span class="">筐体仕様</span>
+                                </label>
+                            </div>
+                        </lightning-layout-item>
+                        <lightning-layout-item size="6" padding="around-small">
+                            <div class="slds-form-element">
+                                <div class="slds-form-element__control">
+                                    <div class="slds-select_container">
+                                        <!-- onchange={name1_Handler} -->
+                                        <select class="slds-select" onchange={onChangeHandler}>
+                                            <template for:each={classic_Options} for:item="option">
+                                                <template if:true={option.selected}>
+                                                    <option key={option.label} class="uiInputSelectOption"
+                                                        value={option.value} selected>{option.value}</option>
+                                                </template>
+                                                <template if:false={option.selected}>
+                                                    <option key={option.label} class="uiInputSelectOption"
+                                                        value={option.value}>{option.value}</option>
+                                                </template>
+                                            </template>
+                                        </select>
+                                    </div>
+                                </div>
+                            </div>
+                        </lightning-layout-item>
+                    </lightning-layout>
+                </lightning-layout-item>
+                <lightning-layout-item size="2" padding="around-small">
+                    <div>
+                        <button class="slds-button slds-align_absolute-center slds-button_brand search-button"
+                            onclick={onSearch} title="Search">検索</button>
+                    </div>
+                </lightning-layout-item>
+            </lightning-layout>
+        </div>
+        <div class="c-container">
+            <lightning-layout>
+                <lightning-layout-item padding="around-small">
+                    <div class="header-column">
+                        <p>
+                            <b>価格合計：<lightning-formatted-number value={displayTotal}></lightning-formatted-number></b>
+                        </p>
+                    </div>
+                </lightning-layout-item>
+            </lightning-layout>
+        </div>
+
+        <!-- 筐体(高圧受配電盤) -->
+        <lightning-layout>
+            <template if:true={highVoltageBoxTable}>
+                <c-common-checkbox-table data-id="highVoltageBoxTable" table-obj={highVoltageBoxTable}
+                oncommoncheckboxtableinputchange={onCommonCheckboxTableInputChange}>
+                </c-common-checkbox-table>
+            </template>
+        </lightning-layout>
+        <!-- 断路器(DS) -->
+        <lightning-layout>
+            <template if:true={disconnectorTable}>
+                <c-common-table data-id="disconnectorTable" table-obj={disconnectorTable}
+                    oncommontableinputchange={onCommonTableInputChange}
+                    is-one-selector="true"
+                    error-message="2種類以上の断路器を追加する事は出来ません。">
+                </c-common-table>
+            </template>
+        </lightning-layout>
+        <!-- 真空遮断器(VCB) -->
+        <lightning-layout>
+            <template if:true={vcBreakerTable}>
+                <c-common-table data-id="vcBreakerTable" table-obj={vcBreakerTable}
+                    oncommontableinputchange={onCommonTableInputChange}
+                    is-one-selector="true"
+                    error-message="2種類以上の真空遮断器を追加する事は出来ません。">
+                </c-common-table>
+            </template>
+        </lightning-layout>
+        <!-- 屋外用高圧交流ガス負荷開閉器 -->
+        <lightning-layout>
+            <template if:true={gasLoadSwitchTable}>
+                <c-common-table data-id="gasLoadSwitchTable" table-obj={gasLoadSwitchTable}
+                    oncommontableinputchange={onCommonTableInputChange}>
+                </c-common-table>
+            </template>
+        </lightning-layout>
+        <!-- ヒューズ付負荷開閉器(LBS) -->
+        <lightning-layout>
+            <template if:true={fuseLoadSwitchTable}>
+                <c-common-table data-id="fuseLoadSwitchTable" table-obj={fuseLoadSwitchTable}
+                    oncommontableinputchange={onCommonTableInputChange}>
+                </c-common-table>
+            </template>
+        </lightning-layout>
+        <!-- 気中負荷開閉器(PAS) -->
+        <lightning-layout>
+            <template if:true={airLoadSwitchTable}>
+                <c-common-table data-id="airLoadSwitchTable" table-obj={airLoadSwitchTable}
+                    oncommontableinputchange={onCommonTableInputChange}>
+                </c-common-table>
+            </template>
+        </lightning-layout>
+        <!-- 取引用計器箱(日東工業) -->
+        <lightning-layout>
+            <template if:true={instrumentBoxTable}>
+                <c-common-table data-id="instrumentBoxTable" table-obj={instrumentBoxTable}
+                    oncommontableinputchange={onCommonTableInputChange}>
+                </c-common-table>
+            </template>
+        </lightning-layout>
+        <!-- 零相変流器(ZCT):高圧 -->
+        <lightning-layout>
+            <template if:true={zeroPhaseCurrentTransformerTable}>
+                <c-common-table data-id="zeroPhaseCurrentTransformerTable" table-obj={zeroPhaseCurrentTransformerTable}
+                    oncommontableinputchange={onCommonTableInputChange}>
+                </c-common-table>
+            </template>
+        </lightning-layout>
+        <!-- 避雷器(LA) -->
+        <lightning-layout>
+            <template if:true={lightningArresterTable}>
+                <c-common-table data-id="lightningArresterTable" table-obj={lightningArresterTable}
+                    oncommontableinputchange={onCommonTableInputChange}>
+                </c-common-table>
+            </template>
+        </lightning-layout>
+        <!-- 計器用変圧器(VT、PT)ヒューズ付 -->
+        <lightning-layout>
+            <template if:true={instrumentTransformerTable}>
+                <c-common-table data-id="instrumentTransformerTable" table-obj={instrumentTransformerTable}
+                    oncommontableinputchange={onCommonTableInputChange}>
+                </c-common-table>
+            </template>
+        </lightning-layout>
+        <!-- 零相変成器(ZPC、ZPD) -->
+        <lightning-layout>
+            <template if:true={zeroPhaseTransformerTable}>
+                <c-common-table data-id="zeroPhaseTransformerTable" table-obj={zeroPhaseTransformerTable}
+                    oncommontableinputchange={onCommonTableInputChange}>
+                </c-common-table>
+            </template>
+        </lightning-layout>
+        <!-- 接地形計器用変圧器ヒューズ付(ZPT、GPT）-->
+        <lightning-layout>
+            <template if:true={groundedInstrumentTransformerTable}>
+                <c-common-table data-id="groundedInstrumentTransformerTable"
+                    table-obj={groundedInstrumentTransformerTable} oncommontableinputchange={onCommonTableInputChange}>
+                </c-common-table>
+            </template>
+        </lightning-layout>
+        <!-- 計器用変流器(CT):高圧 -->
+        <lightning-layout>
+            <template if:true={currentTransformerTable}>
+                <c-common-multi-header-table data-id="currentTransformerTable" table-obj={currentTransformerTable}
+                    oncommontableinputchange={onCommonTableInputChange}>
+                </c-common-multi-header-table>
+            </template>
+        </lightning-layout>
+        <!-- 負荷開閉器類LBS(LDS) -->
+        <lightning-layout>
+            <template if:true={loadSwitchsTable}>
+                <c-common-table data-id="loadSwitchsTable" table-obj={loadSwitchsTable}
+                    oncommontableinputchange={onCommonTableInputChange}>
+                </c-common-table>
+            </template>
+        </lightning-layout>
+        <!-- 変圧器収納盤(高圧) -->
+        <lightning-layout>
+            <template if:true={transformerStorageBoardTable}>
+                <c-common-table data-id="transformerStorageBoardTable" table-obj={transformerStorageBoardTable}
+                    oncommontableinputchange={onCommonTableInputChange}
+                    is-one-selector="true"
+                    error-message="2種類以上の収納盤を追加する事は出来ません。">
+                </c-common-table>
+            </template>
+        </lightning-layout>
+        <!-- ＳＮＷ関連機器-->
+        <template if:false={loaded}>
+            <div class="header-sub-table">
+                <p>
+                    <b>ＳＮＷ関連機器</b>
+                </p>
+            </div>
+        </template>
+        <!-- ネットワークリレー -->
+        <lightning-layout>
+            <template if:true={networkRelayMulticapTable}>
+                <c-common-table data-id="networkRelayMulticapTable" table-obj={networkRelayMulticapTable}
+                    oncommontableinputchange={onCommonTableInputChange}>
+                </c-common-table>
+            </template>
+        </lightning-layout>
+        <!-- ネットワークVＴ -->
+        <lightning-layout>
+            <template if:true={networkVTTable}>
+                <c-common-table data-id="networkVTTable" table-obj={networkVTTable}
+                    oncommontableinputchange={onCommonTableInputChange}>
+                </c-common-table>
+            </template>
+        </lightning-layout>
+        <!-- ネットワークＣＴ -->
+        <lightning-layout>
+            <template if:true={networkCTTable}>
+                <c-common-table data-id="networkCTTable" table-obj={networkCTTable}
+                    oncommontableinputchange={onCommonTableInputChange}>
+                </c-common-table>
+            </template>
+        </lightning-layout>
+        <!-- 合成CT(高圧/低圧) -->
+        <lightning-layout>
+            <template if:true={compositeCTHighAndLowTable}>
+                <c-common-table data-id="compositeCTHighAndLowTable" table-obj={compositeCTHighAndLowTable}
+                    oncommontableinputchange={onCommonTableInputChange}>
+                </c-common-table>
+            </template>
+        </lightning-layout>
+        <!-- プロテクタヒューズ -->
+        <lightning-layout>
+            <template if:true={protectorFuseTable}>
+                <c-common-table data-id="protectorFuseTable" table-obj={protectorFuseTable}
+                    oncommontableinputchange={onCommonTableInputChange}>
+                </c-common-table>
+            </template>
+        </lightning-layout>
+        <!-- テイクオフヒューズ -->
+        <lightning-layout>
+            <template if:true={takeOffFuseTable}>
+                <c-common-table data-id="takeOffFuseTable" table-obj={takeOffFuseTable}
+                    oncommontableinputchange={onCommonTableInputChange}>
+                </c-common-table>
+            </template>
+        </lightning-layout>
+        <!-- 計器・保護継電器・変換器 -->
+        <lightning-layout>
+            <template if:true={meterTableTable}>
+                <c-common-table data-id="meterTableTable" table-obj={meterTableTable}
+                    oncommontableinputchange={onCommonTableInputChange}>
+                </c-common-table>
+            </template>
+        </lightning-layout>
+        <!-- 変換器(トランスデューサー:T/D) -->
+        <lightning-layout>
+            <template if:true={transducerTable}>
+                <c-common-table data-id="transducerTable" table-obj={transducerTable}
+                    oncommontableinputchange={onCommonTableInputChange}>
+                </c-common-table>
+            </template>
+        </lightning-layout>
+        <!-- MELPRO－Dシリーズ -->
+        <lightning-layout>
+            <template if:true={MELPRODSeriesTable}>
+                <c-common-table data-id="MELPRODSeriesTable" table-obj={MELPRODSeriesTable}
+                    oncommontableinputchange={onCommonTableInputChange}>
+                </c-common-table>
+            </template>
+        </lightning-layout>
+        <!-- MP11A(マルチリレー) -->
+        <lightning-layout>
+            <template if:true={mp11MultiRelayTable}>
+                <c-common-table data-id="mp11MultiRelayTable" table-obj={mp11MultiRelayTable}
+                    oncommontableinputchange={onCommonTableInputChange}>
+                </c-common-table>
+            </template>
+        </lightning-layout>
+        <template if:false={loaded}>
+            <div class="c-container">
+                <lightning-layout>
+                    <lightning-layout-item padding="around-small">
+                        <div class="header-column">
+                            <p>
+                                <b>価格合計：<lightning-formatted-number value={displayTotal}></lightning-formatted-number>
+                                    </b>
+                            </p>
+                        </div>
+                    </lightning-layout-item>
+                </lightning-layout>
+            </div>
+        </template>
+    </div>
+    <template if:true={loaded}>
+        <lightning-spinner alternative-text="Loading" size="small"></lightning-spinner>
+    </template>
+</template>

@@ -1,0 +1,44 @@
+<template>
+    <div class="c-container">
+        <template if:true={device.data}>
+            <lightning-layout>
+            <lightning-layout-item padding="around-small">
+                <div class="header-column">
+                    <p class="field-title" title="WC合計">WC合計</p>
+                    <p>&yen;{WcSumFormula}</p>
+                </div>
+            </lightning-layout-item>
+            <lightning-layout-item padding="around-small">
+                <div class="header-column">
+                    <p class="field-title" title="積算金額">積算金額</p>
+                    <p>&yen;{StandardPriceSumFormula}</p>
+                </div>
+            </lightning-layout-item>
+            <lightning-layout-item padding="around-small">
+                <div class="header-column">
+                    <p class="field-title" title="代理店提供価格合計">代理店提供価格合計</p>
+                    <p>&yen;{AgencyProvisionPriceSumFormula}</p>
+                </div>
+            </lightning-layout-item>
+            <lightning-layout-item padding="around-small">
+                <div class="header-column">
+                    <p class="field-title" title="一般管理費">一般管理費</p>
+                    <p>&yen;{GeneralAdministrativeExpenses}</p>
+                </div>
+            </lightning-layout-item>
+            <lightning-layout-item padding="around-small">
+                <div class="header-column">
+                    <p class="field-title" title="見積金額">見積金額</p>
+                    <p>&yen;{SalesCostSum}</p>
+                </div>
+            </lightning-layout-item>
+            <lightning-layout-item padding="around-small">
+                <div class="header-column">
+                    <p class="field-title" title="客先回答金額">客先回答金額</p>
+                    <p>&yen;{ClientAnswerAmount}</p>
+                </div>
+            </lightning-layout-item>
+            </lightning-layout>
+        </template>
+    </div>
+</template>

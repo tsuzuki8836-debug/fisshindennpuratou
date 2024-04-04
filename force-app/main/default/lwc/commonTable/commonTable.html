@@ -1,0 +1,138 @@
+<template>
+    <lightning-accordion allow-multiple-sections-open  active-section-name={secTitle}>
+        <lightning-accordion-section name={secTitle} label={secTitle}>
+            
+            <template if:true={isNodata}>
+                <lightning-layout>
+                    <lightning-layout-item padding="around-small">
+                        <div class="slds-align_absolute-center">
+                            <br />
+                            指定条件により、明細データを取得できません。
+                        </div>
+                    </lightning-layout-item>
+                </lightning-layout>
+            </template>
+
+            <template if:false={isNodata}>
+            <lightning-layout>
+            <lightning-layout-item padding="around-small">
+                <div class="slds-truncate slds-text-align_right">{comment}</div>
+            <table class="slds-table slds-table_col-bordered slds-table_bordered slds-no-row-hover" style="border-collapse: collapse;">
+                <thead>
+                    <!-- ヘッダー情報 -->
+                    <template iterator:row={headerList}>
+                        <tr key={row.value.cellList} class="slds-line-height_reset">
+                            <template iterator:cell={row.value.cellList}>
+                                <template if:true={cell.value.isRowSpan}>
+                                    <th key={cell.value.value} rowspan={cell.value.rowSpanCnt} scope="col" class="slds-is-resizable  slds-text-align_center slds-text-title" >
+                                        <span class="slds-truncate" title={cell.value.value}>{cell.value.value}</span>
+                                    </th>
+
+                                </template>
+                                <template if:true={cell.value.isColSpan}>
+                                    <th key={cell.value.value} colspan={cell.value.colSpanCnt} scope="col" class="slds-is-resizable  slds-text-align_center slds-text-title" >
+                                        <span class="slds-truncate" title={cell.value.value}>{cell.value.value}</span>
+                                    </th>
+                                </template>
+                                <template if:false={cell.value.isRowSpan}>
+                                    <template if:false={cell.value.isColSpan}>
+                                        <th key={cell.value.value} scope="col" class="slds-is-resizable slds-text-align_center slds-text-title" >
+                                            <span class="slds-truncate" title={cell.value.value}>{cell.value.value}</span>
+                                        </th>
+                                    </template>
+                                </template>
+                            </template>
+                        </tr>
+                    </template>
+                </thead>
+                <tbody>
+                    <template iterator:row={bodyList}>
+                        <!-- ボディー情報 -->
+                        <tr key={row.value.cellList} class="slds-hint-parent">
+                            <template iterator:cell={row.value.cellList}>
+                                <template if:false={cell.value.isEdit}>
+                                    <template if:true={cell.value.isColSpan}>
+                                        <td key={cell.value.value} colspan={cell.value.colSpanCnt} class="slds-cell_action-mode" role="gridcell">
+                                            <template if:true={cell.value.isRight}>
+                                                <div class="slds-truncate slds-text-align_right">
+                                                    <lightning-formatted-text 
+                                                    value={cell.value.value}></lightning-formatted-text>
+                                                </div>
+                                            </template>
+                                            <template if:false={cell.value.isRight}>
+                                                <div class="slds-truncate slds-text-align_left">
+                                                    <lightning-formatted-text 
+                                                    value={cell.value.value}></lightning-formatted-text>
+                                                </div>
+                                            </template>
+                                        </td>
+                                    </template>
+                                    <template if:true={cell.value.isRowSpan}>
+                                        <td key={cell.value.value} rowspan={cell.value.rowSpanCnt} class="slds-cell_action-mode" role="gridcell" style="border-right:1px solid rgb(229, 229, 229);">
+                                            <template if:true={cell.value.isRight}>
+                                                <div class="slds-truncate slds-text-align_right">
+                                                    <lightning-formatted-text 
+                                                    value={cell.value.value}></lightning-formatted-text>
+                                                </div>
+                                            </template>
+                                            <template if:false={cell.value.isRight}>
+                                                <div class="slds-truncate slds-text-align_left">
+                                                    <lightning-formatted-text 
+                                                    value={cell.value.value}></lightning-formatted-text>
+                                                </div>
+                                            </template>
+                                        </td>
+                                    </template>
+                                    <template if:false={cell.value.isRowSpan}>
+                                        <template if:false={cell.value.isColSpan}>
+                                                <td key={cell.value.value}>
+                                                    <template if:true={cell.value.isRight}>
+                                                        <div class="slds-truncate slds-text-align_right">
+                                                            <lightning-formatted-text value={cell.value.value}></lightning-formatted-text>
+                                                        </div>
+                                                    </template>
+                                                    <template if:false={cell.value.isRight}>
+                                                        <div class="slds-truncate slds-text-align_left">
+                                                            <lightning-formatted-text value={cell.value.value}></lightning-formatted-text>
+                                                        </div>
+                                                    </template>
+                                                </td>
+                                        </template>
+                                    </template>
+                                </template>
+                                <template if:true={cell.value.isEdit}>
+                                    <!-- 入力セル -->
+                                    <td key={cell.value.value} class="slds-cell_action-mode" role="gridcell">
+                                        <div class="slds-truncate slds-text-align_right">
+                                            <input type="text" pattern="^[1-9][0-9]*$" 
+                                            title="1から9999までの数字を入力してください。"
+                                            size="4" maxlength="4"
+                                            style="text-align: right"
+                                            autocomplete="off"
+                                            data-name={cell.value.value.Price}
+                                            value={cell.value.value.Quantity}
+                                            data-id={cell.value.value.Id} 
+                                            onchange={handleScreenInputChange}></input>
+                                        </div>
+                                    </td>
+                                </template>
+                            </template>
+                        </tr>
+                    </template>
+                </tbody>
+            </table>
+            </lightning-layout-item>
+            </lightning-layout>
+            <lightning-layout>
+            <lightning-layout-item>
+                <ul class="slds-m-around_medium">                
+                    <template iterator:note={noteList}>
+                        <li key={note.value}>{note.value}</li>
+                    </template>
+                </ul>
+            </lightning-layout-item>
+        </lightning-layout>
+        </template>
+        </lightning-accordion-section>
+    </lightning-accordion>
+</template>

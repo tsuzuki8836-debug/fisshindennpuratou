@@ -1,0 +1,9 @@
+<design:component>
+    <design:attribute name="title" label="Component Title" default="" />
+    <design:attribute name="cloneButtonLabel" label="Clone Button Label" default="Clone" />
+    <design:attribute name="nameInputLabel" label="Record name input label" default="New record name" />
+	 <design:attribute name="excludedFieldNames" label="Fields to be NOT cloned (comma[,] separate)" placeholder="use comma (,) to set multiple fields" />
+	 <design:attribute name="childRelationshipNames" label="Child relations to be cloned (comma[,] separate)" placeholder="use comma (,) to set multiple children"  />
+    <design:attribute name="templateRecordId" label="Template Record ID" />
+    <design:attribute name="showDetails" label="Show clone details" default="true"/>
+</design:component>

@@ -1,0 +1,201 @@
+<template>
+    <div class="slds-box slds-p-around_none slds-m-top_x-small slds-m-bottom_medium slds-m-horizontal_none">
+        <!-- 選択された仕様 slds-scrollable_x-->
+        <div  class="c-container">
+            <lightning-layout>
+            <lightning-layout-item padding="around-small">
+                <div class="header-column">
+                    <p> 
+                        <b>選択仕様：{displayCondition}</b>
+                    </p>
+                    <p>
+                        <b>本体価格：<lightning-formatted-number value={displayTotal}></lightning-formatted-number></b>
+                    </p>
+                </div>
+            </lightning-layout-item>
+            </lightning-layout>
+        </div>
+        <!-- <div> -->
+        <div class="c-container">
+            <lightning-layout >
+                <lightning-layout-item size="3" padding="around-small">
+                    <!-- 検索条件：画面種類 -->
+                    <div class="slds-form-element slds-form-element_horizontal">
+                        <label class="slds-form-element__label">{screenType_LabelName}</label>
+                        <div class="slds-form-element__control">
+                            <template if:false={screenType_isDisabled}>
+                                <select class="slds-select" 
+                                        onchange={screenType_Handler}
+                                        required={screenType_isRequired}>
+                                    <template for:each={screenType_Options} for:item="option">
+                                        <template if:true={option.selected}>
+                                            <option key={option.label} class="uiInputSelectOption" value={option.value} selected>{option.label}</option>
+                                        </template>
+                                        <template if:false={option.selected}>
+                                            <option key={option.label} class="uiInputSelectOption" value={option.value}>{option.label}</option>
+                                        </template>
+                                    </template>
+                                </select>
+                            </template>
+                            <template if:true={screenType_isDisabled}>
+                                <select class="slds-select" disabled>
+                                    <option value=""></option>
+                                </select>
+                            </template>
+                        </div>
+                    </div>
+                </lightning-layout-item>
+
+                <lightning-layout-item size="4" padding="around-small">
+                    <!-- 検索条件：変圧器種類 -->
+                    <div class="slds-form-element slds-form-element_horizontal">
+                        <label class="slds-form-element__label">{transformerType_LabelName}</label>
+                        <div class="slds-form-element__control">
+                            <template if:false={transformerType_isDisabled}>
+                                <select class="slds-select" 
+                                        onchange={transformerType_Handler}
+                                        required={transformerType_isRequired}>
+                                    <template for:each={transformerType_Options} for:item="option">
+                                        <template if:true={option.selected}>
+                                            <option key={option.label} class="uiInputSelectOption" value={option.value} selected>{option.label}</option>
+                                        </template>
+                                        <template if:false={option.selected}>
+                                            <option key={option.label} class="uiInputSelectOption" value={option.value}>{option.label}</option>
+                                        </template>
+                                    </template>
+                                </select>
+                            </template>
+                            <template if:true={transformerType_isDisabled}>
+                                <select class="slds-select" disabled>
+                                    <option value=""></option>
+                                </select>
+                            </template>
+                        </div>
+                    </div>
+                </lightning-layout-item>
+
+                <lightning-layout-item size="2" padding="around-small">
+                    <div>
+                        <button class="slds-button slds-align_absolute-center slds-button_brand search-button" 
+                        onclick={onSearch} title="Search" >検索</button>
+                    </div>
+                </lightning-layout-item>
+            </lightning-layout>
+        </div>
+
+        <!-- 高圧TR1 高低圧TR1-->
+        <lightning-layout>
+            <div class="slds-m-around_medium">
+                <template if:true={isNodata}>
+                    <div class="slds-align_absolute-center">
+                        <br />
+                        指定条件により、明細データを取得できません。
+                    </div>
+                </template>
+
+                <template if:false={isNodata}>
+
+                <template if:true={bodyList}>
+                    <!-- 一覧 Info-->
+                    <div class="slds-truncate slds-text-align_left">
+                        <template if:true={isHighVoltage}>
+                            {title2_1}
+                        </template>
+                        <template if:true={isHighLowVoltage}>
+                            {title2_2}
+                        </template>
+                    </div>
+                    <table class="slds-table slds-table_cell-buffer slds-table_bordered slds-table_col-bordered">
+                    <!-- 一覧　ヘッダー -->   
+                        <thead>
+                            <template iterator:row={headerList}>
+                                <tr key={row.value.cellList} class="slds-line-height_reset">
+                                    <template iterator:cell={row.value.cellList}>
+                                        <template if:true={cell.value.isRowSpan}>
+                                            <th key={cell.value.value} rowspan={cell.value.rowSpanCnt} scope="col" class="slds-is-resizable slds-text-align_center slds-text-title" >
+                                                <span class="slds-truncate" title={cell.value.value}>{cell.value.value}</span>
+                                            </th>
+
+                                        </template>
+                                        <template if:true={cell.value.isColSpan}>
+                                            <th key={cell.value.value} colspan={cell.value.colSpanCnt} scope="col" class="slds-is-resizable slds-text-align_center slds-text-title" >
+                                                <span class="slds-truncate" title={cell.value.value}>{cell.value.value}</span>
+                                            </th>
+                                        </template>
+                                        <template if:false={cell.value.isRowSpan}>
+                                            <template if:false={cell.value.isColSpan}>
+                                                <th key={cell.value.value} scope="col" class="slds-is-resizable slds-text-align_center slds-text-title" >
+                                                    <span class="slds-truncate" title={cell.value.value}>{cell.value.value}</span>
+                                                </th>
+                                            </template>
+                                        </template>
+                                    </template>
+                                </tr>
+                            </template>
+                        </thead>
+                        <!-- 一覧 ボディー情報-->
+                        <tbody>
+                            <template iterator:row={bodyList}>
+                                <tr key={row.value.cellList} class="slds-hint-parent">
+                                    <template iterator:cell={row.value.cellList}>
+                                        <template if:false={cell.value.isEdit}>
+
+                                            <template if:true={cell.value.isColSpan}>
+                                                <td key={cell.value.value} colspan={cell.value.colSpanCnt}>
+                                                    <template if:true={cell.value.isRight}>
+                                                        <div class="slds-truncate slds-text-align_right"><lightning-formatted-text value={cell.value.value}></lightning-formatted-text></div>
+                                                    </template>
+                                                    <template if:false={cell.value.isRight}>
+                                                        <div class="slds-truncate slds-text-align_left"><lightning-formatted-text value={cell.value.value}></lightning-formatted-text></div>
+                                                    </template>
+                                                </td>
+                                            </template>
+                                            <template if:false={cell.value.isColSpan}>
+                                                <td key={cell.value.value}>
+                                                    <template if:true={cell.value.isRight}>
+                                                        <div class="slds-truncate slds-text-align_right"><lightning-formatted-text value={cell.value.value}></lightning-formatted-text></div>
+                                                    </template>
+                                                    
+                                                    <template if:false={cell.value.isRight}>
+                                                        <div class="slds-truncate slds-text-align_left"><lightning-formatted-text value={cell.value.value}></lightning-formatted-text></div>
+                                                    </template>
+                                                </td>
+                                            </template>
+
+                                        </template>
+                                        <template if:true={cell.value.isEdit}>
+                                            <td key={cell.value.value}>
+                                                <div class="slds-truncate slds-text-align_center">
+                                                    <lightning-input type="checkbox" 
+                                                    data-id={cell.value.value.Id} 
+                                                    data-name={cell.value.value.Price__c}
+                                                    data-title={cell.value.value.Name1__c}
+                                                    variant="label-hidden" 
+                                                    onchange={handleScreenInputChange}  checked={cell.value.value.isChecked} ></lightning-input>
+                                                    
+                                                </div>
+                                            </td>
+                                        </template>
+                                    </template>
+                                </tr>
+                            </template>
+                        </tbody>
+                    </table>
+                    <!-- 一覧 Footer-->
+                    <div class="slds-text-align_left" style="white-space: break-spaces;">
+                        <template if:true={isHighVoltage}>
+                            {footerInfo2_1}
+                        </template>
+                        <template if:true={isHighLowVoltage}>
+                            {footerInfo2_2}
+                        </template>
+                    </div>
+                </template>
+                </template>
+            </div>
+        </lightning-layout>
+        <template if:true={loader}>
+            <lightning-spinner alternative-text="Loading" size="small"></lightning-spinner>
+        </template>
+    </div>
+</template>

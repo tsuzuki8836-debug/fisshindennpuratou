@@ -1,0 +1,13 @@
+.slds-p-around_medium {
+    padding: 0px !important;
+}
+.text-input {
+    padding-top: 10px !important;
+}
+.slds-form-element_horizontal{
+    margin-bottom:0px;
+}
+.c-container {
+    border: 1px solid #d8dde6;
+    margin: 10px 10px 10px 10px;
+}

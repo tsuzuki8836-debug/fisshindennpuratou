@@ -1,0 +1,94 @@
+.second-layout {
+    padding: 20px;
+}
+.expense-layout {
+    padding: 0px 0px 0px 8px;
+}
+.calculated-value-parent {
+    position: relative;
+}
+.calculated-value {
+    position: absolute;
+    right: 0px;
+}
+.slds-table{
+    margin: 0;
+    border-spacing: 0;
+    position: relative;
+    border-collapse: collapse;
+    font-size: 11px;
+}
+.slds-table th{
+    text-align: center;
+    white-space: nowrap;
+    /* border-right: 1px solid #999; */
+    /* border-bottom: 1px solid #999; */
+    background: #f2f2f2;
+    position: sticky;
+    top: 0;
+}
+.slds-table td{
+    white-space: nowrap;
+    padding-left: 5px;
+    min-width: 5rem;
+    /* border-right: 1px solid #999; */
+    /* border-bottom: 1px solid #999; */
+    background: #FFF;
+    padding: 5px;
+}
+.slds-text-title--caps{
+    font-size: 11px;
+}
+
+.input-readonly {
+    border: 0;
+    box-shadow: none;
+    background-color: white;
+	cursor: not-allowed;
+}
+.slds-table th{
+    z-index: 9;
+}
+
+
+.slds-resizable__divider:after {
+    height: 100%;
+}
+
+/* number-input と number-overlap をまとめるコンテナ */
+.number-container {
+    position: relative;
+}
+
+/* カンマ区切りにしたい input 要素 */
+.number-input {
+    position: relative;
+}
+/* 普段は z-index:1 で number-overlap の後ろに居る。色は被ってしまうので transparent */
+.number-input:not(:focus) {
+    z-index: 1;
+    color: transparent;
+}
+/* フォーカス中は z-index:3 で number-overlap の前に来る。色も戻す */
+.number-input:focus {
+    z-index: 3;
+    color: #555;
+}
+
+/* number-input に覆い被さる要素。 pointer-events:none でクリックを透過させる */
+.number-overlap {
+    position: absolute;
+    top: 1px;
+    /* left: 0px; */
+    right: 2px;
+    display: inline-block;
+    background: transparent;
+    width: 100% !important;
+    text-align: right;
+    pointer-events: none;
+    z-index: 2;
+}
+
+.no-image-description {
+    color: red;
+}

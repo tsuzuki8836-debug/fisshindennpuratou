@@ -1,0 +1,614 @@
+<template>
+    <div class="slds-box slds-p-around_none slds-m-top_x-small slds-m-bottom_medium slds-m-horizontal_none">
+        <lightning-layout  class="c-container">
+            <lightning-layout-item size="2" padding="around-small">
+                <template if:true={isBuShow}>
+                    <!-- 検索条件：BU -->
+                    <div class="slds-form-element slds-form-element_horizontal">
+                        <label class="slds-form-element__label">{bu_LabelName}</label>
+                        <div class="slds-form-element__control">
+                            <template if:false={bu_isDisabled}>
+                                <select class="slds-select" 
+                                        onchange={bu_Handler}
+                                        required={bu_isRequired}>
+                                        <option value=""></option>
+                                    <template for:each={bu_Options} for:item="option">
+                                        <template if:true={option.selected}>
+                                            <option key={option.label} class="uiInputSelectOption" value={option.value} selected>{option.label}</option>
+                                        </template>
+                                        <template if:false={option.selected}>
+                                            <option key={option.label} class="uiInputSelectOption" value={option.value}>{option.label}</option>
+                                        </template>
+                                    </template>
+                                </select>
+                            </template>
+                            <template if:true={bu_isDisabled}>
+                                <select class="slds-select" disabled>
+                                    <option value=""></option>
+                                </select>
+                            </template>
+                        </div>
+                    </div>
+                </template>
+            </lightning-layout-item>
+            <lightning-layout-item size="3" padding="around-small">
+                <template if:true={isMajorShow}>
+                    <!-- 検索条件：大分類 -->
+                    <div class="slds-form-element slds-form-element_horizontal">
+                        <label class="slds-form-element__label">{major_LabelName}</label>
+                        <div class="slds-form-element__control">
+                            <template if:false={major_isDisabled}>
+                                <select class="slds-select" 
+                                        onchange={major_Handler}
+                                        required={major_isRequired}>
+                                    <option value=""></option>
+                                    <template for:each={major_Options} for:item="option">
+                                        <template if:true={option.selected}>
+                                            <option key={option.label} class="uiInputSelectOption" value={option.value} selected>{option.label}</option>
+                                        </template>
+                                        <template if:false={option.selected}>
+                                            <option key={option.label} class="uiInputSelectOption" value={option.value}>{option.label}</option>
+                                        </template>
+                                    </template>
+                                </select>
+                            </template>
+                            <template if:true={major_isDisabled}>
+                                <select class="slds-select" disabled>
+                                    <option value=""></option>
+                                </select>
+                            </template>
+                        </div>
+                    </div>
+                </template>
+
+            </lightning-layout-item>
+            <lightning-layout-item size="2" padding="around-small">
+                <template if:true={isMinorShow}>
+                    <!-- 検索条件：小分類 -->
+                    <div class="slds-form-element slds-form-element_horizontal">
+                        <label class="slds-form-element__label">{minor_LabelName}</label>
+                        <div class="slds-form-element__control">
+                            <template if:false={minor_isDisabled}>
+                                <select class="slds-select" 
+                                        onchange={minor_Handler}
+                                        required={minor_isRequired}>
+                                    <option value=""></option>
+                                    <template for:each={minor_Options} for:item="option">
+                                        <template if:true={option.selected}>
+                                            <option key={option.label} class="uiInputSelectOption" value={option.value} selected>{option.label}</option>
+                                        </template>
+                                        <template if:false={option.selected}>
+                                            <option key={option.label} class="uiInputSelectOption" value={option.value}>{option.label}</option>
+                                        </template>
+                                    </template>
+                                </select>
+                            </template>
+                            <template if:true={minor_isDisabled}>
+                                <select class="slds-select" disabled>
+                                    <option value=""></option>
+                                </select>
+                            </template>
+                        </div>
+                    </div>
+                </template>
+            </lightning-layout-item>
+            <lightning-layout-item size="2"  padding="around-small">
+                <div class="slds-text-align_right">
+                    <!-- 検索ボタン：マスタ検索 -->
+                    <div>
+                        <button class="slds-button slds-align_absolute-right slds-button_brand search-button" onclick={onMasterSearch} title="MasterSearch">マスタ 検 索</button>
+                    </div>
+                </div>
+            </lightning-layout-item>
+        </lightning-layout>
+        <lightning-layout  class="c-container">
+            <!-- 検索条件：見積番号 -->
+        <lightning-layout-item size="2" padding="around-small">
+            <template if:true={isQuoteNumberShow}>
+                <!-- 検索条件：見積番号 -->
+                <div class="slds-form-element slds-form-element_horizontal">
+                    <label class="slds-form-element__label">{quoteNumber_LabelName}</label>
+                    <div class="slds-form-element__control">
+                        <template if:false={quoteNumber_isDisabled}>
+                            <select class="slds-select" 
+                                    onchange={quoteNumber_Handler}
+                                    required={quoteNumber_isRequired}>
+                                <option value=""></option>
+                                <template for:each={quoteNumber_Options} for:item="option">
+                                    <template if:true={option.selected}>
+                                        <option key={option.label} class="uiInputSelectOption" value={option.value} selected>{option.label}</option>
+                                    </template>
+                                    <template if:false={option.selected}>
+                                        <option key={option.label} class="uiInputSelectOption" value={option.value}>{option.label}</option>
+                                    </template>
+                                </template>
+                            </select>
+                        </template>
+                        <template if:true={quoteNumber_isDisabled}>
+                            <select class="slds-select" disabled>
+                                <option value=""></option>
+                            </select>
+                        </template>
+                    </div>
+                </div>
+            </template>
+        </lightning-layout-item>
+        <!-- 検索条件：見積項目名 -->
+        <lightning-layout-item size="3" padding="around-small">
+            <template if:true={isNameShow}>
+                <!-- 検索条件：見積項目名 -->
+                <div class="slds-form-element slds-form-element_horizontal">
+                    <label class="slds-form-element__label">{name_LabelName}</label>
+                    <div class="slds-form-element__control">
+                        <template if:false={name_isDisabled}>
+                            <select class="slds-select" 
+                                    onchange={name_Handler}
+                                    required={name_isRequired}>
+                                <option value=""></option>
+                                <template for:each={name_Options} for:item="option">
+                                    <template if:true={option.selected}>
+                                        <option key={option.label} class="uiInputSelectOption" value={option.value} selected>{option.label}</option>
+                                    </template>
+                                    <template if:false={option.selected}>
+                                        <option key={option.label} class="uiInputSelectOption" value={option.value}>{option.label}</option>
+                                    </template>
+                                </template>
+                            </select>
+                        </template>
+                        <template if:true={name_isDisabled}>
+                            <select class="slds-select" disabled>
+                                <option value=""></option>
+                            </select>
+                        </template>
+                    </div>
+                </div>
+            </template>
+        </lightning-layout-item>
+        <lightning-layout-item size="1" padding="around-small">
+            <!-- 空白　位置 -->
+        </lightning-layout-item>
+            <!-- 検索ボタン：見積検索 -->
+        <lightning-layout-item size="2" padding="around-small">
+            <div class="slds-text-align_right">
+                <div >
+                    <button class="slds-button slds-align_absolute-right slds-button_brand search-button" onclick={onQuoteSearch} title="QuoteSearch">見 積 検 索</button>
+                </div>
+            </div>
+        </lightning-layout-item>
+        <!-- 検索ボタン：図記号検索 -->
+        <lightning-layout-item size="2" padding="around-small">
+            <div class="slds-text-align_left">
+                <button class="slds-button slds-align_absolute-left slds-button_brand search-button" onclick={onImageMarkSearch} title="ImageMarkSearch">図記号検索</button>
+            </div>
+        </lightning-layout-item>
+    </lightning-layout>
+    <!-- 明細一覧 -->
+    <template if:true={loader}>
+        <lightning-spinner alternative-text="Loading..." size="small"></lightning-spinner>
+    </template>
+    </div>
+
+    <div class="slds-p-around_none slds-m-top_x-small slds-m-bottom_medium slds-m-horizontal_none">
+        <div class="slds-box slds-theme_default">
+            <lightning-layout>
+                <lightning-layout-item size="4"></lightning-layout-item>
+                <lightning-layout-item size="4">
+                    <div class="slds-align_absolute-center" >
+                        <div class="slds-p-right_xx-small">
+                            
+                            <lightning-button label="Prev" disabled={isPrev} onclick={handlePrev} variant="brand"
+                            icon-name="utility:back" name="prev"></lightning-button>
+                        </div>
+                        <span class="slds-badge slds-badge_lightest">
+                            {recordStart}-{recordEnd} of {totalRecords} | Page {pageNumber} of {totalPages}
+                        </span>
+                        <div class="slds-p-left_xx-small">
+                            <lightning-button label="Next" disabled={isNext} onclick={handleNext} variant="brand"
+                            icon-name="utility:forward" icon-position="right" name="next"></lightning-button>
+                        </div>
+                    </div>
+                </lightning-layout-item>
+            </lightning-layout>
+            <lightning-layout>
+            <div class="slds-m-around_medium " style="overflow: auto;height: 370px;min-width: 70%;">
+               <template if:true={isDisplayNoRecords}>
+                   <div class="slds-align_absolute-left">
+                       指定条件により、明細データを取得できません。
+                       <br />
+                   </div>
+               </template>
+               <table class="slds-table slds-table_bordered slds-table_col-bordered " 
+                       style="width: 98%;" 
+                       role="grid">
+                   <!--   slds-table_resizable-cols -->
+                   <thead >
+                       <tr class="slds-line-height_reset">
+                           <!-- style="width: 15%;" -->
+                           <th class="slds-is-resizable slds-text-title--caps"  scope="col">
+                               <span class="slds-truncate" title="名称">名称</span>
+                           </th>
+                           <!--  style="width: 15%;" -->
+                           <th class="slds-is-resizable slds-text-title--caps" scope="col">
+                               <span class="slds-truncate" title="マスタコード">マスタコード</span>
+                           </th>
+                           <!--  style="width: 10%;"  -->
+                           <th class="slds-is-resizable slds-text-title--caps" scope="col">
+                               <span class="slds-truncate" title="単位WC">WC単価(円)</span>
+                           </th>
+                           <!--  style="width: 10%;"  -->
+                           <th class="slds-is-resizable slds-text-title--caps" scope="col">
+                               <span class="slds-truncate" title="WC係数">WC係数</span>
+                           </th>
+                           <!-- style="width: 8%;"  -->
+                           <th class="slds-is-resizable slds-text-title--caps" scope="col">
+                               <span class="slds-truncate" title="単価">単価(円)</span>
+                           </th>
+                           <!--  style="width: 10%;"  -->
+                           <th class="slds-is-resizable slds-text-title--caps" scope="col">
+                               <span class="slds-truncate" title="単価係数">単価係数</span>
+                           </th>
+                           <!-- 施設の場合に表示する。 -->
+                           <template  if:false={isWeight}>
+                               <!-- style="width: 8%;"  -->
+                               <th class="slds-is-resizable slds-text-title--caps" scope="col">
+                                   <span class="slds-truncate" title="提供単価">提供単価(円)</span>
+                               </th>
+                           </template>
+                           <!-- 水環境、官需の場合に表示する。 -->
+                           <template  if:true={isWeight}>
+                               <!-- style="width: 8%;"  -->
+                               <th class="slds-is-resizable slds-text-title--caps" scope="col">
+                                   <span class="slds-truncate" title="単位重量">単位重量</span>
+                               </th>
+                           </template>
+    
+                           <th class="slds-is-resizable slds-text-title--caps" style="min-width:4rem;" scope="col">
+                               <span class="slds-truncate" title="数量">数量</span>
+                           </th>
+                           <!--  style="width: 8%;"   -->
+                           <th class="slds-is-resizable slds-text-title--caps" scope="col">
+                               <span class="slds-truncate" title="金額">金額(円)</span>
+                           </th>
+                           <!-- 施設の場合に表示する。 -->
+                           <template  if:false={isWeight}>
+                               <!--  style="width: 8%;"   -->
+                               <th class="slds-is-resizable slds-text-title--caps" scope="col">
+                                   <span class="slds-truncate" title="提供価格">提供価格(円)</span>
+                                   </th>
+                           </template>
+                           <!-- 水環境、官需の場合に表示する。 -->
+                           <template  if:true={isWeight}>
+                           <!--  style="width: 8%;"   -->
+                           <th class="slds-is-resizable slds-text-title--caps" scope="col">
+                               <span class="slds-truncate" title="重量">重量</span>
+                           </th>
+                           </template>
+                           <th class="slds-is-resizable slds-text-title--caps"  scope="col">
+                               <span class="slds-truncate" title="備考">備考</span>
+                           </th>
+                       </tr>
+                   </thead>
+                   <tbody>
+                    <template iterator:row={detailRecords}>
+                       <template if:false={row.value.isCreate}>
+                        <tr key={row.value.Id} class="slds-hint-parent">
+                            <!-- 名称１ -->
+                            <td class="slds-cell_action-mode" role="gridcell">
+                                <div class="slds-truncate slds-text-align_left">
+                                    <lightning-formatted-text value={row.value.Name1} 
+                                    title={row.value.Name1}></lightning-formatted-text>
+                                </div>
+                            </td>
+                            <!-- 名称２ -->
+                            <td class="slds-cell_action-mode" role="gridcell">
+                                <div class="slds-truncate slds-text-align_left">
+                                    <lightning-formatted-text value={row.value.Name2} 
+                                    title={row.value.Name2}></lightning-formatted-text>
+                                </div>
+                            </td>
+                            <!-- 単位WC -->
+                            <td class="slds-cell_action-mode" role="gridcell">
+                                <div class="slds-truncate slds-text-align_right">
+                                    <div class="number-container" >
+                                        <template if:false={row.value.isPriceTableWC}>
+                                            <input class="number-input form-control"
+                                            type="text" pattern="^[1-9][0-9]*$" 
+                                            title="0以上の数字を入力してください。"
+                                            size="11" maxlength="11" 
+                                            style="text-align: right "
+                                            autocomplete="off"
+                                            data-id={row.value.CreditWCName}
+                                            data-rate={row.value.WcCalculationRate}
+                                            value={row.value.CreditWC}
+                                            onchange={handleCreditWCChange}></input>
+                                            <span class="number-overlap form-control">{row.value.CreditWCSpan}</span>
+                                        </template>
+                                        <template if:true={row.value.isPriceTableWC}>
+                                            <input class="number-input form-control input-readonly" readonly
+                                                type="text" 
+                                                title="0以上の数字を入力してください。"
+                                                size="11" maxlength="11" style="text-align: right "
+                                                data-id={row.value.CreditWCName}
+                                                data-rate={row.value.WcCalculationRate}
+                                                value={row.value.CreditWC}></input>
+                                            <span class="number-overlap form-control">{row.value.CreditWCSpan}</span>
+                                        </template>
+                                    </div>
+                                </div>
+                            </td>
+                            <!-- WC係数 -->
+                            <td class="slds-cell_action-mode" role="gridcell">
+                                <div class="slds-truncate slds-text-align_center">
+                                <template if:false={row.value.isWCRate}>
+                                    <input type="text" pattern="([0-9]|[1-9][0-9])(\.([0-9]|[0-9][0-9]|[0-9][0-9][0-9]|[0-9][0-9][0-9][0-9]))?"
+                                    title="0.0000から99.9999までの数字を入力してください。"
+                                    size="7" maxlength="7" 
+                                    style="text-align: right "
+                                    autocomplete="off"
+                                    data-id={row.value.WCCoefficientName}
+                                    value={row.value.WCCoefficient}
+                                    onchange={handleWCCoefficientChange}></input>
+                                </template>
+                                <template if:true={row.value.isWCRate}>
+                                    <input type="text" class="input-readonly" data-id={row.value.WCCoefficientName}
+                                    size="7" maxlength="7" value={row.value.WCCoefficient} style="text-align: right " readonly></input>
+                                </template>
+                                </div>
+                            </td>
+                            <!-- 単価 -->
+                            <td class="slds-cell_action-mode" role="gridcell">
+                                <div class="slds-truncate slds-text-align_right">
+                                    <lightning-formatted-number 
+                                     value={row.value.UnitPrice}
+                                    ></lightning-formatted-number>
+                                    <!-- format-style="currency" -->
+                                </div>
+                            </td>
+                            <!-- 単価係数 width: 40px; -->
+                            <td class="slds-cell_action-mode" role="gridcell">
+                                <div class="slds-truncate slds-text-align_center">
+                                    <template if:false={row.value.isWCRate}>
+                                        <input type="text" pattern="([0-9]|[1-9][0-9])(\.([0-9]|[0-9][0-9]|[0-9][0-9][0-9]|[0-9][0-9][0-9][0-9]))?"
+                                        title="0.0000から99.9999までの数字を入力してください。"
+                                        size="7" maxlength="7" 
+                                        style=" text-align: right "
+                                        autocomplete="off"
+                                        data-id={row.value.UnitPriceCoefficientName}
+                                        value={row.value.UnitPriceCoefficient}
+                                        onchange={handleUnitPriceCoefficientChange}></input>
+                                    </template>
+    
+                                    <template if:true={row.value.isWCRate}>
+                                        <input type="text" class="input-readonly"  data-id={row.value.UnitPriceCoefficientName}
+                                        size="7" maxlength="7" style="text-align: right " readonly></input>
+                                    </template>
+                                </div>
+                            </td>
+                            <!-- 施設の場合に表示する。 -->
+                            <template  if:false={isWeight}>
+                                <!-- 提供単価 -->
+                                <td class="slds-cell_action-mode" role="gridcell">
+                                    <div class="slds-truncate slds-text-align_left">
+                                        <div class="number-container" >
+                                        <template if:true={row.value.isWCRate}>
+                                            <input type="text" class="input-readonly" data-id={row.value.ProvisionUnitPriceName}
+                                            size="11" maxlength="11" style="text-align: right " readonly></input>
+                                        </template>
+    
+                                        <template if:false={row.value.isWCRate}>
+                                                <input class="number-input form-control"
+                                                type="text" pattern="^[1-9][0-9]*$" 
+                                                title="0以上の数字を入力してください。"
+                                                size="11" maxlength="11" 
+                                                style="text-align: right "
+                                                autocomplete="off"
+                                                data-id={row.value.ProvisionUnitPriceName}
+                                                value={row.value.ProvisionUnitPrice}
+                                                onchange={handleProvisionUnitPriceChange}></input>
+                                                <span class="number-overlap form-control">{row.value.ProvisionUnitPriceSpan}</span>
+                                        </template>
+                                    </div>
+                                    </div>
+                                </td>
+                            </template>
+                            <!-- 水環境、官需の場合に表示する。 -->
+                            <template  if:true={isWeight}>
+                                <!-- 単位重量 -->
+                                <td class="slds-cell_action-mode" role="gridcell">
+                                    <div class="slds-truncate slds-text-align_right">
+                                        <lightning-formatted-number 
+                                            value={row.value.UnitWeight}
+                                        ></lightning-formatted-number>
+                                        <!-- format-style="currency" -->
+                                    </div>
+                                </td>
+                            </template>
+                            <!-- 数量が全角入力された際に半角に変換した値を画面上表示する 2023/06/01 TS木佐貫 -->
+                            <!-- 数量 -->
+                            <template if:false={row.value.SpecialFlag}>
+                                <td class="slds-cell_action-mode" role="gridcell">
+                                    <div class="slds-truncate slds-text-align_right">
+                                        <div class="number-container" >
+                                        <input class="number-input form-control"
+                                        type="text" pattern="^[1-9][0-9]*$" 
+                                        title="1から99999までの数字を入力してください。"
+                                        size="5" maxlength="5"
+                                        style="text-align: right " 
+                                        autocomplete="off"
+                                        data-name={row.value.UnitPrice}
+                                        data-weight={row.value.UnitWeight}
+                                        value={row.value.Quantity} 
+                                        data-id={row.value.QuantityName}
+                                        onchange={handleQuantityChange}></input>
+                                        <span class="number-overlap form-control">{row.value.QuantitySpan}</span></div>
+                                    </div>
+                                </td>
+                            </template>
+                            <template if:true={row.value.SpecialFlag}>
+                                <td class="slds-cell_action-mode" role="gridcell">
+                                    <div class="slds-truncate slds-text-align_right">
+                                        <div class="number-container" >
+                                        <input class="number-input form-control"
+                                        type="text" pattern="([0-9]|[1-9][0-9]|[1-9][0-9][0-9]|[1-9][0-9][0-9][0-9]|[1-9][0-9][0-9][0-9][0-9])(\.([1-9]|[0-9][1-9]))?"
+                                        title="数字（整数5桁以下、小数点以下2桁まで）を入力してください。"
+                                        size="8" maxlength="8"
+                                        style="text-align: right " 
+                                        autocomplete="off"
+                                        data-name={row.value.UnitPrice}
+                                        data-weight={row.value.UnitWeight}
+                                        value={row.value.Quantity} 
+                                        data-id={row.value.QuantityName}
+                                        onchange={handleQuantityChange}></input>
+                                        <span class="number-overlap form-control">{row.value.QuantitySpan}</span></div>
+                                    </div>
+                                </td>
+                            </template>
+                            <!-- 価格 -->
+                            <td class="slds-cell_action-mode" role="gridcell">
+                                <div class="slds-truncate slds-text-align_right">
+                                    <lightning-formatted-number 
+                                         value={row.value.Price}
+                                  ></lightning-formatted-number>
+                                </div>
+                            </td>
+    
+                            <!-- 施設の場合に表示する。 -->
+                            <template  if:false={isWeight}>
+                                <!-- 提供価格 -->
+                                <td class="slds-cell_action-mode" role="gridcell">
+                                    <div class="slds-truncate slds-text-align_right">
+                                        <lightning-formatted-number 
+                                            value={row.value.ProvisionPrice}
+                                    ></lightning-formatted-number>
+                                    </div>
+                                </td>
+                            </template>
+                            <!-- 水環境、官需の場合に表示する。 -->
+                            <template  if:true={isWeight}>
+                            <!-- 重量 -->
+                            <td class="slds-cell_action-mode" role="gridcell">
+                                <div class="slds-truncate slds-text-align_right">
+                                    <lightning-formatted-number 
+                                         value={row.value.Weight}
+                                  ></lightning-formatted-number>
+                                </div>
+                            </td>
+                            </template>
+    
+                            <!-- 備考 -->
+                            <td class="slds-cell_action-mode" role="gridcell">
+                                <div class="slds-truncate slds-text-align_left">
+                                    <lightning-formatted-text value={row.value.Note}></lightning-formatted-text>
+                                </div>
+                            </td>
+    
+                        </tr></template>
+                    </template>
+                   </tbody>
+               </table>
+           </div>
+        </lightning-layout>
+        </div>
+    </div>
+    <!-- 図記号検索画面 -->
+    <template if:true={isShowImageMark}>
+        <section role="dialog" tabindex="-1" aria-labelledby="modal-heading-01" aria-modal="true" 
+                    aria-describedby="modal-content-id-2"
+                    class="slds-modal slds-modal slds-fade-in-open">
+            <div class="slds-modal__container" style="width: 40%;min-width: 40%;">
+                <header class="slds-modal__header" >
+                    <button class="slds-button slds-button_icon slds-modal__close slds-button_icon-inverse" title="Close" onclick={handlerShowImageClose}>
+                        <lightning-icon icon-name="utility:close"
+                            alternative-text="close"
+                            variant="inverse"
+                            size="small" ></lightning-icon>
+                        <span class="slds-assistive-text">Close</span>
+                    </button>
+                    <h2 class="slds-text-heading_small slds-hyphenate">図記号検索</h2>
+                </header>
+                <div data-id="modal-content-id-2" class="slds-modal__content slds-p-around">
+                    <lightning-layout class="slds-align_absolute-center">
+                        <div class="slds-m-around_medium " >
+                           <table class="slds-table slds-table_bordered slds-table_col-bordered " 
+                                   style="width: 98%;" 
+                                   role="grid">
+                               <!--   slds-table_resizable-cols -->
+                               <thead >
+                                   <tr class="slds-line-height_reset">
+                                       <!-- style="width: 15%;" -->
+                                       <th class="slds-is-resizable slds-text-title--caps"  scope="col">
+                                           <span class="slds-truncate" title="選択">選択</span>
+                                       </th>
+                                       <!--  style="width: 15%;" -->
+                                       <th class="slds-is-resizable slds-text-title--caps" scope="col">
+                                           <span class="slds-truncate" title="図記号">図記号</span>
+                                       </th>
+                                       <!--  style="width: 10%;"  -->
+                                       <th class="slds-is-resizable slds-text-title--caps" scope="col">
+                                           <span class="slds-truncate" title="名称">名称</span>
+                                       </th>
+                                       <!-- style="width: 10%;" -->
+                                       <th class="slds-is-resizable slds-text-title--caps" scope="col">
+                                           <span class="slds-truncate" title="文字記号">文字記号</span>
+                                       </th>
+                                   </tr>
+                               </thead>
+                               <tbody>
+                                <template iterator:row={symbolObjectList}>
+                                    <tr key={row.value.Id} class="slds-hint-parent">
+                                        <!-- 選択 -->
+                                        <td class="slds-cell_action-mode" role="gridcell">
+                                            <div class="slds-truncate slds-text-align_right">
+                                                <lightning-input type="checkbox"
+                                                    name="inputCheckbox"
+                                                    label={row.value.SymbolName}
+                                                    variant="label-hidden"
+                                                    data-id={row.value.Id}
+                                                    onchange={handlerCheckBoxChange}
+                                                    ></lightning-input>
+                                            </div>
+                                        </td>
+                                        <!-- 図記号 -->
+                                        <td class="slds-cell_action-mode" role="gridcell">
+                                            <div class="slds-truncate slds-text-align_left">
+                                                <img src={row.value.SymbolID}>
+                                            </div>
+                                        </td>
+                                        <!-- 名称 -->
+                                        <td class="slds-cell_action-mode" role="gridcell">
+                                            <div class="slds-truncate slds-text-align_left">
+                                                <lightning-formatted-text 
+                                                    value={row.value.SymbolName} 
+                                                    title={row.value.SymbolName}></lightning-formatted-text>
+                                            </div>
+                                        </td>
+                                        <!-- 文字記号 -->
+                                        <td class="slds-cell_action-mode" role="gridcell">
+                                            <div class="slds-truncate slds-text-align_left">
+                                                <lightning-formatted-text 
+                                                    value={row.value.CharacterSymbol}
+                                                    title={row.value.CharacterSymbol}>
+                                                </lightning-formatted-text>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                </template>
+                               </tbody>
+                           </table>
+                       </div>
+                   </lightning-layout>
+                </div>
+                <footer class="slds-modal__footer ">
+                    <div class="slds-grid slds-grid_align-center">
+                        <button class="slds-button slds-button_brand" onclick={handlerShowImageClose} title="キャンセル">キャンセル</button>
+                        <button class="slds-button slds-button_brand"
+                            title="検索"
+                            onclick={handlerImageSearch}
+                            data-id="searchImage">検索</button>
+                    </div>
+                </footer>
+            </div>
+        </section>
+        <div class="slds-backdrop slds-backdrop_open"></div>
+    </template>
+</template>

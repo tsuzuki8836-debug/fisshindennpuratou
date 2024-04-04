@@ -1,0 +1,14 @@
+<aura:component controller="RequestFormOutputController" implements="force:lightningQuickActionWithoutHeader,force:hasRecordId">
+  <aura:attribute name="recordId" type="Id"/>
+  <aura:attribute name="isVisible" type="boolean" default="false"/>
+  <aura:attribute name="message" type="String"/>
+  <aura:handler name="init" value="{!this}" action="{!c.init}"/>
+  <lightning:navigation aura:id="navService"/>
+
+  <aura:if isTrue="{!v.isVisible}">
+    <ui:outputText value="{!v.message}"/>
+    <aura:set attribute="else">
+      <p>帳票書類作成中</p>
+    </aura:set>
+  </aura:if>
+</aura:component>

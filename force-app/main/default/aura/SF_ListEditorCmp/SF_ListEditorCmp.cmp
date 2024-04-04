@@ -1,0 +1,96 @@
+<aura:component access="global" controller="SF_RelatedListEditorCC" implements="force:appHostable,flexipage:availableForAllPageTypes,flexipage:availableForRecordHome,force:hasRecordId,ForceCommunity:availableForAllPageTypes" >
+	<aura:attribute name="recordId" type="Id"/>
+	<aura:attribute type="String" name="objectName" access="global" default="Account"/>
+	<aura:attribute type="String" name="sObjectName" access="global" default="Account"/>
+	<aura:attribute type="String" name="fields" access="global" default="Id,Name"/>
+	<aura:attribute type="String" name="fieldsViewMode" access="global" default="Id,Name"/>
+	<aura:attribute type="String" name="fieldsEditMode" access="global" default="Id,Name"/>
+	<aura:attribute type="Integer" name="numOfFieldsViewMode" access="global" default="2"/>
+	<aura:attribute type="Integer" name="numOfFieldsEditMode" access="global" default="2"/>
+	<aura:attribute type="List" name="recordList" default="[]"/>
+	<aura:attribute type="List" name="recordTypes" default="[]"/>
+	<aura:attribute type="Integer" access="global" name="viewRowsToLoad" default="10"/>
+	<aura:attribute type="Integer" access="global" name="editRowsToLoad" default="20"/>
+	<aura:attribute type="String" access="global" name="parentField"/>
+	<aura:attribute type="List" name="parentFieldList"/>
+	<aura:attribute type="Boolean" name="hasMoreRecord" default="false"/>
+	<aura:attribute type="String" access="global" name="conditionsFilterList" default=''/>
+	<aura:attribute type="String" access="global" name="defaultValueAddList" default='{}'/>
+	<aura:attribute type="String" access="global" name="defaultLabel" default=''/>
+	<aura:attribute type="Boolean" access="global" name="enableEditMode" default='false'/>
+	<aura:attribute type="Boolean" name="isEditMode" default='false'/>
+	<aura:attribute type="Boolean" access="global" name="enableAddMode" default='false'/>
+	<aura:attribute type="Boolean" name="isHaveNoError" default='true'/>
+	<aura:attribute type="Map" name="filterFields"/>
+	<aura:attribute type="Boolean" name="isOrderDESC" default="true" access="global"/>
+	<aura:attribute type="String" name="orderField" access="global"/>  
+	<aura:attribute name="isScrollable" type="boolean" default="false"/>
+	<aura:attribute name="isHaveOrderField" type="boolean" default="false"/>
+	<aura:attribute name="orderFieldAPI" type="String" default=""/>
+	<aura:attribute name="relatedList" type="Map" description="a single RL"/>
+	<aura:attribute name="records" type="Map" description="records pulled from apex"/>
+	<aura:attribute name="deleteRecords" type="Map" description="delete records from edit form"/>
+	<aura:attribute name="title" type="String"  default="リストエディター"/>
+	<aura:attribute name="displayPicklistAsText" type="Boolean" default="false"/>
+	<aura:attribute name="isLoading" type="Boolean"  default='false'/>
+
+	<aura:handler name="switchMode" event="c:SF_SwitchModeEvent" action="{!c.switchMode}" />
+	<aura:handler name="refreshRecordList" event="c:SF_RefreshRecordListEvent" action="{!c.doInit}" />
+	<aura:handler name="init" value="{!this}" action="{!c.doInit}"/>
+	<aura:handler event="force:refreshView" action="{!c.doInit}" />
+	<aura:handler name="change" value="{!v.isOrderDESC}" action="{!c.refreshRecordList}"/>
+	<aura:handler name="change" value="{!v.orderField}" action="{!c.refreshRecordList}"/>
+
+	<c:SF_ListEditorViewMode objectName = "{!v.objectName}" 
+							recordList = "{!v.recordList}" 
+							fields = "{!v.fields}" 
+							rowsToLoad = "{!v.viewRowsToLoad}" 
+							recordId = "{!v.recordId}" 
+							parentObject = "{!v.sObjectName}" 
+							parentList = "{!v.parentFieldList}" 
+							parentField = "{!v.parentField}"
+							hasMoreRecord = "{!v.hasMoreRecord}"
+							defaultLabel = "{!v.defaultLabel}"
+							enableEditMode = "{!v.enableEditMode}"
+							defaultValueAddList = "{!v.defaultValueAddList}"
+							enableAddMode = "{!v.enableAddMode}"
+							isHaveNoError = "{!v.isHaveNoError}"
+							recordTypes = "{!v.recordTypes}"
+							conditionsFilterList = '{!v.conditionsFilterList}'
+							refreshRecords = '{!c.doInit}'
+							isEditMode='{!v.isEditMode}'
+							orderField = "{!v.orderField}"
+							isOrderDESC = '{!v.isOrderDESC}'
+							/>
+	<aura:renderIf isTrue="{!v.isEditMode}">
+		<div>
+			<section role="dialog" tabindex="-1" aria-modal="true" class="slds-modal slds-fade-in-open slds-modal_large">
+				<c:SF_ListEditorEditMode objectName="{!v.objectName}" 
+										recordList="{!v.recordList}" 
+										relatedList = "{!v.relatedList}" 
+										title="{!v.title}" 
+										recordId="{!v.recordId}" 
+										showFields ="{!v.fields}"
+										parentObject="{!v.sObjectName}"
+										rowsInit="{!v.viewRowsToLoad}"
+										rowsToLoad="{!v.editRowsToLoad}"
+										parentField="{!v.parentField}"
+										aura:id="SF_ListEditorEditMode"
+										hasMoreRecord = "{!v.hasMoreRecord}"
+										defaultValueAddList = "{!v.defaultValueAddList}"
+										defaultLabel = "{!v.defaultLabel}"
+										conditionsFilterList = "{!v.conditionsFilterList}"
+										filterFields="{!v.filterFields}"
+										isEditMode = '{!v.isEditMode}'
+										isScrollable = '{!v.isScrollable}'
+										isHaveOrderField = '{!v.isHaveOrderField}'
+										orderField = '{!v.orderFieldAPI}'
+										sortField='{!v.orderField}'
+										isOrderDESC = '{!v.isOrderDESC}'
+										isLoading = '{!v.isLoading}'
+										/>
+			</section>
+			<div class="slds-backdrop slds-backdrop_open"></div>
+		</div>
+	</aura:renderIf>
+</aura:component>

@@ -1,0 +1,257 @@
+<aura:component controller="SF_RelatedListEditorCC" >	
+	<aura:attribute name="relatedList" type="Map" description="a single RL"/>
+	<aura:attribute name="records" type="Map" description="records pulled from apex"/>
+	<aura:attribute name="recordList" type="Map" description="records pulled from apex"/>
+	<aura:attribute name="recordId" type="Id"/>
+	<aura:attribute name="parentObject" type="string" default="Account"/>
+	<aura:attribute name="objectName" type="string" default="Contact"/>
+	<aura:attribute name="rowsInit" type="String" default="30"/>
+	<aura:attribute name="rowsToLoad" type="String" default="30"/>
+	<aura:attribute name="showFields" type="String" default="Id, Name"/>
+	<aura:attribute name="hideNonUpdateable" type="Boolean" default="false"/>
+	<aura:attribute name="displayPicklistAsText" type="Boolean" default="false"/>
+	<aura:attribute name="displaySaveStatus" type="Boolean" default="false"/>
+	<aura:attribute name="isUnsavedRecords" type="Boolean" default="false"/>
+	<aura:attribute name="displayCreateRowButton" type="Boolean" default="true"/>
+	<aura:attribute name="title" type="String" default=""/>
+	<aura:attribute name="isOrderDESC" type="Boolean"  default="true"/>
+	<aura:attribute name="sortField" type="String" default=""/>
+	<aura:attribute name="dragid" type="Integer" access="private" />
+	<aura:attribute type="String" access="global" name="parentField"/>
+	<aura:attribute name="numbRecLoaded" type="Integer" default="0"/>
+	<aura:attribute name="fieldsFls" type="String[]"/>
+	<aura:attribute type="Boolean" name="hasMoreRecord" default="false"/>
+	<aura:attribute type="String" name="orderFieldWithPre"/>
+	<aura:attribute type="String" name="defaultRecordTypeId" default=""/>
+	<aura:attribute name="requiredFields" type="String[]" default="[]"/>
+	<aura:attribute type="String" access="global" name="defaultValueAddList" default='{}'/>
+	<aura:attribute type="String" name="defaultLabel" default=''/>
+	<aura:attribute type="String" access="global" name="conditionsFilterList" default=''/>
+	<aura:attribute type="Map" name="filterFields"/>
+	<aura:attribute type="Boolean" name='isEditMode'/>
+	<aura:attribute type="boolean" name="isCreateRecord" default="false"/>
+	<aura:attribute name="objectToCreate" type="string"/>
+	<aura:attribute name="isHaveOrderField" type="boolean" default="false"/>
+	<aura:attribute name="orderField" type="String" default=""/>
+	<aura:attribute name="isScrollable" type="boolean" default="false"/>
+	<aura:attribute name="isLoading" type="Boolean"  default='false'/>
+	<aura:attribute name="isConfirmingSort" type="Boolean"  default='false'/>
+	<aura:attribute name="sortingFieldConfirmed" type="String" default=""/>
+
+	<aura:handler event="c:SF_EditInputChangeEvent" action="{!c.onFieldChange}" />
+	<aura:handler name="change" value="{!v.recordList}" action="{!c.reloadData}"/>
+	<aura:handler name="change" value="{!v.isLoading}" action="{!c.isLoading}"/>
+	<aura:handler name="createRecord" event="c:SF_CreateRecordEvent" action="{!c.showCreateRecordPopup}"/>
+	<aura:method name="refreshEditMode" action="{!c.refreshEditMode}"/>
+	<aura:registerEvent name="refreshRecordList" type="c:SF_RefreshRecordListEvent"/>
+	
+	<div class="slds-modal__container">
+		<header class="slds-modal__header">
+				<lightning:buttonIcon iconName="utility:close" class="slds-modal__close" variant="bare-inverse" title="閉じる" alternativeText="閉じる" onclick="{!c.confirmModal}"/>
+				<div class="slds-text-heading_medium">一括編集</div>
+		</header>
+		<div class="slds-modal__content slds-p-around_medium modal-overflow">
+			<form autocomplete="off" action="javascript:void(0);">
+				<lightning:card class="display-inline-block">
+						<aura:set attribute="title">
+								<lightning:icon class="icon" iconName="{!v.relatedList.tabStyle}" alternativeText="emoji" size="small"/>
+									{! v.title }
+						</aura:set>
+						<aura:set attribute="actions">
+								<lightning:buttonIcon alternativeText="" iconClass="" variant="border" type="button" iconName="utility:add" size="medium" onclick="{!c.createRow}"></lightning:buttonIcon>
+								<lightning:buttonMenu class="buttonMenu" variant="border" menuAlignment="right" iconName="utility:down" iconSize="medium" onselect="{! c.menuClick }">
+										<!-- <lightning:menuItem label="保存" value="save"></lightning:menuItem> -->
+										<lightning:menuItem label="テキストモード" value="textMode" aura:id="textModeItem" checked="{!v.displayPicklistAsText}"></lightning:menuItem>
+										<!-- <lightning:menuItem label="Tabキーで下へ" value="tabMode" aura:id="tabModeItem" checked="false"></lightning:menuItem> -->
+								</lightning:buttonMenu>
+						</aura:set>
+						<aura:set attribute="footer">
+							<lightning:card > 
+								<lightning:spinner aura:id="loadingSpinner" size="medium" alternativeText="loading" class="slds-hide"/>
+								<div class="" style="margin-bottom:3rem;">
+									<table class="slds-table slds-table_bordered relatedlist slds-m-bottom_small">
+										<thead>   
+											<tr class="slds-text-title_caps">
+												<aura:if isTrue="{!v.isHaveOrderField}">
+													<th class="slds-is-sortable" scope="col">
+														<button style="width:100%; height:30px;" class="slds-button slds-button_icon slds-button_icon-border" type="button" href="javascript:void(0);" role="button" tabindex="-1" onclick="{!c.sort}" data-colname="{!v.orderField}">
+															<div>
+																<!-- <aura:iteration items="{!v.requiredFields}" var="requiredField">
+																	<aura:if isTrue="{! and(requiredField == col.fieldApiName, col.fieldApiName != 'Id') }">
+																		<span style="color: red;">*</span>
+																	</aura:if>
+																</aura:iteration>-->
+																<aura:if isTrue="{!v.sortField == v.orderField}">
+																		<aura:if isTrue= "{!v.isOrderDESC}" >
+																			<lightning:icon iconName="utility:arrowup" size="x-small"/> 
+																			<aura:set attribute="else">
+																				<lightning:icon iconName="utility:arrowdown" size="x-small"/> 
+																			</aura:set>
+																		</aura:if>
+																</aura:if>
+															</div>
+														</button>
+													</th>
+													<aura:set attribute="else">
+														<th></th>
+													</aura:set>
+												</aura:if>
+												
+												<aura:iteration items="{!v.relatedList.lstObjectFields}" var="col">
+													<th aria-label="{!col.fieldName}" aria-sort="none" 
+															class="{!col.isVisible==false || col.fieldType == 'CALCULATED' || and(col.isUpdateable==false, v.hideNonUpdateable) ? 'slds-hide' : 'cellPadding slds-is-sortable'}" scope="col">
+														<a class="slds-text-link_reset slds-th__action slds-text-grid" href="javascript:void(0);" role="button" tabindex="-1" onclick="{!c.sort}" data-colname="{!col.fieldApiName}">
+															<span class="slds-assistive-text">Sort by: </span>
+															<div class="slds-grid slds-grid_vertical-align-center slds-has-flexi-truncate">
+																<aura:iteration items="{!v.requiredFields}" var="requiredField">
+																	<aura:if isTrue="{! and(requiredField == col.fieldApiName, col.fieldApiName != 'Id') }">
+																		<span style="color: red;">*</span>
+																	</aura:if>
+																</aura:iteration>
+																<span class="slds-truncate" title="{!col.fieldName}">{!col.fieldName}</span>
+																<aura:if isTrue="{!v.sortField == col.fieldApiName}">
+																		<aura:if isTrue= "{!v.isOrderDESC}" >
+																			<lightning:icon iconName="utility:arrowdown" size="x-small" class="slds-icon slds-icon-text-default slds-is-sortable__icon "/>
+																			<aura:set attribute="else">
+																				<lightning:icon iconName="utility:arrowup" size="x-small" class="slds-icon slds-icon-text-default slds-is-sortable__icon "/>
+																			</aura:set>
+																		</aura:if>
+																</aura:if>
+															</div>
+														</a>
+													</th>
+												</aura:iteration>
+												<th scope="col"></th>
+												<th scope="col" class="{!v.displaySaveStatus ? 'shrink' : 'slds-hide'}"></th>
+											</tr>
+										</thead>
+										<tbody aura:id="dataGridBody" class="dataGridBody" ondragover="{!c.cancel}" ondragenter="{!c.cancel}" ondrop="{!c.drop}">   
+											<aura:iteration items="{!v.records}" var="row" indexVar="indexRow">
+												<tr class="{!row.isVisible ? ' ' : 'slds-hide'}" ondragstart="{!c.dragstart}" data-drag-id="{!indexRow}">
+													<td data-drag-id="{!indexRow}">
+														<div class="row" onmouseover="{!c.mouseOverDragIcon}" onmouseout="{!c.mouseOutDragIcon}" data-drag-id="{!indexRow}">
+															<lightning:buttonIcon alternativeText="" iconClass="" variant="border" type="button" iconName="utility:apps" size="medium"></lightning:buttonIcon>
+														</div>
+													</td>
+													<aura:iteration items="{!row.cells}" var="cell">
+														<aura:if isTrue="{!v.isScrollable}">
+															<td class="{!cell.isVisible==false || cell.fieldType == 'CALCULATED' || and(cell.isUpdateable==false, v.hideNonUpdateable) ? 'slds-hide' : 'cellPadding'}" style="min-width:150px">
+																<c:SF_EditInputCmp type="{!v.displayPicklistAsText ? 'standard' : cell.inputMainType}"
+																										aura:id="inputCmp"
+																										subType="{!cell.inputSubType}" 
+																										formatType="{!cell.inputFormatType}" 
+																										scale="{!cell.inputScale}" 
+																										value="{!cell.value}"
+																										name ="{!cell.fieldApiName}"
+																										rowIndex = "{!cell.rowIndex}"
+																										selectOptions="{!cell.picklistOptions}" 
+																										isLocked="{!!cell.isEditable}" 
+																										objectsForLookupField="{!cell.relationship.objects}" 
+																										isRequired="{!cell.isRequired}"
+																										isEditable="false"
+																										fieldType="{!cell.fieldType}"/>
+															</td>
+															<aura:set attribute="else">
+																<td class="{!cell.isVisible==false || cell.fieldType == 'CALCULATED' || and(cell.isUpdateable==false, v.hideNonUpdateable) ? 'slds-hide' : 'cellPadding'}">
+																	<c:SF_EditInputCmp type="{!v.displayPicklistAsText ? 'standard' : cell.inputMainType}"
+																											aura:id="inputCmp"
+																											subType="{!cell.inputSubType}" 
+																											formatType="{!cell.inputFormatType}" 
+																											scale="{!cell.inputScale}" 
+																											value="{!cell.value}"
+																											name ="{!cell.fieldApiName}"
+																											rowIndex = "{!cell.rowIndex}"
+																											selectOptions="{!cell.picklistOptions}" 
+																											isLocked="{!!cell.isEditable}" 
+																											objectsForLookupField="{!cell.relationship.objects}" 
+																											isRequired="{!cell.isRequired}"
+																											isEditable="false"
+																											fieldType="{!cell.fieldType}"/>
+																</td>
+															</aura:set>
+														</aura:if>
+													</aura:iteration>
+													<td> 
+														<div class="group-button-action" style="float:right">
+															<lightning:buttonIcon iconName="utility:copy" value="{!indexRow}" variant="standard" alternativeText="行複製" iconClass="dark" onclick="{!c.cloneRow}" class="{!v.relatedList.isRowCreateable ? ' ' : 'slds-hide'}"/>
+															<lightning:buttonIcon iconName="utility:delete" value="{!indexRow}" variant="standard" alternativeText="行削除" iconClass="dark" onclick="{!c.deleteRow}" class="{!v.relatedList.isRowDeleteable ? ' ' : 'slds-hide'}"/>
+															<aura:if isTrue="{!row.DMLType == 'toUpdate'}">
+																<lightning:buttonIcon iconName="utility:new_window" value="{!row.Id}" variant="standard" alternativeText="詳細ページへ" iconClass="dark" onclick="{!c.moveToDetail}"/>
+																<aura:set attribute="else">
+																		<lightning:buttonIcon iconName="utility:new_window" value="{!row.Id}" variant="standard" alternativeText="詳細ページへ" iconClass="dark" disabled="true"/>
+																</aura:set>
+															</aura:if>
+														</div>
+													</td>
+													<td class="{!v.displaySaveStatus ? 'shrink' : 'slds-hide'}">
+														<c:SF_ErrorTooltipCmp message="{!row.DMLMessage}" iconName="utility:error" tipSide="left" iconVariant="error" iconSize="x-small" class="{!row.DMLError ? 'slds-show_inline' : 'slds-hide'}" tipBGColor="rgb(194, 57, 52);"/>
+														<lightning:icon iconName="utility:success" size="x-small" class="{!row.DMLError ? 'slds-hide' : 'successIconColor'}"/> 
+													</td>
+												</tr>
+											</aura:iteration>   
+										</tbody>
+									</table>
+									<div aura:id="btnLoadMore" class="buttonLoadMore">
+										<aura:if isTrue="{!v.hasMoreRecord}">
+											<a href="javascript:void(0);" onclick="{!c.loadMoreRecord}" class="slds-text-link">さらに読み込む...</a>
+										</aura:if>
+									</div>
+								</div>
+							</lightning:card>
+						</aura:set>
+					</lightning:card>
+			</form>
+		</div>
+		<footer class="slds-modal__footer">
+			<div class="slds-p-around_medium" style="text-align:center">
+				<lightning:button label="キャンセル" class="slds-m-bottom_xx-small" onclick="{! c.confirmModal }" disabled="{! v.isLoading }" />
+				<lightning:button variant="{!v.isUnsavedRecords ? 'brand':'neutral'}" label="保存" onclick="{! c.save }" class="slds-m-bottom_xx-small" disabled="{! v.isLoading }" />
+			</div> 
+		</footer>
+	</div>
+	<div style="height: 640px;">
+			<section role="dialog" tabindex="-1" aria-labelledby="modal-heading-01" aura:id="ModalConfirm" aria-modal="true" aria-describedby="modal-content-id-1" class="slds-modal">
+			  <div class="slds-modal__container" style="width:50%">
+				<header class="slds-modal__header">
+					<lightning:buttonIcon iconName="utility:close" class="slds-modal__close" variant="border-filled" title="閉じる" alternativeText="閉じる" onclick="{!c.closeConfirmModal}"/>
+					<div class="slds-text-heading_medium">一括編集</div>
+				</header>
+				<div class="slds-modal__content slds-p-around_medium" id="modal-content-id-1">
+				  <p>編集されたデータがあります。保存せずに閉じても宜しいですか？</p>
+				</div>
+				<footer class="slds-modal__footer">
+					<div class="slds-p-around_medium" style="text-align:center">
+						<lightning:button variant="neutral" label="いいえ" class="slds-m-bottom_xx-small" onclick="{! c.closeConfirmModal }" />
+						<lightning:button variant="brand"  label="はい" onclick="{! c.closeAllModal }" class="slds-m-bottom_xx-small" />
+					</div> 
+				</footer>
+			  </div>
+			</section>
+			<div class="slds-backdrop" aura:id="ModalConfirmBackdrop"></div>
+		  </div>
+		<aura:if isTrue="{!v.isCreateRecord}">
+			<c:SF_CreateRecordModal objectApiName="{!v.objectToCreate}" isOpen="{!v.isCreateRecord}"/>
+		</aura:if>  
+		<aura:if isTrue="{!v.isConfirmingSort}">
+			<div style="height: 640px;">
+				<section role="dialog" tabindex="-1" aria-labelledby="modal-heading-01" aria-modal="true" aria-describedby="modal-content-id-1" class="slds-modal slds-fade-in-open">
+				  <div class="slds-modal__container" style="width:50%">
+					<header class="slds-modal__header">
+						<lightning:buttonIcon iconName="utility:close" class="slds-modal__close" variant="border-filled" title="閉じる" alternativeText="閉じる" onclick="{!c.closeSortingConfirmationModal}"/>
+						<div class="slds-text-heading_medium">一括編集</div>
+					</header>
+					<div class="slds-modal__content slds-p-around_medium" id="modal-content-id-1">
+					  <p>ソートをかけると変更されたデータがクリアされますが宜しいでしょうか？</p>
+					</div>
+					<footer class="slds-modal__footer">
+						<div class="slds-p-around_medium" style="text-align:center">
+							<lightning:button variant="neutral" label="いいえ" class="slds-m-bottom_xx-small" onclick="{! c.closeSortingConfirmationModal }" />
+							<lightning:button variant="brand"  label="ソート" onclick="{! c.confirmSorting }" class="slds-m-bottom_xx-small" />
+						</div> 
+					</footer>
+				  </div>
+				</section>
+				<div class="slds-backdrop slds-backdrop--open"></div>
+			</div>
+		</aura:if>  
+</aura:component>

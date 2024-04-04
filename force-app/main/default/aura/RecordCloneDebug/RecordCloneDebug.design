@@ -1,0 +1,3 @@
+<design:component>
+    <design:attribute name="targetSObject" label="デバッグ対象オブジェクト" />
+</design:component>
