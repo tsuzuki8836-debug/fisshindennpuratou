@@ -1,0 +1,138 @@
+.c-container {
+    border: 1px solid #d8dde6;
+    margin: 10px 10px 10px 10px;
+  }
+  .header-column {
+    padding: 0 2rem;
+  }
+  .field-title {
+    font-size: .75rem;
+    line-height: 1.25;
+    color: #54698d;
+    margin-bottom: .25rem;
+  }
+
+  .right{
+    float: right;
+    margin-bottom: 7px;
+  }
+  .left{
+    float: left;
+    margin-top: 7px;
+  }
+  /* .input-cell {
+    background-color: #FFF2CC;
+  } */
+
+  .lowLine:nth-child(2){
+    background-image: linear-gradient(
+     to top right,
+     var(--slds-g-color-neutral-base-95, var(--lwc-tableColorBackgroundHeader,rgb(243, 243, 243))) 48%,
+     rgb(128, 128, 128),
+     var(--slds-g-color-neutral-base-95, var(--lwc-tableColorBackgroundHeader,rgb(243, 243, 243))) 52%
+   );
+ }
+
+.slds-table{
+  margin: 0;
+  border-spacing: 0;
+  position: relative;
+  border-collapse: collapse;
+}
+.slds-table th{
+  padding-left:0rem;
+  text-align: center;
+}
+
+tr:nth-child(even) {
+	background: #eff4ff;
+}
+
+tr:nth-child(odd) {
+	background: #fff;
+}
+
+/* 壁掛盤CSS */
+/* １行目ヘッダ　固定 */
+.fieldTables thead tr:first-child{
+  position: sticky;
+  z-index: 8;
+  top: 0;
+}
+/* ２行目ヘッダ　固定 */
+.fieldTables thead tr:nth-child(2){
+  position: sticky;
+  z-index: 8;
+  top: 27px;
+}
+/*ヘッダーを「H」セルと他を分離し、「H」セルを固定*/
+.fieldTables thead tr th:nth-child(1),
+.fieldTables thead tr td:nth-child(1),
+.fieldTables thead tr th:nth-child(2),
+.fieldTables thead tr td:nth-child(2){
+  position: sticky;
+  position: -webkit-sticky;
+  z-index: 9;
+}
+.fieldTables tbody tr th:nth-child(1),
+.fieldTables tbody tr td:nth-child(1),
+.fieldTables tbody tr th:nth-child(2),
+.fieldTables tbody tr td:nth-child(2) {
+  position: sticky;
+  position: -webkit-sticky;
+  z-index: 4;
+	background: #fff;
+}
+.fieldTables thead tr th:nth-child(1),
+.fieldTables tbody tr th:nth-child(1),
+.fieldTables thead tr td:nth-child(1),
+.fieldTables tbody tr td:nth-child(1) {
+  left: 0;
+}
+.fieldTables thead tr th:nth-child(2),
+.fieldTables tbody tr th:nth-child(2),
+.fieldTables thead tr td:nth-child(2),
+.fieldTables tbody tr td:nth-child(2) {
+  left: 3.3rem;
+}
+
+
+
+/* 低圧盤適用CSS */
+/*ヘッダー固定*/
+.classicTables th{
+  position: sticky;
+  z-index: 8;
+  top: 0;
+}
+
+/*ヘッダーを「H」セルと他を分離し、「H」セルを固定*/
+.classicTables thead th:nth-child(1){
+  position: sticky;
+  left: 0;
+  top: 0;
+  z-index: 9;
+}
+/*ヘッダーを「WD」セルと他を分離し、「WD」セルを固定*/
+.classicTables thead th:nth-child(2){
+  position: sticky;
+  left: 2.98rem;
+  top: 0;
+  z-index: 9;
+}
+
+
+/*H列の下を固定*/
+.cell_classicTables:first-child{
+  position: sticky;
+  left: 0;
+  z-index: 4;
+	background: #fff;
+}
+/*WD列の下を固定*/
+.cell_classicTables:nth-child(2){
+  position: sticky;
+  left: 2.98rem;
+  z-index: 4;
+	background: #fff;
+}

@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ListView xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>ShishiSha2ka</fullName>
+    <columns>NAME</columns>
+    <columns>CREATEDBY_USER</columns>
+    <columns>TaskCategory__c</columns>
+    <columns>Status__c</columns>
+    <columns>DueDate__c</columns>
+    <columns>EstimatedAnswerDate__c</columns>
+    <columns>RequestDestination__c</columns>
+    <filterScope>Everything</filterScope>
+    <filters>
+        <field>Requester__c</field>
+        <operation>equals</operation>
+        <value>四支　社二課</value>
+    </filters>
+    <label>23-03.四支　社二課の依頼タスク</label>
+</ListView>

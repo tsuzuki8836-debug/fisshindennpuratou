@@ -45,10 +45,13 @@ export default class DetailsInputScreenBForHighLowVoltage extends LightningEleme
     //------------------一覧の変数-------------------------------------
     @track isHighVoltage = false;
     @track isHighLowVoltage = false;
+
+    //2024/7/25 TS佐藤
     //屋外・油入 自冷   （１／２）
-    @track title2_1='屋外・油入 自冷   （１／２）';
+    @track title2_1=' ';
     //屋外・油入 自冷   （２／２）
-    @track title2_2='屋外・油入 自冷   （２／２）';
+    @track title2_2=' ';
+
     @track headerList=[]; //一覧ヘッダー情報
     @track bodyList=[];   //一覧ボディー情報
     @track footerInfo2_1 = Annotation_HighVoltageTR;
@@ -206,7 +209,7 @@ export default class DetailsInputScreenBForHighLowVoltage extends LightningEleme
                 const passEvent = new CustomEvent('checkboxchangeforhlv', {
                     detail:{rId:rId} 
                 });
-               this.dispatchEvent(passEvent);
+                this.dispatchEvent(passEvent);
             }
         }else{
             //選択解除の場合、保持値のクリア
@@ -219,6 +222,13 @@ export default class DetailsInputScreenBForHighLowVoltage extends LightningEleme
                 detail:{rId:null} 
             });
             this.dispatchEvent(passEvent);
+        }
+    }
+    //2024/7/25 TS佐藤 
+    get GetStyle(){
+        console.log(window.innerWidth);
+        if(this.title2_1 && this.title2_1.indexOf(' ') != -1){
+            return 'overflow: auto;max-height: 540px; max-width:' + (window.innerWidth*0.6) + 'px';
         }
     }
 }

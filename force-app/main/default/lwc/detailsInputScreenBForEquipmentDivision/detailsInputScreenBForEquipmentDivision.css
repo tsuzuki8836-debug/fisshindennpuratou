@@ -1,0 +1,12 @@
+tr:nth-child(even) {
+    background: #eff4ff;
+}
+
+tr:nth-child(odd) {
+    background: #fff;
+}
+
+.c-container {
+    border: 1px solid #d8dde6;
+    margin: 10px 10px 10px 10px;
+}

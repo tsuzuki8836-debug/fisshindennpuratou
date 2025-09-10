@@ -11,6 +11,7 @@ export default class DetailsInputScreenB extends LightningElement {
                         { label: '特高TR 油入', value: '1' },
                         { label: '特高TR モールド', value: '2' },
                         { label: '特高TRガス', value: '3' },
+                        { label: '特高TR植物油入', value: '4' },
                     ];
 
     //特高TR　条件
@@ -59,6 +60,7 @@ export default class DetailsInputScreenB extends LightningElement {
     @track displayTableLabel;
     @track isMoldType = false;
     @track searchConMap;
+    @track isFacility;
 
     @track displayCondition;
     @track displayTotal;
@@ -131,6 +133,11 @@ export default class DetailsInputScreenB extends LightningElement {
                 if (this.screenType=='2') {
                     this.priceCondition5Label='収納盤';
                     this.isMoldType = true;
+                }
+
+                // BUを判定
+                if(data.buType == 'S'){
+                    this.isFacility = true;
                 }
 
                 // Send selected Id to quoteManagementMainPage

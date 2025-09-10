@@ -9,7 +9,11 @@ import QUOTATION_DESCRIPTION_RESOURCE2 from '@salesforce/resourceUrl/QuotationDe
 import MAJOR_CLASSIFICATION_FIELD from '@salesforce/schema/Device__c.MajorClassification__c';
 import getPricingTableRecords from '@salesforce/apex/DetailController.getPricingTableRecords';
 import getPricingTableByintensify from '@salesforce/apex/DetailController.getPricingTableByintensify';
+//import containsEVT_PT_LA from '@salesforce/apex/DetailsAddController.containsEVT_PT_LA';
+import containsEVT_PT_LA from '@salesforce/apex/DetailController.containsEVT_PT_LA';
 import { isNotEmpty } from 'c/commonUtil';
+import Quantity from '@salesforce/schema/Asset.Quantity';
+import QuantityUnitOfMeasure from '@salesforce/schema/Product2.QuantityUnitOfMeasure';
 
 export default class SearchDatatable extends LightningElement {
 
@@ -190,7 +194,51 @@ export default class SearchDatatable extends LightningElement {
 
     // 数量を全てクリアする
     clearAllQuantity() {
-        
+        //一時情報をクリア。
+        this.intensifyRecords.forEach((item) => {
+            //数量をクリア
+            if(isNotEmpty(item.Quantity))item.Quantity=null;
+            //数量より計算された合計をクリア
+            if(isNotEmpty(item.WC))item.WC=null;
+            if(isNotEmpty(item.Price))item.Price=null;
+            if(isNotEmpty(item.ProvisionPrice))item.ProvisionPrice=null;
+            if(isNotEmpty(item.Weight))item.Weight=null;
+        });
+        //集約対象リストを送信
+        this.dispatchEvent(new CustomEvent('quantitychange', {
+            detail: {intensifyRecords:this.intensifyRecords} 
+        }));
+        //新規レコードの一時情報をクリア
+        this.newRecords.forEach((item) => {
+            //数量をクリア
+            if(isNotEmpty(item.Quantity))item.Quantity=null
+            //数量より計算された合計をクリア
+            if(isNotEmpty(item.WC))item.WC=null;
+            if(isNotEmpty(item.Price))item.Price=null;
+            if(isNotEmpty(item.ProvisionPrice))item.ProvisionPrice=null;
+            if(isNotEmpty(item.Weight))item.Weight=null;
+
+        });
+        //新規追加行情報を送信
+        this.dispatchEvent(new CustomEvent('newrowchange', {
+            detail: {newRecords:this.newRecords} 
+        }));
+        //一覧表示データをクリア
+        this.detailRecords.forEach((item) => {
+            //数量をクリア
+            if(isNotEmpty(item.Quantity)){
+                item.Quantity=null;
+                if(isNotEmpty(item.QuantitySpan))item.QuantitySpan='';
+                //各価格を計算する
+                item = this.calDetailRow(item.Id, item.Quantity, item.UnitPrice, item.UnitWeight, item.ProvisionPrice, item);
+                //内訳集約対象に各計算値を更新
+                this.addtoIntensifyRecords(item);//計算後
+            }
+
+        });
+        //合計金額エリアを再計算
+        this.setTotalPrice();
+
     }
 
     //新規行の入力内容を一時保存
@@ -199,6 +247,18 @@ export default class SearchDatatable extends LightningElement {
         let objName = event.currentTarget.dataset.rowindex;//Id:pageNumber+'rowIndex'+rowIndex
 
         let validity = event.target.validity;
+        //WC単価、WC係数、単価係数、数量が全角入力された際に半角に変換する 2023/11/10
+        if(event.target.name=='CreditWC'  //WC単価
+         || event.target.name=='WCCoefficient' //WC係数
+         || event.target.name=='UnitPriceCoefficient' //単価係数
+         || event.target.name =='Quantity') {     //数量
+            if (isNotEmpty(event.target.value)) {
+                event.target.value=event.target.value.replace(/[０-９．]/g, function(s) {
+                    return String.fromCharCode(s.charCodeAt(0) - 0xFEE0);
+                });
+            }
+         }
+
         if (!validity.valid) {
             let validationMessage = event.target.validationMessage;
             const errEvent = new ShowToastEvent({
@@ -222,16 +282,22 @@ export default class SearchDatatable extends LightningElement {
             if(item.name==='Name1')Name1=itemVal;
             if(item.name==='Name2')Name2=itemVal;
             if(item.name==='Name3')Name3=itemVal;
-            if(item.name==='CreditWC')CreditWC=itemVal;
+            if(item.name==='CreditWC') CreditWC=itemVal;
             if(item.name==='WCCoefficient')WCCoefficient=itemVal;
             if(item.name==='UnitPrice')UnitPrice=itemVal;
             if(item.name==='UnitPriceCoefficient')UnitPriceCoefficient=itemVal;
             if(item.name==='ProvisionUnitPrice')ProvisionUnitPrice=itemVal;
             if(item.name==='UnitWeight')UnitWeight=itemVal;
             //数量が全角入力された際に半角に変換する 2023/04/26 TS鈴木
-            if(item.name==='Quantity')Quantity=itemVal.replace(/[０-９．]/g, function(s) {
-                return String.fromCharCode(s.charCodeAt(0) - 0xFEE0);
-            });;
+            if(item.name==='Quantity'){
+                if (isNotEmpty(itemVal)) {
+                    Quantity=itemVal.replace(/[０-９．]/g, function(s) {
+                        return String.fromCharCode(s.charCodeAt(0) - 0xFEE0);
+                    });
+                }else {
+                    Quantity=null;
+                }
+            }
             if(item.name==='Note')Note=itemVal;
             if(item.name==='Name4')Name4=itemVal;
         });
@@ -259,7 +325,7 @@ export default class SearchDatatable extends LightningElement {
                 detail.Note = Note;
                 detail.Name4 = Name4;
                 //各価格を計算する
-                detail= this.calDetailRow(objName, Quantity, UnitPrice, UnitWeight, detail);
+                detail= this.calDetailRow(objName, Quantity, UnitPrice, UnitWeight, ProvisionUnitPrice, detail);
                 detailRecords[j]=detail;
                 //内訳集約対象に追加
                 this.addtoIntensifyRecords(detailRecords[j]);
@@ -570,6 +636,10 @@ export default class SearchDatatable extends LightningElement {
     handleCreditWCChange(event){
         let objName = event.currentTarget.dataset.id;//Id@CreditWC
         var objInput=this.template.querySelector('input[data-id="'+objName+'"]');
+        //WCが全角入力された際に半角に変換する 2023/11/10
+        objInput.value = objInput.value.replace(/[０-９．]/g, function(s) {
+            return String.fromCharCode(s.charCodeAt(0) - 0xFEE0);
+        });
         //項目チェック
         let validity = event.target.validity;
         if (!validity.valid) {
@@ -582,7 +652,7 @@ export default class SearchDatatable extends LightningElement {
             });
             this.dispatchEvent(errEvent);
             objInput.value='';
-            return;
+            // return;
         }
 
         const ids = objName.split('@');
@@ -599,7 +669,10 @@ export default class SearchDatatable extends LightningElement {
     handleWCCoefficientChange(event){
         let objName = event.currentTarget.dataset.id;//Id@WCCoefficient
         var objInput=this.template.querySelector('input[data-id="'+objName+'"]');
-
+        //WC係数が全角入力された際に半角に変換する 2023/11/10
+        objInput.value = objInput.value.replace(/[０-９．]/g, function(s) {
+            return String.fromCharCode(s.charCodeAt(0) - 0xFEE0);
+        });
         //仮　項目チェック
         let validity = event.target.validity;
         if (!validity.valid) {
@@ -612,7 +685,7 @@ export default class SearchDatatable extends LightningElement {
             });
             this.dispatchEvent(errEvent);
             objInput.value='';
-            return;
+            // return;
         }
 
 
@@ -630,6 +703,10 @@ export default class SearchDatatable extends LightningElement {
     handleUnitPriceCoefficientChange(event){
         let objName = event.currentTarget.dataset.id;//Id@UnitPriceCoefficient
         var objInput=this.template.querySelector('input[data-id="'+objName+'"]');
+        //単価係数が全角入力された際に半角に変換する 2023/11/10
+        objInput.value = objInput.value.replace(/[０-９．]/g, function(s) {
+            return String.fromCharCode(s.charCodeAt(0) - 0xFEE0);
+        });
         //項目チェック
         let validity = event.target.validity;
         if (!validity.valid) {
@@ -642,7 +719,7 @@ export default class SearchDatatable extends LightningElement {
             });
             this.dispatchEvent(errEvent);
             objInput.value='';
-            return;
+            // return;
         }
 
         const ids = objName.split('@');
@@ -670,7 +747,7 @@ export default class SearchDatatable extends LightningElement {
             });
             this.dispatchEvent(errEvent);
             objInput.value='';
-            return;
+            // return;
         }
         const ids = objName.split('@');
         let idChanged = ids[0];
@@ -705,7 +782,7 @@ export default class SearchDatatable extends LightningElement {
             });
             this.dispatchEvent(errEvent);
             objInput.value='';
-            return;
+            // return;
         }
         const ids = objName.split('@');
         let idChanged = ids[0];
@@ -719,6 +796,7 @@ export default class SearchDatatable extends LightningElement {
 
     //数量が変更された場合
     handleQuantityChange(event){
+        console.log('handleQuantityChange Start');
         let objName = event.currentTarget.dataset.id;//Id@Quantity
 
         const ids = objName.split('@');
@@ -728,6 +806,32 @@ export default class SearchDatatable extends LightningElement {
         objInput.value = objInput.value.replace(/[０-９．]/g, function(s) {
             return String.fromCharCode(s.charCodeAt(0) - 0xFEE0);
         });
+        // 2024/02/20 TS田村 追記
+        // if(idChanged.length == 22){
+        //     idChanged = idChanged.slice(0, -4);
+        // }
+        containsEVT_PT_LA({pricingTableId: idChanged, quantity: objInput.value})
+        .then(result => {
+            console.log(result);
+            if(result == true){
+                const errEvent = new ShowToastEvent({
+                    title: 'エラー',
+                    message: '「LA」「VT、PT」「ZVT、GPT、EVT」「ネットワークVT」「ネットワークCT」に2以上は入力できません。',
+                    variant: 'error',
+                    mode: 'dismissable'
+                });
+                this.dispatchEvent(errEvent);
+                var detailRecords = this.detailRecords;
+                for(var i = 0; i < detailRecords.length; i++){
+                    var detail = detailRecords[i];
+                    if(detail.Id == idChanged){
+                        detail['Quantity'] = '';
+                        detail['QuantitySpan'] = '';
+                        detail['Price'] = '';
+                    }
+                }
+                }
+            });
 
         //項目チェック
         let validity = event.target.validity;
@@ -741,7 +845,7 @@ export default class SearchDatatable extends LightningElement {
             });
             this.dispatchEvent(errEvent);
             objInput.value='';
-            return;
+            // return;
         }
 
         this.calDetailRecords(idChanged);
@@ -817,6 +921,7 @@ export default class SearchDatatable extends LightningElement {
         var quantity = objInput.value;
         let unitPrice = objInput.dataset.name;//単価
         let unitWeight = objInput.dataset.weight;//単位重量
+        let provisionUnitPrice = objInput.dataset.provision;//提供単価
         
         //当行のデータを再計算
         var detailRecords = this.detailRecords;
@@ -825,7 +930,7 @@ export default class SearchDatatable extends LightningElement {
             if(idChanged === idRecord) {
                 var detail = detailRecords[j];
                 //各価格を計算する
-                detailRecords[j] = this.calDetailRow(idChanged, quantity, unitPrice, unitWeight, detail);
+                detailRecords[j] = this.calDetailRow(idChanged, quantity, unitPrice, unitWeight, provisionUnitPrice, detail);
 
                 //内訳集約対象に追加
                 this.addtoIntensifyRecords(detailRecords[j]);
@@ -835,8 +940,7 @@ export default class SearchDatatable extends LightningElement {
     }
 
     //行単位で各価格を計算する
-    calDetailRow(idChanged, quantity, unitPrice, unitWeight, detail){
-        
+    calDetailRow(idChanged, quantity, unitPrice, unitWeight, provisionUnitPrice, detail){
         let creditWCObjName = idChanged + '@CreditWC';//単位WCコンポの名称
         let wcObjName = idChanged + '@WCCoefficient';//WC係数コンポの名称
         let priceObjName = idChanged + '@UnitPriceCoefficient';//価格係数コンポの名称
@@ -846,7 +950,6 @@ export default class SearchDatatable extends LightningElement {
         let unitPricObjName = idChanged + '@UnitPric';//単価コンポの名称
         var unitPricObj=this.template.querySelector('input[data-id="'+unitPricObjName+'"]');
         if (isNotEmpty(unitPricObj))unitPrice=unitPricObj.value;
-        console.log('unitPrice::::::::'+unitPrice);
 
         //Input 係数入力のコンポ
         var creditWCObj=this.template.querySelector('input[data-id="'+creditWCObjName+'"]');
@@ -916,7 +1019,7 @@ export default class SearchDatatable extends LightningElement {
         }else{
             //提供価格を計算する
             var provisionPrice = this.priceCalculator({
-                UnitPrice__c: provisionPriceInObj.value,
+                UnitPrice__c: provisionUnitPrice,
                 Quantity__c: quantity,
                 Coefficient__c: null
             });
@@ -929,8 +1032,8 @@ export default class SearchDatatable extends LightningElement {
         detail['CreditWCSpan']=(isNotEmpty(creditWCObj.value)?Number(creditWCObj.value).toLocaleString():'');
         detail['WCCoefficient']=wcInObj.value;
         detail['UnitPriceCoefficient']=priceIntObj.value;
-        detail['ProvisionUnitPrice']= isNotEmpty(provisionPriceInObj)?provisionPriceInObj.value:'';
-        detail['ProvisionUnitPriceSpan']=(isNotEmpty(provisionPriceInObj)&&isNotEmpty(provisionPriceInObj.value)?Number(provisionPriceInObj.value).toLocaleString():'');
+        detail['ProvisionUnitPrice']= provisionUnitPrice;
+        detail['ProvisionUnitPriceSpan']=(isNotEmpty(provisionUnitPrice)?Number(provisionUnitPrice).toLocaleString():'');
         detail['UnitWeight']=unitWeight;
         detail['UnitWeightSpan']=(isNotEmpty(unitWeight)?Number(unitWeight).toLocaleString():'');
         detail['WC']=wcPrice;
@@ -942,6 +1045,7 @@ export default class SearchDatatable extends LightningElement {
         detail['UnitPrice']=unitPrice;
         detail['UnitPriceSpan']=(isNotEmpty(unitPrice)?Number(unitPrice).toLocaleString():'');
         return detail;
+
     }
 
 
@@ -1147,12 +1251,12 @@ export default class SearchDatatable extends LightningElement {
     ROTATION_TYPE = { type: '回転数制御装置(VVVF)', file: 'rotation.png' };
     GENERATION_TYPE = { type: '発電機', file: 'generator.png' };
     HIGH_PRESSURE_TYPE = { type: '高圧コンビ', file: 'high-pressure.png' };
-    TELEMETRY_TYPE = { type: 'テレメータ装置', file: 'telemetry.png' };
-    TELEMETRY_AUTONOMOUS_TYPE = { type: 'テレメータ装置(自律型)', file: 'telemetry-autonomous-type.png' };
-    DISCHARGE_ALARM_DEVICE_TYPE = { type: '放流警報装置', file: 'discharge-alarm-device.png' };
-    RADIO_EQUIPMENT_TYPE = { type: '無線装置(テレメータ･テレコントロール用)', file: 'radio-equipment.png' };
-    IP_TRANMISSION_EQUIPMENT_TYPE = { type: 'IP伝送装置', file: 'ip-transmission-equipment.png' };
-    CCTV_CAMERA_TYPE = { type: 'CCTVカメラ設備', file: 'cctv-camera.png' };
+    TELEMETRY_TYPE = { type: 'テレメータ装置[国交省本省宛て提出機器単体費]', file: 'telemetry.png' };
+    TELEMETRY_AUTONOMOUS_TYPE = { type: 'テレメータ装置(自律型)[国交省本省宛て提出機器単体費]', file: 'telemetry-autonomous-type.png' };
+    DISCHARGE_ALARM_DEVICE_TYPE = { type: '放流警報装置[国交省本省宛て提出機器単体費]', file: 'discharge-alarm-device.png' };
+    RADIO_EQUIPMENT_TYPE = { type: '無線装置(テレメータ･テレコントロール用)[国交省本省宛て提出機器単体費]', file: 'radio-equipment.png' };
+    IP_TRANMISSION_EQUIPMENT_TYPE = { type: 'IP伝送装置[国交省本省宛て提出機器単体費]', file: 'ip-transmission-equipment.png' };
+    CCTV_CAMERA_TYPE = { type: 'CCTVカメラ設備[国交省本省宛て提出機器単体費等]', file: 'cctv-camera.png' };
     MELFLEX_TYPE = { type: 'MELFLEX', file: 'MELFLEX.png' };
 
     // 見積書項目レコードを取得

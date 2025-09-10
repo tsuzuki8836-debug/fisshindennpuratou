@@ -55,6 +55,7 @@
             , EmailEncodingKey = 'ISO-2022-JP'
             , ProfileId = PROFILE_SALES.Id
             , LanguageLocaleKey = 'ja'
+            , DepartmentAndDivision__c = '01_社会環境事業部'
         );
 
         testApprover1 = new User(
@@ -69,6 +70,7 @@
             , EmailEncodingKey = 'ISO-2022-JP'
             , ProfileId = PROFILE_SALES.Id
             , LanguageLocaleKey = 'ja'
+            , DepartmentAndDivision__c = '01_社会環境事業部'
         );
 
         testApprover2 = new User(
@@ -83,6 +85,7 @@
             , EmailEncodingKey = 'ISO-2022-JP'
             , ProfileId = PROFILE_SALES.Id
             , LanguageLocaleKey = 'ja'
+            , DepartmentAndDivision__c = '01_社会環境事業部'
         );
 
         testApprover3 = new User(
@@ -97,6 +100,7 @@
             , EmailEncodingKey = 'ISO-2022-JP'
             , ProfileId = PROFILE_SALES.Id
             , LanguageLocaleKey = 'ja'
+            , DepartmentAndDivision__c = '01_社会環境事業部'
         );
 
         List<User> testUserList = new List<User>{
@@ -138,7 +142,7 @@
                 , OrderExpectation__c = '1'
                 , Order_OrderDate__c = Date.newInstance(2001, 3, 4)
                 , PickDivision__c = '本社　施設'
-                , ProposedTechniqueRemarks__c = 'テスト技術提案 備考'
+                // , ProposedTechniqueRemarks__c = 'テスト技術提案 備考'
                 , PumpStation__c = testpumpStation.Id
                 , Result_SalesDate__c = Date.newInstance(2002, 5, 6)
                 , SR_CP__c = 7777
@@ -162,13 +166,13 @@
             insert testFactory;
 
             testRequestTask = new RequestTask__c(
-                DueDate__c = Date.newInstance(2003, 7, 8)
-                , RequestCc1__c = '長電施電シ'
-                , RequestCc2__c = '配電東配計'
-                , RequestCc3__c = '神電公共営・神電社シ一二計'
+                DueDate__c = Date.newInstance(2099, 12, 31)
+                , RequestCc1__c = '神電・施設エンジ'
+                , RequestCc2__c = '配電・東配計'
+                , RequestCc3__c = '伊電・長施営'
                 , RequestDestination__c = '神電' // RequestFactoryName__c '神戸製作所'
                 , Requester__c = '本社　施設'
-                , RequestTo__c = '神電公共営・本駐神電社シ一一計'
+                , RequestTo__c = '神電・社会営'
                 , TaskCategory__c = '提案書作成依頼'
                 , UserDeptLastApprover__c = '承認者1'
                 , Approver1__c = testApprover1.Id
@@ -178,9 +182,10 @@
                 , Opportunity__c = testOpportunity.Id
 
                 // insertに必要な項目
-                , RequestDestinationCc__c = '長電'
+                , RequestDestinationCc__c = '神電'
                 , RequestDestinationCc2__c = '配電'
-                , RequestDestinationCc3__c = '神電'
+                , RequestDestinationCc3__c = '伊電長崎'
+                , OwnerId = testUser.Id
             );
             insert testRequestTask;
         }
@@ -233,7 +238,7 @@
             System.assertEquals(testOpportunity.OrderExpectation__c, RequestFormOutputGenerator.requestTask.Opportunity__r.OrderExpectation__c, '依頼タスク取得が不正です。');
             System.assertEquals(testOpportunity.CloseDate, RequestFormOutputGenerator.requestTask.Opportunity__r.CloseDate, '依頼タスク取得が不正です。');
             System.assertEquals(testOpportunity.PickDivision__c, RequestFormOutputGenerator.requestTask.Opportunity__r.PickDivision__c, '依頼タスク取得が不正です。');
-            System.assertEquals(testOpportunity.ProposedTechniqueRemarks__c, RequestFormOutputGenerator.requestTask.Opportunity__r.ProposedTechniqueRemarks__c, '依頼タスク取得が不正です。');
+            // System.assertEquals(testOpportunity.ProposedTechniqueRemarks__c, RequestFormOutputGenerator.requestTask.Opportunity__r.ProposedTechniqueRemarks__c, '依頼タスク取得が不正です。');
             System.assertEquals(testpumpStation.Name, RequestFormOutputGenerator.requestTask.Opportunity__r.PumpStation__r.Name, '依頼タスク取得が不正です。');
             System.assertEquals(testOpportunity.Result_SalesDate__c, RequestFormOutputGenerator.requestTask.Opportunity__r.Result_SalesDate__c, '依頼タスク取得が不正です。');
             System.assertEquals(testOpportunity.SR_CP__c, RequestFormOutputGenerator.requestTask.Opportunity__r.SR_CP__c, '依頼タスク取得が不正です。');
@@ -256,6 +261,8 @@
                     , Requester__c = '本社　施設'
                     , RequestDestination__c = '神電' // RequestFactoryName__c '神戸製作所'
                     , TaskCategory__c = '提案書作成依頼'
+                    , UserDeptApproved__c = true
+                    , RequestDestinationCc__c = '神電'
                 );
                 insert testRequestTask;
 
@@ -298,7 +305,7 @@
             System.assertEquals(null, RequestFormOutputGenerator.requestTask.Opportunity__r.OrderExpectation__c, '依頼タスク取得が不正です。');
             System.assertEquals(null, RequestFormOutputGenerator.requestTask.Opportunity__r.Order_OrderDate__c, '依頼タスク取得が不正です。');
             System.assertEquals(null, RequestFormOutputGenerator.requestTask.Opportunity__r.PickDivision__c, '依頼タスク取得が不正です。');
-            System.assertEquals(null, RequestFormOutputGenerator.requestTask.Opportunity__r.ProposedTechniqueRemarks__c, '依頼タスク取得が不正です。');
+            // System.assertEquals(null, RequestFormOutputGenerator.requestTask.Opportunity__r.ProposedTechniqueRemarks__c, '依頼タスク取得が不正です。');
             System.assertEquals(null, RequestFormOutputGenerator.requestTask.Opportunity__r.PumpStation__r.Name, '依頼タスク取得が不正です。');
             System.assertEquals(null, RequestFormOutputGenerator.requestTask.Opportunity__r.Result_SalesDate__c, '依頼タスク取得が不正です。');
             System.assertEquals(null, RequestFormOutputGenerator.requestTask.Opportunity__r.SR_CP__c, '依頼タスク取得が不正です。');
@@ -727,6 +734,8 @@
                     , Requester__c = '本社　施設'
                     , RequestDestination__c = '神電' // RequestFactoryName__c '神戸製作所'
                     , TaskCategory__c = '提案書作成依頼'
+                    , UserDeptApproved__c = true
+                    , RequestDestinationCc__c = '神電'
                 );
                 insert testRequestTask;
                 
@@ -822,40 +831,40 @@
             List<String> valueList = result.substringAfter('\n').split(',');
 
             // assertion
-            System.assertEquals(15, headerList.size(), '②見積照会書用CSV作成が不正です。');
-            System.assertEquals('発行日,案件番号,商談番号,宛先,担当,顧客名,件名,案件概要,システム概要,確度,受注,売上,工事,商流,着手', header, '②見積照会書用CSV作成が不正です。');
-            System.assertEquals(15, valueList.size(), '②見積照会書用CSV作成が不正です。');
+            System.assertEquals(14, headerList.size(), '②見積照会書用CSV作成が不正です。1)');
+            System.assertEquals('発行日,案件番号,商談番号,宛先,担当,顧客名,件名,案件概要,確度,受注,売上,工事,商流,着手', header, '②見積照会書用CSV作成が不正です。2');
+            System.assertEquals(14, valueList.size(), '②見積照会書用CSV作成が不正です。3');
             // 発行日
-            System.assertEquals(RequestFormOutputGenerator.EXECUTED_DATE, valueList[0], '②見積照会書用CSV作成が不正です。');
+            System.assertEquals(RequestFormOutputGenerator.EXECUTED_DATE, valueList[0], '②見積照会書用CSV作成が不正です。4');
             // 案件番号
-            System.assertNotEquals(null, valueList[1], '②見積照会書用CSV作成が不正です。');
+            System.assertNotEquals(null, valueList[1], '②見積照会書用CSV作成が不正です。5');
             // 商談番号
-            System.assertEquals(testOpportunity.OpportunityNumber__c, valueList[2], '②見積照会書用CSV作成が不正です。');
+            System.assertEquals(testOpportunity.OpportunityNumber__c, valueList[2], '②見積照会書用CSV作成が不正です。6');
             // 宛先
-            System.assertEquals(testRequestTask.RequestTo__c + 'Ｋ殿', valueList[3], '②見積照会書用CSV作成が不正です。');
+            System.assertEquals(testRequestTask.RequestTo__c + 'Ｋ殿', valueList[3], '②見積照会書用CSV作成が不正です。7');
             // 担当
-            System.assertEquals(testUser.LastName + testUser.FirstName, valueList[4], '②見積照会書用CSV作成が不正です。');
+            System.assertEquals(testUser.LastName + testUser.FirstName, valueList[4], '②見積照会書用CSV作成が不正です。8');
             // 顧客名
-            System.assertEquals('"' + testAccount.Name + '"', valueList[5], '②見積照会書用CSV作成が不正です。');
+            System.assertEquals('"' + testAccount.Name + '"', valueList[5], '②見積照会書用CSV作成が不正です。9');
             // 件名
-            System.assertEquals('"' + testOpportunity.Name + '"', valueList[6], '②見積照会書用CSV作成が不正です。');
+            System.assertEquals('"' + testOpportunity.Name + '"', valueList[6], '②見積照会書用CSV作成が不正です。10');
             // 案件概要
-            System.assertEquals('"' + testOpportunity.OpportunityNote__c + '"', valueList[7], '②見積照会書用CSV作成が不正です。');
+            System.assertEquals('"' + testOpportunity.OpportunityNote__c + '"', valueList[7], '②見積照会書用CSV作成が不正です。11');
             // システム概要
-            System.assertEquals('"' + testOpportunity.ProposedTechniqueRemarks__c + '"', valueList[8], '②見積照会書用CSV作成が不正です。');
+            // System.assertEquals('"' + testOpportunity.ProposedTechniqueRemarks__c + '"', valueList[8], '②見積照会書用CSV作成が不正です。');
             // 確度
 
-            System.assertEquals('"■1 決定，□2 有望，□3 努力，□4C チャレンジ，□4 希望，□5 需要"', valueList[9], '②見積照会書用CSV作成が不正です。');
+            System.assertEquals('"■1 決定，□2 有望，□3 努力，□4C チャレンジ，□4 希望，□5 需要"', valueList[8], '②見積照会書用CSV作成が不正です。12');
             // 受注
-            System.assertEquals('2000/01/02', valueList[10], '②見積照会書用CSV作成が不正です。');
+            System.assertEquals('2000/01/02', valueList[9], '②見積照会書用CSV作成が不正です。13');
             // 売上
-            System.assertEquals('2002/05/06', valueList[11], '②見積照会書用CSV作成が不正です。');
+            System.assertEquals('2002/05/06', valueList[10], '②見積照会書用CSV作成が不正です。14');
             // 工事
-            System.assertEquals('□建設業法対象', valueList[12], '②見積照会書用CSV作成が不正です。');
+            System.assertEquals('□建設業法対象', valueList[11], '②見積照会書用CSV作成が不正です。15');
             // 商流
-            System.assertEquals(testOpportunity.DistributionChannelsPattern__c, valueList[13], '②見積照会書用CSV作成が不正です。');
+            System.assertEquals(testOpportunity.DistributionChannelsPattern__c, valueList[12], '②見積照会書用CSV作成が不正です。16');
             // 着手
-            System.assertEquals('2005/11/12', valueList[14], '②見積照会書用CSV作成が不正です。');
+            System.assertEquals('2005/11/12', valueList[13], '②見積照会書用CSV作成が不正です。17');
         }
 
         /**
@@ -882,9 +891,9 @@
             List<String> valueList = result.substringAfter('\n').split(',');
 
             // assertion
-            System.assertEquals(15, headerList.size(), '②見積照会書用CSV作成が不正です。');
-            System.assertEquals('発行日,案件番号,商談番号,宛先,担当,顧客名,件名,案件概要,システム概要,確度,受注,売上,工事,商流,着手', header, '②見積照会書用CSV作成が不正です。');
-            System.assertEquals(14, valueList.size(), '②見積照会書用CSV作成が不正です。');
+            System.assertEquals(14, headerList.size(), '②見積照会書用CSV作成が不正です。');
+            System.assertEquals('発行日,案件番号,商談番号,宛先,担当,顧客名,件名,案件概要,確度,受注,売上,工事,商流,着手', header, '②見積照会書用CSV作成が不正です。');
+            System.assertEquals(13, valueList.size(), '②見積照会書用CSV作成が不正です。');
             // 発行日
             System.assertEquals(RequestFormOutputGenerator.EXECUTED_DATE, valueList[0], '②見積照会書用CSV作成が不正です。');
             // 案件番号
@@ -902,17 +911,17 @@
             // 案件概要
             System.assertEquals('"' + testOpportunity.OpportunityNote__c + '"', valueList[7], '②見積照会書用CSV作成が不正です。');
             // システム概要
-            System.assertEquals('"' + testOpportunity.ProposedTechniqueRemarks__c + '"', valueList[8], '②見積照会書用CSV作成が不正です。');
+            // System.assertEquals('"' + testOpportunity.ProposedTechniqueRemarks__c + '"', valueList[8], '②見積照会書用CSV作成が不正です。');
             // 確度
-            System.assertEquals('"■1 決定，□2 有望，□3 努力，□4C チャレンジ，□4 希望，□5 需要"', valueList[9], '②見積照会書用CSV作成が不正です。');
+            System.assertEquals('"■1 決定，□2 有望，□3 努力，□4C チャレンジ，□4 希望，□5 需要"', valueList[8], '②見積照会書用CSV作成が不正です。');
             // 受注
-            System.assertEquals('2000/01/02', valueList[10], '②見積照会書用CSV作成が不正です。');
+            System.assertEquals('2000/01/02', valueList[9], '②見積照会書用CSV作成が不正です。');
             // 売上
-            System.assertEquals('2002/05/06', valueList[11], '②見積照会書用CSV作成が不正です。');
+            System.assertEquals('2002/05/06', valueList[10], '②見積照会書用CSV作成が不正です。');
             // 工事
-            System.assertEquals('□建設業法対象', valueList[12], '②見積照会書用CSV作成が不正です。');
+            System.assertEquals('□建設業法対象', valueList[11], '②見積照会書用CSV作成が不正です。');
             // 商流
-            System.assertEquals(testOpportunity.DistributionChannelsPattern__c, valueList[13], '②見積照会書用CSV作成が不正です。');
+            System.assertEquals(testOpportunity.DistributionChannelsPattern__c, valueList[12], '②見積照会書用CSV作成が不正です。');
             // 着手
             // 空文字列想定のため、valueList.size()が14の時点で想定通り。
         }
@@ -931,6 +940,8 @@
                     , Requester__c = '本社　施設'
                     , RequestDestination__c = '神電' // RequestFactoryName__c '神戸製作所'
                     , TaskCategory__c = '提案書作成依頼'
+                    , UserDeptApproved__c = true
+                    , RequestDestinationCc__c = '神電'
                 );
                 insert testRequestTask;
                 
@@ -948,8 +959,8 @@
             List<String> valueList = result.substringAfter('\n').split(',');
 
             // assertion
-            System.assertEquals(15, headerList.size(), '②見積照会書用CSV作成が不正です。');
-            System.assertEquals('発行日,案件番号,商談番号,宛先,担当,顧客名,件名,案件概要,システム概要,確度,受注,売上,工事,商流,着手', header, '②見積照会書用CSV作成が不正です。');
+            System.assertEquals(14, headerList.size(), '②見積照会書用CSV作成が不正です。');
+            System.assertEquals('発行日,案件番号,商談番号,宛先,担当,顧客名,件名,案件概要,確度,受注,売上,工事,商流,着手', header, '②見積照会書用CSV作成が不正です。');
             System.assertEquals(5, valueList.size(), '②見積照会書用CSV作成が不正です。');
             // 発行日
             System.assertEquals(RequestFormOutputGenerator.EXECUTED_DATE, valueList[0], '②見積照会書用CSV作成が不正です。');
@@ -1022,11 +1033,11 @@
             // SR_NO_案件番号
             System.assert(valueList[4].contains('A1234-Z567-0（案件番号：'), '③写真撮影依頼書用CSV作成処理が不正です。');
             // 送付期限_年
-            System.assertEquals('２００３', valueList[5], '③写真撮影依頼書用CSV作成処理が不正です。');
+            System.assertEquals('２０９９', valueList[5], '③写真撮影依頼書用CSV作成処理が不正です。');
             // 送付期限_月
-            System.assertEquals('０７', valueList[6], '③写真撮影依頼書用CSV作成処理が不正です。');
+            System.assertEquals('１２', valueList[6], '③写真撮影依頼書用CSV作成処理が不正です。');
             // 送付期限_日
-            System.assertEquals('０８', valueList[7], '③写真撮影依頼書用CSV作成処理が不正です。');
+            System.assertEquals('３１', valueList[7], '③写真撮影依頼書用CSV作成処理が不正です。');
             // 看板仕様_御注文元
             System.assertEquals(testAccount.Name, valueList[8], '③写真撮影依頼書用CSV作成処理が不正です。');
             // 看板仕様_件名
@@ -1049,6 +1060,8 @@
                     , Requester__c = '本社　施設'
                     , RequestDestination__c = '神電' // RequestFactoryName__c '神戸製作所'
                     , TaskCategory__c = '提案書作成依頼'
+                    , UserDeptApproved__c = true
+                    , RequestDestinationCc__c = '神電'
                 );
                 insert testRequestTask;
                 
@@ -1210,6 +1223,8 @@
                     , Requester__c = '本社　施設'
                     , RequestDestination__c = '神電' // RequestFactoryName__c '神戸製作所'
                     , TaskCategory__c = '提案書作成依頼'
+                    , UserDeptApproved__c = true
+                    , RequestDestinationCc__c = '神電'
                 );
                 insert testRequestTask;
                 
@@ -1283,7 +1298,7 @@
             System.assertEquals('回答希望期限,発行日_年,発行日_月,発行日_日,本社・支社・現場,製作所営業,製作所営業_写1,製作所営業_写2,製作所営業_写3,注文元,件名,SR_NO,案件番号,販事担当者,宛先1,宛先2,技術員派遣連絡件名,現場代理人', header, ' ⑤技術員派遣依頼書用CSV作成処理が不正です。');
             System.assertEquals(18, valueList.size(), ' ⑤技術員派遣依頼書用CSV作成処理が不正です。');
             // 回答希望期限
-            System.assertEquals('２００３年０７月０８日', valueList[0], '⑤技術員派遣依頼書用CSV作成処理が不正です。');
+            System.assertEquals('２０９９年１２月３１日', valueList[0], '⑤技術員派遣依頼書用CSV作成処理が不正です。');
             // 発行日_年
             System.assertEquals(RequestFormOutputGenerator.convertCharacterWidthHalfToFull(String.valueOf(RequestFormOutputGenerator.NOW.year())), valueList[1], '⑤技術員派遣依頼書用CSV作成処理が不正です。');
             // 発行日_月
@@ -1350,7 +1365,7 @@
             System.assertEquals('回答希望期限,発行日_年,発行日_月,発行日_日,本社・支社・現場,製作所営業,製作所営業_写1,製作所営業_写2,製作所営業_写3,注文元,件名,SR_NO,案件番号,販事担当者,宛先1,宛先2,技術員派遣連絡件名,現場代理人', header, ' ⑤技術員派遣依頼書用CSV作成処理が不正です。');
             System.assertEquals(17, valueList.size(), ' ⑤技術員派遣依頼書用CSV作成処理が不正です。');
             // 回答希望期限
-            System.assertEquals('２００３年０７月０８日', valueList[0], '⑤技術員派遣依頼書用CSV作成処理が不正です。');
+            System.assertEquals('２０９９年１２月３１日', valueList[0], '⑤技術員派遣依頼書用CSV作成処理が不正です。');
             // 発行日_年
             System.assertEquals(RequestFormOutputGenerator.convertCharacterWidthHalfToFull(String.valueOf(RequestFormOutputGenerator.NOW.year())), valueList[1], '⑤技術員派遣依頼書用CSV作成処理が不正です。');
             // 発行日_月
@@ -1403,6 +1418,8 @@
                     , Requester__c = '本社　施設'
                     , RequestDestination__c = '神電' // RequestFactoryName__c '神戸製作所'
                     , TaskCategory__c = '提案書作成依頼'
+                    , UserDeptApproved__c = true
+                    , RequestDestinationCc__c = '神電'
                 );
                 insert testRequestTask;
                 
@@ -1504,9 +1521,9 @@
             // 依頼先場所
             System.assertEquals('以下の条件で，' + testRequestTask.RequestDestination__c + 'から配置技術者選出の検討をお願いします。詳細は添付参照のこと。', valueList[5], '⑥配置技術者選定依頼用CSV作成処理が不正です。');
             // 回答期限_月
-            System.assertEquals('０７', valueList[6], '⑥配置技術者選定依頼用CSV作成処理が不正です。');
+            System.assertEquals('１２', valueList[6], '⑥配置技術者選定依頼用CSV作成処理が不正です。');
             // 回答期限_日
-            System.assertEquals('０８', valueList[7], '⑥配置技術者選定依頼用CSV作成処理が不正です。');
+            System.assertEquals('３１', valueList[7], '⑥配置技術者選定依頼用CSV作成処理が不正です。');
             // 客先名
             System.assertEquals(testAccount.Name, valueList[8], '⑥配置技術者選定依頼用CSV作成処理が不正です。');
             // 件名
@@ -1595,9 +1612,9 @@
             // 依頼先場所
             System.assertEquals('以下の条件で，' + testRequestTask.RequestDestination__c + 'から配置技術者選出の検討をお願いします。詳細は添付参照のこと。', valueList[5], '⑥配置技術者選定依頼用CSV作成処理が不正です。');
             // 回答期限_月
-            System.assertEquals('０７', valueList[6], '⑥配置技術者選定依頼用CSV作成処理が不正です。');
+            System.assertEquals('１２', valueList[6], '⑥配置技術者選定依頼用CSV作成処理が不正です。');
             // 回答期限_日
-            System.assertEquals('０８', valueList[7], '⑥配置技術者選定依頼用CSV作成処理が不正です。');
+            System.assertEquals('３１', valueList[7], '⑥配置技術者選定依頼用CSV作成処理が不正です。');
             // 客先名
             System.assertEquals(testAccount.Name, valueList[8], '⑥配置技術者選定依頼用CSV作成処理が不正です。');
             // 件名
@@ -1660,6 +1677,8 @@
                     , Requester__c = '本社　施設'
                     , RequestDestination__c = '神電' // RequestFactoryName__c '神戸製作所'
                     , TaskCategory__c = '提案書作成依頼'
+                    , UserDeptApproved__c = true
+                    , RequestDestinationCc__c = '神電'
                 );
                 insert testRequestTask;
                 
@@ -1794,6 +1813,8 @@
                     , Requester__c = '本社　施設'
                     , RequestDestination__c = '神電' // RequestFactoryName__c '神戸製作所'
                     , TaskCategory__c = '提案書作成依頼'
+                    , UserDeptApproved__c = true
+                    , RequestDestinationCc__c = '神電'
                 );
                 insert testRequestTask;
                 RequestFormOutputGenerator.getRequestTask(testRequestTask.Id);
@@ -1859,7 +1880,7 @@
             // 案件番号
             System.assert(valueList[3].startsWith('（案件番号：'), '⑦先行手配依頼書用CSV作成処理が不正です。');
             // 希望回答期限
-            System.assertEquals('２００３年０７月０８日', valueList[4], '⑦先行手配依頼書用CSV作成処理が不正です。');
+            System.assertEquals('２０９９年１２月３１日', valueList[4], '⑦先行手配依頼書用CSV作成処理が不正です。');
             // 場所
             System.assertEquals(testRequestTask.RequestDestination__c, valueList[5], '⑦先行手配依頼書用CSV作成処理が不正です。');
             // 予想CP
@@ -1906,7 +1927,7 @@
             // 案件番号
             System.assert(valueList[3].startsWith('（案件番号：'), '⑦先行手配依頼書用CSV作成処理が不正です。');
             // 希望回答期限
-            System.assertEquals('２００３年０７月０８日', valueList[4], '⑦先行手配依頼書用CSV作成処理が不正です。');
+            System.assertEquals('２０９９年１２月３１日', valueList[4], '⑦先行手配依頼書用CSV作成処理が不正です。');
             // 場所
             System.assertEquals(testRequestTask.RequestDestination__c, valueList[5], '⑦先行手配依頼書用CSV作成処理が不正です。');
             // 予想CP
@@ -1931,6 +1952,8 @@
                     , Requester__c = '本社　施設'
                     , RequestDestination__c = '神電' // RequestFactoryName__c '神戸製作所'
                     , TaskCategory__c = '提案書作成依頼'
+                    , UserDeptApproved__c = true
+                    , RequestDestinationCc__c = '神電'
                 );
                 insert testRequestTask;
                 
@@ -2012,7 +2035,7 @@
             // 案件番号
             System.assertNotEquals(null, valueList[5], '⑧原低依頼書用CSV作成処理が不正です。');
             // 希望回答期限
-            System.assertEquals('２００３年０７月０８日', valueList[6], '⑧原低依頼書用CSV作成処理が不正です。');
+            System.assertEquals('２０９９年１２月３１日', valueList[6], '⑧原低依頼書用CSV作成処理が不正です。');
             // 場所
             System.assertEquals(testRequestTask.RequestDestination__c, valueList[7], '⑧原低依頼書用CSV作成処理が不正です。');
             // 予想CP
@@ -2065,7 +2088,7 @@
             // 案件番号
             System.assertNotEquals(null, valueList[5], '⑧原低依頼書用CSV作成処理が不正です。');
             // 希望回答期限
-            System.assertEquals('２００３年０７月０８日', valueList[6], '⑧原低依頼書用CSV作成処理が不正です。');
+            System.assertEquals('２０９９年１２月３１日', valueList[6], '⑧原低依頼書用CSV作成処理が不正です。');
             // 場所
             System.assertEquals(testRequestTask.RequestDestination__c, valueList[7], '⑧原低依頼書用CSV作成処理が不正です。');
             // 予想CP
@@ -2092,6 +2115,8 @@
                     , Requester__c = '本社　施設'
                     , RequestDestination__c = '神電' // RequestFactoryName__c '神戸製作所'
                     , TaskCategory__c = '提案書作成依頼'
+                    , UserDeptApproved__c = true
+                    , RequestDestinationCc__c = '神電'
                 );
                 insert testRequestTask;
                 
@@ -2564,6 +2589,8 @@
             , RequestDestination__c = '神電' // RequestFactoryName__c '神戸製作所'
             , Requester__c = '本社　施設'
             , TaskCategory__c = '提案書作成依頼'
+            , RequestDestinationCc__c = '神電'
+            , OwnerId = testUser.Id
         );
         insert testRequestTask;
 
@@ -2595,6 +2622,8 @@
             , RequestDestination__c = '神電' // RequestFactoryName__c '神戸製作所'
             , Requester__c = '本社　施設'
             , TaskCategory__c = '提案書作成依頼'
+            , RequestDestinationCc__c = '神電'
+            , OwnerId = testUser.Id
         );
         insert testRequestTask;
 
@@ -2626,6 +2655,8 @@
             , RequestDestination__c = '神電' // RequestFactoryName__c '神戸製作所'
             , Requester__c = '本社　施設'
             , TaskCategory__c = '提案書作成依頼'
+            , RequestDestinationCc__c = '神電'
+            , OwnerId = testUser.Id
         );
         insert testRequestTask;
 
@@ -2657,6 +2688,8 @@
             , RequestDestination__c = '神電' // RequestFactoryName__c '神戸製作所'
             , Requester__c = '本社　施設'
             , TaskCategory__c = '提案書作成依頼'
+            , RequestDestinationCc__c = '神電'
+            , OwnerId = testUser.Id
         );
         insert testRequestTask;
 

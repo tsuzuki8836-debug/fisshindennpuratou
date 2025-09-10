@@ -30,6 +30,9 @@ public class OpportunityTriggerHandler {
     private String pItemName21 = 'Order_OrderDate__c';          // ２．受注年月日
     private String pItemName22 = 'Latest_SRInfoUpdateDate__c';  // ３．SR情報最新取得日
     private String pItemName23 = 'Result_SalesDate__c';         // ４．売上年月日
+    private String pItemName24 = 'Order_SalesDate__c';          //２．売上年月日（受注時）
+    private String pItemName25 = 'Latest_SalesDate__c';         //３．売上年月日（最新）
+
 
     // 集計元オブジェクト名（場所別）
     private String cObjectName = 'Factory__c';
@@ -79,6 +82,8 @@ public class OpportunityTriggerHandler {
     private String srItemName13 = 'Order_OrderDate__c';         // 受注年月日
     private String srItemName14 = 'Latest_SRInfoUpdateDate__c'; // SR情報取得日（最新）
     private String srItemName15 = 'Result_SalesDate__c';        // 売上年月日
+    private String srItemName16 = 'Order_SalesDate__c';         // 売上年月日（受注時）
+    private String srItemName17 = 'Latest_SalesDate__c';        // 売上年月日（最新）
 
     private String srRelationName = 'Opportunity__c';
 
@@ -318,7 +323,7 @@ public class OpportunityTriggerHandler {
 
         // 案件に紐づいているSR情報を全て取得
         List<SRInfo__c> srResults = 
-            [SELECT Opportunity__c, Order_SRCP__c, Order_SRWC__c, Order_Forecast_SRCP__c, Order_Forecast_SRWC__c, Order_OrderDate__c, OrderMonth__c
+            [SELECT Opportunity__c, Order_SRCP__c, Order_SRWC__c, Order_Forecast_SRCP__c, Order_Forecast_SRWC__c, Order_OrderDate__c, OrderMonth__c, Order_SalesDate__c, Latest_SalesDate__c
             FROM SRInfo__c
             WHERE Opportunity__c IN :oppIdList
             ORDER BY Opportunity__c, Order_OrderDate__c DESC];
@@ -343,6 +348,8 @@ public class OpportunityTriggerHandler {
             opp.Result_Difference__c = 0;
             opp.Result_AdditionalCost__c = 0;
             opp.Result_SalesDate__c = null;
+            opp.Order_SalesDate__c = null;
+            opp.Latest_SalesDate__c = null;
         }
 
         // 親案件の最小受注年月と一致する受注年月を持つSR情報のみ、受注関連の金額に合算する
@@ -355,6 +362,8 @@ public class OpportunityTriggerHandler {
                 if (sr.Order_Forecast_SRCP__c != null) newMap.get(recId).Order_Forecast_TotalCP__c += sr.Order_Forecast_SRCP__c;
                 if (sr.Order_Forecast_SRWC__c != null) newMap.get(recId).Order_Forecast_TotalWC__c += sr.Order_Forecast_SRWC__c;
                 if (sr.Order_OrderDate__c != null) newMap.get(recId).Order_OrderDate__c = sr.Order_OrderDate__c;
+                if (sr.Order_SalesDate__c != null) newMap.get(recId).Order_SalesDate__c = sr.Order_SalesDate__c;
+                if (sr.Latest_SalesDate__c != null) newMap.get(recId).Latest_SalesDate__c = sr.Latest_SalesDate__c;
             }
 
             // 受注社が未入力のとき、「三菱電機株式会社」を登録する
@@ -445,7 +454,9 @@ public class OpportunityTriggerHandler {
                 opp.Result_TotalWC__c = null;
                 opp.Result_Difference__c = null;
                 opp.Result_AdditionalCost__c = null;
-                opp.Result_SalesDate__c = null;                
+                opp.Result_SalesDate__c = null;
+				opp.Order_SalesDate__c = null;
+				opp.Latest_SalesDate__c = null;
             }
         }
 
@@ -704,6 +715,10 @@ public class OpportunityTriggerHandler {
                 if(opp.ScheduledCollectionDate3__c == null){
                     opp.site3__c = opp.Website__c;
                 }
+                
+                //消費税率項目の免税対応の処理
+                String NoTax = '免税'; 
+                
                 // CP・WC・回収予定金額をリセットして自動設定する
                 if(opp.AutoCalculateCheck__c){
                     Decimal cp = opp.TotalCP__c == null ? null : (opp.TotalCP__c * (opp.Probability1__c * 0.01)).setScale(0, RoundingMode.HALF_UP);
@@ -716,7 +731,10 @@ public class OpportunityTriggerHandler {
                     opp.EstimatedIssuedWC_01__c = wc;
                     opp.EstimatedIssuedWC_02__c = null;
                     opp.EstimatedIssuedWC_03__c = null;
-                    opp.ScheduledCollectionAmount01__c = cp == null ? null : cp + (cp * (Integer.valueOf(opp.SalesTax__c) * 0.01));
+                    //opp.ScheduledCollectionAmount01__c = cp == null ? null : cp + (cp * (Integer.valueOf(opp.SalesTax__c) * 0.01));
+                    //opp.ScheduledCollectionAmount01__c = (cp == null || NoTax.equals(opp.SalesTax__c)) ? null : cp + (cp * (Integer.valueOf(opp.SalesTax__c) * 0.01));
+                    Double TaxRate = NoTax.equals(opp.SalesTax__c) ? 0.0 : Integer.valueOf(opp.SalesTax__c) * 0.01;
+                    opp.ScheduledCollectionAmount01__c = (cp == null) ? null : cp + (cp * TaxRate);
                     opp.ScheduledCollectionAmount02__c = null;
                     opp.ScheduledCollectionAmount03__c = null;
                     opp.ScheduledCollectionDate2__c = null;

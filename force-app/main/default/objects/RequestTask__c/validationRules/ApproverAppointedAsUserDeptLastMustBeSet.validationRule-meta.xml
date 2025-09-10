@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ValidationRule xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>ApproverAppointedAsUserDeptLastMustBeSet</fullName>
+    <active>true</active>
+    <description>「自部門承認済」が空欄　かつ　自部門承認社1~4がすべて空欄
+である際にエラーを表示する。</description>
+    <errorConditionFormula>AND(
+     UserDeptApproved__c = False,
+      ISBLANK( Approver1__c ) ,
+      ISBLANK( Approver2__c ) ,
+      ISBLANK( Approver3__c ) ,
+      ISBLANK( Approver4__c ) 
+)</errorConditionFormula>
+    <errorDisplayField>UserDeptApproved__c</errorDisplayField>
+    <errorMessage>自部門承認済にチェックが無い場合、自部門承認者1～4に1名以上ユーザーを選択する必要があります。</errorMessage>
+</ValidationRule>

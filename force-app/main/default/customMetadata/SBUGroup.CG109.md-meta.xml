@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomMetadata xmlns="http://soap.sforce.com/2006/04/metadata" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+    <label>九支・プラ建・建設課</label>
+    <protected>false</protected>
+    <values>
+        <field>ChatterGroupId__c</field>
+        <value xsi:type="xsd:string">0F95i0000006E0uCAE</value>
+    </values>
+</CustomMetadata>

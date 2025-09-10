@@ -25,6 +25,7 @@
     /* border-bottom: 1px solid #999; */
     background: #f2f2f2;
     position: sticky;
+    z-index: 3;
     top: 0;
 }
 .slds-table td{
@@ -47,7 +48,7 @@
 	cursor: not-allowed;
 }
 .slds-table th{
-    z-index: 9;
+    z-index: 8;
 }
 
 
@@ -91,4 +92,27 @@
 
 .no-image-description {
     color: red;
+}
+
+/*ヘッダー固定*/
+.slds-table.slds-table_bordered.slds-table_col-bordered:first-child{
+    position: sticky;
+    left: 0;
+    top: 0;
+    z-index: 3;
+}
+
+/*ヘッダーを「名称」セルと他を分離し、「名称」セルを固定*/
+.slds-table thead th:nth-child(1){
+    position: sticky;
+    left: 0;
+    top: 0;
+    z-index: 9;
+}
+
+/*名称列の下を固定*/
+.slds-cell_action-mode:nth-child(1){
+    position: sticky;
+    left: 0;
+    z-index: 2;
 }

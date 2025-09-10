@@ -101,6 +101,10 @@ export default class commonMultiHeaderTable extends LightningElement {
         let price = event.currentTarget.dataset.name;
 
         var objInput=this.template.querySelector('input[data-id="'+objName+'"]');
+        //数量が全角入力された際に半角に変換する 2023/06/06 TS木佐貫
+        objInput.value = objInput.value.replace(/[０-９]/g, function(s) {
+            return String.fromCharCode(s.charCodeAt(0) - 0xFEE0);
+        });
 
         //仮　項目チェック
         let validity = event.target.validity;

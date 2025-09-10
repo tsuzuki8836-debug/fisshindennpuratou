@@ -98,7 +98,7 @@ private class WorkTriggerHandlerTest {
         List<Opportunity> testOpportunityList = new List<Opportunity>{
             new Opportunity(
                 // required
-                AdoptedSpecification__c = false                         // 当社仕様採用 boolean
+                AdoptedSpecification__c = '技術優位性(当社のみ対応可)'    // 当社仕様採用 選択リスト (複数選択)
                 , AutoCalculateCheck__c = false                         // 発行・回収予定 自動計算 boolean
                 , IsPrivate = false                                     // 非公開 boolean
                 , MPEC_opp__c = false                                   // MPEC協業案件 boolean
@@ -450,7 +450,7 @@ private class WorkTriggerHandlerTest {
         List<Opportunity> testOpportunityList = new List<Opportunity>{
             new Opportunity(
                 // required
-                AdoptedSpecification__c = false                         // 当社仕様採用 boolean
+                AdoptedSpecification__c = '技術優位性(当社のみ対応可)'    // 当社仕様採用 選択リスト (複数選択)
                 , AutoCalculateCheck__c = false                         // 発行・回収予定 自動計算 boolean
                 , IsPrivate = false                                     // 非公開 boolean
                 , MPEC_opp__c = false                                   // MPEC協業案件 boolean
@@ -486,12 +486,12 @@ private class WorkTriggerHandlerTest {
         Test.stopTest();
 
         List<work__c> insertedWorks = [SELECT OpportunityNumber__c FROM work__c ORDER BY CreatedDate];
-        List<Opportunity> insertedOpportunity = [SELECT OpportunityNumber__c FROM Opportunity];
+        List<Opportunity> insertedOpportunity = [SELECT OpportunityNumber_Hyphenless__c FROM Opportunity ORDER BY CreatedDate];
 
         /* assertion */
         System.assertEquals(1, insertedWorks.size(), 'workの件数が不正です。');
         System.assertEquals(2, insertedOpportunity.size(), '案件の件数が不正です。');
-        System.assertEquals(null, insertedWorks[0].OpportunityNumber__c, '商談番号付与処理が不正です。');
+        System.assertEquals(insertedOpportunity[0].OpportunityNumber_Hyphenless__c, insertedWorks[0].OpportunityNumber__c, '商談番号付与処理が不正です。');
     }
 
     /*

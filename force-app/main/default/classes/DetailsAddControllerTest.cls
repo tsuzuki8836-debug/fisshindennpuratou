@@ -23,6 +23,7 @@ public with sharing class  DetailsAddControllerTest {
     //価格表データ作成
     private static void createDate(String qRtName,String major, String minor, String powerFrequency){
         List<RecordType> recType = [SELECT Id FROM RecordType WHERE SobjectType = 'Quote__c' and name = :qRtName];
+        List<RecordType> dvType = [SELECT Id FROM RecordType WHERE SobjectType = 'Device__c' and name = :qRtName];
 
         //見積
         quote = new Quote__c(
@@ -38,7 +39,8 @@ public with sharing class  DetailsAddControllerTest {
             RecordTypeOfQuote__c = qRtName,
             MajorClassification__c = major,
             MinorClassification__c = minor,
-            Quote__c =quote.Id
+            Quote__c =quote.Id,
+            RecordTypeId = dvType[0].Id
         );
         insert dv;
 
@@ -49,7 +51,8 @@ public with sharing class  DetailsAddControllerTest {
             RecordTypeOfQuote__c = qRtName,
             MajorClassification__c = major,
             MinorClassification__c = minor,
-            Quote__c =quote.Id
+            Quote__c =quote.Id,
+            RecordTypeId = dvType[0].Id
         );
         insert dv1;
 
@@ -78,7 +81,7 @@ public with sharing class  DetailsAddControllerTest {
                     , CharacterSymbol__c = mdtObj.CharacterSymbol__c
                     , EquipmentNumber__c = mdtObj.InstrumentSymbol__c
                     , Name1__c = 'Name1'
-                    , Name2__c = 'Name2'
+                    , Name2__c = 'EP=WC×2'
                     , Name3__c = 'Name3'
                     , Name4__c = 'Name4'
                     , Name5__c = 'Name5'
@@ -87,6 +90,8 @@ public with sharing class  DetailsAddControllerTest {
                     , Name8__c = 'Name8'
                     , Name9__c = 'Name9'
                     , MasterCode__c = 'MasterCode'
+                    , WC__c = 1
+                    , Note__c = (major=='高圧コンビ'?'note':'')
                     , RECNo__c = index
                 );
                 index = index + 1;
@@ -105,7 +110,7 @@ public with sharing class  DetailsAddControllerTest {
                         , CharacterSymbol__c = mdtObj.CharacterSymbol__c
                         , EquipmentNumber__c = mdtObj.InstrumentSymbol__c
                         , Name1__c = 'Name1'
-                        , Name2__c = 'Name2'
+                        , Name2__c = 'EP=WC×2'
                         , Name3__c = 'Name3'
                         , Name4__c = 'Name4'
                         , Name5__c = 'Name5'
@@ -114,6 +119,7 @@ public with sharing class  DetailsAddControllerTest {
                         , Name8__c = 'Name8'
                         , Name9__c = 'Name9'
                         , MasterCode__c = 'MasterCode'
+                        , WC__c = 1
                         , RECNo__c = 9
                     );
                     tables.add(table03);
@@ -213,6 +219,190 @@ public with sharing class  DetailsAddControllerTest {
         System.assertEquals(strSubmitDetails, dv.Quote__c);
     }
 
+    //マスター検索
+    @isTest static void priceTableTest_1() {
+        String qRtName='施設';
+        String major='高圧コンビ';
+        String minor='高圧コンビ盤';
+        String powerFrequency='60Hz';
+
+        createDate(qRtName,major, minor, powerFrequency);
+
+        Test.startTest();
+        //マスター検索
+        String strMaster = DetailsAddController.getPricingTableRecords(
+                            dv.Id,'S',
+                            major,
+                            minor,
+                            500,
+                            1,
+                            null
+                            );
+
+        List<DetailsAddController.PricingTableInputOnly> intensifyList = new List<DetailsAddController.PricingTableInputOnly>();
+        
+        for (Integer i = 0;i<tables.size();i++) {
+            if (tables.get(i).BU__c == 'S') {
+                DetailsAddController.PricingTableInputOnly intensify = new DetailsAddController.PricingTableInputOnly();
+                intensify.Id = tables.get(i).Id;
+                intensify.Quantity = 1;
+                intensify.WCCoefficient = 1;
+                intensify.CreditWC = 1;
+                intensify.UnitPriceCoefficient = 1;
+                intensify.ProvisionUnitPrice = 1;
+                intensify.UnitWeight = 1;
+                intensify.WC = 1;
+                intensify.Price = 1;
+                intensify.ProvisionPrice = 1;
+                intensify.Weight = 1;
+                intensifyList.add(intensify);
+            }
+        }
+       //価格表を基に登録された場合
+        String strSubmitDetails = DetailsAddController.submitDetails(JSON.serialize(intensifyList), dv.Id);
+
+        //登録した後にマスター検索
+        String strMasterAfter = DetailsAddController.getPricingTableRecords(
+                            dv.Id,'S',
+                            major,
+                            minor,
+                            500,
+                            1,
+                            JSON.serialize(intensifyList)
+                            );
+
+        Test.stopTest();
+        System.assertNotEquals(null, strMaster);
+        System.assertNotEquals(null, strMasterAfter);
+        System.assertEquals(strSubmitDetails, dv.Quote__c);
+    }
+
+    //マスター検索
+    @isTest static void priceTableTest_2() {
+        String qRtName='水環境';
+        String major='計装機器';
+        String minor='計装盤';
+        String powerFrequency='50Hz';
+
+        createDate(qRtName,major, minor, powerFrequency);
+
+        Test.startTest();
+        //図検索
+        String strImage = DetailsAddController.getPricingTableRecordsByImage(
+            dv.Id, 
+            new List<String>{mdtObj.Id},
+            500,
+            1,
+            null);
+        //マスター検索
+        String strMaster = DetailsAddController.getPricingTableRecords(
+                            dv.Id,'M',
+                            major,
+                            minor,
+                            500,
+                            1,
+                            null
+                            );
+        Test.stopTest();
+        System.assertNotEquals(null, strImage);
+        System.assertNotEquals(null, strMaster);
+    }
+   //マスター検索
+   @isTest static void priceTableTest_3() {
+        String qRtName='施設';
+        String major='進相コンデンサ/リアクトル';
+        String minor='機器事業部 高圧コンデンサ/リアクトル';
+        String powerFrequency='50Hz';
+
+        createDate(qRtName,major, minor, powerFrequency);
+
+        Test.startTest();
+        //図検索
+        String strImage = DetailsAddController.getPricingTableRecordsByImage(
+            dv.Id, 
+            new List<String>{mdtObj.Id},
+            500,
+            1,
+            null);
+        //マスター検索
+        String strMaster = DetailsAddController.getPricingTableRecords(
+                            dv.Id,'S',
+                            major,
+                            minor,
+                            500,
+                            1,
+                            null
+                            );
+        Test.stopTest();
+        System.assertNotEquals(null, strImage);
+        System.assertNotEquals(null, strMaster);
+    }
+    //マスター検索
+   @isTest static void priceTableTest_4() {
+        String qRtName='施設';
+        String major='発電機';
+        String minor='エンジン(DG)';
+        String powerFrequency='50Hz';
+
+        createDate(qRtName,major, minor, powerFrequency);
+
+        Test.startTest();
+        //マスター検索
+        String strMaster = DetailsAddController.getPricingTableRecords(
+                            dv.Id,'S',
+                            major,
+                            minor,
+                            500,
+                            1,
+                            null
+                            );
+        Test.stopTest();
+        System.assertNotEquals(null, strMaster);
+    }
+    //マスター検索
+    @isTest static void priceTableTest_5() {
+        String qRtName='施設';
+        String major='コントロールセンタ(C/C)';
+        String minor='200V';
+        String powerFrequency='50Hz';
+
+        createDate(qRtName,major, minor, powerFrequency);
+
+        Test.startTest();
+        //マスター検索
+        String strMaster = DetailsAddController.getPricingTableRecords(
+                            dv.Id,'S',
+                            major,
+                            minor,
+                            500,
+                            1,
+                            null
+                            );
+        Test.stopTest();
+        System.assertNotEquals(null, strMaster);
+    }
+    //マスター検索
+    @isTest static void priceTableTest_6() {
+        String qRtName='官需';
+        String major='CCTVカメラ設備[国交省本省宛て提出機器単体費等]';
+        String minor='HDIPカメラ装置';
+        String powerFrequency='50Hz';
+
+        createDate(qRtName,major, minor, powerFrequency);
+
+        Test.startTest();
+        //マスター検索
+        String strMaster = DetailsAddController.getPricingTableRecords(
+                            dv.Id,'S',
+                            major,
+                            minor,
+                            500,
+                            1,
+                            null
+                            );
+        Test.stopTest();
+        System.assertNotEquals(null, strMaster);
+    }
     //見積項目検索
     @isTest static void detailTest() {
         String qRtName='施設';
@@ -225,7 +415,7 @@ public with sharing class  DetailsAddControllerTest {
         Detail__c dv1Detail = new Detail__c();
         dv1Detail.Device__c = dv1.Id;//機器ID
         dv1Detail.Name1__c = 'Name1';
-        dv1Detail.Name2__c = 'Name2';
+        dv1Detail.Name2__c = 'EP=WC×2';
         dv1Detail.Name3__c = 'Name3';
         dv1Detail.Name4__c = 'Name4';
         dv1Detail.Name5__c = 'Name5';

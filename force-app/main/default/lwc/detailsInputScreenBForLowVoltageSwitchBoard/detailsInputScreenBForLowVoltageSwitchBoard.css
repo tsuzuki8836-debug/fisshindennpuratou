@@ -1,0 +1,90 @@
+.c-container {
+    border: 1px solid #d8dde6;
+    margin: 10px 10px 10px 10px;
+  }
+  .header-column {
+    padding: 0 2rem;
+  }
+  .field-title {
+    font-size: .75rem;
+    line-height: 1.25;
+    color: #54698d;
+    margin-bottom: .25rem;
+  }
+  .right{
+    float: right;
+    margin-bottom: 7px;
+  }
+  .left{
+    float: left;
+    margin-top: 7px;
+  }
+  /* .input-cell {
+    background-color: #FFF2CC;
+  } */
+.spins::after {
+    position: absolute;
+    content: attr(data-name);
+    width: 100%;
+    text-align: center;
+    top: calc(50% + 3em);
+    font-weight: bold;
+}
+
+th:nth-child(2){
+    background-image: linear-gradient(
+     to top right,
+     var(--slds-g-color-neutral-base-95, var(--lwc-tableColorBackgroundHeader,rgb(243, 243, 243))) 48%,
+     rgb(128, 128, 128),
+     var(--slds-g-color-neutral-base-95, var(--lwc-tableColorBackgroundHeader,rgb(243, 243, 243))) 52%
+   );
+ }
+.slds-table{
+  margin: 0;
+  border-spacing: 0;
+  position: relative;
+  border-collapse: collapse;
+}
+.slds-table th{
+  padding-left:0rem;
+  text-align: center;
+}
+tr:nth-child(even) {
+	background: #eff4ff;
+}
+
+tr:nth-child(odd) {
+	background: #fff;
+}
+/* 低圧盤適用CSS */
+/*ヘッダー固定*/
+.classicTables th{
+  position: sticky;
+  z-index: 8;
+  top: 0;
+}
+
+/*ヘッダーを「H」セルと他を分離し、「H」セルを固定*/
+.classicTables thead th:nth-child(1),
+.classicTables thead th:nth-child(2){
+  position: sticky;
+  top: 0;
+  z-index: 9;
+}
+
+/*H列の下を固定*/
+.cell_classicTables:first-child,
+.cell_classicTables:nth-child(2){
+  position: sticky;
+  z-index: 4;
+	background: #fff;
+}
+/*WD列の下を固定*/
+.classicTables thead th:nth-child(1),
+.cell_classicTables:nth-child(1){
+  left: 0;
+}
+.cell_classicTables:nth-child(2),
+.classicTables thead th:nth-child(2){
+  left: 2.98rem;
+}

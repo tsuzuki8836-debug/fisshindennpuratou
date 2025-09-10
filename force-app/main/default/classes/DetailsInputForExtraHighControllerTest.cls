@@ -186,13 +186,13 @@ public with sharing class DetailsInputForExtraHighControllerTest {
             CategoryCode__c='00'
         ));
 
-        //  明細 : OLCT付
+        //  明細 : OLTC付
         details.add(new Detail__c(
             Device__c=device2.Id,
             Name='特高油入',
             Name1__c='油',
-            Name2__c='OLCT付',
-            PricingTableUniqueKey__c='明細S変圧器特高変圧器油OLCT付',
+            Name2__c='OLTC付',
+            PricingTableUniqueKey__c='明細S変圧器特高変圧器油OLTC付',
             UnitPrice__c=22000000,
             DetailCategory__c='明細',
             Quantity__c=1,
@@ -515,18 +515,18 @@ public with sharing class DetailsInputForExtraHighControllerTest {
             pricingTableList.add(pricingTable);
         }
 
-        List<String> keyList4 = new List<String>{'明細S変圧器特高変圧器油OLCT付1,000kVA特高TR油入',
-                                                '明細S変圧器特高変圧器油OLCT付1,200kVA特高TR油入',
-                                                '明細S変圧器特高変圧器油OLCT付1,250kVA特高TR油入',
-                                                '明細S変圧器特高変圧器油OLCT付1,500kVA特高TR油入',
-                                                '明細S変圧器特高変圧器油OLCT付2,000kVA特高TR油入'};
+        List<String> keyList4 = new List<String>{'明細S変圧器特高変圧器油OLTC付',
+                                                '明細S変圧器特高変圧器油OLTC付',
+                                                '明細S変圧器特高変圧器油OLTC付',
+                                                '明細S変圧器特高変圧器油OLTC付',
+                                                '明細S変圧器特高変圧器油OLTC付'};
         for (Integer i = 0; i < 5 ; i++) {
             PricingTable__c pricingTable = new PricingTable__c();
             pricingTable.RecordTypeId = detailRecordType.Id;
             pricingTable.DisplayName__c = '特高油入';
             pricingTable.CategoryName__c = null;
             pricingTable.Name1__c = '油';
-            pricingTable.Name2__c = 'OLCT付';
+            pricingTable.Name2__c = 'OLTC付';
             pricingTable.Name3__c = name6List.get(i);
             pricingTable.Name4__c = null;
             pricingTable.Name5__c = null;
@@ -534,7 +534,7 @@ public with sharing class DetailsInputForExtraHighControllerTest {
             pricingTable.Name10__c = null;
             pricingTable.Price__c = priceList.get(0);
             pricingTable.BU__c = 'S';
-            pricingTable.detailedStatementText__c = 'TR';
+            pricingTable.detailedStatementText__c = null;
             pricingTable.SpecialSpecificationNo__c = 0;
             pricingTable.MajorClassificationName__c  = '変圧器';
             pricingTable.MajorClassificationCode__c  = '23';
@@ -1277,7 +1277,7 @@ public with sharing class DetailsInputForExtraHighControllerTest {
         List<String> oldDetailList = new List<String>{
             '筐体S変圧器特高変圧器60Hz油 スポットネットワーク屋外三相22,000V6,600V1,000kVA特高TR油入',
             '明細S変圧器特高変圧器油GIS直結1,000kVA',
-            '明細S変圧器特高変圧器油OLCT付'
+            '明細S変圧器特高変圧器油OLTC付'
         };
         List<Detail__c> oldDetails = [SELECT Id FROM Detail__c WHERE PricingTableUniqueKey__c IN:oldDetailList];
         Assert.areEqual(0, oldDetails.size());
@@ -1371,36 +1371,36 @@ public with sharing class DetailsInputForExtraHighControllerTest {
                                                                 Name3__c =:pricingTable.Name6__c
                                                             LIMIT 1];
 
-                Assert.areEqual(deviceId, detail.Device__c);
-                Assert.areEqual(pricingTableGIS.DisplayName__c, detail.Name);
-                Assert.areEqual(pricingTableGIS.Name1__c, detail.Name1__c);
-                Assert.areEqual(pricingTableGIS.Name2__c, detail.Name2__c);
-                Assert.areEqual(pricingTableGIS.Name3__c, detail.Name3__c);
-                Assert.areEqual(pricingTableGIS.Name4__c, detail.Name4__c);
-                Assert.areEqual(pricingTableGIS.UniqueKey__c, detail.pricingTableUniqueKey__c);
-                Assert.areEqual(pricingTableGIS.WC__c, detail.CreditWC__c);
-                Assert.areEqual(pricingTableGIS.Price__c, detail.UnitPrice__c);
-                Assert.areEqual(pricingTableGIS.Weight__c, detail.CreditWeight__c);
-                Assert.areEqual('明細', detail.DetailCategory__c);
-                Assert.areEqual(1, detail.Quantity__c);
-                Assert.areEqual(pricingTableGIS.WcCalculationRate__c, detail.WcCalculationRate__c);
-                Assert.areEqual(pricingTableGIS.Note__c, detail.Note__c);
-                Assert.areEqual(pricingTableGIS.Name5__c, detail.Name5__c);
-                Assert.areEqual(pricingTableGIS.Name6__c, detail.Name6__c);
-                Assert.areEqual(pricingTableGIS.Name7__c, detail.Name7__c);
-                Assert.areEqual(pricingTableGIS.Name8__c, detail.Name8__c);
-                Assert.areEqual(pricingTableGIS.Name9__c, detail.Name9__c);
-                Assert.areEqual(pricingTableGIS.Name10__c, detail.Name10__c);
-                Assert.areEqual(pricingTableGIS.detailedStatementText__c, detail.detailedStatementText__c);
-                Assert.areEqual(pricingTableGIS.SpecialSpecificationNo__c, detail.SpecialSpecificationNo__c);
-                Assert.areEqual(pricingTableGIS.MajorClassificationName__c, detail.MajorClassificationName__c);
-                Assert.areEqual(pricingTableGIS.MajorClassificationCode__c, detail.MajorClassificationCode__c);
-                Assert.areEqual(pricingTableGIS.MinorClassificationName__c, detail.MinorClassificationName__c);
-                Assert.areEqual(pricingTableGIS.MinorClassificationCode__c, detail.MinorClassificationCode__c);
-                Assert.areEqual(pricingTableGIS.CategoryName__c, detail.CategoryName__c);
-                Assert.areEqual(pricingTableGIS.CategoryCode__c, detail.CategoryCode__c);
-            } else if(detail.Name2__c=='OLCT付') {
-                System.debug('================OLCT付=================');
+                                                            Assert.areEqual(deviceId, detail.Device__c);
+                                                            Assert.areEqual(pricingTableGIS.DisplayName__c, detail.Name);
+                                                            Assert.areEqual(pricingTableGIS.Name1__c, detail.Name1__c);
+                                                            Assert.areEqual(pricingTableGIS.Name2__c, detail.Name2__c);
+                                                            Assert.areEqual(pricingTableGIS.Name3__c, detail.Name3__c);
+                                                            Assert.areEqual(pricingTableGIS.Name4__c, detail.Name4__c);
+                                                            Assert.areEqual(pricingTableGIS.UniqueKey__c, detail.pricingTableUniqueKey__c);
+                                                            Assert.areEqual(pricingTableGIS.WC__c, detail.CreditWC__c);
+                                                            Assert.areEqual(pricingTableGIS.Price__c, detail.UnitPrice__c);
+                                                            Assert.areEqual(pricingTableGIS.Weight__c, detail.CreditWeight__c);
+                                                            Assert.areEqual('明細', detail.DetailCategory__c);
+                                                            Assert.areEqual(1, detail.Quantity__c);
+                                                            Assert.areEqual(pricingTableGIS.WcCalculationRate__c, detail.WcCalculationRate__c);
+                                                            Assert.areEqual(pricingTableGIS.Note__c, detail.Note__c);
+                                                            Assert.areEqual(pricingTableGIS.Name5__c, detail.Name5__c);
+                                                            Assert.areEqual(pricingTableGIS.Name6__c, detail.Name6__c);
+                                                            Assert.areEqual(pricingTableGIS.Name7__c, detail.Name7__c);
+                                                            Assert.areEqual(pricingTableGIS.Name8__c, detail.Name8__c);
+                                                            Assert.areEqual(pricingTableGIS.Name9__c, detail.Name9__c);
+                                                            Assert.areEqual(pricingTableGIS.Name10__c, detail.Name10__c);
+                                                            Assert.areEqual(pricingTableGIS.detailedStatementText__c, detail.detailedStatementText__c);
+                                                            Assert.areEqual(pricingTableGIS.SpecialSpecificationNo__c, detail.SpecialSpecificationNo__c);
+                                                            Assert.areEqual(pricingTableGIS.MajorClassificationName__c, detail.MajorClassificationName__c);
+                                                            Assert.areEqual(pricingTableGIS.MajorClassificationCode__c, detail.MajorClassificationCode__c);
+                                                            Assert.areEqual(pricingTableGIS.MinorClassificationName__c, detail.MinorClassificationName__c);
+                                                            Assert.areEqual(pricingTableGIS.MinorClassificationCode__c, detail.MinorClassificationCode__c);
+                                                            Assert.areEqual(pricingTableGIS.CategoryName__c, detail.CategoryName__c);
+                                                            Assert.areEqual(pricingTableGIS.CategoryCode__c, detail.CategoryCode__c);
+            } else if(detail.Name2__c=='OLTC付') {
+                System.debug('================OLTC付=================');
                 PricingTable__c pricingTableOLTC = [SELECT Id, Name, RECNo__c,
                                                                 MajorClassificationCode__c, 
                                                                 MajorClassificationName__c, 
@@ -1419,37 +1419,37 @@ public with sharing class DetailsInputForExtraHighControllerTest {
                                                                 BU__c = :pricingTable.BU__c AND 
                                                                 CategoryCode__c = :'00' AND 
                                                                 Name1__c =:'油' AND
-                                                                Name2__c =:'OLCT付'
+                                                                Name2__c =:'OLTC付'
                                                             LIMIT 1];
 
-                Assert.areEqual(deviceId, detail.Device__c);
-                Assert.areEqual(pricingTableOLTC.DisplayName__c, detail.Name);
-                Assert.areEqual(pricingTableOLTC.Name1__c, detail.Name1__c);
-                Assert.areEqual(pricingTableOLTC.Name2__c, detail.Name2__c);
-                Assert.areEqual(pricingTableOLTC.Name3__c, detail.Name3__c);
-                Assert.areEqual(pricingTableOLTC.Name4__c, detail.Name4__c);
-                Assert.areEqual(pricingTableOLTC.UniqueKey__c, detail.pricingTableUniqueKey__c);
-                Assert.areEqual(pricingTableOLTC.WC__c, detail.CreditWC__c);
-                Assert.areEqual(pricingTableOLTC.Price__c, detail.UnitPrice__c);
-                Assert.areEqual(pricingTableOLTC.Weight__c, detail.CreditWeight__c);
-                Assert.areEqual('明細', detail.DetailCategory__c);
-                Assert.areEqual(1, detail.Quantity__c);
-                Assert.areEqual(pricingTableOLTC.WcCalculationRate__c, detail.WcCalculationRate__c);
-                Assert.areEqual(pricingTableOLTC.Note__c, detail.Note__c);
-                Assert.areEqual(pricingTableOLTC.Name5__c, detail.Name5__c);
-                Assert.areEqual(pricingTableOLTC.Name6__c, detail.Name6__c);
-                Assert.areEqual(pricingTableOLTC.Name7__c, detail.Name7__c);
-                Assert.areEqual(pricingTableOLTC.Name8__c, detail.Name8__c);
-                Assert.areEqual(pricingTableOLTC.Name9__c, detail.Name9__c);
-                Assert.areEqual(pricingTableOLTC.Name10__c, detail.Name10__c);
-                Assert.areEqual(pricingTableOLTC.detailedStatementText__c, detail.detailedStatementText__c);
-                Assert.areEqual(pricingTableOLTC.SpecialSpecificationNo__c, detail.SpecialSpecificationNo__c);
-                Assert.areEqual(pricingTableOLTC.MajorClassificationName__c, detail.MajorClassificationName__c);
-                Assert.areEqual(pricingTableOLTC.MajorClassificationCode__c, detail.MajorClassificationCode__c);
-                Assert.areEqual(pricingTableOLTC.MinorClassificationName__c, detail.MinorClassificationName__c);
-                Assert.areEqual(pricingTableOLTC.MinorClassificationCode__c, detail.MinorClassificationCode__c);
-                Assert.areEqual(pricingTableOLTC.CategoryName__c, detail.CategoryName__c);
-                Assert.areEqual(pricingTableOLTC.CategoryCode__c, detail.CategoryCode__c);
+                                                            Assert.areEqual(deviceId, detail.Device__c);
+                                                            Assert.areEqual(pricingTableOLTC.DisplayName__c, detail.Name);
+                                                            Assert.areEqual(pricingTableOLTC.Name1__c, detail.Name1__c);
+                                                            Assert.areEqual(pricingTableOLTC.Name2__c, detail.Name2__c);
+                                                            Assert.areEqual(pricingTableOLTC.Name3__c, detail.Name3__c);
+                                                            Assert.areEqual(pricingTableOLTC.Name4__c, detail.Name4__c);
+                                                            Assert.areEqual(pricingTableOLTC.UniqueKey__c, detail.pricingTableUniqueKey__c);
+                                                            Assert.areEqual(pricingTableOLTC.WC__c, detail.CreditWC__c);
+                                                            Assert.areEqual(pricingTableOLTC.Price__c, detail.UnitPrice__c);
+                                                            Assert.areEqual(pricingTableOLTC.Weight__c, detail.CreditWeight__c);
+                                                            Assert.areEqual('明細', detail.DetailCategory__c);
+                                                            Assert.areEqual(1, detail.Quantity__c);
+                                                            Assert.areEqual(pricingTableOLTC.WcCalculationRate__c, detail.WcCalculationRate__c);
+                                                            Assert.areEqual(pricingTableOLTC.Note__c, detail.Note__c);
+                                                            Assert.areEqual(pricingTableOLTC.Name5__c, detail.Name5__c);
+                                                            Assert.areEqual(pricingTableOLTC.Name6__c, detail.Name6__c);
+                                                            Assert.areEqual(pricingTableOLTC.Name7__c, detail.Name7__c);
+                                                            Assert.areEqual(pricingTableOLTC.Name8__c, detail.Name8__c);
+                                                            Assert.areEqual(pricingTableOLTC.Name9__c, detail.Name9__c);
+                                                            Assert.areEqual(pricingTableOLTC.Name10__c, detail.Name10__c);
+                                                            Assert.areEqual(pricingTableOLTC.detailedStatementText__c, detail.detailedStatementText__c);
+                                                            Assert.areEqual(pricingTableOLTC.SpecialSpecificationNo__c, detail.SpecialSpecificationNo__c);
+                                                            Assert.areEqual(pricingTableOLTC.MajorClassificationName__c, detail.MajorClassificationName__c);
+                                                            Assert.areEqual(pricingTableOLTC.MajorClassificationCode__c, detail.MajorClassificationCode__c);
+                                                            Assert.areEqual(pricingTableOLTC.MinorClassificationName__c, detail.MinorClassificationName__c);
+                                                            Assert.areEqual(pricingTableOLTC.MinorClassificationCode__c, detail.MinorClassificationCode__c);
+                                                            Assert.areEqual(pricingTableOLTC.CategoryName__c, detail.CategoryName__c);
+                                                            Assert.areEqual(pricingTableOLTC.CategoryCode__c, detail.CategoryCode__c);
             }
         }
         

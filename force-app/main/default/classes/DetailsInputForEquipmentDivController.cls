@@ -135,6 +135,8 @@ public with sharing class DetailsInputForEquipmentDivController {
                 detail.CategoryCode__c = chassis.CategoryCode__c;//種類コード
                 detail.detailedStatementText__c	= chassis.detailedStatementText__c;//価格表.内訳書出力用テキスト
                 detail.SpecialSpecificationNo__c= chassis.SpecialSpecificationNo__c;//価格表.特殊仕様No
+                detail.MasterCode__c = chassis.MasterCode__c;//マスタコード
+                detail.DetailRecordDisplayNumberText__c = chassis.DetailRecordDisplayNumberText__c;//明細レコード表示順
         
                 insList.add(detail);
             }
@@ -174,6 +176,8 @@ public with sharing class DetailsInputForEquipmentDivController {
                         optObj.CategoryCode__c = optDetail.CategoryCode__c;//種類コード
                         optObj.detailedStatementText__c	= optDetail.detailedStatementText__c;//価格表.内訳書出力用テキスト
                         optObj.SpecialSpecificationNo__c= optDetail.SpecialSpecificationNo__c;//価格表.特殊仕様No
+                        optObj.MasterCode__c = optDetail.MasterCode__c;//マスタコード
+                        optObj.DetailRecordDisplayNumberText__c = optDetail.DetailRecordDisplayNumberText__c;//明細レコード表示順
                         insList.add(optObj);
                     }
                 }
@@ -209,7 +213,7 @@ public with sharing class DetailsInputForEquipmentDivController {
                             Name6__c, Name7__c,Name8__c,Name9__c,Name10__c,
                             WC__c, Price__c, UniqueKey__c,ConditionForSearchformula__c,
                             Weight__c,DisplayName__c,detailedStatementText__c,SpecialSpecificationNo__c,
-                            Note__c
+                            Note__c,MasterCode__c,DetailRecordDisplayNumberText__c
                         FROM PricingTable__c
                         WHERE Id =:ids
                     ];

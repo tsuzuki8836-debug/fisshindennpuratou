@@ -57,7 +57,7 @@ public with sharing class RequestFormOutputGenerator {
                 , Opportunity__r.OrderExpectation__c            // 案件.受注見込
                 , Opportunity__r.CloseDate                      // 案件.受注予定日
                 , Opportunity__r.PickDivision__c                // 案件.部門
-                , Opportunity__r.ProposedTechniqueRemarks__c    // 案件.技術提案 備考
+                // , Opportunity__r.ProposedTechniqueRemarks__c    // 案件.技術提案 備考
                 , Opportunity__r.PumpStation__r.Name            // 案件.機場.機場名
                 , Opportunity__r.Result_SalesDate__c            // 案件.４．売上年月日
                 , Opportunity__r.SR_CP__c                       // 案件.SR CP
@@ -237,7 +237,8 @@ public with sharing class RequestFormOutputGenerator {
      * ②見積照会書用CSV作成
      */
     @TestVisible public static String createRequestForm2Csv(){
-        csvColumnHeader = '発行日,案件番号,商談番号,宛先,担当,顧客名,件名,案件概要,システム概要,確度,受注,売上,工事,商流,着手\n';
+        //csvColumnHeader = '発行日,案件番号,商談番号,宛先,担当,顧客名,件名,案件概要,システム概要,確度,受注,売上,工事,商流,着手\n';
+        csvColumnHeader = '発行日,案件番号,商談番号,宛先,担当,顧客名,件名,案件概要,確度,受注,売上,工事,商流,着手\n';
 
         // 確度
         String expectation = setExpectation(requestTask.Opportunity__r.OrderExpectation__c);
@@ -263,7 +264,7 @@ public with sharing class RequestFormOutputGenerator {
         // 案件概要
         valueList.add(requestTask.Opportunity__r.OpportunityNote__c == null ? '' : '"' + requestTask.Opportunity__r.OpportunityNote__c + '"');
         // システム概要
-        valueList.add(requestTask.Opportunity__r.ProposedTechniqueRemarks__c == null ? '' : '"' + requestTask.Opportunity__r.ProposedTechniqueRemarks__c + '"');
+        //valueList.add(requestTask.Opportunity__r.ProposedTechniqueRemarks__c == null ? '' : '"' + requestTask.Opportunity__r.ProposedTechniqueRemarks__c + '"');
         // 確度
         valueList.add(expectation);
         // 受注　SHAKANCRM_CONCEPT-622にて受注年月日→受注予定日に変更

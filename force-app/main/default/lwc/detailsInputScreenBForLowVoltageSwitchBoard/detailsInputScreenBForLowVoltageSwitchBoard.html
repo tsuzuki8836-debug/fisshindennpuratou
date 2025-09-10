@@ -1,0 +1,377 @@
+<template>
+    <div class="slds-box slds-p-around_none slds-m-top_x-small slds-m-bottom_medium slds-m-horizontal_none">
+        <div class="c-container">
+                <lightning-layout multiple-rows>
+                    <lightning-layout-item  size="3"  padding="around-small">
+                        <!-- 検索条件：筐体仕様 -->
+                        <div class="slds-form-element slds-form-element_horizontal">
+                            <label class="slds-form-element__label">{installationLocationLabel}</label>
+                            <div class="slds-form-element__control">
+                                <select class="slds-select" 
+                                        onchange={installationLocation_Handler}>
+                                    <template for:each={installationLocationOptions} for:item="option">
+                                        <template if:true={option.selected}>
+                                            <option key={option.label} class="uiInputSelectOption" value={option.value} selected>{option.label}</option>
+                                        </template>
+                                        <template if:false={option.selected}>
+                                            <option key={option.label} class="uiInputSelectOption" value={option.value}>{option.label}</option>
+                                        </template>
+                                    </template>
+                                </select>
+                            </div>
+                        </div>
+                    </lightning-layout-item>
+                    <lightning-layout-item size="3" padding="around-small">
+                        <!-- 検索条件：筐体種類 -->
+                        <div class="slds-form-element slds-form-element_horizontal">
+                            <label class="slds-form-element__label">{housingSpecificationsLabel}</label>
+                            <div class="slds-form-element__control">
+                                <select class="slds-select" 
+                                        onchange={housingSpecifications_Handler}>
+                                    <template for:each={housingSpecificationsOptions} for:item="option">
+                                        <template if:true={option.selected}>
+                                            <option key={option.label} class="uiInputSelectOption" value={option.value} selected>{option.label}</option>
+                                        </template>
+                                        <template if:false={option.selected}>
+                                            <option key={option.label} class="uiInputSelectOption" value={option.value}>{option.label}</option>
+                                        </template>
+                                    </template>
+                                </select>
+                            </div>
+                        </div>
+                    </lightning-layout-item>
+                    <lightning-layout-item size="3" padding="around-small">
+                        <!-- 検索条件：扉仕様 -->
+                        <div class="slds-form-element slds-form-element_horizontal">
+                            <label class="slds-form-element__label">{doorSpecificationsLabel}</label>
+                            <div class="slds-form-element__control">
+                                <select class="slds-select" 
+                                        onchange={doorSpecifications_Handler}>
+                                    <template for:each={doorSpecificationsOptions} for:item="option">
+                                        <template if:true={option.selected}>
+                                            <option key={option.label} class="uiInputSelectOption" value={option.value} selected>{option.label}</option>
+                                        </template>
+                                        <template if:false={option.selected}>
+                                            <option key={option.label} class="uiInputSelectOption" value={option.value}>{option.label}</option>
+                                        </template>
+                                    </template>
+                                </select>
+                            </div>
+                        </div>
+                    </lightning-layout-item>
+
+                <lightning-layout-item size="9"  padding="around-small">
+                    <div><button class="slds-button slds-align_absolute-center slds-button_brand search-button" 
+                        onclick={onSearch}>検　索</button>
+                    </div>
+                </lightning-layout-item>
+            </lightning-layout>
+        </div>
+
+        <div  class="c-container">
+            <lightning-layout>
+            <lightning-layout-item padding="around-small">
+                <div class="header-column">
+                    <p>
+                        <b>選択仕様：<lightning-formatted-text value={displayCondition}></lightning-formatted-text></b>
+                    </p>
+                    <p>
+                        <b>価格合計：<lightning-formatted-number value={displayTotal}></lightning-formatted-number></b>
+                    </p>
+                </div>
+            </lightning-layout-item>
+            </lightning-layout>
+        </div>
+
+        <lightning-layout>
+            <div class="slds-m-around_medium">
+                <template iterator:tbl={classicTables}>
+                <lightning-accordion key={tbl.value.headTitle} allow-multiple-sections-open  active-section-name={tbl.value.headTitle}>
+                    <lightning-accordion-section name={tbl.value.headTitle} label={tbl.value.headTitle}>
+                        <lightning-layout>
+                            <lightning-layout-item>
+                                    <div style = {getStyle} >
+                                    <template if:true={tbl.value.isNodata}>
+                                        <div class="slds-align_absolute-center">
+                                            <br />
+                                            指定条件により、明細データを取得できません。
+                                        </div>
+                                    </template>
+                                    <template if:false={tbl.value.isNodata}>
+                                        <!--   -->
+                                        <table class="slds-table slds-table_bordered slds-table_col-bordered slds-no-row-hover classicTables" 
+                                            role="grid">
+                                            <!-- 一覧　ヘッダー -->   
+                                            <thead>
+                                                <template iterator:row={tbl.value.headerList}>
+                                                    <tr key={row.value.cellList} class="slds-line-height_reset">
+                                                        <template iterator:cell={row.value.cellList}>
+                                                            <template if:true={cell.value.isRowSpan}>
+                                                                <th key={cell.value.value} rowspan={cell.value.rowSpanCnt} scope="col" class="slds-is-resizable slds-text-align_center slds-text-title" >
+                                                                    <span class="slds-truncate" title={cell.value.value}>{cell.value.value}</span>
+                                                                </th>
+                                                                
+                                                            </template>
+                                                            <template if:true={cell.value.isColSpan}>
+                                                                <th key={cell.value.value} colspan={cell.value.colSpanCnt} scope="col" class="slds-is-resizable slds-text-align_center slds-text-title" >
+                                                                    <span class="slds-truncate" title={cell.value.value}>{cell.value.value}</span>
+                                                                </th>
+                                                            </template>
+                                                            <template if:false={cell.value.isRowSpan}>
+                                                                <template if:false={cell.value.isColSpan}>
+                                                                    <th key={cell.value.value} scope="col" class="slds-is-resizable slds-text-align_center slds-text-title" >
+                                                                        <template if:false={cell.value.isEdit}>
+                                                                            <span class="slds-truncate" title={cell.value.value}>{cell.value.value}</span>
+                                                                        </template>
+                                                                        <template if:true={cell.value.isEdit}>
+                                                                            <template iterator:it={cell.value.value}>
+                                                                                <template if:true={it.first}><span key={it.value} class="slds-truncate left" title={it.value}>{it.value}</span></template>
+                                                                                <template if:true={it.last}><span key={it.value} class="slds-truncate right" title={it.value}>{it.value}</span></template>
+                                                                            </template>
+                                                                        </template>
+                                                                    </th>
+                                                                </template>
+                                                            </template>
+                                                        </template>
+                                                    </tr>
+                                                </template>
+                                            </thead>
+                                            <!-- 一覧 ボディー情報-->
+                                            <tbody>
+                                                <template iterator:row={tbl.value.bodyList}>
+                                                    <tr key={row.value.cellList} class="slds-hint-parent">
+                                                        <template iterator:cell={row.value.cellList}>
+                                                            <template if:false={cell.value.isEdit}>
+                                                                <template if:true={cell.value.isRowSpan}>
+                                                                    <td key={cell.value.value} rowspan={cell.value.rowSpanCnt} class="cell_classicTables" style="border-right:1px solid rgb(229, 229, 229);">
+                                                                        <template if:true={cell.value.isRight}>
+                                                                            <div class="slds-truncate slds-text-align_right"><lightning-formatted-text value={cell.value.value}></lightning-formatted-text></div>
+                                                                        </template>
+                                                                        <template if:false={cell.value.isRight}>
+                                                                            <div class="slds-truncate slds-text-align_left"><lightning-formatted-text value={cell.value.value}></lightning-formatted-text></div>
+                                                                        </template>
+                                                                    </td>
+                                                                </template>
+                                                                <template if:true={cell.value.isColSpan}>
+                                                                    <td key={cell.value.value} colspan={cell.value.colSpanCnt} class="cell_classicTables">
+                                                                        <template if:true={cell.value.isRight}>
+                                                                            <div class="slds-truncate slds-text-align_right"><lightning-formatted-text value={cell.value.value}></lightning-formatted-text></div>
+                                                                        </template>
+                                                                        <template if:false={cell.value.isRight}>
+                                                                            <div class="slds-truncate slds-text-align_left"><lightning-formatted-text value={cell.value.value}></lightning-formatted-text></div>
+                                                                        </template>
+                                                                    </td>
+                                                                </template>
+                                                                <template if:false={cell.value.isColSpan}>
+                                                                    <template if:false={cell.value.rowSpanCnt}>
+                                                                        <!-- 非表示 -->
+                                                                        <template if:false={cell.value.value}><td key={cell.value.value} class="cell_classicTables" style="display:none"></td></template>
+                                                                        <template if:true={cell.value.value}>
+                                                                            <td key={cell.value.value} class="cell_classicTables">
+                                                                                <template if:true={cell.value.isRight}>
+                                                                                    <div class="slds-truncate slds-text-align_right"><lightning-formatted-text value={cell.value.value}></lightning-formatted-text></div>
+                                                                                </template>
+                                                                                <template if:false={cell.value.isRight}>
+                                                                                    <div class="slds-truncate slds-text-align_left"><lightning-formatted-text value={cell.value.value}></lightning-formatted-text></div>
+                                                                                </template>
+                                                                            </td>
+                                                                        </template>
+                                                                    </template>
+                                                                </template>
+                                                                
+                                                            </template>
+                                                            <template if:true={cell.value.isEdit}>
+                                                                <td key={cell.value.value} class="cell_classicTables" style="border-right:thick double rgb(229, 229, 229);">
+                                                                    <div class="slds-truncate slds-text-align_center">
+                                                                        <lightning-input type="checkbox" 
+                                                                            data-id={cell.value.value.Id} 
+                                                                            data-name={cell.value.value.Price__c}
+                                                                            data-title={cell.value.value.Name1__c}
+                                                                            variant="label-hidden" 
+                                                                            checked={cell.value.value.isChecked} 
+                                                                            onchange={handleScreenInputChange}>
+                                                                        </lightning-input>
+                                                                        
+                                                                    </div>
+                                                                </td>
+                                                            </template>
+                                                        </template>
+                                                    </tr>
+                                                </template>
+                                            </tbody>
+                                        </table>
+                                    </template>
+                                </div>
+                                </lightning-layout-item>
+                            </lightning-layout>
+                            <lightning-layout>
+                                <lightning-layout-item>
+                                    <!-- 一覧 Footer-->
+                                    <div class="slds-text-align_left slds-m-around_medium" style="white-space: break-spaces;">
+                                        {tbl.value.footerInfo}
+                                    </div>
+
+                                </lightning-layout-item>
+                            </lightning-layout>
+                    </lightning-accordion-section>
+                </lightning-accordion>
+            </template>
+
+                <!-- 一覧 Info-->
+                <!-- 配線用遮断器価格 （MCCB・ELB）-->
+                <lightning-layout>
+                    <template if:true={mccbTable}>
+                    <c-common-table data-id="mccbTable"
+                        table-obj={mccbTable}
+                        oncommontableinputchange={commonTableInputChange}>
+                    </c-common-table>
+                </template>
+                </lightning-layout>
+                <!-- 配線用遮断器価格 （MCCB・ELB）-->
+                <lightning-layout>
+                    <template if:true={mccbTableHas}>
+                    <c-common-table data-id="mccbTableHas"
+                        table-obj={mccbTableHas}
+                        oncommontableinputchange={commonTableInputChange}>
+                    </c-common-table>
+                </template>
+                </lightning-layout>
+
+                <!-- 低圧CT・PT、保護継電器類-->
+                <lightning-layout>
+                    <template if:true={lowVoltageCTPTTable}>
+                    <c-common-table data-id="lowVoltageCTPTTable"
+                        table-obj={lowVoltageCTPTTable}
+                        oncommontableinputchange={commonTableInputChange}>
+                    </c-common-table>
+                </template>
+                </lightning-layout>
+
+                <!-- 指示計類-->
+                <lightning-layout>
+                    <template if:true={indicatorTypeTable}>
+                    <c-common-table data-id="indicatorTypeTable"
+                        table-obj={indicatorTypeTable}
+                        oncommontableinputchange={commonTableInputChange}>
+                    </c-common-table>
+                </template>
+                </lightning-layout>
+
+                <!-- 計装・機器取付費-->
+                <lightning-layout>
+                    <template if:true={equipInstallFeeTable}>
+                    <c-common-table data-id="equipInstallFeeTable"
+                        table-obj={equipInstallFeeTable}
+                        oncommontableinputchange={commonTableInputChange}>
+                    </c-common-table>
+                </template>
+                </lightning-layout>
+
+                <!-- 取付器具類-->
+                <lightning-layout>
+                    <template if:true={installEquipTypeTable}>
+                    <c-common-table data-id="installEquipTypeTable"
+                        table-obj={installEquipTypeTable}
+                        oncommontableinputchange={commonTableInputChange}>
+                    </c-common-table>
+                </template>
+                </lightning-layout>
+
+                <!-- 計器用変流器 ＣＴ(低圧)-->
+                <lightning-layout>
+                    <template if:true={transformerCTTable}>
+                    <c-common-table data-id="transformerCTTable"
+                        table-obj={transformerCTTable}
+                        oncommontableinputchange={commonTableInputChange}>
+                    </c-common-table>
+                </template>
+                </lightning-layout>
+
+                <!-- 双投式電磁接触器-->
+                <lightning-layout>
+                    <template if:true={twoElectroContactorTable}>
+                    <c-common-table data-id="twoElectroContactorTable"
+                        table-obj={twoElectroContactorTable}
+                        oncommontableinputchange={commonTableInputChange}>
+                    </c-common-table>
+                </template>
+                </lightning-layout>
+
+                <!-- 起動回路 【遮断器(MCCB)＋電磁開閉器(MC)＋補助リレー＋タイマー】 -->
+                <lightning-layout>
+                    <template if:true={startupCircuitTable}>
+                    <c-common-table data-id="startupCircuitTable"
+                        table-obj={startupCircuitTable}
+                        oncommontableinputchange={commonTableInputChange}>
+                    </c-common-table>
+                </template>
+                </lightning-layout>
+
+                <!-- 電磁開閉器（MC）-->
+                <lightning-layout>
+                    <template if:true={electroSwitchTable}>
+                    <c-common-table data-id="electroSwitchTable"
+                        table-obj={electroSwitchTable}
+                        oncommontableinputchange={commonTableInputChange}>
+                    </c-common-table>
+                </template>
+                </lightning-layout>
+
+                <!-- 低圧コンデンサ・リアクトル　油入-->
+                <lightning-layout>
+                    <template if:true={lowVoltageCROilTable}>
+                    <c-common-table data-id="lowVoltageCROilTable"
+                        table-obj={lowVoltageCROilTable}
+                        oncommontableinputchange={commonTableInputChange}>
+                    </c-common-table>
+                </template>
+                </lightning-layout>
+
+                <!-- 変圧器　油入り自冷-->
+                <lightning-layout>
+                    <template if:true={transformerOilTable}>
+                    <c-common-table data-id="transformerOilTable"
+                        table-obj={transformerOilTable}
+                        oncommontableinputchange={commonTableInputChange}>
+                    </c-common-table>
+                </template>
+                </lightning-layout>
+
+                <!-- 変圧器　モールド-->
+                <lightning-layout>
+                    <template if:true={transformerMoldTable}>
+                    <c-common-table data-id="transformerMoldTable"
+                        table-obj={transformerMoldTable}
+                        oncommontableinputchange={commonTableInputChange}>
+                    </c-common-table>
+                </template>
+                </lightning-layout>
+
+                <!-- 変圧器（照明・建築付帯用）-->
+                <lightning-layout>
+                    <template if:true={transformerLightingTable}>
+                    <c-common-table data-id="transformerLightingTable"
+                        table-obj={transformerLightingTable}
+                        oncommontableinputchange={commonTableInputChange}>
+                    </c-common-table>
+                </template>
+                </lightning-layout>
+            </div>
+        </lightning-layout>
+        <div  class="c-container">
+            <lightning-layout>
+            <lightning-layout-item padding="around-small">
+                <div class="header-column">
+                    <p>
+                        <b>価格合計：<lightning-formatted-number value={displayTotal}></lightning-formatted-number></b>
+                    </p>
+                </div>
+            </lightning-layout-item>
+            </lightning-layout>
+        </div>
+        <!-- </template> -->
+        <template if:true={loaded}>
+            <lightning-spinner class="spins" alternative-text="Loading" size="small" data-name={loadMsg}></lightning-spinner>
+        </template>
+    </div>
+</template>

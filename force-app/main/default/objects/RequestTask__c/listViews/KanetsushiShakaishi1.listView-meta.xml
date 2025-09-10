@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ListView xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>KanetsushiShakaishi1</fullName>
+    <columns>NAME</columns>
+    <columns>CREATEDBY_USER</columns>
+    <columns>TaskCategory__c</columns>
+    <columns>Status__c</columns>
+    <columns>DueDate__c</columns>
+    <columns>EstimatedAnswerDate__c</columns>
+    <columns>RequestDestination__c</columns>
+    <filterScope>Everything</filterScope>
+    <filters>
+        <field>Requester__c</field>
+        <operation>equals</operation>
+        <value>関越支　社会シ一</value>
+    </filters>
+    <label>17-01.関越支　社会シ一の依頼タスク</label>
+</ListView>

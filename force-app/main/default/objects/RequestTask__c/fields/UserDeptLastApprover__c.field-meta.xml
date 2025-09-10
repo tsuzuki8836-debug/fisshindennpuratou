@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>UserDeptLastApprover__c</fullName>
+    <externalId>false</externalId>
+    <inlineHelpText>指定した承認者の承認後、依頼先へ情報開示及び依頼メッセージが発信されます。</inlineHelpText>
+    <label>自部門最終承認者</label>
+    <required>false</required>
+    <trackFeedHistory>false</trackFeedHistory>
+    <trackHistory>true</trackHistory>
+    <trackTrending>false</trackTrending>
+    <type>Picklist</type>
+    <valueSet>
+        <restricted>true</restricted>
+        <valueSetDefinition>
+            <sorted>false</sorted>
+            <value>
+                <fullName>承認者1</fullName>
+                <default>true</default>
+                <label>承認者1</label>
+            </value>
+            <value>
+                <fullName>承認者2</fullName>
+                <default>false</default>
+                <label>承認者2</label>
+            </value>
+            <value>
+                <fullName>承認者3</fullName>
+                <default>false</default>
+                <label>承認者3</label>
+            </value>
+        </valueSetDefinition>
+    </valueSet>
+</CustomField>

@@ -1,0 +1,130 @@
+<template>
+    <lightning-card>
+        <h3 slot="title">伺い数値明細 </h3>
+        <template if:true={recordTypeIsM}>
+            <div style="padding-left:10px;">見積価格案、受注時見込、単計(損予)織込、改善目標_手数料は「伺い数値情報(編集用)」セクションに入力してください。<br>
+            場所別数値、改善目標は「伺い場所別明細」に入力してください。（改善目標は見積用途により表示が切り替わります）<br>
+            金額変更時にブラウザ更新ボタンを押すと、下表が更新されます。
+            </div>
+        </template>
+        <template if:true={recordTypeIsO}>
+            <div style="padding-left:10px;">価格案(MAX)、価格案(MIN)、改善目標は「伺い場所別明細」に入力してください。<br>
+            単計(損予)織込、改善目標_手数料は「伺い数値情報（編集用）」セクションに入力してください。<br>
+            金額変更時にブラウザ更新ボタンを押すと、下表が更新されます。
+            </div>
+        </template>
+        <template if:true={recordTypeIsSh}>
+            <div style="padding-left:10px;">原契約、最新は、新規作成時または伺い場所別数値明細最新化時に案件のSR情報から自動転記されます。<br>
+                今回増減額(MAX)・(MIN)は、伺い場所別数値明細に入力してください。今回合計(MAX)・(MIN)は自動計算されます。<br>
+                金額変更時にブラウザ更新ボタンを押すと、下表が更新されます。
+            </div>
+        </template>
+        <div class="c-container slds-box slds-p-around_none slds-m-top_x-small slds-m-bottom_medium slds-m-horizontal_none slds-scrollable_x">
+    <table class="slds-table slds-table_cell-buffer slds-table_bordered slds-table_col-bordered">
+        <thead>
+            <tr>
+                <template if:false={recordTypeIsSh}>
+                    <th>
+                        <div></div>
+                    </th>
+                    <th>
+                        <div>価格案</div>
+                    </th>
+                    <th>
+                        <div>WC</div>
+                    </th>
+                    <th>
+                        <div>WC率</div>
+                    </th>
+                    <th>
+                        <div>TC</div>
+                    </th>
+                    <th>
+                        <div>TC率</div>
+                    </th>
+                    <th>
+                        <div>手数料</div>
+                    </th>
+                    <th>
+                        <div>粗利</div>
+                    </th>
+                    <th>
+                        <div>利益</div>
+                    </th>
+                </template>
+                <template if:true={recordTypeIsSh}>
+                    <th>
+                        <div></div>
+                    </th>
+                    <th>
+                        <div>CP</div>
+                    </th>
+                    <th>
+                        <div>WC</div>
+                    </th>
+                    <th>
+                        <div>WC率</div>
+                    </th>
+                    <th>
+                        <div>TC</div>
+                    </th>
+                    <th>
+                        <div>TC率</div>
+                    </th>
+                    <th>
+                        <div>手数料</div>
+                    </th>
+                    <th>
+                        <div>粗利</div>
+                    </th>
+                    <th>
+                        <div>利益</div>
+                    </th>
+                </template>
+            </tr>
+        </thead>
+        <tbody>
+            <template iterator:row={bodyList}>
+                <tr key={row.value.cellList} class="slds-hint-parent">
+                    <template iterator:cell={row.value.cellList}>
+                        <template if:true={cell.value.isText}>
+                            <template if:true={cell.value.isDisable}>
+                                <td key={cell.value.uniqueKey}  class="disable-bg">
+                                    <div class="slds-truncate slds-text-align_center">
+                                        <lightning-formatted-text value={cell.value.value}></lightning-formatted-text>
+                                    </div>
+                                </td>
+                            </template>
+                            <template if:false={cell.value.isDisable}>
+                                <td key={cell.value.uniqueKey}>
+                                    <div class="slds-truncate slds-text-align_center">
+                                        <lightning-formatted-text value={cell.value.value}></lightning-formatted-text>
+                                    </div>
+                                </td>
+                            </template>
+                        </template>
+                        <template if:false={cell.value.isText}>
+                            <template if:false={cell.value.isPercent}>
+                                <td key={cell.value.uniqueKey}>
+                                    <div class="slds-truncate slds-text-align_right">
+                                        <lightning-formatted-number value={cell.value.value} format-style="currency"></lightning-formatted-number>
+                                    </div>
+                                </td>
+                            </template>
+                            <template if:true={cell.value.isPercent}>
+                                <td key={cell.value.uniqueKey}>
+                                    <div class="slds-truncate slds-text-align_right">
+                                        <lightning-formatted-number value={cell.value.value}  maximum-fraction-digits="2"></lightning-formatted-number>
+                                        %
+                                    </div>
+                                </td>
+                            </template>
+                        </template>
+                    </template>
+                </tr>
+            </template>
+        </tbody>
+    </table>
+</div>
+</lightning-card>
+  </template>

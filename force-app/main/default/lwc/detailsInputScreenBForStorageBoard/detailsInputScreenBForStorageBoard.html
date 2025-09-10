@@ -125,6 +125,17 @@
             </template>
         </lightning-layout>
     </div>
+    <div class="c-container slds-box slds-p-around_none slds-m-top_x-small slds-m-bottom_medium slds-m-horizontal_none">
+        <lightning-layout>
+            <lightning-layout-item padding="around-small">
+                <div class="header-column">
+                    <p>
+                        <b>価格合計：<lightning-formatted-number value={displayTotal}></lightning-formatted-number></b>
+                    </p>
+                </div>
+            </lightning-layout-item>
+        </lightning-layout>
+    </div>
     <template if:true={loaded}>
         <lightning-spinner alternative-text="Loading" size="small"></lightning-spinner>
     </template>

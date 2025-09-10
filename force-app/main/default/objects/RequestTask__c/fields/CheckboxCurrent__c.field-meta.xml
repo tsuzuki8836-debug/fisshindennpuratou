@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>CheckboxCurrent__c</fullName>
+    <externalId>false</externalId>
+    <formula>CurrentApprover__c =  $User.Id</formula>
+    <label>現在の承認者(チェックボックス)</label>
+    <trackHistory>false</trackHistory>
+    <trackTrending>false</trackTrending>
+    <type>Checkbox</type>
+</CustomField>

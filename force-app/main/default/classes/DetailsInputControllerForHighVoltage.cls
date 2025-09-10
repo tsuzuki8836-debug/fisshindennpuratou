@@ -135,7 +135,7 @@ public with sharing class DetailsInputControllerForHighVoltage {
                 }
             }
 
-            Device__c device = [ SELECT Id, Quote__c,(SELECT Id FROM Details__r WHERE PricingTableUniqueKey__c like '%高圧受配電盤%' OR PricingTableUniqueKey__c like '%共通機器%') FROM Device__c WHERE Id =:deviceId LIMIT 1];
+            Device__c device = [ SELECT Id, Quote__c,(SELECT Id FROM Details__r WHERE PricingTableUniqueKey__c like '%高圧受配電盤%' OR PricingTableUniqueKey__c like '%共通機器%' OR Name1__c like '%変圧器収納盤(高圧)%') FROM Device__c WHERE Id =:deviceId LIMIT 1];
 
             //既存情報を削除
             List<Detail__c> deleteDetails = device.Details__r;//AND PricingTable__c IN:delIds
@@ -156,7 +156,7 @@ public with sharing class DetailsInputControllerForHighVoltage {
                                                                             WC__c, WcCalculationRate__c,
                                                                             Price__c,
                                                                             Weight__c,DisplayName__c,detailedStatementText__c,SpecialSpecificationNo__c,
-                                                                            Note__c
+                                                                            Note__c,MasterCode__c,DetailRecordDisplayNumberText__c
                                                                         FROM PricingTable__c
                                                                         WHERE Id IN:insList.keyset()
                                                                         ]);
@@ -202,8 +202,12 @@ public with sharing class DetailsInputControllerForHighVoltage {
                             detail.MinorClassificationCode__c = pricingTable.MinorClassificationCode__c;//小分類コード
                             detail.CategoryCode__c = pricingTable.CategoryCode__c;//種類コード
                             detail.CategoryName__c = pricingTable.CategoryName__c;//種類名
-
-                            detailList.add(detail); 
+                            detail.MasterCode__c = pricingTable.MasterCode__c;//マスタコード
+                            detail.DetailRecordDisplayNumberText__c = pricingTable.DetailRecordDisplayNumberText__c;//明細レコード表示順
+                            Boolean containsEvtPtLa = containsEVT_PT_LA(pricingTableId, quantity);
+                            if(containsEvtPtLa != true){
+                                detailList.add(detail); 
+                            }
                         }
                     }
                 }
@@ -265,7 +269,9 @@ public with sharing class DetailsInputControllerForHighVoltage {
                                             WC__c, //WC
                                             Price__c, //単価
                                             //Weight__c,
-                                            Note__c
+                                            Note__c,
+                                            MasterCode__c,//マスタコード
+                                            DetailRecordDisplayNumberText__c//明細レコード表示順
                                         FROM PricingTable__c
                                         WHERE BU__c=:bu
                                             AND ((MajorClassificationName__c = '高圧受配電盤'
@@ -414,7 +420,9 @@ public with sharing class DetailsInputControllerForHighVoltage {
 
         //負荷開閉器類LBS(LDS)
         CustomTable loadSwitchsTable = setLoadSwitchsTable(priceList, detailMap);
-        screenInfo.loadSwitchsTable = loadSwitchsTable;//負荷開閉器類LBS(LDS)
+        if(bu=='S'){
+            screenInfo.loadSwitchsTable = loadSwitchsTable;//負荷開閉器類LBS(LDS)
+        }
 
         //変圧器収納盤(高圧)
         CustomTable transformerStorageBoardTable = setTransformerStorageBoardTable(priceList, detailMap, searchOption);
@@ -424,27 +432,39 @@ public with sharing class DetailsInputControllerForHighVoltage {
 
         //ネットワークリレー
         CustomTable networkRelayMulticapTable = setNetworkRelayMulticapTable(priceList, detailMap);
-        screenInfo.networkRelayMulticapTable = networkRelayMulticapTable;//ネットワークリレー
+        if(bu=='S'){
+            screenInfo.networkRelayMulticapTable = networkRelayMulticapTable;//ネットワークリレー
+        }
 
         //ネットワークVT
         CustomTable networkVTTable = setNetworkVTTable(priceList, detailMap);
-        screenInfo.networkVTTable = networkVTTable;//ネットワークVT
+        if(bu=='S'){
+            screenInfo.networkVTTable = networkVTTable;//ネットワークVT
+        }
 
         //ネットワークCT
         CustomTable networkCTTable = setNetworkCTTable(priceList, detailMap);
-        screenInfo.networkCTTable = networkCTTable;//ネットワークCT
+        if(bu=='S'){
+            screenInfo.networkCTTable = networkCTTable;//ネットワークCT
+        }
 
         //合成CT(高圧/低圧)
         CustomTable compositeCTHighAndLowTable = setCompositeCTHighAndLowTable(priceList, detailMap);
-        screenInfo.compositeCTHighAndLowTable = compositeCTHighAndLowTable;//合成CT(高圧/低圧)
+        if(bu=='S'){
+            screenInfo.compositeCTHighAndLowTable = compositeCTHighAndLowTable;//合成CT(高圧/低圧)
+        }
 
         //プロテクタヒューズ
         CustomTable protectorFuseTable = setProtectorFuseTable(priceList, detailMap);
-        screenInfo.protectorFuseTable = protectorFuseTable;//プロテクタヒューズ
+        if(bu=='S'){
+            screenInfo.protectorFuseTable = protectorFuseTable;//プロテクタヒューズ
+        }
 
         //テイクオフヒューズ
         CustomTable takeOffFuseTable = setTakeOffFuseTable(priceList, detailMap);
-        screenInfo.takeOffFuseTable = takeOffFuseTable;//テイクオフヒューズ
+        if(bu=='S'){
+            screenInfo.takeOffFuseTable = takeOffFuseTable;//テイクオフヒューズ
+        }
 
         //計器・保護継電器・変換器
         CustomTable meterTableTable = setMeterTableTable(priceList, detailMap);
@@ -456,11 +476,15 @@ public with sharing class DetailsInputControllerForHighVoltage {
 
         //MELPRO-Dシリーズ
         CustomTable MELPRODSeriesTable = setMELPRODSeriesTable(priceList, detailMap);
-        screenInfo.MELPRODSeriesTable = MELPRODSeriesTable;//MELPRO-Dシリーズ
+        if(bu=='S'){
+            screenInfo.MELPRODSeriesTable = MELPRODSeriesTable;//MELPRO-Dシリーズ
+        }
 
         //MP11A(マルチリレー)
         CustomTable mp11MultiRelayTable = setMp11MultiRelayTable(priceList, detailMap);
-        screenInfo.mp11MultiRelayTable = mp11MultiRelayTable;//MP11A(マルチリレー)
+        if(bu=='S'){
+            screenInfo.mp11MultiRelayTable = mp11MultiRelayTable;//MP11A(マルチリレー)
+        }
         
         return  JSON.serialize(screenInfo);
 
@@ -1110,6 +1134,8 @@ public with sharing class DetailsInputControllerForHighVoltage {
             }
         }
 
+        System.debug('lightningArresterName4='+lightningArresterName4);
+
         List<BodyRow> headerList = new List<BodyRow>();//ヘッダ行情報
         List<BodyRow> bodyList = new List<BodyRow>();//ボディー行情報
 
@@ -1683,11 +1709,13 @@ public with sharing class DetailsInputControllerForHighVoltage {
                     bodyRow.add(setCell(name4,null,null,false,false));//標準盤外形寸法セル
                     bodyRow.add(setCell(getQuantityObject(priceObj,detailMap),null,null,true,true));//入力セル
                 }
-                row.cellList = bodyRow;
-                bodyList.add(row);
-                row = new BodyRow();
-                bodyRow  = new List<BodyCell>();
+                // row.cellList = bodyRow;
+                // bodyList.add(row);
+                // row = new BodyRow();
+                // bodyRow  = new List<BodyCell>();
             }
+            row.cellList = bodyRow;
+            bodyList.add(row);
         }
 
         //注＊　の設定
@@ -2064,8 +2092,12 @@ public with sharing class DetailsInputControllerForHighVoltage {
         for (PricingTable__c item : priceList) {
             //仕様10が計器・保護継電器・変換器のは　対象とする
             if(item.MajorClassificationName__c == '共通機器' && item.RecordType.DeveloperName == 'Detail' && item.Name10__c == '計器・保護継電器・変換器'){
-                takeOffFuseName1.add(item.Name1__c);
-                takeOffFuseMap.put(item.Name1__c,item);//データをキーで格納
+                String key = item.Name1__c;
+                if(item.Name1__c == '零相変流器+地絡過電流継電器' || item.Name1__c == '零相変流器+地絡方向継電器'){
+                    key = item.Name1__c + ' ' + item.Name3__c;//キー
+                }
+                takeOffFuseName1.add(key);
+                takeOffFuseMap.put(key,item);//データをキーで格納
             }
         }
 
@@ -2084,13 +2116,13 @@ public with sharing class DetailsInputControllerForHighVoltage {
         headerList.add(row1);
 
         //Body の設定
-        for(String name1 : takeOffFuseName1){
+        for(String key : takeOffFuseName1){
             BodyRow row = new BodyRow();
             List<BodyCell> bodyRow  = new List<BodyCell>();
-            PricingTable__c priceObj = takeOffFuseMap.get(name1);
+            PricingTable__c priceObj = takeOffFuseMap.get(key);
             if (priceObj!=null) {
                 Decimal price =  (priceObj.Price__c==null?0:priceObj.Price__c);
-                bodyRow.add(setCell(name1,null,null,false,false));//品名セル
+                bodyRow.add(setCell(key,null,null,false,false));//品名セル
                 bodyRow.add(setCell(priceObj.Name2__c,null,null,false,false));//記号セル
                 bodyRow.add(setCell(price.format(),null,null,false,true));//価格セル
                 bodyRow.add(setCell(getQuantityObject(priceObj,detailMap),null,null,true,true));//入力セル
@@ -2297,6 +2329,22 @@ public with sharing class DetailsInputControllerForHighVoltage {
         }
 
         return quantityObject;
+    }
+
+    // 2024/02/20 TS田村 追記 EVT・PT・LAでBUが施設の場合にtrueを返す
+    @AuraEnabled
+    public static Boolean containsEVT_PT_LA(Id pricingTableId, Decimal quantity) {
+        PricingTable__c pt = [SELECT Id, Name1__c, BU__c,CharacterSymbol__c FROM PricingTable__c WHERE Id =:pricingTableId];
+        String Name1 = pt.Name1__c;
+        String CharacterSymbol = pt.CharacterSymbol__c;
+        String BU = pt.BU__c;
+        if (CharacterSymbol != null &&
+        (CharacterSymbol.contains('EVT') || CharacterSymbol.contains('ZPT')  || CharacterSymbol.contains('VT') || CharacterSymbol.contains('LA') || CharacterSymbol.contains('NWVT') || CharacterSymbol.contains('NWCT')) &&
+        BU == 'S' &&
+        quantity > 1) {
+            return true;
+        }
+        return false;
     }
 
     //セルに値を設定

@@ -1,0 +1,341 @@
+.cellLine{
+  background-image: linear-gradient(
+      to top right,
+      var(--slds-g-color-neutral-base-95, var(--lwc-tableColorBackgroundHeader,rgb(243, 243, 243))) 48%,
+      rgb(128, 128, 128),
+      var(--slds-g-color-neutral-base-95, var(--lwc-tableColorBackgroundHeader,rgb(243, 243, 243))) 52%
+  );
+}
+.right{
+  float: right;
+  margin-bottom: 9px;
+  margin-left: 9px;
+}
+.left{
+  float: left;
+  margin-top: 9px;
+  margin-right: 9px;
+}
+
+tr:nth-child(even) {
+  background: #eff4ff;
+}
+
+tr:nth-child(odd) {
+  background: #fff;
+}
+
+.slds-table{
+  margin: 0;
+  border-spacing: 0;
+  position: relative;
+  border-collapse: collapse;
+}
+.slds-table th{
+  padding-left:0rem;
+  text-align: center;
+}
+/* ,
+.fixedTables tbody tr td:nth-child(2) */
+.fixedTables tbody tr td:nth-child(1) {
+background: #fff;
+}
+/* .fixedTables tbody tr td:nth-child(1),
+.fixedTables thead tr th:nth-child(2),
+.fixedTables tbody tr th:nth-child(2),
+.fixedTables thead tr td:nth-child(2),
+.fixedTables tbody tr td:nth-child(2),
+.fixedTables thead tr th:nth-child(3),
+.fixedTables thead tr td:nth-child(3)  */
+.fixedTables thead tr th:nth-child(1),
+.fixedTables tbody tr th:nth-child(1),
+.fixedTables thead tr td:nth-child(1),
+.fixedTables tbody tr td:nth-child(1){
+position: sticky;
+position: -webkit-sticky;
+z-index: 1;
+}
+.fixedTables thead tr th:nth-child(1),
+.fixedTables tbody tr th:nth-child(1),
+.fixedTables thead tr td:nth-child(1),
+.fixedTables tbody tr td:nth-child(1) {
+left: 0;
+}
+/* .fixedTables thead tr th:nth-child(2),
+.fixedTables tbody tr th:nth-child(2),
+.fixedTables thead tr td:nth-child(2),
+.fixedTables tbody tr td:nth-child(2) {
+left:8.1rem;
+} */
+
+.fixedTables thead tr:nth-child(1) th,
+.fixedTables thead tr:nth-child(2) th,
+.fixedTables thead tr:nth-child(3) th {
+position: sticky;
+position: -webkit-sticky;
+z-index: 2;
+}
+.fixedTables thead tr:nth-child(1) th {
+top: 0;
+}
+.fixedTables thead tr:nth-child(2) th {
+top: 27px;
+}
+.fixedTables thead tr:nth-child(3) th {
+top: 54px;
+}
+/* ,
+.fixedTables thead tr th:nth-child(2) */
+.fixedTables thead tr th:nth-child(1) {
+z-index: 3;
+}
+
+.sticky-table thead th:nth-child(1){
+top: 0;
+left: 0;
+}
+
+/*コントロールセンタ用*/
+.fixedTable thead th:nth-child(1){
+min-width: 57px;
+position: sticky;
+top: 0;
+left: 0;
+z-index: 4;
+}
+.fixedTable thead th:nth-child(2){
+min-width: 72px;
+position: sticky;
+top: 0;
+left: 57px;
+z-index: 4;
+}
+.fixedTable thead th:nth-child(3){
+position: sticky;
+top: 0;
+left: 129px;
+z-index: 5;
+}
+
+
+
+.fixedTable tbody tr td:nth-child(1) {
+background-color: #fff;
+min-width: 57px;
+position: sticky;
+top: 0;
+left: 0;
+z-index: 5;
+}
+
+.fixedTable tbody tr td:nth-child(1),
+.fixedTable tbody tr:nth-of-type(3) td{
+border-top: none;
+}
+.fixedTable tbody tr td:nth-child(2),
+.fixedTable tbody tr:nth-of-type(3) td{
+border-top: none;
+}
+
+.fixedTable tbody tr td:nth-child(2) {
+background-color: #fff;
+min-width: 71px;
+position: sticky;
+top: 0;
+left: 57px;
+z-index: 5;
+}
+
+.fixedTable tbody tr td:nth-child(3) {
+background-color: #fff;
+position: sticky;
+top: 0;
+left: 129px;
+z-index: 5;
+}
+.fixedTable tbody tr:nth-child(2) td:nth-child(3){
+background-color: #eff4ff;
+}
+
+.fixTable thead th:nth-child(1){
+position: sticky;
+top: 0;
+left: 0;
+z-index: 5;
+}
+.fixTable tbody tr td:nth-child(1){
+background-color: #fff;
+position: sticky;
+top: 0;
+left: 0;
+z-index: 5;
+}
+
+.fixTable tbody tr:nth-child(even) td:nth-child(1){
+background-color: #eff4ff;
+}
+
+
+
+
+.fixTable2 thead th:nth-child(1){
+position: sticky;
+top: 0;
+left: 0;
+z-index: 5;
+}
+.fixTable2 thead th:nth-child(2){
+position: sticky;
+top: 0;
+left: 0;
+z-index: 5;
+}
+.fixTable2 tbody tr td:nth-child(1){
+background-color:#fff;
+border-top: none;
+border-style: none;
+position: sticky;
+top: 0;
+left: 0;
+z-index: 4;
+overflow-x: hidden;
+}
+.fixTable2 tbody tr:nth-child(1) td:nth-child(2){
+border-style: none;
+min-width: 1px;
+height: 38px;
+background-color: #fff;
+border-left: none;
+position: sticky;
+top: 0;
+left: 0;
+z-index: 5;
+}
+
+.fixTable2 tbody tr:nth-child(2) td:nth-child(1){
+background-color: #eff4ff;
+border-style: none;
+min-width: 1px;
+height: 38px;
+border-left: none;
+position: sticky;
+top: 0;
+left: 0;
+
+}
+
+.fixTable3 thead tr:nth-child(1) th:nth-child(1){
+position: sticky;
+top: 0;
+left: 0;
+z-index: 5;
+}
+.fixTable3 thead tr:nth-child(3) th:nth-child(1){
+position: sticky;
+top: 0;
+left: 0;
+z-index: 5;
+}
+.fixTable3 tbody tr td:nth-child(1){
+background-color: #fff;
+position: sticky;
+top: 0;
+left: 0;
+z-index: 5;
+}
+
+.fixTable3 tbody tr:nth-child(even) td:nth-child(1){
+background-color: #eff4ff;
+}
+
+.fixTable4 thead th:nth-child(1){
+position: sticky;
+top: 0;
+left: 0;
+z-index: 5;
+}
+
+.fixTable4 th:nth-child(2){
+position: sticky;
+top: 0;
+left: 0;
+z-index: 5;
+}
+.fixTable4 tbody tr td:nth-child(1){
+  background-color:#fff;
+  border-top: none;
+  border-style: none;
+  position: sticky;
+  top: 0;
+  left: 0;
+  z-index: 4;
+  overflow-x: hidden;
+  }
+  .fixTable4 tbody tr:nth-child(1) td:nth-child(2){
+  border-style: none;
+  min-width: 1px;
+  height: 38px;
+  background-color: #fff;
+  border-left: none;
+  position: sticky;
+  top: 0;
+  left: 0;
+  z-index: 5;
+  }
+  
+  .fixTable4 tbody tr:nth-child(2) td:nth-child(1){
+  background-color: #eff4ff;
+  border-style: none;
+  min-width: 1px;
+  height: 38px;
+  border-left: none;
+  position: sticky;
+  top: 0;
+  left: 0;
+  }
+
+  .fixTable5 thead tr{
+    position: sticky;
+    top: 0;
+    z-index: 6;
+  }
+
+  .fixTable5 thead th:nth-child(1){
+    position: sticky;
+    top: 0;
+    left: 0;
+    z-index: 5;
+  }
+  .fixTable5 thead th:nth-child(2){
+    position: sticky;
+    top: 0;
+    left: 0;
+    z-index: 5;
+  }
+  .fixTable5 tbody tr td:nth-child(1){
+    position: sticky;
+    top: 0;
+    left: 0;
+    z-index: 5;
+    background-color:#fff;
+  }
+  
+  .fixTable5 tbody tr td:nth-child(2){
+    position: sticky;
+    top: 0;
+    left: 0;
+    z-index: 5;
+    background-color:#fff;
+  }
+  .fixTable5 tbody tr:nth-child(even) td:nth-child(1){
+    background-color: #eff4ff;
+  }
+  .fixTable5 tbody tr:nth-child(even) td:nth-child(2){
+    background-color: #eff4ff;
+  }
+
+  .fixTable6 thead tr{
+    position: sticky;
+    top: 0;
+    z-index: 4;
+  }

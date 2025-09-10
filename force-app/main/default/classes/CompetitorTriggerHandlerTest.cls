@@ -133,8 +133,8 @@ public with sharing class CompetitorTriggerHandlerTest {
     public static void onInsert_NothingToDo_onNoWinners() {
 
         Profile prof = [SELECT Id FROM Profile WHERE Name = 'システム管理者' LIMIT 1];
-        UserRole role = [SELECT Id FROM UserRole WHERE Name = '01_社会環境事業部' LIMIT 1];
-        User user = createUser(prof.Id, role.Id, 'terrasky-melco-admin', '官需', '01_社会環境事業部', '施設部', '第一課');
+        UserRole role = [SELECT Id FROM UserRole WHERE Name = '01_ファシリティインフラシステム事業部' LIMIT 1];
+        User user = createUser(prof.Id, role.Id, 'terrasky-melco-admin', '官需', '01_本社', '施設部', '第一課');
         insert user;
 
         System.runAs(user) {
@@ -216,8 +216,8 @@ public with sharing class CompetitorTriggerHandlerTest {
     public static void onInsert_Failed_onMultiWinners() {
         
         Profile prof = [SELECT Id FROM Profile WHERE Name = 'システム管理者' LIMIT 1];
-        UserRole role = [SELECT Id FROM UserRole WHERE Name = '01_社会環境事業部' LIMIT 1];
-        User user = createUser(prof.Id, role.Id, 'terrasky-melco-admin', '官需', '01_社会環境事業部', '施設部', '第一課');
+        UserRole role = [SELECT Id FROM UserRole WHERE Name = '01_ファシリティインフラシステム事業部' LIMIT 1];
+        User user = createUser(prof.Id, role.Id, 'terrasky-melco-admin', '官需', '01_本社', '施設部', '第一課');
         insert user;
 
         System.runAs(user) {
@@ -292,8 +292,8 @@ public with sharing class CompetitorTriggerHandlerTest {
     public static void onInsert_Success_onExistsWinner() {
         
         Profile prof = [SELECT Id FROM Profile WHERE Name = 'システム管理者' LIMIT 1];
-        UserRole role = [SELECT Id FROM UserRole WHERE Name = '01_社会環境事業部' LIMIT 1];
-        User user = createUser(prof.Id, role.Id, 'terrasky-melco-admin', '官需', '01_社会環境事業部', '施設部', '第一課');
+        UserRole role = [SELECT Id FROM UserRole WHERE Name = '01_ファシリティインフラシステム事業部' LIMIT 1];
+        User user = createUser(prof.Id, role.Id, 'terrasky-melco-admin', '官需', '01_本社', '施設部', '第一課');
         insert user;
 
         System.runAs(user) {
@@ -374,8 +374,8 @@ public with sharing class CompetitorTriggerHandlerTest {
     public static void onInsert_Success_withMitsubishiElectronics() {
         
         Profile prof = [SELECT Id FROM Profile WHERE Name = 'システム管理者' LIMIT 1];
-        UserRole role = [SELECT Id FROM UserRole WHERE Name = '01_社会環境事業部' LIMIT 1];
-        User user = createUser(prof.Id, role.Id, 'terrasky-melco-admin', '官需', '01_社会環境事業部', '施設部', '第一課');
+        UserRole role = [SELECT Id FROM UserRole WHERE Name = '01_ファシリティインフラシステム事業部' LIMIT 1];
+        User user = createUser(prof.Id, role.Id, 'terrasky-melco-admin', '官需', '01_本社', '施設部', '第一課');
         insert user;
 
         System.runAs(user) {
@@ -455,8 +455,8 @@ public with sharing class CompetitorTriggerHandlerTest {
     public static void onInsert_Error_CompetitorManual() {
         
         Profile prof = [SELECT Id FROM Profile WHERE Name = 'システム管理者' LIMIT 1];
-        UserRole role = [SELECT Id FROM UserRole WHERE Name = '01_社会環境事業部' LIMIT 1];
-        User user = createUser(prof.Id, role.Id, 'terrasky-melco-admin', '官需', '01_社会環境事業部', '施設部', '第一課');
+        UserRole role = [SELECT Id FROM UserRole WHERE Name = '01_ファシリティインフラシステム事業部' LIMIT 1];
+        User user = createUser(prof.Id, role.Id, 'terrasky-melco-admin', '官需', '01_本社', '施設部', '第一課');
         insert user;
 
         System.runAs(user) {
@@ -514,8 +514,8 @@ public with sharing class CompetitorTriggerHandlerTest {
     public static void onUpdate_Success_withWinner() {
 
         Profile prof = [SELECT Id FROM Profile WHERE Name = 'システム管理者' LIMIT 1];
-        UserRole role = [SELECT Id FROM UserRole WHERE Name = '01_社会環境事業部' LIMIT 1];
-        User user = createUser(prof.Id, role.Id, 'terrasky-melco-admin', '官需', '01_社会環境事業部', '施設部', '第一課');
+        UserRole role = [SELECT Id FROM UserRole WHERE Name = '01_ファシリティインフラシステム事業部' LIMIT 1];
+        User user = createUser(prof.Id, role.Id, 'terrasky-melco-admin', '官需', '01_本社', '施設部', '第一課');
         insert user;
 
         System.runAs(user) {
@@ -604,8 +604,8 @@ public with sharing class CompetitorTriggerHandlerTest {
     public static void onUpdate_Failure_withMultiWinners() {
 
         Profile prof = [SELECT Id FROM Profile WHERE Name = 'システム管理者' LIMIT 1];
-        UserRole role = [SELECT Id FROM UserRole WHERE Name = '01_社会環境事業部' LIMIT 1];
-        User user = createUser(prof.Id, role.Id, 'terrasky-melco-admin', '官需', '01_社会環境事業部', '施設部', '第一課');
+        UserRole role = [SELECT Id FROM UserRole WHERE Name = '01_ファシリティインフラシステム事業部' LIMIT 1];
+        User user = createUser(prof.Id, role.Id, 'terrasky-melco-admin', '官需', '01_本社', '施設部', '第一課');
         insert user;
 
         System.runAs(user) {

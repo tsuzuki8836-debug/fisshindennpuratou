@@ -151,7 +151,7 @@
                         <b>選択仕様：{displayCondition}</b>
                     </p>
                     <p>
-                        <b>合計価格：<lightning-formatted-number value={displayTotal}></lightning-formatted-number></b>
+                        <b>価格合計：<lightning-formatted-number value={displayTotal}></lightning-formatted-number></b>
                     </p>
                 </div>
             </lightning-layout-item>
@@ -172,7 +172,7 @@
                     </template>
                     <template if:false={isNodata}>
                     <template if:true={bodyList}>
-                        <table class="slds-table slds-table_cell-buffer slds-table_bordered slds-table_col-bordered">
+                        <table class="slds-table slds-table_cell-buffer slds-table_bordered slds-table_col-bordered slds-no-row-hover">
                             <!-- 一覧　ヘッダー -->   
                                 <thead>
                                     <template iterator:row={headerList}>
@@ -229,7 +229,7 @@
     
                                                 </template>
                                                 <template if:true={cell.value.isEdit}>
-                                                    <td key={cell.value.value}>
+                                                    <td key={cell.value.value} style="border-right:thick double rgb(229, 229, 229);">
                                                         <div class="slds-truncate slds-text-align_center">
                                                             <lightning-input type="checkbox" 
                                                             data-id={cell.value.value.Id} 
@@ -347,7 +347,17 @@
             </template>
             </lightning-layout>
         </template>
-
+        <div  class="c-container">
+            <lightning-layout>
+            <lightning-layout-item padding="around-small">
+                <div class="header-column">
+                    <p>
+                        <b>価格合計：<lightning-formatted-number value={displayTotal}></lightning-formatted-number></b>
+                    </p>
+                </div>
+            </lightning-layout-item>
+            </lightning-layout>
+        </div>
     </div>
     <template if:true={loader}>
         <lightning-spinner alternative-text="Loading" size="small"></lightning-spinner>

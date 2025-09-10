@@ -1,0 +1,45 @@
+.slds-table thead th {
+    text-align: center;
+}
+.no-left-border {
+    border-left: none !important;
+}
+.no-right-border {
+    border-right: none !important;
+}
+.no-top-border {
+    border-top: none !important;
+}
+.no-bottom-border {
+    border-bottom: none !important;
+}
+.disable-backgroundColor {
+    background-color: #f3f2f2;
+}
+.with-bottom-border {
+    border-bottom: 1px solid #c9c9c9
+}
+.title-customer {
+    font-size: 1.1em;
+    font-weight: 700;
+    line-height: 1.25;
+    padding-left: 12px;
+}
+.font-color-red {
+    color: #ff0000;
+}
+.bg-color-yellow {
+    background-color: #ffe699;
+}
+.top-border-bold {
+    border-top: 3px solid #000000;
+}
+.bottom-border-bold {
+    border-bottom: 3px solid #000000;
+}
+.left-border-bold {
+    border-left: 3px solid #000000;
+}
+.right-border-bold {
+    border-right: 3px solid #000000;
+}

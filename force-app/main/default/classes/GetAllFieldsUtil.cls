@@ -17,7 +17,7 @@ public class GetAllFieldsUtil {
             }
         }
         System.debug('query = ' + customQuery);
-
+ 
         return customQuery;
     }
 }

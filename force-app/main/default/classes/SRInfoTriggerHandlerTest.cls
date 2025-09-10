@@ -20,8 +20,8 @@ private class SRInfoTriggerHandlerTest {
     static void testOnAfterInsert_01() {
 
         Profile prof = [SELECT Id FROM Profile WHERE Name = '部門管理者' LIMIT 1];
-        UserRole role = [SELECT Id FROM UserRole WHERE Name = '01_社会環境事業部' LIMIT 1];
-        User user = createUser(prof.Id, role.Id, 'terrasky-melco-admin', '官需', '01_社会環境事業部', '施設環境部', '第一課');
+        UserRole role = [SELECT Id FROM UserRole WHERE Name = '01_ファシリティインフラシステム事業部' LIMIT 1];
+        User user = createUser(prof.Id, role.Id, 'terrasky-melco-admin', '官需', '01_本社', '施設環境部', '第一課');
         insert user;
 
         System.runAs(user) {
@@ -117,8 +117,8 @@ private class SRInfoTriggerHandlerTest {
     static void testOnAfterInsert_02() {
 
         Profile prof = [SELECT Id FROM Profile WHERE Name = '部門管理者' LIMIT 1];
-        UserRole role = [SELECT Id FROM UserRole WHERE Name = '01_社会環境事業部' LIMIT 1];
-        User user = createUser(prof.Id, role.Id, 'terrasky-melco-admin', '官需', '01_社会環境事業部', '施設環境部', '第一課');
+        UserRole role = [SELECT Id FROM UserRole WHERE Name = '01_ファシリティインフラシステム事業部' LIMIT 1];
+        User user = createUser(prof.Id, role.Id, 'terrasky-melco-admin', '官需', '01_本社', '施設環境部', '第一課');
         insert user;
 
         System.runAs(user) {
@@ -255,8 +255,8 @@ private class SRInfoTriggerHandlerTest {
     static void testOnAfterUpdate_01() {
 
         Profile prof = [SELECT Id FROM Profile WHERE Name = '部門管理者' LIMIT 1];
-        UserRole role = [SELECT Id FROM UserRole WHERE Name = '01_社会環境事業部' LIMIT 1];
-        User user = createUser(prof.Id, role.Id, 'terrasky-melco-admin', '官需', '01_社会環境事業部', '施設環境部', '第一課');
+        UserRole role = [SELECT Id FROM UserRole WHERE Name = '01_ファシリティインフラシステム事業部' LIMIT 1];
+        User user = createUser(prof.Id, role.Id, 'terrasky-melco-admin', '官需', '01_本社', '施設環境部', '第一課');
         insert user;
 
         System.runAs(user) {
@@ -356,8 +356,8 @@ private class SRInfoTriggerHandlerTest {
     static void testOnAfterUpdate_02() {
 
         Profile prof = [SELECT Id FROM Profile WHERE Name = '部門管理者' LIMIT 1];
-        UserRole role = [SELECT Id FROM UserRole WHERE Name = '01_社会環境事業部' LIMIT 1];
-        User user = createUser(prof.Id, role.Id, 'terrasky-melco-admin', '官需', '01_社会環境事業部', '施設環境部', '第一課');
+        UserRole role = [SELECT Id FROM UserRole WHERE Name = '01_ファシリティインフラシステム事業部' LIMIT 1];
+        User user = createUser(prof.Id, role.Id, 'terrasky-melco-admin', '官需', '01_本社', '施設環境部', '第一課');
         insert user;
 
         System.runAs(user) {
@@ -456,8 +456,8 @@ private class SRInfoTriggerHandlerTest {
     static void testOnAfterUpdate_03() {
 
         Profile prof = [SELECT Id FROM Profile WHERE Name = 'システム管理者' LIMIT 1];
-        UserRole role = [SELECT Id FROM UserRole WHERE Name = '01_社会環境事業部' LIMIT 1];
-        User user = createUser(prof.Id, role.Id, 'terrasky-melco-admin', '官需', '01_社会環境事業部', '施設環境部', '第一課');
+        UserRole role = [SELECT Id FROM UserRole WHERE Name = '01_ファシリティインフラシステム事業部' LIMIT 1];
+        User user = createUser(prof.Id, role.Id, 'terrasky-melco-admin', '官需', '01_本社', '施設環境部', '第一課');
         insert user;
 
         System.runAs(user) {
@@ -557,8 +557,8 @@ private class SRInfoTriggerHandlerTest {
     static void testOnAfterDelete_01() {
 
         Profile prof = [SELECT Id FROM Profile WHERE Name = '部門管理者' LIMIT 1];
-        UserRole role = [SELECT Id FROM UserRole WHERE Name = '01_社会環境事業部' LIMIT 1];
-        User user = createUser(prof.Id, role.Id, 'terrasky-melco-admin', '官需', '01_社会環境事業部', '施設環境部', '第一課');
+        UserRole role = [SELECT Id FROM UserRole WHERE Name = '01_ファシリティインフラシステム事業部' LIMIT 1];
+        User user = createUser(prof.Id, role.Id, 'terrasky-melco-admin', '官需', '01_本社', '施設環境部', '第一課');
         insert user;
 
         System.runAs(user) {

@@ -1,7 +1,6 @@
 <template>
     <lightning-accordion allow-multiple-sections-open  active-section-name={secTitle}>
         <lightning-accordion-section name={secTitle} label={secTitle}>
-            
             <template if:true={isNodata}>
                 <lightning-layout>
                     <lightning-layout-item padding="around-small">
@@ -12,127 +11,190 @@
                     </lightning-layout-item>
                 </lightning-layout>
             </template>
-
             <template if:false={isNodata}>
-            <lightning-layout>
-            <lightning-layout-item padding="around-small">
-                <div class="slds-truncate slds-text-align_right">{comment}</div>
-            <table class="slds-table slds-table_col-bordered slds-table_bordered slds-no-row-hover" style="border-collapse: collapse;">
-                <thead>
-                    <!-- ヘッダー情報 -->
-                    <template iterator:row={headerList}>
-                        <tr key={row.value.cellList} class="slds-line-height_reset">
-                            <template iterator:cell={row.value.cellList}>
-                                <template if:true={cell.value.isRowSpan}>
-                                    <th key={cell.value.value} rowspan={cell.value.rowSpanCnt} scope="col" class="slds-is-resizable  slds-text-align_center slds-text-title" >
-                                        <span class="slds-truncate" title={cell.value.value}>{cell.value.value}</span>
-                                    </th>
+                <lightning-layout>
+                    <lightning-layout-item padding="around-small">
+                    <div style={getStyle}>
+                    <div class="slds-truncate slds-text-align_right">{comment}</div>
+                    <table class={getClass}>
+                        <thead>
+                            <!-- ヘッダー情報 -->
+                            <template iterator:row={headerList}>
+                                <tr key={row.value.cellList} class="slds-line-height_reset">
+                                    <template iterator:cell={row.value.cellList}>
+                                        <template if:true={cell.value.isRowSpan}>
+                                            <th key={cell.value.value} rowspan={cell.value.rowSpanCnt} scope="col" 
+                                                    class="slds-is-resizable  slds-text-align_center slds-text-title"
+                                                    style="border-right:var(--lwc-borderWidthThin,1px) solid var(--slds-g-color-border-base-1, var(--lwc-colorBorder,rgb(229, 229, 229)));" >
+                                                <span class="slds-truncate" title={cell.value.value}>{cell.value.value}</span>
+                                            </th>
+                                        </template>
+                                        <template if:true={cell.value.isColSpan}>
+                                            <th key={cell.value.value} colspan={cell.value.colSpanCnt} scope="col" class="slds-is-resizable  slds-text-align_center slds-text-title" >
+                                                <span class="slds-truncate" title={cell.value.value}>{cell.value.value}</span>
+                                            </th>
+                                        </template>
+                                        <template if:false={cell.value.isRowSpan}>
+                                            <template if:false={cell.value.isColSpan}>
+                                                <!-- 配線用遮断器価格 （MCCB・ELB） -->
+                                                <template if:true={isFixed3}>
+                                                    <!-- 非表示セル -->
+                                                    <template if:false={cell.value.value}><th key={cell.value.value} style="display:none"></th></template>
+                                                        <template if:true={cell.value.value}>
+                                                            <template if:false={cell.value.isEdit}>
+                                                                <th key={cell.value.value} scope="col" class="slds-is-resizable slds-text-align_center slds-text-title" >
+                                                                    <span class="slds-truncate" title={cell.value.value}>{cell.value.value}</span>
+                                                                </th>
+                                                            </template>
+                                                        <!-- 斜め線セル -->
+                                                        <template if:true={cell.value.isEdit}>
+                                                            <th key={cell.value.value} scope="col" style="padding: 1px;"
+                                                                class="slds-is-resizable slds-text-align_center slds-text-title cellLine" >
+                                                                <template iterator:it={cell.value.value}>
+                                                                    <template if:true={it.first}><span key={it.value} class="slds-truncate left" title={it.value}>{it.value}</span></template>
+                                                                    <template if:true={it.last}><span key={it.value} class="slds-truncate right" title={it.value}>{it.value}</span></template>
+                                                                </template>
+                                                            </th>
+                                                        </template>
+                                                    </template>
+                                                </template>
+                                                <!-- 配線用遮断器価格 （MCCB・ELB）以外 -->
+                                                <template if:false={isFixed3}>
+                                                    <template if:false={cell.value.isEdit}>
+                                                        <th key={cell.value.value} scope="col" class="slds-is-resizable slds-text-align_center slds-text-title" >
+                                                            <span class="slds-truncate" title={cell.value.value}>{cell.value.value}</span>
+                                                        </th>
+                                                    </template>
+                                                    <!-- 斜め線セル -->
+                                                    <template if:true={cell.value.isEdit}>
+                                                        <th key={cell.value.value} scope="col" style="padding: 1px;"
+                                                            class="slds-is-resizable slds-text-align_center slds-text-title cellLine" >
+                                                            <template iterator:it={cell.value.value}>
+                                                                <template if:true={it.first}><span key={it.value} class="slds-truncate left" title={it.value}>{it.value}</span></template>
+                                                                <template if:true={it.last}><span key={it.value} class="slds-truncate right" title={it.value}>{it.value}</span></template>
+                                                            </template>
+                                                        </th>
+                                                    </template>
 
-                                </template>
-                                <template if:true={cell.value.isColSpan}>
-                                    <th key={cell.value.value} colspan={cell.value.colSpanCnt} scope="col" class="slds-is-resizable  slds-text-align_center slds-text-title" >
-                                        <span class="slds-truncate" title={cell.value.value}>{cell.value.value}</span>
-                                    </th>
-                                </template>
-                                <template if:false={cell.value.isRowSpan}>
-                                    <template if:false={cell.value.isColSpan}>
-                                        <th key={cell.value.value} scope="col" class="slds-is-resizable slds-text-align_center slds-text-title" >
-                                            <span class="slds-truncate" title={cell.value.value}>{cell.value.value}</span>
-                                        </th>
+                                                </template>
+                                            </template>
+                                        </template>
                                     </template>
-                                </template>
+                                </tr>
                             </template>
-                        </tr>
-                    </template>
-                </thead>
-                <tbody>
-                    <template iterator:row={bodyList}>
-                        <!-- ボディー情報 -->
-                        <tr key={row.value.cellList} class="slds-hint-parent">
-                            <template iterator:cell={row.value.cellList}>
-                                <template if:false={cell.value.isEdit}>
-                                    <template if:true={cell.value.isColSpan}>
-                                        <td key={cell.value.value} colspan={cell.value.colSpanCnt} class="slds-cell_action-mode" role="gridcell">
-                                            <template if:true={cell.value.isRight}>
-                                                <div class="slds-truncate slds-text-align_right">
-                                                    <lightning-formatted-text 
-                                                    value={cell.value.value}></lightning-formatted-text>
-                                                </div>
-                                            </template>
-                                            <template if:false={cell.value.isRight}>
-                                                <div class="slds-truncate slds-text-align_left">
-                                                    <lightning-formatted-text 
-                                                    value={cell.value.value}></lightning-formatted-text>
-                                                </div>
-                                            </template>
-                                        </td>
-                                    </template>
-                                    <template if:true={cell.value.isRowSpan}>
-                                        <td key={cell.value.value} rowspan={cell.value.rowSpanCnt} class="slds-cell_action-mode" role="gridcell" style="border-right:1px solid rgb(229, 229, 229);">
-                                            <template if:true={cell.value.isRight}>
-                                                <div class="slds-truncate slds-text-align_right">
-                                                    <lightning-formatted-text 
-                                                    value={cell.value.value}></lightning-formatted-text>
-                                                </div>
-                                            </template>
-                                            <template if:false={cell.value.isRight}>
-                                                <div class="slds-truncate slds-text-align_left">
-                                                    <lightning-formatted-text 
-                                                    value={cell.value.value}></lightning-formatted-text>
-                                                </div>
-                                            </template>
-                                        </td>
-                                    </template>
-                                    <template if:false={cell.value.isRowSpan}>
-                                        <template if:false={cell.value.isColSpan}>
-                                                <td key={cell.value.value}>
+                        </thead>
+                        <tbody>
+                            <template iterator:row={bodyList}>
+                                <!-- ボディー情報 -->
+                                <tr key={row.value.cellList} class="slds-hint-parent">
+                                    <template iterator:cell={row.value.cellList}>
+                                        <template if:false={cell.value.isEdit}>
+                                            <template if:true={cell.value.isColSpan}>
+                                                <td key={cell.value.value} colspan={cell.value.colSpanCnt} class="slds-cell_action-mode" role="gridcell">
                                                     <template if:true={cell.value.isRight}>
                                                         <div class="slds-truncate slds-text-align_right">
-                                                            <lightning-formatted-text value={cell.value.value}></lightning-formatted-text>
+                                                            <lightning-formatted-text 
+                                                            value={cell.value.value}></lightning-formatted-text>
                                                         </div>
                                                     </template>
                                                     <template if:false={cell.value.isRight}>
                                                         <div class="slds-truncate slds-text-align_left">
-                                                            <lightning-formatted-text value={cell.value.value}></lightning-formatted-text>
+                                                            <lightning-formatted-text 
+                                                            value={cell.value.value}></lightning-formatted-text>
                                                         </div>
                                                     </template>
                                                 </td>
+                                            </template>
+                                            <template if:true={cell.value.isRowSpan}>
+                                                <td key={cell.value.value} rowspan={cell.value.rowSpanCnt} class="slds-cell_action-mode" role="gridcell" style="border-right:1px solid rgb(229, 229, 229);">
+                                                    <template if:true={cell.value.isRight}>
+                                                        <div class="slds-truncate slds-text-align_right">
+                                                            <lightning-formatted-text 
+                                                            value={cell.value.value}></lightning-formatted-text>
+                                                        </div>
+                                                    </template>
+                                                    <template if:false={cell.value.isRight}>
+                                                        <div class="slds-truncate slds-text-align_left">
+                                                            <lightning-formatted-text 
+                                                            value={cell.value.value}></lightning-formatted-text>
+                                                        </div>
+                                                    </template>
+                                                </td>
+                                            </template>
+                                            <template if:false={cell.value.isRowSpan}>
+                                                <template if:false={cell.value.isColSpan}>
+                                                    <!-- 配線用遮断器価格 （MCCB・ELB） -->
+                                                    <template if:true={isFixed3}>
+                                                        <!-- 非表示 -->
+                                                        <template if:false={cell.value.value}><td key={cell.value.value} style="display:none"></td></template>
+                                                        <!-- 値ありの場合　表示 -->
+                                                        <template if:true={cell.value.value}>
+                                                            <td key={cell.value.value}>
+                                                                <template if:true={cell.value.isRight}>
+                                                                    <div class="slds-truncate slds-text-align_right">
+                                                                        <lightning-formatted-text value={cell.value.value}></lightning-formatted-text>
+                                                                    </div>
+                                                                </template>
+                                                                <template if:false={cell.value.isRight}>
+                                                                    <div class="slds-truncate slds-text-align_left">
+                                                                        <lightning-formatted-text value={cell.value.value}></lightning-formatted-text>
+                                                                    </div>
+                                                                </template>
+                                                            </td>
+                                                        </template>
+                                                    </template>
+                                                    <!-- 配線用遮断器価格 （MCCB・ELB） の以外 -->
+                                                    <template if:false={isFixed3}>
+                                                        <td key={cell.value.value}>
+                                                            <template if:true={cell.value.isRight}>
+                                                                <div class="slds-truncate slds-text-align_right">
+                                                                    <lightning-formatted-text value={cell.value.value}></lightning-formatted-text>
+                                                                </div>
+                                                            </template>
+                                                            <template if:false={cell.value.isRight}>
+                                                                <div class="slds-truncate slds-text-align_left">
+                                                                    <lightning-formatted-text value={cell.value.value}></lightning-formatted-text>
+                                                                </div>
+                                                            </template>
+                                                        </td>
+                                                    </template>
+                                                </template>
+                                            </template>
+                                        </template>
+                                        <template if:true={cell.value.isEdit}>
+                                            <!-- 入力セル -->
+                                            <td key={cell.value.value} class="slds-cell_action-mode" role="gridcell" style="border-right:thick double rgb(229, 229, 229);">
+                                                <div class="slds-truncate slds-text-align_right">
+                                                    <input type="text" pattern="^[1-9][0-9]*$" 
+                                                    title="1から9999までの数字を入力してください。"
+                                                    size="4" maxlength="4"
+                                                    style="text-align: right"
+                                                    autocomplete="off"
+                                                    data-name={cell.value.value.Price}
+                                                    value={cell.value.value.Quantity}
+                                                    data-id={cell.value.value.Id} 
+                                                    onchange={handleScreenInputChange}></input>
+                                                </div>
+                                            </td>
                                         </template>
                                     </template>
-                                </template>
-                                <template if:true={cell.value.isEdit}>
-                                    <!-- 入力セル -->
-                                    <td key={cell.value.value} class="slds-cell_action-mode" role="gridcell">
-                                        <div class="slds-truncate slds-text-align_right">
-                                            <input type="text" pattern="^[1-9][0-9]*$" 
-                                            title="1から9999までの数字を入力してください。"
-                                            size="4" maxlength="4"
-                                            style="text-align: right"
-                                            autocomplete="off"
-                                            data-name={cell.value.value.Price}
-                                            value={cell.value.value.Quantity}
-                                            data-id={cell.value.value.Id} 
-                                            onchange={handleScreenInputChange}></input>
-                                        </div>
-                                    </td>
-                                </template>
+                                </tr>
                             </template>
-                        </tr>
-                    </template>
-                </tbody>
-            </table>
-            </lightning-layout-item>
+                        </tbody>
+                    </table>
+                </div>
+                </lightning-layout-item>
+                </lightning-layout>
+                <lightning-layout>
+                <lightning-layout-item>
+                    <ul class="slds-m-around_medium">                
+                        <template iterator:note={noteList}>
+                            <li key={note.value}>{note.value}</li>
+                        </template>
+                    </ul>
+                </lightning-layout-item>
             </lightning-layout>
-            <lightning-layout>
-            <lightning-layout-item>
-                <ul class="slds-m-around_medium">                
-                    <template iterator:note={noteList}>
-                        <li key={note.value}>{note.value}</li>
-                    </template>
-                </ul>
-            </lightning-layout-item>
-        </lightning-layout>
-        </template>
+            </template>
         </lightning-accordion-section>
     </lightning-accordion>
 </template>

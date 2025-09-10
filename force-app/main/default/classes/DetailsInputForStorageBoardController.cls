@@ -101,7 +101,7 @@ public with sharing class DetailsInputForStorageBoardController {
                                                                         WC__c, WcCalculationRate__c,
                                                                         Price__c,
                                                                         Weight__c,DisplayName__c,detailedStatementText__c,SpecialSpecificationNo__c,
-                                                                        Note__c
+                                                                        Note__c,MasterCode__c,DetailRecordDisplayNumberText__c
                                                                     FROM PricingTable__c
                                                                     WHERE Id IN:insList.keyset()
                                                                     ]);
@@ -147,6 +147,8 @@ public with sharing class DetailsInputForStorageBoardController {
                         detail.MinorClassificationCode__c = pricingTable.MinorClassificationCode__c;//小分類コード
                         detail.CategoryCode__c = pricingTable.CategoryCode__c;//種類コード
                         detail.CategoryName__c = pricingTable.CategoryName__c;//種類名
+                        detail.MasterCode__c = pricingTable.MasterCode__c;//マスタコード
+                        detail.DetailRecordDisplayNumberText__c = pricingTable.DetailRecordDisplayNumberText__c;//明細レコード表示順
 
                         detailList.add(detail); 
                     }
@@ -214,7 +216,9 @@ public with sharing class DetailsInputForStorageBoardController {
                                                     WC__c, 
                                                     Price__c, //単価
                                                     //Weight__c,
-                                                    Note__c 
+                                                    Note__c,
+                                                    MasterCode__c,
+                                                    DetailRecordDisplayNumberText__c
                                                 FROM PricingTable__c
                                                 WHERE BU__c =:bu
                                                     AND ((MajorClassificationName__c = '変圧器'

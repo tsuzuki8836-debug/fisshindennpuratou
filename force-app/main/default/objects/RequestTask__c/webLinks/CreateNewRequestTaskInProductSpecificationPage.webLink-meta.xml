@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<WebLink xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>CreateNewRequestTaskInProductSpecificationPage</fullName>
+    <availability>online</availability>
+    <description>機器仕様のページで表示する依頼タスクボタン</description>
+    <displayType>massActionButton</displayType>
+    <encodingKey>UTF-8</encodingKey>
+    <height>600</height>
+    <linkType>url</linkType>
+    <masterLabel>依頼タスク新規作成</masterLabel>
+    <openType>sidebar</openType>
+    <protected>false</protected>
+    <requireRowSelection>false</requireRowSelection>
+    <url>/lightning/o/RequestTask__c/new?defaultFieldValues=
+Name={!ProductSpecification__c.Opp5__c },
+Opportunity__c={!ProductSpecification__c.Opp5Id__c},
+Factory__c={!ProductSpecification__c.FactorysId__c},
+ProductSpecification__c={!ProductSpecification__c.Id}
+&amp;backgroundContext=%2Flightning%2Fr%2FOpportunity%2F{!ProductSpecification__c.Id}%2Fview</url>
+</WebLink>

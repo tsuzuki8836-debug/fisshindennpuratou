@@ -57,6 +57,8 @@ public with sharing class DetailsAddController {
         public Decimal ProvisionPrice {get;set;}//提供価格
         public Decimal Weight {get;set;}//重量
         public String Note {get;set;}//備考
+        public String MasterCode {get;set;}//マスタコード
+        public String DetailRecordDisplayNumberText {get;set;}//明細レコード表示順
 
         public Boolean SpecialFlag {get;set;}//数量を小数点2桁まで許容するフラグ
    }
@@ -125,9 +127,9 @@ public with sharing class DetailsAddController {
                                                                 CategoryCode__c, CategoryName__c, RECNO__c, 
                                                                 Name1__c, Name2__c, Name3__c, Name4__c, Name5__c, Name6__c,
                                                                 Name7__c, Name8__c, Name9__c, Name10__c,
-                                                                WC__c, Price__c,
+                                                                WC__c, Price__c, ProvisionPrice__c,
                                                                 WcCalculationRate__c,
-                                                                Note__c,Weight__c,DisplayName__c, MasterCode__c, 
+                                                                Note__c,Weight__c,DisplayName__c, MasterCode__c,DetailRecordDisplayNumberText__c,
                                                                 detailedStatementText__c,SpecialSpecificationNo__c
                                                         FROM PricingTable__c
                                                         WHERE Id IN:priceIds
@@ -147,7 +149,7 @@ public with sharing class DetailsAddController {
                                         CreditWC__c, WcCoefficient__c, WcCalculationRate__c, 
                                         UnitPrice__c, UnitPriceCoefficient__c, 
                                         ProvisionUnitPrice__c, CreditWeight__c, 
-                                        Quantity__c, WC__c, Price__c, ProvisionPrice__c, Weight__c, Note__c
+                                        Quantity__c, WC__c, Price__c, ProvisionPrice__c, Weight__c, Note__c,MasterCode__c,DetailRecordDisplayNumberText__c
                                     FROM Detail__c
                                     WHERE Id IN:quoteIds
                                     ]);
@@ -176,8 +178,7 @@ public with sharing class DetailsAddController {
                     detail.WcCoefficient__c = obj.WCCoefficient;//単位WC
                     detail.CreditWC__c = obj.CreditWC;//WC係数
                     detail.UnitPriceCoefficient__c = obj.UnitPriceCoefficient;//単価係数
-                    detail.ProvisionUnitPrice__c = obj.ProvisionUnitPrice;//提供単価
-
+                    //detail.ProvisionUnitPrice__c = obj.ProvisionUnitPrice;//提供単価
                     detail.Quantity__c = quantity;//数量
                     detail.Device__c = deviceId;//機器ID
 
@@ -213,8 +214,11 @@ public with sharing class DetailsAddController {
 
 
                         detail.CreditWeight__c = originaldetail.CreditWeight__c;//単位重量
+                        detail.ProvisionUnitPrice__c = originaldetail.ProvisionUnitPrice__c;//提供単価
                         detail.WcCalculationRate__c=originaldetail.WcCalculationRate__c;//WC算出レート
                         detail.PricingTableUniqueKey__c = originaldetail.PricingTableUniqueKey__c;//価格表ユニークキー
+                        detail.MasterCode__c = originaldetail.MasterCode__c;//マスタコード
+                        detail.DetailRecordDisplayNumberText__c = originaldetail.DetailRecordDisplayNumberText__c;//明細レコード表示順
                         detailList.add(detail);
                     }
 
@@ -263,9 +267,16 @@ public with sharing class DetailsAddController {
                         detail.detailedStatementText__c = pricingTable.detailedStatementText__c;//価格表.内訳書出力用テキスト
                         detail.SpecialSpecificationNo__c= pricingTable.SpecialSpecificationNo__c;//価格表.特殊仕様No
                         detail.CreditWeight__c = pricingTable.Weight__c;//単位重量
+                        detail.ProvisionUnitPrice__c = pricingTable.ProvisionPrice__c;//提供単価
                         detail.WcCalculationRate__c=pricingTable.WcCalculationRate__c;//WC算出レート
                         detail.PricingTableUniqueKey__c = pricingTable.UniqueKey__c;//価格表ユニークキー
-                        detailList.add(detail);
+                        detail.MasterCode__c = pricingTable.MasterCode__c;//マスタコード
+                        detail.DetailRecordDisplayNumberText__c = pricingTable.DetailRecordDisplayNumberText__c;//明細レコード表示順
+                        // 2024/02/19 TS田村 追記
+                        Boolean containsEvtPtLa = containsEVT_PT_LA(pId,quantity);
+                        if(containsEvtPtLa != true){
+                            detailList.add(detail);
+                        }
                     }
                 }
             }
@@ -379,9 +390,9 @@ public with sharing class DetailsAddController {
         String column = ' Id,UniqueKey__c, Name,RecordType.DeveloperName, '
                         + ' MajorClassificationCode__c, MajorClassificationName__c, '
                         + ' MinorClassificationCode__c, MinorClassificationName__c, '
-                        + ' CategoryCode__c, CategoryName__c, RECNO__c, DisplayName__c,  MasterCode__c,  '
+                        + ' CategoryCode__c, CategoryName__c, RECNO__c, DisplayName__c,  MasterCode__c,DetailRecordDisplayNumberText__c,  '
                         + ' Name1__c, Name2__c, Name3__c, Name4__c, Name5__c, Name6__c, '
-                        + ' WC__c, WcCalculationRate__c, Price__c, Weight__c, Note__c ';
+                        + ' WC__c, WcCalculationRate__c, Price__c, ProvisionPrice__c, Weight__c, Note__c ';
 
         //ページング条件よる、検索条件のOffset部分を設定
         Integer offset = (pageNumber - 1) * pageSize;
@@ -452,49 +463,136 @@ public with sharing class DetailsAddController {
         //周波数　条件の指定
         List<String> detailPFList = new List<String>();
         //筐体の周波数条件
-        String categoryCode = '00';
+        List<String> categoryList = new List<String>{'00'};
         //明細の周波数条件
         detailPFList.add('00Hz');
         if (String.isNotBlank(powerFrequency)) {
             //見積に指定された場合、周波数条件を追加
             detailPFList.add(powerFrequency);
-            //大分類が「変圧器」or「発電機」の場合は筐体の周波数条件設定
-            //大分類がそれ以外の場合は筐体の周波数は全て'01'になる
-            
-            //⑦大分類「変圧器」かつ小分類「変圧器収納盤」or「バスダクト」の場合は種類コードの条件は"00"固定とする
-            // 小分類「変圧器収納盤」or「バスダクト」　の以外　"01"or"02"に切り替える
-            if((major == '変圧器' && minor!='変圧器収納盤' && minor!='バスダクト')
-                || major == '発電機'
-                //⑤大分類「高圧コンビ」かつ小分類「高圧コンデンサ・リアクトル」の場合も周波数によって種類コードの条件を"01"or"02"に切り替える
-                || (major == '高圧コンビ' && minor=='高圧コンデンサ・リアクトル')
-                //⑥大分類「進相コンデンサ/リアクトル」の場合も周波数によって種類コードの条件を"01"or"02"に切り替える
-                || major == '進相コンデンサ/リアクトル'
-            ){
-                categoryCode = (powerFrequency=='50Hz'?'01':'02');
-            } else {
-                categoryCode = '00';
-            }
+            categoryList.add((powerFrequency=='50Hz'?'01':'02'));
         }
 
+        // ・マスタ検索時には、下記の通りに価格表の検索条件を変更する
+        // 　・画面.大分類「変圧器」かつ画面.小分類「高圧変圧器」or「機器事業部 変圧器」の場合、小分類名=「変圧器収納盤」の筐体マスタも一覧に表示する。
+        // 　・画面.大分類「高圧コンビ」かつ画面.小分類「高圧コンビ盤」の場合、小分類名「高圧コンデンサ・リアクトル」の筐体マスタも一覧に表示する。
+        // 　・画面.大分類「低圧・現場・リレー・ACB盤」かつ画面.小分類「リレー盤」の場合と、画面.大分類「計装機器」かつ画面.小分類「計装盤」の場合は
+        //               大分類名「低圧・現場・リレー・ACB盤」かつ小分類名「低圧盤」の筐体マスタも一覧に表示する。
+        // 　・画面.大分類「進相コンデンサ/リアクトル」の場合、大分類名｢高圧コンビ」かつ小分類名「高圧コンビ盤」かつ名称3が「F」の筐体マスタも一覧に表示する。
+        List<String> majorChassisList = new List<String>();
+        List<String> minorChassisList = new List<String>();
+        String customChassisSql = '';
+        if (major=='変圧器' && (minor=='高圧変圧器' || minor=='機器事業部 変圧器')) {
+            majorChassisList.add(major);
+            minorChassisList.add(minor);
+            minorChassisList.add('変圧器収納盤');
+        }else if (major=='高圧コンビ' && minor=='高圧コンビ盤') {
+            majorChassisList.add(major);
+            minorChassisList.add(minor);
+            minorChassisList.add('高圧コンデンサ・リアクトル');
+        }else if ((major=='低圧・現場・リレー・ACB盤' && minor=='リレー盤' )
+                || (major=='計装機器' && minor=='計装盤' )) {
+            majorChassisList.add(major);
+            if(major=='計装機器')majorChassisList.add('低圧・現場・リレー・ACB盤');
+            minorChassisList.add(minor);
+            minorChassisList.add('低圧盤');
+        }else if (major=='進相コンデンサ/リアクトル') {
+            customChassisSql = ' MajorClassificationName__c  =\'高圧コンビ\'  '
+                              +' AND MinorClassificationName__c  =\'高圧コンビ盤\'  '
+                              +' AND Name3__c  =\'F\'  ';
+        }
+
+        // 不要　⇒⇒⇒・画面.大分類「UPS」かつ画面.小分類名が"2"で始まる(2000シリーズ)場合、明細のクエリ時に小分類の条件を除外する。
+        // 　・画面.大分類「発電機」かつ画面.小分類が「エンジン(DG)」or「エンジン(GTG)」の場合、大分類名「発電機」、かつ小分類名「補器関連・共通」の明細マスタも一覧に表示する。
+        // 　・画面.大分類「コントロールセンタ(C/C)」かつ画面.小分類が「200V」or「400V」の場合、小分類名「共通」の明細マスタも一覧に表示する。
+        // 　・画面.大分類が「CCTVカメラ設備[国交省本省宛て提出機器単体費等]」の場合、選択した小分類に関わらず小分類名＝「カメラ周辺装置」の明細マスタも一覧に表示する。
+        // 　・画面.大分類「計装機器」かつ画面.小分類「計装盤」の場合、小分類名＝「ラック･パネル計器」の明細マスタも一覧に表示する。
+        List<String> majorDetailList = new List<String>();
+        List<String> minorDetailList = new List<String>();
+        // 　・画面.大分類or小分類が、価格表.利用分類（価格表.大分類名「共通機器」）に含まれている明細マスタも全て取得して一覧に表示する。
+        String customDetailSql = ' UseClassification__c includes ( '
+                                    + '\'' +major +  '\'' 
+                                    + (String.isNotBlank(minor)?(',\''+minor+'\''):'')
+                                    + ' )';
+
+        // if (major=='UPS' && String.isNotBlank(minor) && minor.startsWith('2')) {
+        //     majorDetailList.add(major);
+        // }else
+         if (major=='発電機' && (minor=='エンジン(DG)' || minor=='エンジン(GTG)')) {
+            majorDetailList.add(major);
+            minorDetailList.add(minor);
+            minorDetailList.add('補器関連・共通');
+        }else if (major=='コントロールセンタ(C/C)' && (minor=='200V' || minor=='400V')) {
+            majorDetailList.add(major);
+            minorDetailList.add(minor);
+            minorDetailList.add('共通');
+        }else if (major=='CCTVカメラ設備[国交省本省宛て提出機器単体費等]') {
+            majorDetailList.add(major);
+            if (String.isNotBlank(minor)) minorDetailList.add(minor);
+            minorDetailList.add('カメラ周辺装置');
+        }else if (major=='計装機器' && minor=='計装盤') {
+            majorDetailList.add(major);
+            minorDetailList.add(minor);
+            minorDetailList.add('ラック･パネル計器');
+        }
+        
         //検索項目
         String column = ' Id,UniqueKey__c, Name,RecordType.DeveloperName, '
                         + ' MajorClassificationCode__c, MajorClassificationName__c, '
                         + ' MinorClassificationCode__c, MinorClassificationName__c, '
-                        + ' CategoryCode__c, CategoryName__c, RECNO__c, DisplayName__c, MasterCode__c, '
+                        + ' CategoryCode__c, CategoryName__c, RECNO__c, DisplayName__c, MasterCode__c,DetailRecordDisplayNumberText__c, '
                         + ' Name1__c, Name2__c, Name3__c, Name4__c, Name5__c, Name6__c, '
-                        + ' WC__c, WcCalculationRate__c, Price__c, Weight__c, Note__c ';
+                        + ' WC__c, WcCalculationRate__c, Price__c, ProvisionPrice__c, Weight__c, Note__c ';
 
         //件数算出用SQL
         String query = 'SELECT COUNT() FROM PricingTable__c'
                                 + ' WHERE BU__c  =:bu ' 
-                                + '   AND MajorClassificationName__c  =:major ' 
-                                + (String.isNotBlank(minor)?'AND MinorClassificationName__c  =:minor':'')
+                                // + '   AND MajorClassificationName__c  =:major ' 
+                                // + (String.isNotBlank(minor)?'AND MinorClassificationName__c  =:minor':'')
                                 + '   AND ( '
                                 + '        ( RecordType.DeveloperName = \'Detail\''
-                                + '        AND Frequency__c =:detailPFList )' 
-                                + '     OR ( RecordType.DeveloperName = \'Chassis\''
-                                + '        AND CategoryCode__c  =:categoryCode )'
-                                + ' ) ' ;
+                                + '        AND Frequency__c =:detailPFList ' 
+                                 //カスタマイズ条件
+                                + '        AND   (   '
+                                + '                  ( ' + customDetailSql + ' ) '
+                                + '              OR  ( '  ;
+        // 大分類　小分類条件の設定
+        //条件リストが設定された場合
+        if (majorDetailList.size()>0) {
+            query =       query + '           MajorClassificationName__c IN :majorDetailList ';
+            if (minorDetailList.size()>0) {
+                query = query + '   AND MinorClassificationName__c IN :minorDetailList ';
+            }
+        //条件リスト設定されない場合
+        } else {
+            //画面条件の設定
+            query = query       + '      MajorClassificationName__c  =:major ' 
+                                + (String.isNotBlank(minor)?' AND MinorClassificationName__c  =:minor':'');
+        }
+        query = query           + '                    )) '
+                                + '    )' 
+                                + ' OR ( RecordType.DeveloperName = \'Chassis\''
+                                + '        AND CategoryCode__c  =:categoryList ';
+        //条件リストが設定された場合
+        if (majorChassisList.size()>0) {
+            query =       query + '          AND MajorClassificationName__c IN :majorChassisList ';
+            if (minorChassisList.size()>0) {
+                query = query + '   AND MinorClassificationName__c IN :minorChassisList ';
+            }
+        //条件リスト設定されない場合
+        } else {
+            //画面条件の設定
+            query = query       + '   AND   ( '
+                                + '     ( MajorClassificationName__c  =:major ' 
+                                + (String.isNotBlank(minor)?' AND MinorClassificationName__c  =:minor':'')
+                                + '  )   ';
+            //カスタマイズ条件がある場合、設定する
+            if (String.isNotBlank(customChassisSql)) {
+                query = query   + '   OR   ( ' + customChassisSql + ' ) ';
+            }
+            query = query       + '          )  ';
+        }
+        query =  query      + '  )'
+                            + ' ) ' ;
 
 
         //ページング条件よる、検索条件のOffset部分を設定
@@ -503,8 +601,37 @@ public with sharing class DetailsAddController {
         Integer totalRecords = Database.countQuery(query);
 
         query = query.replace('COUNT()', column);
-        //第1キー：筐体→明細の順、第2キー：価格表.大分類コードの昇順、第3キー：価格表.特殊仕様Noの昇順、第4キー：価格表.小分類コードの昇順、第5キー：価格表.RECNOの昇順
-        query = query + ' ORDER By RecordType.DeveloperName,MajorClassificationCode__c,SpecialSpecificationNo__c,MinorClassificationCode__c,RECNo__c';
+
+        //ソート順を追加
+        String commonOrder='';
+        //ソース順の特別化
+        if (major=='高圧受配電盤'){
+            commonOrder = 'RECNOforHighVoltage__c,';
+        }else if(major=='変圧器' && minor=='高圧変圧器'){
+            commonOrder = 'RECNOforTransformerHighVoltage__c,';
+        }else if(major=='変圧器' && minor=='機器事業部 変圧器'){
+            commonOrder = 'RECNOforEquipmentTransformer__c,';
+        }else if(major=='高圧コンビ'){
+            commonOrder = 'RECNOforHighCombi__c,';
+        }else if(major=='低圧・現場・リレー・ACB盤' && minor=='低圧盤'){
+            commonOrder = 'RECNOforLowVoltage__c,';
+        }else if(major=='低圧・現場・リレー・ACB盤' && minor=='現場盤'){
+            commonOrder = 'RECNOforFieldBoard__c,';
+        }else if(major=='低圧・現場・リレー・ACB盤' && minor=='リレー盤'){
+            commonOrder = 'RECNOforRelayBoard__c,';
+        }else if(major=='低圧・現場・リレー・ACB盤' && minor=='ACB盤'){
+            commonOrder = 'RECNOforACBBoard__c,';
+        }else if(major=='コントロールセンタ(C/C)'){
+            commonOrder = 'RECNOforControlCenter__c,';
+        }else if(major=='中継端子・接地端子盤'){
+            commonOrder = 'RECNOforRelayGroundingTerminal__c,';
+        }   
+        //第1キー：筐体→明細の順、第2キー：価格表.大分類コードの昇順、
+        //第3キー：価格表.特殊仕様Noの昇順、第4キー：価格表.小分類コードの昇順;
+        query += ' ORDER By RecordType.DeveloperName,MajorClassificationCode__c,SpecialSpecificationNo__c,MinorClassificationCode__c,';
+        //第5キー：価格表.共通機器用RECNOの昇順、第6キー：価格表.RECNOの昇順
+        query += commonOrder; 
+        query += 'RECNo__c'; 
 
         List<PricingTable__c> recordsAll = Database.query(query);
 
@@ -561,7 +688,7 @@ public with sharing class DetailsAddController {
                 item.MinorClassificationName = record.MinorClassificationName__c;
  
                 item.Name1 = record.DisplayName__c;
-                item.Name2 = record.MasterCode__c;
+                item.Name2 = record.DetailRecordDisplayNumberText__c;//マスタコードの代わりに明細レコード表示順表示
 
                 item.UnitPrice = record.Price__c;
                 //マスタに単価が入っておらず名称2に「EP=WC×◯」と記載されており、
@@ -594,6 +721,9 @@ public with sharing class DetailsAddController {
                 //単位重量、重量
                 item.UnitWeight =  record.Weight__c;
                 item.UnitWeightSpan =  (item.UnitWeight!=null?item.UnitWeight.format():'');
+                //提供単価＝提供単価（内訳）
+                item.ProvisionUnitPrice = record.ProvisionPrice__c;
+                item.ProvisionUnitPriceSpan = (item.ProvisionUnitPrice!=null?item.ProvisionUnitPrice.format():'');
 
                 //内訳に登録された場合、数量、価格を設定
                 //単価係数＝単価係数（内訳）
@@ -608,8 +738,8 @@ public with sharing class DetailsAddController {
                 //WC＝数量（内訳）＊単位WC（内訳の単位WC）
                 item.WC = null;
                 //提供単価＝提供単価（内訳）
-                item.ProvisionUnitPrice = null;
-                item.ProvisionUnitPriceSpan = '';
+                //item.ProvisionUnitPrice = null;
+                //item.ProvisionUnitPriceSpan = '';
                 //提供単価＝数量（内訳）＊提供単価（内訳）
                 item.ProvisionPrice = null;
                 item.Weight =  null;
@@ -707,11 +837,13 @@ public with sharing class DetailsAddController {
                     newItem.WCCoefficient = detail.WcCoefficient__c;
                     newItem.CreditWC = detail.CreditWC__c;
                     newItem.UnitPriceCoefficient = detail.UnitPriceCoefficient__c;
+                    newItem.ProvisionUnitPrice = detail.ProvisionUnitPrice__c;
                     newItem.UnitWeight = detail.CreditWeight__c;
                     newItem.WC = detail.WC__c;
                     newItem.Price = detail.Price__c;
                     newItem.ProvisionPrice = detail.ProvisionPrice__c;
                     newItem.Weight = detail.Weight__c;
+                    
                     priceList.add(newItem);
                 }
             }
@@ -835,6 +967,7 @@ public with sharing class DetailsAddController {
                     item.WC =price.WC;//WC
                     item.ProvisionPrice =price.ProvisionPrice;//提供価格
                     item.Weight =price.Weight;//重量
+                    
                 }
                 rtnList.add(item);
             }
@@ -972,4 +1105,22 @@ public with sharing class DetailsAddController {
         res.put('name', nameMapList);
         return res;
     } 
+
+    // 2024/02/20 TS田村 追記 EVT・PT・LAでBUが施設の場合にtrueを返す
+    @AuraEnabled
+    public static Boolean containsEVT_PT_LA(Id pricingTableId, Decimal quantity) {
+        pricingTableId= String.valueOf(pricingTableId).left(18);
+        PricingTable__c pt = [SELECT Id, Name1__c, BU__c,CharacterSymbol__c FROM PricingTable__c WHERE Id =:pricingTableId];
+        String Name1 = pt.Name1__c;
+        String CharacterSymbol = pt.CharacterSymbol__c;
+        String BU = pt.BU__c;
+        if (CharacterSymbol != null &&
+        (CharacterSymbol.contains('EVT') || CharacterSymbol.contains('ZPT')  || CharacterSymbol.contains('VT') || CharacterSymbol.contains('LA') || CharacterSymbol.contains('NWVT') || CharacterSymbol.contains('NWCT')) &&
+        BU == 'S' &&
+        quantity > 1) {
+            return true;
+        }
+        return false;
+    }
+
 }

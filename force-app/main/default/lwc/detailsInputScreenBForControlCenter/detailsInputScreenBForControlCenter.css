@@ -1,0 +1,24 @@
+.c-container {
+    border: 1px solid #d8dde6;
+    margin: 10px 10px 10px 10px;
+}
+
+.header-sub-table {
+    font-size: 1em;
+    padding-left: 15px;
+}
+
+/* コントロールセンタ適用CSS */
+/*ヘッダー固定*/
+
+.table-obj thead:first-child{
+    position: sticky;
+    top: 0;
+    left: 0;
+    z-index: 3;
+}
+
+.select-wipper {
+    margin-left: 40px;
+    width: 120px;
+}

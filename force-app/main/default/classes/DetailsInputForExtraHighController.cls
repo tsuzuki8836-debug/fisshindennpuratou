@@ -36,6 +36,7 @@ public with sharing class DetailsInputForExtraHighController {
         public string searchCondition4 { get; set; }
         public string searchCondition5 { get; set; }
         public String searchConMap { get; set; }
+        public String buType { get; set; }
     }
 
     public class BodyRow {
@@ -90,7 +91,7 @@ public with sharing class DetailsInputForExtraHighController {
         List<String> voltageTypeList = INIT_SEARCH_CONDITION.voltageTypeMap.get(searchCondition2);                               
         
         String screenTypeLabel = String.isEmpty(searchCondition4) || searchCondition4 == '0' ? screenTypeList.get(1) : screenTypeList.get(2); // 特高種
-        String shortKey = screenTypeLabel.contains('油')?'油':screenTypeLabel.contains('モールド')?'モールド':'ガス';
+        String shortKey = screenTypeLabel.contains('植物油')?'植物油':screenTypeLabel.contains('油')?'油':screenTypeLabel.contains('モールド')?'モールド':'ガス';
 
         // 見積、見積項目のデータを検索
         if (String.isNotBlank(deviceId)) {
@@ -111,7 +112,9 @@ public with sharing class DetailsInputForExtraHighController {
                                 Price__c,
                                 UnitPrice__c,
                                 CategoryCode__c,
-                                PricingTableUniqueKey__c
+                                PricingTableUniqueKey__c,
+                                MasterCode__c,
+                                DetailRecordDisplayNumberText__c
                             FROM Details__r
                            WHERE PricingTableUniqueKey__c like '%変圧器特高変圧器%'
                             )
@@ -132,7 +135,7 @@ public with sharing class DetailsInputForExtraHighController {
                 } else if(existingDetail.DetailCategory__c == '明細') {
                     if (existingDetail.Name2__c.contains('GIS直結') || existingDetail.Name2__c.contains('収納盤')) {
                         optionDetailGIS = existingDetail;
-                    } else if (existingDetail.Name2__c.contains('OLCT付')) {
+                    } else if (existingDetail.Name2__c.contains('OLTC付')) {
                         optionDetailOLTC = existingDetail;
                     }
                 }
@@ -142,7 +145,7 @@ public with sharing class DetailsInputForExtraHighController {
 
         // 存在ある場合
         if (isInit && detail != null) {
-            shortKey = detail.Name1__c.contains('油')?'油':detail.Name1__c.contains('モールド')?'モールド':'ガス';
+            shortKey = detail.Name1__c.contains('植物油')?'植物油':detail.Name1__c.contains('油')?'油':detail.Name1__c.contains('モールド')?'モールド':'ガス';
 
             // 存在あるデータによって画面の条件項目を設定
             currentPricingKey = detail.PricingTableUniqueKey__c;
@@ -245,9 +248,9 @@ public with sharing class DetailsInputForExtraHighController {
 
         String optLabel = shortKey == 'モールド' ? '収納盤' : 'GIS直結'; //テーブルのヘッダに表示する項目を判断
 
-        // query for OLCT
-        List<PricingTable__c> optionalPricingOLCTList = queryPricingTableOpt(bu, shortKey, 'OLCT付');
-        PricingTable__c optionalPricingOLCT = optionalPricingOLCTList.size()==0?null:optionalPricingOLCTList.get(0);
+        // query for OLTC
+        List<PricingTable__c> optionalPricingOLTCList = queryPricingTableOpt(bu, shortKey, 'OLTC付');
+        PricingTable__c optionalPricingOLTC = optionalPricingOLTCList.size()==0?null:optionalPricingOLTCList.get(0);
 
         // query for GIS
         List<PricingTable__c> optionalPricingList = queryPricingTableOpt(bu, shortKey, optLabel);
@@ -313,7 +316,7 @@ public with sharing class DetailsInputForExtraHighController {
                     Decimal price =  (priceObj.Price__c==null?0:priceObj.Price__c);
 
                     bodyRow.add(setCell(price.format(),null,null,false));//価格セル
-                    bodyRow.add(setCell(getCheckboxCellItem(searchConditionMap, isChecked, priceObj, optionalPricingGIS, optionalPricingOLCT),null,null,true));//入力セル
+                    bodyRow.add(setCell(getCheckboxCellItem(searchConditionMap, isChecked, priceObj, optionalPricingGIS, optionalPricingOLTC),null,null,true));//入力セル
                     bodyRow.add(setCell(optionPriceGIS.format(), null, null, false));//GISセル
                 } else {
                     bodyRow.add(setCell('―',null,null,false));//Empty
@@ -333,6 +336,7 @@ public with sharing class DetailsInputForExtraHighController {
         info.bodyList = bodyList;
         info.displayLabel = displayTableLabel;
         info.searchConMap = JSON.serialize(searchConditionMap);
+        info.buType = bu;
         return JSON.serialize(info);
     }
 
@@ -429,12 +433,12 @@ public with sharing class DetailsInputForExtraHighController {
     }
 
     //入力セルを設定
-    private static Map<String, Object> getCheckboxCellItem(Map<String, String> searchConditionMap, Boolean isChecked, PricingTable__c priceObj, PricingTable__c optionPricingGIS, PricingTable__c optionPricingOLCT){
+    private static Map<String, Object> getCheckboxCellItem(Map<String, String> searchConditionMap, Boolean isChecked, PricingTable__c priceObj, PricingTable__c optionPricingGIS, PricingTable__c optionPricingOLTC){
         Map<String, Object> cellItem = new Map<String,Object>();
 
         Decimal price = priceObj.Price__c;
         price += searchConditionMap.get('GIS直結')=='なし' ? 0 : (optionPricingGIS==null||optionPricingGIS.Price__c==null?0:optionPricingGIS.Price__c);
-        price += searchConditionMap.get('OLTC')=='なし' ? 0 : (optionPricingOLCT==null||optionPricingOLCT.Price__c==null?0:optionPricingOLCT.Price__c);
+        price += searchConditionMap.get('OLTC')=='なし' ? 0 : (optionPricingOLTC==null||optionPricingOLTC.Price__c==null?0:optionPricingOLTC.Price__c);
 
         String name = priceObj.Name1__c
                     + (String.isNotBlank(priceObj.Name2__c)?' ' + priceObj.Name2__c:'')
@@ -488,6 +492,7 @@ public with sharing class DetailsInputForExtraHighController {
             screenTypeMap.put('1', new List<String>{'特高TR 油入', '油', '油 スポットネットワーク'});
             screenTypeMap.put('2', new List<String>{'特高TR モールド', 'モールド', 'モールド スポットネットワーク'});
             screenTypeMap.put('3', new List<String>{'特高TRガス', 'ガス', 'ガス スポットネットワーク'});
+            screenTypeMap.put('4', new List<String>{'特高TR植物油入', '植物油', '植物油 スポットネットワーク'});
 
             Map<String, List<String>> voltageTypeMap = new Map<String, List<String>>();
             voltageTypeMap.put('0', new List<String>{'標準', '', ''});
@@ -503,7 +508,10 @@ public with sharing class DetailsInputForExtraHighController {
             String screenType;
             for (String key : screenTypeMap.keySet()) {
                 List<String> targetList = screenTypeMap.get(key);
-                if (targetList.get(0).contains(pricingTableName1) || targetList.get(2).contains(pricingTableName1)) screenType = key;
+                if (targetList.get(0).contains(pricingTableName1) || targetList.get(2).contains(pricingTableName1)){
+                    screenType = key;
+                    break;
+                }
             }
 
             return screenType;
@@ -537,7 +545,7 @@ public with sharing class DetailsInputForExtraHighController {
                                                 Name1__c, Name2__c,Name3__c,Name4__c,Name5__c, Name6__c, Name7__c, Name8__c, Name9__c, Name10__c, 
                                                 BU__c, WC__c, Price__c, UniqueKey__c,ConditionForSearchformula__c,
                                                 Weight__c,DisplayName__c,detailedStatementText__c,SpecialSpecificationNo__c,
-                                                Note__c
+                                                Note__c,MasterCode__c,DetailRecordDisplayNumberText__c
                                             FROM PricingTable__c
                                             WHERE Id =:rId
                                             LIMIT 1];
@@ -547,7 +555,7 @@ public with sharing class DetailsInputForExtraHighController {
             // GIS直結、収納盤がありの場合
             if (searchConditionMap.get('GIS直結')=='あり') {
                 String screenType = searchConditionMap.get('screenType');
-                String name1Search = screenType.contains('油')?'油':screenType.contains('モールド')?'モールド':'ガス';
+                String name1Search = screenType.contains('植物油')?'植物油':screenType.contains('油')?'油':screenType.contains('モールド')?'モールド':'ガス';
                 String name2Search = screenType.contains('モールド')?'収納盤':'GIS直結';
                 List<String> targetFields = new List<String>{
                     'Id', 
@@ -577,7 +585,9 @@ public with sharing class DetailsInputForExtraHighController {
                     'DisplayName__c',
                     'detailedStatementText__c',
                     'SpecialSpecificationNo__c',
-                    'Note__c'
+                    'Note__c',
+                    'MasterCode__c',
+                    'DetailRecordDisplayNumberText__c'
                 };
 
                 String targetObject = 'PricingTable__c';
@@ -641,6 +651,8 @@ public with sharing class DetailsInputForExtraHighController {
                     optionalDetail.MinorClassificationCode__c = optionalPricingTableGIS.get(0).MinorClassificationCode__c;
                     optionalDetail.CategoryName__c = optionalPricingTableGIS.get(0).CategoryName__c;
                     optionalDetail.CategoryCode__c = optionalPricingTableGIS.get(0).CategoryCode__c;
+                    optionalDetail.MasterCode__c = optionalPricingTableGIS.get(0).MasterCode__c;
+                    optionalDetail.DetailRecordDisplayNumberText__c = optionalPricingTableGIS.get(0).DetailRecordDisplayNumberText__c;
 
                     insertList.add(optionalDetail);
                 }
@@ -649,8 +661,8 @@ public with sharing class DetailsInputForExtraHighController {
             // OLTCがありの場合
             if (searchConditionMap.get('OLTC')=='あり') {
                 String screenType = searchConditionMap.get('screenType');
-                String name1Search = screenType.contains('油')?'油':screenType.contains('モールド')?'モールド':'ガス';
-                String name2Search = 'OLCT付';
+                String name1Search = screenType.contains('植物油')?'植物油':screenType.contains('油')?'油':screenType.contains('モールド')?'モールド':'ガス';
+                String name2Search = 'OLTC付';
                 PricingTable__c optionalPricingTableOLTC = [SELECT Id, Name, RECNo__c,
                                                             MajorClassificationCode__c, 
                                                             MajorClassificationName__c, 
@@ -660,7 +672,7 @@ public with sharing class DetailsInputForExtraHighController {
                                                             Name1__c, Name2__c,Name3__c,Name4__c,Name5__c, Name6__c, Name7__c, Name8__c, Name9__c, Name10__c, 
                                                             WC__c, WcCalculationRate__c, Price__c, UniqueKey__c,
                                                             Weight__c,DisplayName__c,detailedStatementText__c,SpecialSpecificationNo__c,
-                                                            Note__c
+                                                            Note__c,MasterCode__c,DetailRecordDisplayNumberText__c
                                                         FROM PricingTable__c
                                                         WHERE
                                                             RecordType.DeveloperName = :DETAIL_RECORD_TYPE AND
@@ -702,6 +714,8 @@ public with sharing class DetailsInputForExtraHighController {
                     optionalDetail.MinorClassificationCode__c = optionalPricingTableOLTC.MinorClassificationCode__c;
                     optionalDetail.CategoryName__c = optionalPricingTableOLTC.CategoryName__c;
                     optionalDetail.CategoryCode__c = optionalPricingTableOLTC.CategoryCode__c;
+                    optionalDetail.MasterCode__c = optionalPricingTableOLTC.MasterCode__c;
+                    optionalDetail.DetailRecordDisplayNumberText__c = optionalPricingTableOLTC.DetailRecordDisplayNumberText__c;
 
                     insertList.add(optionalDetail);
                 }
@@ -736,6 +750,8 @@ public with sharing class DetailsInputForExtraHighController {
             detail.MinorClassificationCode__c = pricingTable.MinorClassificationCode__c;
             detail.CategoryName__c = pricingTable.CategoryName__c;
             detail.CategoryCode__c = pricingTable.CategoryCode__c;
+            detail.MasterCode__c = pricingTable.MasterCode__c;
+            detail.DetailRecordDisplayNumberText__c = pricingTable.DetailRecordDisplayNumberText__c;
             insertList.add(detail);
 
             insert insertList;

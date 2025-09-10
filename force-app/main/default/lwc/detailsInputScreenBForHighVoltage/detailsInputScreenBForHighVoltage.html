@@ -4,7 +4,7 @@
         <!-- <div>  slds-scrollable_x-->
         <div class="c-container">
             <lightning-layout>
-                <lightning-layout-item size="3">
+                <lightning-layout-item>
                     <!-- 検索条件：筐体仕様 -->
                     <lightning-layout>
                         <lightning-layout-item size="6" padding="around-small">
@@ -17,7 +17,7 @@
                                 </label>
                             </div>
                         </lightning-layout-item>
-                        <lightning-layout-item size="6" padding="around-small">
+                        <lightning-layout-item size="6" padding="around-small" class="select-wipper">
                             <div class="slds-form-element">
                                 <div class="slds-form-element__control">
                                     <div class="slds-select_container">
@@ -42,7 +42,7 @@
                 </lightning-layout-item>
                 <lightning-layout-item size="2" padding="around-small">
                     <div>
-                        <button class="slds-button slds-align_absolute-center slds-button_brand search-button"
+                        <button class="slds-button slds-align_absolute-center slds-button_brand search-button select"
                             onclick={onSearch} title="Search">検索</button>
                     </div>
                 </lightning-layout-item>
@@ -188,11 +188,13 @@
         </lightning-layout>
         <!-- ＳＮＷ関連機器-->
         <template if:false={loaded}>
-            <div class="header-sub-table">
-                <p>
-                    <b>ＳＮＷ関連機器</b>
-                </p>
-            </div>
+            <template if:true={networkRelayMulticapTable}>
+                <div class="header-sub-table">
+                    <p>
+                        <b>ＳＮＷ関連機器</b>
+                    </p>
+                </div>
+            </template>
         </template>
         <!-- ネットワークリレー -->
         <lightning-layout>

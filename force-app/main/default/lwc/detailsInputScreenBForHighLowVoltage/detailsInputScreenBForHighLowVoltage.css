@@ -1,0 +1,33 @@
+tr:nth-child(even) {
+    background: #eff4ff;
+}
+
+tr:nth-child(odd) {
+    background: #fff;
+}
+.slds-m-around_medium {
+    margin: 0 auto;
+}
+
+.sticky thead tr th:nth-child(1){
+    background-color: #f3f3f3;
+    position: sticky;
+    left: 0;
+    top: 0;
+    z-index: 6;
+}
+
+.sticky thead{
+    background-color: #f3f3f3;
+    position: sticky;
+    left: 0;
+    top: 0;
+    z-index: 4;
+}
+.sticky td:nth-child(1){
+    background-color: #fff;
+    position: sticky;
+    left: 0;
+    top: 0;
+    z-index: 3;
+}

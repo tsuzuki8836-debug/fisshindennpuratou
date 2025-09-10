@@ -1,0 +1,410 @@
+<template>
+    <lightning-card>
+        <h3 slot="title">算出手数料（MAX） </h3>
+        <div class="c-container slds-box slds-p-around_none slds-m-top_x-small slds-m-bottom_medium slds-m-horizontal_none slds-scrollable_x">
+            <table class="slds-table slds-table_cell-buffer slds-table_bordered slds-table_col-bordered">
+                <thead>
+                    <tr>
+                        <th class="no-bottom-border">
+                            <div>店名</div>
+                        </th>
+                        <th class="no-bottom-border">
+                            <div>取引形態</div>
+                        </th>
+                        <th class="no-bottom-border">
+                            <div>資格</div>
+                        </th>
+                        <th class="no-bottom-border">
+                            <div>理論手数料</div>
+                        </th>
+                        <th class="no-bottom-border top-border-bold left-border-bold right-border-bold bg-color-yellow">
+                            <div>決定手数料</div>
+                        </th>
+                        <th class="no-left-border no-right-border bg-color-yellow">
+                            <div></div>
+                        </th>
+                        <th class="no-left-border no-right-border bg-color-yellow">
+                            <div></div>
+                        </th>
+                        <template if:true={isShowDependentFeeInquiry}>
+                            <th class="no-left-border no-right-border bg-color-yellow">
+                                <div></div>
+                            </th>
+                        </template>
+                        <template if:false={isShowDependentFeeInquiry}>
+                            <th class="no-left-border bg-color-yellow">
+                                <div></div>
+                            </th>
+                        </template>
+                        <template if:true={isShowDependentFeeInquiry}>
+                            <th class="no-left-border no-right-border bg-color-yellow">
+                                <div></div>
+                            </th>
+                            <th class="no-left-border bg-color-yellow">
+                                <div></div>
+                            </th>
+                        </template>
+                        <th class="no-bottom-border">
+                            <div>算出手数料</div>
+                        </th>
+                    </tr>
+                    <tr>
+                        <th class="no-top-border">
+                            <div></div>
+                        </th>
+                        <th class="no-top-border">
+                            <div></div>
+                        </th>
+                        <th class="no-top-border">
+                            <div></div>
+                        </th>
+                        <th class="no-top-border">
+                            <div>a</div>
+                        </th>
+                        <th class="no-top-border left-border-bold right-border-bold bg-color-yellow">
+                            <div>b</div>
+                        </th>
+                        <template if:false={isShowDependentFeeInquiry}>
+                            <th class="no-top-border bg-color-yellow" >
+                                <div>b/a</div>
+                            </th>
+                        </template>
+                        <template if:true={isShowDependentFeeInquiry}>
+                            <th class="no-left-border bg-color-yellow">
+                                <div>b/a</div>
+                            </th>
+                            <th>
+                                <div>前回</div>
+                            </th>
+                            <th style="width: 160px;">
+                                <div>前回との差額</div>
+                            </th>
+                        </template>
+                        <th>
+                            <div>一般手数料</div>
+                        </th>
+                        <th>
+                            <div>特別手数料</div>
+                        </th>
+                        <th class="no-top-border">
+                            <div>c</div>
+                        </th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <template iterator:row={bodyListMax}>
+                        <tr key={row.value.cellList} class="slds-hint-parent">
+                            <template iterator:cell={row.value.cellList}>
+                                <template if:true={cell.value.isDisabled}>
+                                    <td key={cell.value.uniqueKey} class="disable-backgroundColor">
+                                        <div class="slds-truncate slds-text-align_center">
+                                        </div>
+                                    </td>
+                                </template>
+                                <template if:false={cell.value.isDisabled}>
+                                    <template if:true={cell.value.isText}>
+                                        <template if:true={cell.value.isNoLeftborder}>
+                                            <td key={cell.value.uniqueKey} class="no-left-border">
+                                                <div class="slds-truncate slds-text-align_center">
+                                                    <lightning-formatted-text value={cell.value.value}></lightning-formatted-text>
+                                                </div>
+                                            </td>
+                                        </template>
+                                        <template if:false={cell.value.isNoLeftborder}>
+                                            <template if:true={cell.value.isNoRightborder}>
+                                                <td key={cell.value.uniqueKey} class="no-right-border">
+                                                    <div class="slds-truncate slds-text-align_center">
+                                                        <lightning-formatted-text value={cell.value.value}></lightning-formatted-text>
+                                                    </div>
+                                                </td>
+                                            </template>
+                                            <template if:false={cell.value.isNoRightborder}>
+                                                <template if:true={cell.value.isNoRightAndLeftborder}>
+                                                    <td key={cell.value.uniqueKey} class="no-left-border no-right-border">
+                                                        <div class="slds-truncate slds-text-align_center">
+                                                            <lightning-formatted-text value={cell.value.value}></lightning-formatted-text>
+                                                        </div>
+                                                    </td>
+                                                </template>
+                                                <template if:false={cell.value.isNoRightAndLeftborder}>
+                                                    <td key={cell.value.uniqueKey}>
+                                                        <div class="slds-truncate slds-text-align_center">
+                                                            <lightning-formatted-text value={cell.value.value}></lightning-formatted-text>
+                                                        </div>
+                                                    </td>
+                                                </template>
+                                            </template>
+                                        </template>
+                                    </template>
+                                    <template if:false={cell.value.isText}>
+                                        <template if:false={cell.value.isPercent}>
+                                            <template if:false={cell.value.hasBgColor}>
+                                                <td key={cell.value.uniqueKey}>
+                                                    <div class="slds-truncate slds-text-align_right">
+                                                        <lightning-formatted-number value={cell.value.value} format-style="currency"></lightning-formatted-number>
+                                                    </div>
+                                                </td>
+                                            </template>
+                                            <template if:true={cell.value.hasBgColor}>
+                                                <template if:false={cell.value.isNoRightAndLeftborder}>
+                                                    <template if:false={cell.value.isLastRow}>
+                                                        <td key={cell.value.uniqueKey} 
+                                                            class="left-border-bold right-border-bold bg-color-yellow">
+                                                            <div class="slds-truncate slds-text-align_right">
+                                                                <lightning-formatted-number value={cell.value.value} format-style="currency"></lightning-formatted-number>
+                                                            </div>
+                                                        </td>
+                                                    </template>
+                                                    <template if:true={cell.value.isLastRow}>
+                                                        <td key={cell.value.uniqueKey} 
+                                                            class="left-border-bold right-border-bold bottom-border-bold bg-color-yellow">
+                                                            <div class="slds-truncate slds-text-align_right">
+                                                                <lightning-formatted-number value={cell.value.value} format-style="currency"></lightning-formatted-number>
+                                                            </div>
+                                                        </td>
+                                                    </template>
+                                                </template>
+                                                <template if:true={cell.value.isNoRightAndLeftborder}>
+                                                    <template if:false={cell.value.isLastRow}>
+                                                        <td key={cell.value.uniqueKey} 
+                                                            class="bg-color-yellow">
+                                                            <div class="slds-truncate slds-text-align_right">
+                                                                <lightning-formatted-number value={cell.value.value} format-style="currency"></lightning-formatted-number>
+                                                            </div>
+                                                        </td>
+                                                    </template>
+                                                    <template if:true={cell.value.isLastRow}>
+                                                        <td key={cell.value.uniqueKey} 
+                                                            class="bg-color-yellow">
+                                                            <div class="slds-truncate slds-text-align_right">
+                                                                <lightning-formatted-number value={cell.value.value} format-style="currency"></lightning-formatted-number>
+                                                            </div>
+                                                        </td>
+                                                    </template>
+                                                </template>
+                                            </template>
+                                        </template>
+                                        <template if:true={cell.value.isPercent}>
+                                            <td key={cell.value.uniqueKey} class="bg-color-yellow">
+                                                <div class="slds-truncate slds-text-align_right">
+                                                    <lightning-formatted-number value={cell.value.value}  maximum-fraction-digits="2"></lightning-formatted-number>
+                                                    <template if:false={cell.value.isBlank}>
+                                                        %
+                                                    </template>
+                                                </div>
+                                            </td>
+                                        </template>
+                                    </template>
+                                </template>
+                            </template>
+                        </tr>
+                    </template>
+                </tbody>
+            </table>
+        </div>
+        
+        <h3 class="title-customer">算出手数料（MIN） </h3>
+        <div class="c-container slds-box slds-p-around_none slds-m-top_x-small slds-m-bottom_medium slds-m-horizontal_none slds-scrollable_x">
+            <table class="slds-table slds-table_cell-buffer slds-table_bordered slds-table_col-bordered">
+                <thead>
+                    <tr>
+                        <th class="no-bottom-border">
+                            <div>店名</div>
+                        </th>
+                        <th class="no-bottom-border">
+                            <div>取引形態</div>
+                        </th>
+                        <th class="no-bottom-border">
+                            <div>資格</div>
+                        </th>
+                        <th class="no-bottom-border">
+                            <div>理論手数料</div>
+                        </th>
+                        <th class="no-bottom-border top-border-bold left-border-bold right-border-bold bg-color-yellow">
+                            <div>決定手数料</div>
+                        </th>
+                        <th class="no-left-border no-right-border bg-color-yellow">
+                            <div></div>
+                        </th>
+                        <th class="no-left-border no-right-border bg-color-yellow">
+                            <div></div>
+                        </th>
+                        <template if:true={isShowDependentFeeInquiry}>
+                            <th class="no-left-border no-right-border bg-color-yellow">
+                                <div></div>
+                            </th>
+                        </template>
+                        <template if:false={isShowDependentFeeInquiry}>
+                            <th class="no-left-border bg-color-yellow">
+                                <div></div>
+                            </th>
+                        </template>
+                        <template if:true={isShowDependentFeeInquiry}>
+                            <th class="no-left-border no-right-border bg-color-yellow">
+                                <div></div>
+                            </th>
+                            <th class="no-left-border bg-color-yellow">
+                                <div></div>
+                            </th>
+                        </template>
+                        <th class="no-bottom-border">
+                            <div>算出手数料</div>
+                        </th>
+                    </tr>
+                    <tr>
+                        <th class="no-top-border">
+                            <div></div>
+                        </th>
+                        <th class="no-top-border">
+                            <div></div>
+                        </th>
+                        <th class="no-top-border">
+                            <div></div>
+                        </th>
+                        <th class="no-top-border">
+                            <div>a</div>
+                        </th>
+                        <th class="no-top-border left-border-bold right-border-bold bg-color-yellow">
+                            <div>b</div>
+                        </th>
+                        
+                        <template if:false={isShowDependentFeeInquiry}>
+                            <th class="no-top-border bg-color-yellow" >
+                                <div>b/a</div>
+                            </th>
+                        </template>
+                        <template if:true={isShowDependentFeeInquiry}>
+                            <th class="no-left-border bg-color-yellow">
+                                <div>b/a</div>
+                            </th>
+                            <th>
+                                <div>前回</div>
+                            </th>
+                            <th style="width: 160px;">
+                                <div>前回との差額</div>
+                            </th>
+                        </template>
+                        <th>
+                            <div>一般手数料</div>
+                        </th>
+                        <th>
+                            <div>特別手数料</div>
+                        </th>
+                        <th class="no-top-border">
+                            <div>c</div>
+                        </th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <template iterator:row={bodyListMin}>
+                        <tr key={row.value.cellList} class="slds-hint-parent">
+                            <template iterator:cell={row.value.cellList}>
+                                <template if:true={cell.value.isDisabled}>
+                                    <td key={cell.value.uniqueKey} class="disable-backgroundColor" style="height: 28.8px;">
+                                    </td>
+                                </template>
+                                <template if:false={cell.value.isDisabled}>
+                                    <template if:true={cell.value.isText}>
+                                        <template if:true={cell.value.isNoLeftborder}>
+                                            <td key={cell.value.uniqueKey} class="no-left-border">
+                                                <div class="slds-truncate slds-text-align_center">
+                                                    <lightning-formatted-text value={cell.value.value}></lightning-formatted-text>
+                                                </div>
+                                            </td>
+                                        </template>
+                                        <template if:false={cell.value.isNoLeftborder}>
+                                            <template if:true={cell.value.isNoRightborder}>
+                                                <td key={cell.value.uniqueKey} class="no-right-border">
+                                                    <div class="slds-truncate slds-text-align_center">
+                                                        <lightning-formatted-text value={cell.value.value}></lightning-formatted-text>
+                                                    </div>
+                                                </td>
+                                            </template>
+                                            <template if:false={cell.value.isNoRightborder}>
+                                                <template if:true={cell.value.isNoRightAndLeftborder}>
+                                                    <td key={cell.value.uniqueKey} class="no-left-border no-right-border">
+                                                        <div class="slds-truncate slds-text-align_center">
+                                                            <lightning-formatted-text value={cell.value.value}></lightning-formatted-text>
+                                                        </div>
+                                                    </td>
+                                                </template>
+                                                <template if:false={cell.value.isNoRightAndLeftborder}>
+                                                    <td key={cell.value.uniqueKey}>
+                                                        <div class="slds-truncate slds-text-align_center">
+                                                            <lightning-formatted-text value={cell.value.value}></lightning-formatted-text>
+                                                        </div>
+                                                    </td>
+                                                </template>
+                                            </template>
+                                        </template>
+                                    </template>
+                                    <template if:false={cell.value.isText}>
+                                        <template if:false={cell.value.isPercent}>
+                                            <template if:false={cell.value.hasBgColor}>
+                                                <td key={cell.value.uniqueKey}>
+                                                    <div class="slds-truncate slds-text-align_right">
+                                                        <lightning-formatted-number value={cell.value.value} format-style="currency"></lightning-formatted-number>
+                                                    </div>
+                                                </td>
+                                            </template>
+                                            <template if:true={cell.value.hasBgColor}>
+                                                <template if:false={cell.value.isNoRightAndLeftborder}>
+                                                    <template if:false={cell.value.isLastRow}>
+                                                        <td key={cell.value.uniqueKey} 
+                                                            class="left-border-bold right-border-bold bg-color-yellow">
+                                                            <div class="slds-truncate slds-text-align_right">
+                                                                <lightning-formatted-number value={cell.value.value} format-style="currency"></lightning-formatted-number>
+                                                            </div>
+                                                        </td>
+                                                    </template>
+                                                    <template if:true={cell.value.isLastRow}>
+                                                        <td key={cell.value.uniqueKey} 
+                                                            class="left-border-bold right-border-bold bottom-border-bold bg-color-yellow">
+                                                            <div class="slds-truncate slds-text-align_right">
+                                                                <lightning-formatted-number value={cell.value.value} format-style="currency"></lightning-formatted-number>
+                                                            </div>
+                                                        </td>
+                                                    </template>
+                                                </template>
+
+                                                <template if:true={cell.value.isNoRightAndLeftborder}>
+                                                    <template if:false={cell.value.isLastRow}>
+                                                        <td key={cell.value.value} 
+                                                            class="bg-color-yellow">
+                                                            <div class="slds-truncate slds-text-align_right">
+                                                                <lightning-formatted-number value={cell.value.value} format-style="currency"></lightning-formatted-number>
+                                                            </div>
+                                                        </td>
+                                                    </template>
+                                                    <template if:true={cell.value.isLastRow}>
+                                                        <td key={cell.value.value} 
+                                                            class="bg-color-yellow">
+                                                            <div class="slds-truncate slds-text-align_right">
+                                                                <lightning-formatted-number value={cell.value.value} format-style="currency"></lightning-formatted-number>
+                                                            </div>
+                                                        </td>
+                                                    </template>
+                                                </template>
+
+                                            </template>
+                                        </template>
+                                        <template if:true={cell.value.isPercent}>
+                                            <td key={cell.value.uniqueKey} class="bg-color-yellow">
+                                                <div class="slds-truncate slds-text-align_right">
+                                                    <lightning-formatted-number value={cell.value.value}  maximum-fraction-digits="2"></lightning-formatted-number>
+                                                    <template if:false={cell.value.isBlank}>
+                                                        %
+                                                    </template>
+                                                </div>
+                                            </td>
+                                        </template>
+                                    </template>
+                                </template>
+                            </template>
+                        </tr>
+                    </template>
+                </tbody>
+            </table>
+        </div>
+    </lightning-card>
+</template>

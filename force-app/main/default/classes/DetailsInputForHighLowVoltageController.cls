@@ -135,6 +135,9 @@ public with sharing class DetailsInputForHighLowVoltageController {
             //大分類が「変圧器」or「発電機」の場合は筐体の周波数条件設定
             categoryCode = (powerFrequency=='50Hz'?'01':'02');
         }
+        System.debug('tk' + categoryCode);
+        System.debug('tk' + bu);
+        System.debug('tk' + name10Cond);
         //価格表を検索する
         List<PricingTable__c> chassisList = [SELECT Id, Name, UniqueKey__c,
                                             MajorClassificationCode__c,
@@ -157,7 +160,9 @@ public with sharing class DetailsInputForHighLowVoltageController {
                                             //Weight__c, 
                                             ConditionForSearchformula__c,
                                             CapacityNumber__c,
-                                            Note__c
+                                            Note__c,
+                                            MasterCode__c,
+                                            DetailRecordDisplayNumberText__c
                                         FROM PricingTable__c
                                         WHERE RecordType.DeveloperName = 'Chassis'
                                           AND BU__c =:bu
@@ -444,7 +449,7 @@ public with sharing class DetailsInputForHighLowVoltageController {
                                         Name6__c, Name7__c,Name8__c,Name9__c,Name10__c,
                                         WC__c, Price__c, UniqueKey__c,ConditionForSearchformula__c,
                                         Weight__c,DisplayName__c,detailedStatementText__c,SpecialSpecificationNo__c,
-                                        Note__c
+                                        Note__c,MasterCode__c,DetailRecordDisplayNumberText__c
                                     FROM PricingTable__c
                                     WHERE Id =:recordId
                                     LIMIT 1
@@ -453,7 +458,14 @@ public with sharing class DetailsInputForHighLowVoltageController {
             detail.Note__c = chassis.Note__c;
             detail.UnitPrice__c = chassis.Price__c;
             detail.WcCalculationRate__c = 0;
-            detail.Name = chassis.DisplayName__c;
+            //価格表.表示用テキストが80文字より多い場合、最初の80文字だけを明細に転記する処理を追加
+            if (chassis.DisplayName__c.length()>80) {
+                String over80 = chassis.DisplayName__c.subString(0,80);
+                detail.Name = over80;
+                System.debug('over80='+over80);
+            }else if (chassis.DisplayName__c.length() <= 80) {
+                detail.Name = chassis.DisplayName__c;
+            }
             detail.Name1__c = chassis.Name1__c; //名称１             
             detail.Name2__c = chassis.Name2__c; //名称2
             detail.Name3__c = chassis.Name3__c; //名称3                 
@@ -481,6 +493,8 @@ public with sharing class DetailsInputForHighLowVoltageController {
             detail.CategoryCode__c = chassis.CategoryCode__c;//種類コード
             detail.detailedStatementText__c = chassis.detailedStatementText__c;//価格表.内訳書出力用テキスト
             detail.SpecialSpecificationNo__c= chassis.SpecialSpecificationNo__c;//価格表.特殊仕様No
+            detail.MasterCode__c = chassis.MasterCode__c;//マスタコード
+            detail.DetailRecordDisplayNumberText__c = chassis.DetailRecordDisplayNumberText__c;//明細レコード表示順
     
             insert detail;
     

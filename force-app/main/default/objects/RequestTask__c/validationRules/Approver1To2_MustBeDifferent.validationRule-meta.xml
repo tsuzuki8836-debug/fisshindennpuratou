@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ValidationRule xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Approver1To2_MustBeDifferent</fullName>
+    <active>true</active>
+    <description>自部門承認者1と2で同一ユーザだった場合に表示する</description>
+    <errorConditionFormula>AND(  NOT( ISBLANK( Approver1__c ) )  ,Approver1__c =  Approver2__c,Approver2__c !=  Approver3__c,Approver2__c !=  Approver4__c )</errorConditionFormula>
+    <errorDisplayField>Approver2__c</errorDisplayField>
+    <errorMessage>自部門承認者1～4に同一ユーザーを複数設定することはできません。</errorMessage>
+</ValidationRule>

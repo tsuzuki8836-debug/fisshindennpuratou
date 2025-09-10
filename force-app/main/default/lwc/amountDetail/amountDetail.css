@@ -1,0 +1,7 @@
+.slds-table thead th {
+    text-align: center;
+}
+
+.disable-bg {
+    background-color: #f3f2f2;
+}

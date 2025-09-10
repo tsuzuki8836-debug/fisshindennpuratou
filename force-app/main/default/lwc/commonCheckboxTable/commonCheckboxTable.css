@@ -1,0 +1,24 @@
+tr:nth-child(even) {
+    background: #eff4ff;
+}
+
+tr:nth-child(odd) {
+    background: #fff;
+}
+
+.fiTable thead th:nth-child(1){
+    position: sticky;
+    top: 0;
+    left: 0;
+    z-index: 5;
+}
+.fiTable tbody tr td:nth-child(1){
+    background-color: #fff;
+    position: sticky;
+    top: 0;
+    left: 0;
+    z-index: 5;
+}
+.fiTable tbody tr:nth-child(even) td:nth-child(1){
+    background-color: #eff4ff;
+}

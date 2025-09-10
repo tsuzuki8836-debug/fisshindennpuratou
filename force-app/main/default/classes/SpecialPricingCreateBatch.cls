@@ -158,26 +158,38 @@ public with sharing class SpecialPricingCreateBatch implements Database.Batchabl
         // 特殊計算パターンからベース価格に関連するレコードを取得する
         return [
             SELECT 
-                Name                        // 特殊計算パターン番号
-                ,SpecialCalculationTitle__c // 特殊計算表タイトル
-                ,BU__c                      // BU
-                ,MajorClassificationCode__c // 大分類コード
-                ,MinorClassificationCode__c // 小分類コード
-                ,Frequency__c               // 周波数
-                ,Whereabouts__c             // 所在
-                ,CategoryCode__c            // 種類コード
-                ,CalculationCategory__c     // 計算区分
-                ,Name1__c                   // 名称1
-                ,Name2__c                   // 名称2
-                ,Name3__c                   // 名称3
-                ,Name4__c                   // 名称4
-                ,Name5__c                   // 名称5
-                ,Name6__c                   // 名称6
-                ,Name7__c                   // 名称7
-                ,Name8__c                   // 名称8
-                ,Name9__c                   // 名称9
-                ,Name10__c                  // 名称10
-                ,SpecialSpecificationNo__c  // 特殊仕様No
+                Name                            // 特殊計算パターン番号
+                ,SpecialCalculationTitle__c     // 特殊計算表タイトル
+                ,BU__c                          // BU
+                ,MajorClassificationCode__c     // 大分類コード
+                ,MinorClassificationCode__c     // 小分類コード
+                ,Frequency__c                   // 周波数
+                ,Whereabouts__c                 // 所在
+                ,CategoryCode__c                // 種類コード
+                ,CalculationCategory__c         // 計算区分
+                ,Name1__c                       // 名称1
+                ,Name2__c                       // 名称2
+                ,Name3__c                       // 名称3
+                ,Name4__c                       // 名称4
+                ,Name5__c                       // 名称5
+                ,Name6__c                       // 名称6
+                ,Name7__c                       // 名称7
+                ,Name8__c                       // 名称8
+                ,Name9__c                       // 名称9
+                ,Name10__c                      // 名称10
+                ,SpecialSpecificationNo__c      // 特殊仕様No
+                // 名称並び順項目自動設定処理追加 2023/07/10 TS鈴木 Start
+                ,Specification1DisplayOrder__c  //名称1表示順
+                ,Specification2DisplayOrder__c  //名称2表示順
+                ,Specification3DisplayOrder__c  //名称3表示順
+                ,Specification4DisplayOrder__c  //名称4表示順
+                ,Specification5DisplayOrder__c  //名称5表示順
+                ,Specification6DisplayOrder__c  //名称6表示順
+                ,Specification7DisplayOrder__c  //名称7表示順
+                ,Specification8DisplayOrder__c  //名称8表示順
+                ,Specification9DisplayOrder__c  //名称9表示順
+                ,Specification10DisplayOrder__c //名称10表示順
+                // 名称並び順項目自動設定処理追加 2023/07/10 TS鈴木 End
             FROM 
                 SpecialCalculationPattern__c
             WHERE
@@ -226,8 +238,23 @@ public with sharing class SpecialPricingCreateBatch implements Database.Batchabl
                         if(String.isNotBlank(pattern.Name7__c)) sp.Name7__c = pattern.Name7__c;
                         if(String.isNotBlank(pattern.Name8__c)) sp.Name8__c = pattern.Name8__c;
                         if(String.isNotBlank(pattern.Name9__c)) sp.Name9__c = pattern.Name9__c;
-                        if(String.isNotBlank(pattern.Name10__c)) sp.Name10__c = pattern.Name10__c;
+                        if(sp.BU__c =='S' && sp.MajorClassificationName__c == '変圧器' && sp.MinorClassificationName__c== '高圧変圧器' && ((String.isNotBlank(sp.Name9__c) && sp.Name9__c .contains('高効率形')) || (String.isNotBlank(sp.Name10__c) && sp.Name10__c.contains('混触防止板あり')))){
+                            sp.Name10__c = '高圧TR油入(一次電圧3,300V)混触防止板あり';
+                            System.debug('SP='+sp.Name10__c);
+                        }else if(String.isNotBlank(pattern.Name10__c)){sp.Name10__c = pattern.Name10__c;} 
                         sp.SpecialSpecificationNo__c = pattern.SpecialSpecificationNo__c;
+                        // 名称並び順項目自動設定処理追加 2023/07/10 TS鈴木 Start
+                        if(pattern.Specification1DisplayOrder__c != null) sp.Specification1DisplayOrder__c = pattern.Specification1DisplayOrder__c;
+                        if(pattern.Specification2DisplayOrder__c != null) sp.Specification2DisplayOrder__c = pattern.Specification2DisplayOrder__c;
+                        if(pattern.Specification3DisplayOrder__c != null) sp.Specification3DisplayOrder__c = pattern.Specification3DisplayOrder__c;
+                        if(pattern.Specification4DisplayOrder__c != null) sp.Specification4DisplayOrder__c = pattern.Specification4DisplayOrder__c;
+                        if(pattern.Specification5DisplayOrder__c != null) sp.Specification5DisplayOrder__c = pattern.Specification5DisplayOrder__c;
+                        if(pattern.Specification6DisplayOrder__c != null) sp.Specification6DisplayOrder__c = pattern.Specification6DisplayOrder__c;
+                        if(pattern.Specification7DisplayOrder__c != null) sp.Specification7DisplayOrder__c = pattern.Specification7DisplayOrder__c;
+                        if(pattern.Specification8DisplayOrder__c != null) sp.Specification8DisplayOrder__c = pattern.Specification8DisplayOrder__c;
+                        if(pattern.Specification9DisplayOrder__c != null) sp.Specification9DisplayOrder__c = pattern.Specification9DisplayOrder__c;
+                        if(pattern.Specification10DisplayOrder__c != null) sp.Specification10DisplayOrder__c = pattern.Specification10DisplayOrder__c;
+                        // 名称並び順項目自動設定処理追加 2023/07/10 TS鈴木 End
 
                         if(chassisCodeSet.contains(sp.MajorClassificationCode__c) && sp.RecordTypeName__c == '筐体'){
                             nameList.add('筐体');
@@ -288,8 +315,29 @@ public with sharing class SpecialPricingCreateBatch implements Database.Batchabl
                 }
                 if ( price != 0 ) {
                     // 単価×乗算値＋加算値 ※値は上位4桁目で切り上げる。
-                    Integer digits = 3 - String.valueOf(price.round()).length();
-                    sp.Price__c = price.setScale(digits, System.RoundingMode.UP);
+
+                    Integer length = String.valueOf(price.round()).length();//価格の桁数（長さ）を取得　例:1031112→7
+                    System.debug('price'+price);
+                    System.debug('length'+length);
+                    Integer exponent = length-4;//指数を確定する　例:7-4=3
+                    System.debug('exponent'+exponent);
+                    if (exponent>0) {
+                        Integer digitnumber = (Integer) (price/Math.pow(10, exponent));//4桁の数に直す　例:1030112/(10^3)→1031.112
+                        System.debug('digitnumber'+digitnumber);
+                        Integer truncValue = (Integer) Math.floor(digitnumber);//小数点以下を切り捨てる　例:1031.112→1031
+                        System.debug('truncValue'+digitnumber);
+                        Double roundedValue =((Integer) Math.ceil((Double) digitnumber/10)*10);//1の位で切り上げる　例:1031→1040
+                        System.debug('roundedValue'+roundedValue);
+                        Decimal result = roundedValue*( (Integer) Math.pow(10, exponent));//元の桁数に戻す　例:1040000
+                        System.debug('result'+result);
+                        Integer digits = 3 - String.valueOf(result.round()).length();
+                        sp.Price__c = result.setScale(digits, System.RoundingMode.UP);
+                        //sp.Price__c = result;
+                    }else{
+                        Integer digits = 3 - String.valueOf(price.round()).length();
+                        sp.Price__c = price.setScale(digits, System.RoundingMode.UP);
+                    }
+                    System.debug('sp.Price__c='+sp.Price__c);
                 }
             }
         }

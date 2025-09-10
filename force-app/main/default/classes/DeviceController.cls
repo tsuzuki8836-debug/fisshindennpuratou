@@ -14,7 +14,8 @@ public with sharing class DeviceController {
             GeneralAdministrativeExpenses__c, 
             GeneralAdministrativeExpensesCopy__c,
             OwnerBranchOffice__c,
-            GeneralAdminExpensesExistence__c, QuantityNumeric__c, Unit__c
+            GeneralAdminExpensesExistence__c, QuantityNumeric__c, Unit__c,
+            (select id,Name1__c,WcCoefficient__c,UnitPriceCoefficient__c,ProvisionUnitPrice__c,PricingTableUniqueKey__c from Details__r order by PricingTableUniqueKey__c)
             FROM Device__c
             WHERE Id =: recordId
         ];

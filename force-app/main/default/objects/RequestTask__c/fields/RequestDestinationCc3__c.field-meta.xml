@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>RequestDestinationCc3__c</fullName>
+    <externalId>false</externalId>
+    <label>開示場所3</label>
+    <required>false</required>
+    <trackFeedHistory>false</trackFeedHistory>
+    <trackHistory>false</trackHistory>
+    <trackTrending>false</trackTrending>
+    <type>Picklist</type>
+    <valueSet>
+        <restricted>true</restricted>
+        <valueSetDefinition>
+            <sorted>false</sorted>
+            <value>
+                <fullName>神電</fullName>
+                <default>false</default>
+                <label>神電</label>
+            </value>
+            <value>
+                <fullName>伊電</fullName>
+                <default>false</default>
+                <label>伊電</label>
+            </value>
+            <value>
+                <fullName>配電</fullName>
+                <default>false</default>
+                <label>配電</label>
+            </value>
+            <value>
+                <fullName>プラ建</fullName>
+                <default>false</default>
+                <label>プラ建</label>
+            </value>
+        </valueSetDefinition>
+    </valueSet>
+</CustomField>

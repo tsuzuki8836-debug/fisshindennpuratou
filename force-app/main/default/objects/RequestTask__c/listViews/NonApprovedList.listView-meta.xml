@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ListView xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>NonApprovedList</fullName>
+    <columns>NAME</columns>
+    <columns>CurrentApprover__c</columns>
+    <filterScope>Everything</filterScope>
+    <filters>
+        <field>CheckboxCurrent__c</field>
+        <operation>equals</operation>
+        <value>1</value>
+    </filters>
+    <label>未承認一覧</label>
+</ListView>

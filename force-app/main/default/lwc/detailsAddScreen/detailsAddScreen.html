@@ -191,7 +191,26 @@
     <div class="slds-p-around_none slds-m-top_x-small slds-m-bottom_medium slds-m-horizontal_none">
         <div class="slds-box slds-theme_default">
             <lightning-layout>
-                <lightning-layout-item size="4"></lightning-layout-item>
+                <lightning-layout-item size="4">
+
+                    <div class="slds-align_absolute-left">
+                        <lightning-layout>
+                            <lightning-layout-item>
+                                <div class="slds-p-left_xx-small">
+                                    <lightning-button label="数量一括クリア" variant="brand" 
+                                    style="white-space: nowrap;"
+                                    name="clearQuantity"
+                                    onclick={clearAllQuantity}
+                                    disabled={isClearAll} 
+                                    >
+                                    </lightning-button>
+                                </div>
+                            </lightning-layout-item>
+                        </lightning-layout>
+                    </div>
+
+
+                </lightning-layout-item>
                 <lightning-layout-item size="4">
                     <div class="slds-align_absolute-center" >
                         <div class="slds-p-right_xx-small">
@@ -223,13 +242,18 @@
                    <!--   slds-table_resizable-cols -->
                    <thead >
                        <tr class="slds-line-height_reset">
+                            <template if:true={isQuoteSearch}>
+                                <th class="slds-is-resizable slds-text-title--caps sticky" scope="col">
+                                    <span class="slds-truncate" title="　">　</span>
+                                </th>
+                            </template>
                            <!-- style="width: 15%;" -->
-                           <th class="slds-is-resizable slds-text-title--caps"  scope="col">
+                           <th class="slds-is-resizable slds-text-title--caps sticky"  scope="col">
                                <span class="slds-truncate" title="名称">名称</span>
                            </th>
                            <!--  style="width: 15%;" -->
                            <th class="slds-is-resizable slds-text-title--caps" scope="col">
-                               <span class="slds-truncate" title="マスタコード">マスタコード</span>
+                               <span class="slds-truncate" title="明細レコード表示順">明細レコード表示順</span>
                            </th>
                            <!--  style="width: 10%;"  -->
                            <th class="slds-is-resizable slds-text-title--caps" scope="col">
@@ -291,9 +315,22 @@
                    <tbody>
                     <template iterator:row={detailRecords}>
                        <template if:false={row.value.isCreate}>
-                        <tr key={row.value.Id} class="slds-hint-parent">
+                           <tr key={row.value.Id} class="slds-hint-parent">
+                            <template if:true={isQuoteSearch}>
+                                <td class="slds-cell_action-mode sticky" role="gridcell">
+                                    <div class="slds-truncate slds-text-align_center">
+                                        <lightning-input type="checkbox"
+                                            name="quoteCheckbox"
+                                            variant="label-hidden"
+                                            data-id={row.value.Id}
+                                            onchange={handlerQuoteCheckBoxChange}
+                                            ></lightning-input>
+                                            <!-- label={row.value.Id} -->
+                                    </div>
+                                </td>
+                            </template>
                             <!-- 名称１ -->
-                            <td class="slds-cell_action-mode" role="gridcell">
+                            <td class="slds-cell_action-mode sticky" role="gridcell">
                                 <div class="slds-truncate slds-text-align_left">
                                     <lightning-formatted-text value={row.value.Name1} 
                                     title={row.value.Name1}></lightning-formatted-text>
@@ -388,7 +425,13 @@
                             <template  if:false={isWeight}>
                                 <!-- 提供単価 -->
                                 <td class="slds-cell_action-mode" role="gridcell">
-                                    <div class="slds-truncate slds-text-align_left">
+                                    <div class="slds-truncate slds-text-align_right">
+
+                                        <lightning-formatted-number 
+                                            value={row.value.ProvisionUnitPrice}
+                                            ></lightning-formatted-number>
+                                    </div>
+                                    <!-- <div class="slds-truncate slds-text-align_left">
                                         <div class="number-container" >
                                         <template if:true={row.value.isWCRate}>
                                             <input type="text" class="input-readonly" data-id={row.value.ProvisionUnitPriceName}
@@ -407,8 +450,8 @@
                                                 onchange={handleProvisionUnitPriceChange}></input>
                                                 <span class="number-overlap form-control">{row.value.ProvisionUnitPriceSpan}</span>
                                         </template>
-                                    </div>
-                                    </div>
+                                    </div> -->
+                                    <!-- </div> -->
                                 </td>
                             </template>
                             <!-- 水環境、官需の場合に表示する。 -->
@@ -437,7 +480,8 @@
                                         autocomplete="off"
                                         data-name={row.value.UnitPrice}
                                         data-weight={row.value.UnitWeight}
-                                        value={row.value.Quantity} 
+                                        data-provision={row.value.ProvisionUnitPrice}
+                                        value={row.value.Quantity}
                                         data-id={row.value.QuantityName}
                                         onchange={handleQuantityChange}></input>
                                         <span class="number-overlap form-control">{row.value.QuantitySpan}</span></div>
@@ -456,6 +500,7 @@
                                         autocomplete="off"
                                         data-name={row.value.UnitPrice}
                                         data-weight={row.value.UnitWeight}
+                                        data-provision={row.value.ProvisionUnitPrice}
                                         value={row.value.Quantity} 
                                         data-id={row.value.QuantityName}
                                         onchange={handleQuantityChange}></input>

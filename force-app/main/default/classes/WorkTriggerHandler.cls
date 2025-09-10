@@ -429,6 +429,7 @@ public class WorkTriggerHandler {
             // update
             if (sRInfoMap.get(work.SR_Number__c + work.J_Number__c) != null) {
                 SRInfo__c u_SRInfo = sRInfoMap.get(work.SR_Number__c + work.J_Number__c);
+                u_SRInfo.Subject__c = work.Subject__c;                                        // 件名　　　　　　　　 ← 件名 20250207追加
                 //  受注後最新
                 if (work.OpportunityType__c == '手持') {
                     // 「案件種別名称」が”手持”
@@ -439,7 +440,9 @@ public class WorkTriggerHandler {
                         u_SRInfo.Latest_SRCP__c = work.SRCP__c;                               // SRCP（最新）        ← SRCP
                         u_SRInfo.Latest_SRWC__c = work.SRWC__c;                               // SRWC（最新）        ← SRWC
                         u_SRInfo.Latest_SRInfoUpdateDate__c = work.LatestRegistrationDate__c; // SR情報取得日（最新） ← 最新登録年月日
+                        u_SRInfo.Latest_SalesDate__c = work.PlannedSalesDate__c;              // 売上年月日（最新）   ← 売上(予定)年月日 20250207追加
                     }
+                    sRInfoMap.put(u_SRInfo.UpsertByWorkTargetIdNumber__c, u_SRInfo); 
                 }
                 // 売上実績
                 if (work.OpportunityType__c == '実績') {
@@ -527,6 +530,7 @@ public class WorkTriggerHandler {
                     , EntryDate__c =Date.today()                                            // 取込日     ← (処理実行日)
                     , Warning__c = work.Warning__c                                          // ワーニング ← ワーニング
                     , UpsertByWorkTargetIdNumber__c = work.SR_Number__c + work.J_Number__c  // work反映先特定番号（売報番号＋J項番号） ← 売報番号 + Ｊ項番号
+                    , ModelCode__c = work.ModelCode__c                                      // 機種コード ← 機種コード 20250207追加
                 );
                 // 受注時（手持）
                 if (work.OpportunityType__c == '手持' && work.PlannedOrderDate__c <= lastMonthEnd) {
@@ -536,6 +540,7 @@ public class WorkTriggerHandler {
                     i_sRInfo.Order_SRWC__c = work.SRWC__c;                                // SRWC（受注時）       ← SRWC
                     i_sRInfo.Order_Forecast_SRWC__c = work.PriorityWC_ResultWC__c;        // 最終予想WC（受注時） ← 優先ＷＣ売上実績ＷＣ
                     i_sRInfo.Order_OrderDate__c = work.PlannedOrderDate__c;               // 受注年月日           ← 受注(予定)年月日
+                    i_sRInfo.Order_SalesDate__c = work.PlannedSalesDate__c;               // 売上年月日（受注時）  ← 売上(予定)年月日 20250207追加
 
                     // 初回は「受注時」の値を「受注後最新」にも移送する
                     i_sRInfo.Latest_SRCP__c = work.SRCP__c;                                 // SRCP（最新）        ← SRCP
@@ -543,6 +548,7 @@ public class WorkTriggerHandler {
                     i_sRInfo.Latest_SRWC__c = work.SRWC__c;                                 // SRWC（最新）        ← SRWC
                     i_sRInfo.Latest_Forecast_SRWC__c = work.PriorityWC_ResultWC__c;         // 最終予想WC（最新）   ← 優先ＷＣ売上実績ＷＣ
                     i_sRInfo.Latest_SRInfoUpdateDate__c = work.LatestRegistrationDate__c;   // SR情報取得日（最新） ← 最新登録年月日
+                    i_sRInfo.Latest_SalesDate__c = work.PlannedSalesDate__c;                // 売上年月日（最新）   ← 売上(予定)年月日 20250207追加
                 }
                 // 受注時（実績）
                 if (work.OpportunityType__c == '実績' && work.PlannedSalesDate__c <= lastMonthEnd) {
@@ -552,6 +558,7 @@ public class WorkTriggerHandler {
                     i_sRInfo.Order_SRWC__c = work.SRWC__c;                                  // SRWC（受注時）       ← SRWC
                     i_sRInfo.Order_Forecast_SRWC__c = work.PriorityWC_ResultWC__c;          // 最終予想WC（受注時） ← 優先ＷＣ売上実績ＷＣ
                     i_sRInfo.Order_OrderDate__c = work.NewRegistrationDate__c;              // 受注年月日           ← 新規登録年月日
+                    i_sRInfo.Order_SalesDate__c = work.PlannedSalesDate__c;                 // 売上年月日（受注時）  ← 売上(予定)年月日 20250207追加
 
                     // 初回は「受注時」の値を「受注後最新」にも移送する
                     i_sRInfo.Latest_SRCP__c = work.SRCP__c;                                 // SRCP（最新）        ← SRCP
@@ -559,6 +566,7 @@ public class WorkTriggerHandler {
                     i_sRInfo.Latest_SRWC__c = work.SRWC__c;                                 // SRWC（最新）        ← SRWC
                     i_sRInfo.Latest_Forecast_SRWC__c = work.PriorityWC_ResultWC__c;         // 最終予想WC（最新）   ← 優先ＷＣ売上実績ＷＣ
                     i_sRInfo.Latest_SRInfoUpdateDate__c = work.LatestRegistrationDate__c;   // SR情報取得日（最新） ← 最新登録年月日
+                    i_sRInfo.Latest_SalesDate__c = work.PlannedSalesDate__c;                // 売上年月日（最新）   ← 売上(予定)年月日 20250207追加
 
                     i_sRInfo.Result_SRCP__c = work.FinalForecastCP_ResultCP__c;             // 売上実績CP ← 最終予想ＣＰ売上実績ＣＰ
                     i_sRInfo.Result_SRWC__c = work.PriorityWC_ResultWC__c;                  // 売上実績WC ← 優先ＷＣ売上実績ＷＣ

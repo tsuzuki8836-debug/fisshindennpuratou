@@ -8,6 +8,7 @@ public class QuoteTriggerHandler {
 
     public void onBeforeUpdate(List<Quote__c> newList,Map<Id,Quote__c> oldMap){
         logic.calculateNETItem(newList,oldMap);
+        logic.equipManageCostCalculation(newList);
     }
 
     public void onAfterInsert(List<Quote__c> newList){

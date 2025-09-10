@@ -23,7 +23,13 @@
 .align-footer-text {
     align-items: center;
 }
+tr:nth-child(even) {
+    background: #eff4ff;
+}
 
+tr:nth-child(odd) {
+    background: #fff;
+}
 .slds-table_cell-buffer tr>th:first-child,
 .slds-table_cell-buffer tr>td:first-child,
 .slds-table--cell-buffer tr>th:first-child,

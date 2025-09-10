@@ -1,7 +1,7 @@
 <template>
     <!-- lightning button for open modal window -->
     <lightning-button variant="brand"
-       label="明細入力"
+       label="明細入力A"
        title="ItemsInput"
        onclick={openModal}
        class="slds-m-left_x-small">
@@ -19,7 +19,7 @@
                             size="small" ></lightning-icon>
                         <span class="slds-assistive-text">Close</span>
                     </button>
-                    <h2 id="modal-heading-01" class="slds-text-heading_large slds-hyphenate">明細入力</h2>
+                    <h2 id="modal-heading-01" class="slds-text-heading_large slds-hyphenate">明細入力A</h2>
                 </header>
                 <div class="slds-modal__content slds-p-around_large first-section" id="modal-content-id-1">
                     <c-filter-condition-pattern-a record-id={recordId}
@@ -189,7 +189,7 @@
         <div class="slds-backdrop slds-backdrop_open"></div>
     </template>
 
-    <!--<template if:true={isModalBForLowVoltageOpen}>
+    <template if:true={isModalBForSpcialHighVoltageOpen}>
         <section role="dialog" tabindex="-1" aria-labelledby="modal-heading-01" aria-modal="true" aria-describedby="modal-content-id-2" class="slds-modal slds-modal_medium slds-fade-in-open">
             <div class="slds-modal__container">
                 <header class="slds-modal__header">
@@ -200,7 +200,75 @@
                             size="small" ></lightning-icon>
                         <span class="slds-assistive-text">Close</span>
                     </button>
-                    <h2 class="slds-text-heading_medium slds-hyphenate">内訳入力B_低圧配電盤</h2>
+                    <h2 class="slds-text-heading_medium slds-hyphenate">{minorClassificationTitle}</h2>
+                </header>
+                <div data-id="modal-content-id-2" class="slds-modal__content slds-p-around_medium first-section"
+                        style="overflow-x: auto;"
+                        >
+                    <c-details-input-screen-b-for-sp-high-voltage
+                        record-id={recordId}
+                        onquantitychangeforsphigh={onQuantityChangeForSpHigh}
+                    ></c-details-input-screen-b-for-sp-high-voltage>
+                </div>
+                <footer class="slds-modal__footer ">
+                    <div class="slds-grid slds-grid_align-center">
+                        <button class="slds-button slds-button_neutral" onclick={closeModalB} title="Cancel">キャンセル</button>
+                        <button class="slds-button slds-button_brand" onclick={submitDetailsForSpecialHighVoltage} title="Save" data-id="SaveForSpHighVoltage">保存</button>
+                        <button class="slds-button slds-button_brand" onclick={submitDetailsForSpecialHighVoltage} title="Save" data-id="SaveForSpHighVoltageToDivice">保存＆見積項目一覧へ</button>
+                    </div>
+                </footer>
+            </div>
+        </section>
+        <div class="slds-backdrop slds-backdrop_open"></div>
+    </template>
+
+    <template if:true={isModalBForAcbBoardOpen}>
+        <section role="dialog" tabindex="-1" aria-labelledby="modal-heading-01" aria-modal="true" aria-describedby="modal-content-id-2" class="slds-modal slds-modal_medium slds-fade-in-open">
+            <div class="slds-modal__container">
+                <header class="slds-modal__header">
+                    <button class="slds-button slds-button_icon slds-modal__close slds-button_icon-inverse" title="Close" onclick={closeModalB}>
+                        <lightning-icon icon-name="utility:close"
+                            alternative-text="close"
+                            variant="inverse"
+                            size="small" ></lightning-icon>
+                        <span class="slds-assistive-text">Close</span>
+                    </button>
+                    <h2 class="slds-text-heading_medium slds-hyphenate">明細入力B_ACB盤</h2>
+                </header>
+                <div data-id="modal-content-id-2" class="slds-modal__content slds-p-around_medium first-section">
+                    <c-details-input-screen-b-for-acb-board data-id="detailsInputScreenBForAcbBoard"
+                        record-id={recordId}
+                        onscreeninputforacbboardchange={onScreenInputForAcbBoardChange}
+                    ></c-details-input-screen-b-for-acb-board>
+                </div>
+                <footer class="slds-modal__footer ">
+                    <div class="slds-grid slds-grid_align-center">
+                        <button class="slds-button slds-button_neutral" onclick={closeModalB} title="Cancel">キャンセル</button>
+                        <button class="slds-button slds-button_brand" onclick={submitDetailsForAcbBoard} title="Save" data-id="SaveForAcbBoard">保存</button>
+                        <button class="slds-button slds-button_brand" onclick={submitDetailsForAcbBoard} title="Save" data-id="SaveForAcbBoardToDivice">保存＆見積項目一覧へ</button>
+
+                    </div>
+                </footer>
+            </div>
+        </section>
+        <div class="slds-backdrop slds-backdrop_open"></div>
+    </template>
+
+
+
+
+    <template if:true={isModalBForLowVoltageOpen}>
+        <section role="dialog" tabindex="-1" aria-labelledby="modal-heading-01" aria-modal="true" aria-describedby="modal-content-id-2" class="slds-modal slds-modal_medium slds-fade-in-open">
+            <div class="slds-modal__container">
+                <header class="slds-modal__header">
+                    <button class="slds-button slds-button_icon slds-modal__close slds-button_icon-inverse" title="Close" onclick={closeModalB}>
+                        <lightning-icon icon-name="utility:close"
+                            alternative-text="close"
+                            variant="inverse"
+                            size="small" ></lightning-icon>
+                        <span class="slds-assistive-text">Close</span>
+                    </button>
+                    <h2 class="slds-text-heading_medium slds-hyphenate">明細入力B_低圧配電盤</h2>
                 </header>
                 <div data-id="modal-content-id-2" class="slds-modal__content slds-p-around_medium first-section">
                     <c-details-input-screen-b-for-low-voltage-switch-board data-id="detailsInputScreenBForLowVoltageSwitchBoard"
@@ -211,7 +279,9 @@
                 <footer class="slds-modal__footer ">
                     <div class="slds-grid slds-grid_align-center">
                         <button class="slds-button slds-button_neutral" onclick={closeModalB} title="Cancel">キャンセル</button>
-                        <button class="slds-button slds-button_brand" onclick={submitDetailsForLowVoltage} title="Save">保存</button>
+                        <button class="slds-button slds-button_brand" onclick={submitDetailsForLowVoltage} title="Save" data-id="SaveForLowVoltage">保存</button>
+                        <button class="slds-button slds-button_brand" onclick={submitDetailsForLowVoltage} title="Save" data-id="SaveForLowVoltageToDivice">保存＆見積項目一覧へ</button>
+
                     </div>
                 </footer>
             </div>
@@ -219,7 +289,71 @@
         <div class="slds-backdrop slds-backdrop_open"></div>
     </template>
 
-    <template if:true={isModalBForControlCenterOpen}>
+    <template if:true={isModalBForFieldBoardOpen}>
+        <section role="dialog" tabindex="-1" aria-labelledby="modal-heading-01" aria-modal="true" aria-describedby="modal-content-id-2" class="slds-modal slds-modal_medium slds-fade-in-open">
+            <div class="slds-modal__container">
+                <header class="slds-modal__header">
+                    <button class="slds-button slds-button_icon slds-modal__close slds-button_icon-inverse" title="Close" onclick={closeModalB}>
+                        <lightning-icon icon-name="utility:close"
+                            alternative-text="close"
+                            variant="inverse"
+                            size="small" ></lightning-icon>
+                        <span class="slds-assistive-text">Close</span>
+                    </button>
+                    <h2 class="slds-text-heading_medium slds-hyphenate">明細入力B_現場盤</h2>
+                </header>
+                <div data-id="modal-content-id-2" class="slds-modal__content slds-p-around_medium first-section">
+                    <c-details-input-screen-b-for-field-board data-id="detailsInputScreenBForFieldBoard"
+                        record-id={recordId}
+                        onscreeninputforfieldboardchange={onScreenInputForFieldBoardChange}
+                    ></c-details-input-screen-b-for-field-board>
+                </div>
+                <footer class="slds-modal__footer ">
+                    <div class="slds-grid slds-grid_align-center">
+                        <button class="slds-button slds-button_neutral" onclick={closeModalB} title="Cancel">キャンセル</button>
+                        <button class="slds-button slds-button_brand" onclick={submitDetailsForFieldBoard} title="Save" data-id="SaveForFieldBoard">保存</button>
+                        <button class="slds-button slds-button_brand" onclick={submitDetailsForFieldBoard} title="Save" data-id="SaveForFieldBoardToDevice">保存＆見積項目一覧へ</button>
+
+                    </div>
+                </footer>
+            </div>
+        </section>
+        <div class="slds-backdrop slds-backdrop_open"></div>
+    </template>
+
+    <template if:true={isModalBForRelayBoardOpen}>
+        <section role="dialog" tabindex="-1" aria-labelledby="modal-heading-01" aria-modal="true" aria-describedby="modal-content-id-2" class="slds-modal slds-modal_medium slds-fade-in-open">
+            <div class="slds-modal__container">
+                <header class="slds-modal__header">
+                    <button class="slds-button slds-button_icon slds-modal__close slds-button_icon-inverse" title="Close" onclick={closeModalB}>
+                        <lightning-icon icon-name="utility:close"
+                            alternative-text="close"
+                            variant="inverse"
+                            size="small" ></lightning-icon>
+                        <span class="slds-assistive-text">Close</span>
+                    </button>
+                    <h2 class="slds-text-heading_medium slds-hyphenate">明細入力B_リレー盤</h2>
+                </header>
+                <div data-id="modal-content-id-2" class="slds-modal__content slds-p-around_medium first-section">
+                    <c-details-input-screen-b-for-relay-board data-id="detailsInputScreenBForRelayBoard"
+                        record-id={recordId}
+                        onscreeninputforrelayboardchange={onScreenInputForRelayBoardChange}
+                    ></c-details-input-screen-b-for-relay-board>
+                </div>
+                <footer class="slds-modal__footer ">
+                    <div class="slds-grid slds-grid_align-center">
+                        <button class="slds-button slds-button_neutral" onclick={closeModalB} title="Cancel">キャンセル</button>
+                        <button class="slds-button slds-button_brand" onclick={submitDetailsForRelayBoard} title="Save" data-id="SaveForRelayBoard">保存</button>
+                        <button class="slds-button slds-button_brand" onclick={submitDetailsForRelayBoard} title="Save" data-id="SaveForRelayBoardToDivice">保存＆見積項目一覧へ</button>
+
+                    </div>
+                </footer>
+            </div>
+        </section>
+        <div class="slds-backdrop slds-backdrop_open"></div>
+    </template>
+
+    <!--<template if:true={isModalBForControlCenterOpen}>
         <section role="dialog" tabindex="-1" aria-labelledby="modal-heading-01" aria-modal="true" aria-describedby="modal-content-id-2" class="slds-modal slds-modal_medium slds-fade-in-open">
             <div class="slds-modal__container">
                 <header class="slds-modal__header">
@@ -249,6 +383,39 @@
         <div class="slds-backdrop slds-backdrop_open"></div>
     </template>-->
 
+    <template if:true={isModalBForControlCenterOpen}>
+        <section role="dialog" tabindex="-1" aria-labelledby="modal-heading-01" aria-modal="true" aria-describedby="modal-content-id-2" class="slds-modal slds-modal_medium slds-fade-in-open">
+            <div class="slds-modal__container">
+                <header class="slds-modal__header">
+                    <button class="slds-button slds-button_icon slds-modal__close slds-button_icon-inverse" title="Close" onclick={closeModalB}>
+                        <lightning-icon icon-name="utility:close"
+                            alternative-text="close"
+                            variant="inverse"
+                            size="small" ></lightning-icon>
+                        <span class="slds-assistive-text">Close</span>
+                    </button>
+                    <h2 class="slds-text-heading_medium slds-hyphenate">明細入力B_コントロールセンタ</h2>
+                </header>
+                <div data-id="modal-content-id-2" class="slds-modal__content slds-p-around_medium first-section"
+                        style="overflow-x: auto;"
+                        >
+                    <c-details-input-screen-b-for-control-center data-id="detailsInputScreenBForControlCenter"
+                        record-id={recordId}
+                        onquantitychangeforcontrolcenter={onQuantityChangeForControlCenter}
+                    ></c-details-input-screen-b-for-control-center>
+                </div>
+                <footer class="slds-modal__footer ">
+                    <div class="slds-grid slds-grid_align-center">
+                        <button class="slds-button slds-button_neutral" onclick={closeModalB} title="Cancel">キャンセル</button>
+                        <button class="slds-button slds-button_brand" onclick={submitControlCenterDetails} title="Save" data-id="SaveForControlCenter">保存</button>
+                        <button class="slds-button slds-button_brand" onclick={submitControlCenterDetails} title="Save" data-id="SaveForControlCenterToDivice">保存＆見積項目一覧へ</button>
+                    </div>
+                </footer>
+            </div>
+        </section>
+        <div class="slds-backdrop slds-backdrop_open"></div>
+    </template>
+
     <lightning-button variant="brand"
        label="明細追加"
        title="ItemsInput"
@@ -274,6 +441,7 @@
                             data-id="detailsAddScreen"
                             record-id={recordId}
                             onquantitychange={onQuantityChange}
+                            oncheckboxchange={onCheckBoxChange}
                     >
                     </c-details-add-screen>
                 </div>
@@ -322,4 +490,44 @@
         </section>
         <div class="slds-backdrop slds-backdrop_open"></div>
     </template>
- </template>
+
+    <!-- 国交省機器管理費 内訳入力 202303 -->
+    <!-- <lightning-button variant="brand"
+        label="国交省機器管理費"
+        title="ItemsInput"
+        onclick={openModal}
+        class="slds-m-left_x-small">
+    </lightning-button>
+    <template if:true={isModalOpenNew}>
+        <section role="dialog" tabindex="-1" aria-labelledby="modal-heading-09" aria-modal="true" aria-describedby="modal-content-id-1" 
+        class="slds-modal slds-modal_medium slds-fade-in-open">
+            <div class="slds-modal__container">
+                <header class="slds-modal__header">
+                    <button class="slds-button slds-button_icon slds-modal__close slds-button_icon-inverse" title="Close" onclick={closeModal}>
+                        <lightning-icon icon-name="utility:close"
+                            alternative-text="close"
+                            variant="inverse"
+                            size="small" ></lightning-icon>
+                        <span class="slds-assistive-text">Close</span>
+                    </button>
+                    <h2 id="modal-heading-09" class="slds-text-heading_medium slds-hyphenate">内訳入力</h2>
+                </header>
+                <div class="slds-modal__content slds-p-around_medium first-section" id="modal-content-id-9">
+                    // 内訳入力画面
+                    <c-details-input-screen-for-mlit data-id="screenmlit"
+                        record-id={recordId}
+                        onparentchanged={OnParentChanged}
+                        onchildchanged={OnChildChanged}
+                    ></c-details-input-screen-for-mlit>
+                </div>
+                <footer class="slds-modal__footer">
+                    <div class="slds-grid slds-grid_align-center">
+                        <button class="slds-button slds-button_neutral" onclick={closeModal} title="Cancel">キャンセル</button>
+                        <button class="slds-button slds-button_brand" onclick={submitMlitInfo} title="Save" data-id="SaveA">保存</button>
+                    </div>
+                </footer>
+            </div>
+        </section>
+        <div class="slds-backdrop slds-backdrop_open"></div>
+    </template> -->
+</template>

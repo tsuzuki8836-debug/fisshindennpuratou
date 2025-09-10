@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ValidationRule xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Rule2</fullName>
+    <active>false</active>
+    <description>完了時コメント入力規則</description>
+    <errorConditionFormula>AND(
+ISCHANGED(Status__c ) ,
+ISPICKVAL(Status__c , &apos;完了済&apos;) ,
+ISBLANK( CompletionComment__c )
+)</errorConditionFormula>
+    <errorDisplayField>CompletionComment__c</errorDisplayField>
+    <errorMessage>完了コメントを入力してください。</errorMessage>
+</ValidationRule>

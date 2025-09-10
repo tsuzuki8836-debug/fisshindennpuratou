@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>FactoryDivision__c</fullName>
+    <externalId>false</externalId>
+    <label>製作所 対象部門</label>
+    <required>false</required>
+    <trackFeedHistory>false</trackFeedHistory>
+    <trackHistory>false</trackHistory>
+    <trackTrending>false</trackTrending>
+    <type>Picklist</type>
+    <valueSet>
+        <controllingField>RequestTo__c</controllingField>
+        <restricted>true</restricted>
+        <valueSetDefinition>
+            <sorted>false</sorted>
+            <value>
+                <fullName>製作所（営業）</fullName>
+                <default>false</default>
+                <label>製作所（営業）</label>
+            </value>
+            <value>
+                <fullName>製作所（SE）</fullName>
+                <default>false</default>
+                <label>製作所（SE）</label>
+            </value>
+            <value>
+                <fullName>製作所（製造）</fullName>
+                <default>false</default>
+                <label>製作所（製造）</label>
+            </value>
+            <value>
+                <fullName>選択なし</fullName>
+                <default>false</default>
+                <label>選択なし</label>
+            </value>
+        </valueSetDefinition>
+    </valueSet>
+</CustomField>

@@ -189,23 +189,22 @@
                                         </lightning-button>
                                     </div>
                                 </lightning-layout-item>
-                                <!--<lightning-layout-item>
+                                <lightning-layout-item>
                                     <div class="slds-p-left_xx-small">
-                                        <lightning-button label="数量クリア" variant="brand" 
+                                        <lightning-button label="数量一括クリア" variant="brand" 
                                         style="white-space: nowrap;"
                                         name="clearQuantity"
                                         onclick={clearAllQuantity}
                                         >
                                         </lightning-button>
                                     </div>
-                                </lightning-layout-item>-->
+                                </lightning-layout-item>
                             </lightning-layout>
                         </div>
                     </lightning-layout-item>
                     <lightning-layout-item size="4">
                         <div class="slds-align_absolute-center">
                             <div class="slds-p-right_xx-small">
-        
                                 <lightning-button label="Prev" disabled={isPrev} onclick={handlePrev} variant="brand"
                                     icon-name="utility:back" name="prev"></lightning-button>
                             </div>
@@ -221,7 +220,7 @@
                 </lightning-layout>
 
                 <lightning-layout>
-                     <div class="slds-m-around_medium " style="overflow: auto;height: 370px;">
+                    <div class="slds-m-around_medium " style="overflow: auto;height: 370px;">
                         <template if:true={isDisplayNoRecords}>
                             <div class="slds-align_absolute-left">
                                 指定条件により、明細データを取得できません。
@@ -237,7 +236,7 @@
                                         <span class="slds-truncate" title="名称">名称</span>
                                     </th>
                                     <th class="slds-is-resizable slds-text-title--caps" scope="col">
-                                        <span class="slds-truncate" title="マスタコード">マスタコード</span>
+                                        <span class="slds-truncate" title="明細レコード表示順">明細レコード表示順</span><!-- 0129修正 -->
                                     </th>
                                     <th class="slds-is-resizable slds-text-title--caps" scope="col">
                                         <span class="slds-truncate" title="単位WC">WC単価(円)</span>
@@ -391,6 +390,11 @@
                                         <!-- 提供単価 -->
                                         <td class="slds-cell_action-mode" role="gridcell">
                                             <div class="slds-truncate slds-text-align_center">
+                                                    <lightning-formatted-number 
+                                                    value={row.value.ProvisionUnitPrice}
+                                                    ></lightning-formatted-number>
+                                            </div>
+                                            <!-- <div class="slds-truncate slds-text-align_center">
                                                 <div class="number-container" >
                                                 <input class="number-input form-control"
                                                     data-rowindex={row.value.Id} 
@@ -406,7 +410,7 @@
                                                     autocomplete="off">
                                                     <span class="number-overlap form-control">{row.value.ProvisionUnitPriceSpan}</span>
                                                 </div>
-                                            </div>
+                                            </div> -->
                                         </td>
                                     </template>
                                     <!-- 水環境、官需の場合に表示する。 -->
@@ -520,7 +524,7 @@
                                     <td class="slds-cell_action-mode" role="gridcell">
                                         <div class="slds-truncate slds-text-align_left">
                                             <lightning-formatted-text value={row.value.Name2} 
-                                            title={row.value.Name2}></lightning-formatted-text>
+                                            title={row.value.Name2}></lightning-formatted-text><!-- ここ変える？ -->
                                         </div>
                                     </td>
                                     <!-- 単位WC -->
@@ -629,14 +633,20 @@
                                     <template  if:false={isWeight}>
                                         <!-- 提供単価 -->
                                         <td class="slds-cell_action-mode" role="gridcell">
-                                            <div class="slds-truncate slds-text-align_left">
-                                                <div class="number-container" >
-                                                <template if:true={row.value.isWCRate}>
-                                                    <input type="text" class="input-readonly" data-id={row.value.ProvisionUnitPriceName}
-                                                    size="11" maxlength="11" style="text-align: right " readonly></input>
-                                                </template>
+                                            <div class="slds-truncate slds-text-align_right">
 
-                                                <template if:false={row.value.isWCRate}>
+                                                <lightning-formatted-number 
+                                                    value={row.value.ProvisionUnitPrice}
+                                                    ></lightning-formatted-number>
+                                            
+                                                <!-- <div class="slds-truncate slds-text-align_left">
+                                                    <div class="number-container" >
+                                                    <template if:true={row.value.isWCRate}>
+                                                        <input type="text" class="input-readonly" data-id={row.value.ProvisionUnitPriceName}
+                                                        size="11" maxlength="11" style="text-align: right " readonly></input>
+                                                    </template> -->
+
+                                                <!-- <template if:true={row.value.isProvisionUnitPriceEdit}>
                                                         <input class="number-input form-control"
                                                         type="text" pattern="^[1-9][0-9]*$" 
                                                         title="0以上の数字を入力してください。"
@@ -647,8 +657,7 @@
                                                         value={row.value.ProvisionUnitPrice}
                                                         onchange={handleProvisionUnitPriceChange}></input>
                                                         <span class="number-overlap form-control">{row.value.ProvisionUnitPriceSpan}</span>
-                                                </template>
-                                            </div>
+                                                </template> -->
                                             </div>
                                         </td>
                                     </template>
@@ -677,6 +686,7 @@
                                                 autocomplete="off"
                                                 data-name={row.value.UnitPrice}
                                                 data-weight={row.value.UnitWeight}
+                                                data-provision={row.value.ProvisionUnitPrice}
                                                 value={row.value.Quantity} 
                                                 data-id={row.value.QuantityName}
                                                 onchange={handleQuantityChange}></input>
@@ -696,6 +706,7 @@
                                                 autocomplete="off"
                                                 data-name={row.value.UnitPrice}
                                                 data-weight={row.value.UnitWeight}
+                                                data-provision={row.value.ProvisionUnitPrice}
                                                 value={row.value.Quantity} 
                                                 data-id={row.value.QuantityName}
                                                 onchange={handleQuantityChange}></input>

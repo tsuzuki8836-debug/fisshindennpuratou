@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<WebLink xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>CreateNewRequestTaskInOpportunityPage</fullName>
+    <availability>online</availability>
+    <description>案件のページで表示する依頼タスクボタン</description>
+    <displayType>massActionButton</displayType>
+    <encodingKey>UTF-8</encodingKey>
+    <height>600</height>
+    <linkType>url</linkType>
+    <masterLabel>新規</masterLabel>
+    <openType>sidebar</openType>
+    <protected>false</protected>
+    <requireRowSelection>false</requireRowSelection>
+    <url>/lightning/o/RequestTask__c/new?defaultFieldValues=
+Name={!Opportunity.Name},
+Opportunity__c={!Opportunity.Id},
+MentionTarget1__c={!User.ManagerId}
+&amp;backgroundContext=%2Flightning%2Fr%2FOpportunity%2F{!Opportunity.Id}%2Fview</url>
+</WebLink>

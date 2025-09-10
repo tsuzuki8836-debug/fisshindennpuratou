@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>DiscloseExceptRequestDestination__c</fullName>
+    <externalId>false</externalId>
+    <inlineHelpText>開示不可の場合、依頼先のみに開示されます。
+開示可の場合、全ユーザに開示されます。</inlineHelpText>
+    <label>依頼先以外への開示</label>
+    <required>true</required>
+    <trackFeedHistory>false</trackFeedHistory>
+    <trackHistory>false</trackHistory>
+    <trackTrending>false</trackTrending>
+    <type>Picklist</type>
+    <valueSet>
+        <restricted>true</restricted>
+        <valueSetDefinition>
+            <sorted>false</sorted>
+            <value>
+                <fullName>開示不可</fullName>
+                <default>false</default>
+                <label>開示不可</label>
+            </value>
+            <value>
+                <fullName>開示可</fullName>
+                <default>true</default>
+                <label>開示可</label>
+            </value>
+        </valueSetDefinition>
+    </valueSet>
+</CustomField>

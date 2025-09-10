@@ -103,6 +103,10 @@ public with sharing class DetailController {
         public String Note {get;set;}//備考
         public String Name4 {get;set;}//名称４
 
+        public String MasterCode {get;set;}//マスタコード
+
+        public String DetailRecordDisplayNumberText {get;set;}//明細レコード表示順
+
         public Boolean SpecialFlag {get;set;}//数量を小数点2桁まで許容するフラグ
    }
     //ＭＡＣＴＵＳ または　ＭＥＬＦＬＥＸ   
@@ -154,15 +158,24 @@ public with sharing class DetailController {
         //画面情報を設定して戻る
         PricingTableWrapper objDT =  new PricingTableWrapper();
         Set<String> ids;
-        Map<String, PricingTableInputOnly> detailMap;
+        Map<String, List<PricingTableInputOnly>> detailMap;
         if (priceList!=null && priceList.size()>0) {
             ids = new Set<String>();
-            detailMap = new Map<String, PricingTableInputOnly>();
+            detailMap = new Map<String, List<PricingTableInputOnly>>();
             for (PricingTableInputOnly item : priceList) {
                 //数量が入力された行だけ　表示対象とする
                 if (item.Quantity != null){
-                    if (!item.Id.contains('rowIndex')) ids.add(item.Id);
-                    detailMap.put(item.Id,item);
+                    String pId = item.Id;
+                    if (!item.Id.contains('rowIndex')) {
+                        if (pId.length()>18)pId=pId.left(18);
+                        ids.add(pId);
+                    }
+                    //数量が入力された行だけ　表示対象とする
+                    List<PricingTableInputOnly> pricingList = detailMap.get(pId);
+                    if (pricingList==null) pricingList = new List<PricingTableInputOnly>();
+                    pricingList.add(item);
+                    detailMap.put(pId,pricingList);
+                    // detailMap.put(item.Id,item);
                 }
             }
         }else {
@@ -171,9 +184,9 @@ public with sharing class DetailController {
         //検索項目
         String column = 'Id, UniqueKey__c, Name,RecordType.DeveloperName, '
                         + 'MajorClassificationCode__c, MajorClassificationName__c, MinorClassificationCode__c, MinorClassificationName__c, '
-                        + 'CategoryCode__c, CategoryName__c, RECNO__c,  DisplayName__c, MasterCode__c, '
+                        + 'CategoryCode__c, CategoryName__c, RECNO__c,  DisplayName__c, MasterCode__c,DetailRecordDisplayNumberText__c, '
                         + 'Name1__c, Name2__c, Name3__c, Name4__c, Name5__c, Name6__c, WC__c,'
-                        + 'WcCalculationRate__c, Price__c, Weight__c, Note__c';//,
+                        + 'WcCalculationRate__c, Price__c, ProvisionPrice__c, Weight__c, Note__c';//,
         //SQL
         String query = 'SELECT ' + column 
                         +' FROM PricingTable__c'
@@ -188,7 +201,6 @@ public with sharing class DetailController {
         objDT.newRecords = newRecordsList;
         return JSON.serialize(objDT);
    }
-
 
     @AuraEnabled
     /**
@@ -229,15 +241,20 @@ public with sharing class DetailController {
                 objDT.device= deviceList.get(0);//機器情報を画面に戻る
             }
             
-            Map<String, PricingTableInputOnly> intensifys;
+            Map<String, List<PricingTableInputOnly>> intensifys;
             //画面に入力された値で設定
             if (String.isNotBlank(intensifyRecords)) {
-                intensifys = new Map<String, PricingTableInputOnly>();
+                intensifys = new Map<String, List<PricingTableInputOnly>>();
                 List<PricingTableInputOnly> priceList = (List<PricingTableInputOnly>)JSON.deserialize(intensifyRecords,List<PricingTableInputOnly>.class);
                 for (PricingTableInputOnly item : priceList) {
                     System.debug(item);
+                    String pId = item.Id;
+                    if (pId.length()>18)pId=pId.left(18);
                     //数量が入力された行だけ　表示対象とする
-                    intensifys.put(item.Id,item);
+                    List<PricingTableInputOnly> pricingList = intensifys.get(pId);
+                    if (pricingList==null) pricingList = new List<PricingTableInputOnly>();
+                    pricingList.add(item);
+                    intensifys.put(pId,pricingList);
 
                 }
             }
@@ -261,14 +278,14 @@ public with sharing class DetailController {
             }
             //内訳に登録された情報で設定
             if (String.isBlank(intensifyRecords) || String.isBlank(newRecords)) {
-                Map<Id, Detail__c> detailMap = getDetailRecordsByDeviceId(recordId);
+                Map<Id, List<Detail__c>> detailMap = getDetailRecords(recordId);
                 //数量設定
                 if (String.isBlank(intensifyRecords) ) {
                     intensifys = setIntensifyRecord(detailMap);
                 }
                 //新規追加行　設定
                 if (String.isBlank(newRecords) ) {
-                    if (intensifys==null) intensifys = new Map<String, PricingTableInputOnly>();
+                    if (intensifys==null) intensifys = new Map<String, List<PricingTableInputOnly>>();
                     newRowsMap = setNewRecords(recordId, intensifys);
                     newRecordsList = newRowsMap.values();
                 }
@@ -277,9 +294,9 @@ public with sharing class DetailController {
             //検索項目
             String column = 'Id,UniqueKey__c, Name,RecordType.DeveloperName, '
                             +'MajorClassificationCode__c, MajorClassificationName__c, MinorClassificationCode__c, MinorClassificationName__c, '
-                            +'CategoryCode__c, CategoryName__c, RECNO__c, DisplayName__c, MasterCode__c, '
+                            +'CategoryCode__c, CategoryName__c, RECNO__c, DisplayName__c, MasterCode__c,DetailRecordDisplayNumberText__c, '
                             +'Name1__c, Name2__c, Name3__c, Name4__c, Name5__c, Name6__c, '
-                            +'WC__c, WcCalculationRate__c, Price__c, Weight__c, Note__c';//,
+                            +'WC__c, WcCalculationRate__c, Price__c, ProvisionPrice__c, Weight__c, Note__c';//,
 
             //ページング条件よる、検索条件のOffset部分を設定
             Integer offset = (pageNumber - 1) * pageSize;
@@ -310,11 +327,13 @@ public with sharing class DetailController {
                     if(String.isNotBlank(majorClassification)) conditions.add('MajorClassificationName__c =:majorClassification');
                     //以下の6つパターンでは、小分類が明細、筐体のそれぞれに追加、共通条件には追加しない。
                     if (!(
-                        //機器の大分類が「UPS」かつ小分類が2000台の場合は、明細のクエリ時に小分類の条件のみ無視する
-                        (majorClassification=='UPS' && minorClassification.left(1)=='2')
+                        //　20230829 不要になる　Start
+                        // //機器の大分類が「UPS」かつ小分類が2000台の場合は、明細のクエリ時に小分類の条件のみ無視する
+                        // (majorClassification=='UPS' && minorClassification.left(1)=='2')|| 
+                        //　20230829 不要になる　End
                         //機器.大分類が「発電機」、かつ小分類が「エンジンDG」or「エンジンGTG」の場合、
                         //明細のクエリ時に機器.大分類が「発電機」、かつ小分類「補機関連・共通」の条件を追加する。
-                        || (majorClassification=='発電機' && (minorClassification=='エンジン(DG)' || minorClassification=='エンジン(GTG)'))
+                        (majorClassification=='発電機' && (minorClassification=='エンジン(DG)' || minorClassification=='エンジン(GTG)'))
                         //見積項目.大分類名が「変圧器」かつ見積項目.小分類名が「高低圧変圧器」or「機器事業部 変圧器」の場合、
                         //価格表.小分類名=「変圧器収納盤」を条件追加する。
                         || ((majorClassification=='変圧器'
@@ -329,7 +348,7 @@ public with sharing class DetailController {
                         //大分類「低圧・現場・リレー・ACB盤」、小分類「リレー盤」の場合と、
                         //大分類「低圧・現場・リレー・ACB盤」、小分類「低圧盤」の筐体仕様検索を可能とする
                         || (majorClassification=='低圧・現場・リレー・ACB盤' && minorClassification=='リレー盤')
-                        || (majorClassification=='CCTVカメラ設備')
+                        || (majorClassification=='CCTVカメラ設備[国交省本省宛て提出機器単体費等]')
                         )
                         ) {
                             //条件指定の場合、機器の小分類条件を追加
@@ -518,16 +537,491 @@ public with sharing class DetailController {
                 //明細のクエリ時に機器.大分類が「発電機」、かつ小分類「補機関連・共通」の条件を追加する。
                 if ((majorClassification=='発電機' && (minorClassification=='エンジン(DG)' || minorClassification=='エンジン(GTG)'))
                     || (majorClassification=='コントロールセンタ(C/C)' && (minorClassification == '200V' || minorClassification == '400V') )
-                    || (majorClassification=='CCTVカメラ設備')
+                    || (majorClassification=='CCTVカメラ設備[国交省本省宛て提出機器単体費等]')
                     )
                     {
                     minorDetailList.add(minorClassification);
                     if (majorClassification=='発電機' && (minorClassification=='エンジン(DG)' || minorClassification=='エンジン(GTG)')) minorDetailList.add('補機関連・共通');
                     if (majorClassification=='コントロールセンタ(C/C)' && (minorClassification == '200V' || minorClassification == '400V'))minorDetailList.add('共通');
-                    if (majorClassification=='CCTVカメラ設備') minorDetailList.add('カメラ周辺装置');
+                    if (majorClassification=='CCTVカメラ設備[国交省本省宛て提出機器単体費等]') minorDetailList.add('カメラ周辺装置');
                     query += '   AND MinorClassificationName__c = :minorDetailList ';
                 }
 
+                //見積項目.大分類名が「変圧器」かつ見積項目.小分類名が「特高圧変圧器」の場合、
+                //プルダウン1の値が油の場合、名称1に油を含む価格表を取得する
+                if ((majorClassification=='変圧器' && minorClassification=='特高変圧器') && (searchConditions.get('specificationNames') != null && searchConditions.get('specificationNames').size()>0)) {
+                    if(searchConditions.get('specificationNames')[0] == '油'){
+                        query += ' AND Name1__c = \'油\'';
+                        if (searchConditions.get('specificationNames')[5] == '1,000kVA') {
+                            query += ' AND (Name6__c = \'1,000kVA\' OR (Name3__c = \'1,000kVA\' OR Name2__c = \'OLCT付\'))';
+                        }
+                        if (searchConditions.get('specificationNames')[5] == '1,200kVA') {
+                            query += ' AND (Name6__c = \'1,200kVA\' OR (Name3__c = \'1,200kVA\' OR Name2__c = \'OLCT付\'))';
+                        }
+                        if (searchConditions.get('specificationNames')[5] == '1,250kVA') {
+                            query += ' AND (Name6__c = \'1,250kVA\' OR (Name3__c = \'1,250kVA\' OR Name2__c = \'OLCT付\'))';
+                        }
+                        if (searchConditions.get('specificationNames')[5] == '2,000kVA') {
+                            query += ' AND (Name6__c = \'2,000kVA\' OR (Name3__c = \'2,000kVA\' OR Name2__c = \'OLCT付\'))';
+                        }
+                        if (searchConditions.get('specificationNames')[5] == '3,000kVA') {
+                            query += ' AND (Name6__c = \'3,000kVA\' OR (Name3__c = \'3,000kVA\' OR Name2__c = \'OLCT付\'))';
+                        }
+                        if (searchConditions.get('specificationNames')[5] == '4,000kVA') {
+                            query += ' AND (Name6__c = \'4,000kVA\' OR (Name3__c = \'4,000kVA\' OR Name2__c = \'OLCT付\'))';
+                        }
+                        if (searchConditions.get('specificationNames')[5] == '5,000kVA') {
+                            query += ' AND (Name6__c = \'5,000kVA\' OR (Name3__c = \'5,000kVA\' OR Name2__c = \'OLCT付\'))';
+                        }
+                        if (searchConditions.get('specificationNames')[5] == '7,500kVA') {
+                            query += ' AND (Name6__c = \'7,500kVA\' OR (Name3__c = \'7,500kVA\' OR Name2__c = \'OLCT付\'))';
+                        }
+                        if (searchConditions.get('specificationNames')[5] == '10,000kVA') {
+                            query += ' AND (Name6__c = \'10,000kVA\' OR (Name3__c = \'10,000kVA\' OR Name2__c = \'OLCT付\'))';
+                        }
+                        if (searchConditions.get('specificationNames')[5] == '12,500kVA') {
+                            query += ' AND (Name6__c = \'12,500kVA\' OR (Name3__c = \'12,500kVA\' OR Name2__c = \'OLCT付\'))';
+                        }
+                        if (searchConditions.get('specificationNames')[5] == '15,000kVA') {
+                            query += ' AND (Name6__c = \'15,000kVA\' OR (Name3__c = \'15,000kVA\' OR Name2__c = \'OLCT付\'))';
+                        }
+                        if (searchConditions.get('specificationNames')[5] == '20,000kVA') {
+                            query += ' AND (Name6__c = \'20,000kVA\' OR (Name3__c = \'20,000kVA\' OR Name2__c = \'OLCT付\'))';
+                        }
+                        if (searchConditions.get('specificationNames')[5] == '30,000kVA') {
+                            query += ' AND (Name6__c = \'30,000kVA\' OR (Name3__c = \'30,000kVA\' OR Name2__c = \'OLCT付\'))';
+                        }
+                    }
+                    //プルダウン1の値がガスの場合、名称1にガスを含む価格表を取得する
+                    if(searchConditions.get('specificationNames')[0] == 'ガス'){
+                        query += ' AND Name1__c = \'ガス\'';
+                        if (searchConditions.get('specificationNames')[5] == '750kVA') {
+                            query += ' AND (Name6__c = \'750kVA\' OR (Name3__c = \'750kVA\' OR Name2__c = \'OLCT付\'))';
+                        }
+                        if (searchConditions.get('specificationNames')[5] == '1,000kVA') {
+                            query += ' AND (Name6__c = \'1,000kVA\' OR (Name3__c = \'1,000kVA\' OR Name2__c = \'OLCT付\'))';
+                        }
+                        if (searchConditions.get('specificationNames')[5] == '1,200kVA') {
+                            query += ' AND (Name6__c = \'1,200kVA\' OR (Name3__c = \'1,200kVA\' OR Name2__c = \'OLCT付\'))';
+                        }
+                        if (searchConditions.get('specificationNames')[5] == '1,250kVA') {
+                            query += ' AND (Name6__c = \'1,250kVA\' OR (Name3__c = \'1,250kVA\' OR Name2__c = \'OLCT付\'))';
+                        }
+                        if (searchConditions.get('specificationNames')[5] == '2,000kVA') {
+                            query += ' AND (Name6__c = \'2,000kVA\' OR (Name3__c = \'2,000kVA\' OR Name2__c = \'OLCT付\'))';
+                        }
+                        if (searchConditions.get('specificationNames')[5] == '3,000kVA') {
+                            query += ' AND (Name6__c = \'3,000kVA\' OR (Name3__c = \'3,000kVA\' OR Name2__c = \'OLCT付\'))';
+                        }
+                        if (searchConditions.get('specificationNames')[5] == '4,000kVA') {
+                            query += ' AND (Name6__c = \'4,000kVA\' OR (Name3__c = \'4,000kVA\' OR Name2__c = \'OLCT付\'))';
+                        }
+                        if (searchConditions.get('specificationNames')[5] == '5,000kVA') {
+                            query += ' AND (Name6__c = \'5,000kVA\' OR (Name3__c = \'5,000kVA\' OR Name2__c = \'OLCT付\'))';
+                        }
+                        if (searchConditions.get('specificationNames')[5] == '7,500kVA') {
+                            query += ' AND (Name6__c = \'7,500kVA\' OR (Name3__c = \'7,500kVA\' OR Name2__c = \'OLCT付\'))';
+                        }
+                        if (searchConditions.get('specificationNames')[5] == '10,000kVA') {
+                            query += ' AND (Name6__c = \'10,000kVA\' OR (Name3__c = \'10,000kVA\' OR Name2__c = \'OLCT付\'))';
+                        }
+                        if (searchConditions.get('specificationNames')[5] == '12,500kVA') {
+                            query += ' AND (Name6__c = \'12,500kVA\' OR (Name3__c = \'12,500kVA\' OR Name2__c = \'OLCT付\'))';
+                        }
+                        if (searchConditions.get('specificationNames')[5] == '15,000kVA') {
+                            query += ' AND (Name6__c = \'15,000kVA\' OR (Name3__c = \'15,000kVA\' OR Name2__c = \'OLCT付\'))';
+                        }
+                        if (searchConditions.get('specificationNames')[5] == '20,000kVA') {
+                            query += ' AND (Name6__c = \'20,000kVA\' OR (Name3__c = \'20,000kVA\' OR Name2__c = \'OLCT付\'))';
+                        }
+                        if (searchConditions.get('specificationNames')[5] == '30,000kVA') {
+                            query += ' AND (Name6__c = \'30,000kVA\' OR (Name3__c = \'30,000kVA\' OR Name2__c = \'OLCT付\'))';
+                        }
+                    }
+                    //プルダウン1の値がモールドの場合、名称1にモールドを含む価格表を取得する
+                    if(searchConditions.get('specificationNames')[0] == 'モールド'){
+                        query += ' AND Name1__c = \'モールド\'';
+                        if (searchConditions.get('specificationNames')[5] == '750kVA') {
+                            query += ' AND (Name6__c = \'750kVA\' OR (Name5__c = \'750kVA\' OR Name2__c = \'OLCT付\'))';
+                        }
+                        if (searchConditions.get('specificationNames')[5] == '1,000kVA') {
+                            query += ' AND (Name6__c = \'1,000kVA\' OR (Name5__c = \'1,000kVA\' OR Name2__c = \'OLCT付\'))';
+                        }
+                        if (searchConditions.get('specificationNames')[5] == '1,200kVA') {
+                            query += ' AND (Name6__c = \'1,200kVA\' OR (Name5__c = \'1,200kVA\' OR Name2__c = \'OLCT付\'))';
+                        }
+                        if (searchConditions.get('specificationNames')[5] == '1,250kVA') {
+                            query += ' AND (Name6__c = \'1,250kVA\' OR (Name5__c = \'1,250kVA\' OR Name2__c = \'OLCT付\'))';
+                        }
+                        if (searchConditions.get('specificationNames')[5] == '1,500kVA') {
+                            query += ' AND (Name6__c = \'1,500kVA\' OR (Name5__c = \'1,500kVA\' OR Name2__c = \'OLCT付\'))';
+                        }
+                        if (searchConditions.get('specificationNames')[5] == '2,000kVA') {
+                            query += ' AND (Name6__c = \'2,000kVA\' OR (Name5__c = \'2,000kVA\' OR Name2__c = \'OLCT付\'))';
+                        }
+                        if (searchConditions.get('specificationNames')[5] == '2,500kVA') {
+                            query += ' AND (Name6__c = \'2,500kVA\' OR (Name5__c = \'2,500kVA\' OR Name2__c = \'OLCT付\'))';
+                        }
+                        if (searchConditions.get('specificationNames')[5] == '3,000kVA') {
+                            query += ' AND (Name6__c = \'3,000kVA\' OR (Name5__c = \'3,000kVA\' OR Name2__c = \'OLCT付\'))';
+                        }
+                        if (searchConditions.get('specificationNames')[5] == '4,000kVA') {
+                            query += ' AND (Name6__c = \'4,000kVA\' OR (Name5__c = \'4,000kVA\' OR Name2__c = \'OLCT付\'))';
+                        }
+                        if (searchConditions.get('specificationNames')[5] == '5,000kVA') {
+                            query += ' AND (Name6__c = \'5,000kVA\' OR (Name5__c = \'5,000kVA\' OR Name2__c = \'OLCT付\'))';
+                        }
+                        //名称3が11,000Vの場合
+                        if (searchConditions.get('specificationNames')[3] == '11,000V') {
+                            query += ' AND (Name4__c = \'11,000V\' OR (Name3__c = \'11,000V\' OR Name2__c = \'OLCT付\'))';
+                        }
+                        //名称3が22,000Vの場合
+                        if (searchConditions.get('specificationNames')[3] == '22,000V') {
+                            query += ' AND (Name4__c = \'22,000V\' OR (Name3__c = \'22,000V\'OR Name2__c = \'OLCT付\'))';
+                        }
+                        //名称3が33,000Vの場合
+                        if (searchConditions.get('specificationNames')[3] == '33,000V') {
+                            query += ' AND (Name4__c = \'33,000V\' OR (Name3__c = \'33,000V\'OR Name2__c = \'OLCT付\'))';
+                        }
+                    }
+                    
+                    //プルダウン1の値が油 スポットネットワークの場合、名称1に油 スポットネットワークを含む価格表を取得する
+                    if(searchConditions.get('specificationNames')[0] == '油 スポットネットワーク'){
+                        query += ' AND ((RecordType.DeveloperName = \'Detail\' AND Name1__c = \'油\') OR Name1__c = \'油 スポットネットワーク\')';
+                        if (searchConditions.get('specificationNames')[5] == '1,000kVA') {
+                            query += ' AND (Name6__c = \'1,000kVA\' OR (Name3__c = \'1,000kVA\' OR Name2__c = \'OLCT付\'))';
+                        }
+                        if (searchConditions.get('specificationNames')[5] == '1,200kVA') {
+                            query += ' AND (Name6__c = \'1,200kVA\' OR (Name3__c = \'1,200kVA\' OR Name2__c = \'OLCT付\'))';
+                        }
+                        if (searchConditions.get('specificationNames')[5] == '1,250kVA') {
+                            query += ' AND (Name6__c = \'1,250kVA\' OR (Name3__c = \'1,250kVA\' OR Name2__c = \'OLCT付\'))';
+                        }
+                        if (searchConditions.get('specificationNames')[5] == '2,000kVA') {
+                            query += ' AND (Name6__c = \'2,000kVA\' OR (Name3__c = \'2,000kVA\' OR Name2__c = \'OLCT付\'))';
+                        }
+                        if (searchConditions.get('specificationNames')[5] == '3,000kVA') {
+                            query += ' AND (Name6__c = \'3,000kVA\' OR (Name3__c = \'3,000kVA\' OR Name2__c = \'OLCT付\'))';
+                        }
+                        if (searchConditions.get('specificationNames')[5] == '4,000kVA') {
+                            query += ' AND (Name6__c = \'4,000kVA\' OR (Name3__c = \'4,000kVA\' OR Name2__c = \'OLCT付\'))';
+                        }
+                        if (searchConditions.get('specificationNames')[5] == '5,000kVA') {
+                            query += ' AND (Name6__c = \'5,000kVA\' OR (Name3__c = \'5,000kVA\' OR Name2__c = \'OLCT付\'))';
+                        }
+                        if (searchConditions.get('specificationNames')[5] == '7,500kVA') {
+                            query += ' AND (Name6__c = \'7,500kVA\' OR (Name3__c = \'7,500kVA\' OR Name2__c = \'OLCT付\'))';
+                        }
+                        if (searchConditions.get('specificationNames')[5] == '10,000kVA') {
+                            query += ' AND (Name6__c = \'10,000kVA\' OR (Name3__c = \'10,000kVA\' OR Name2__c = \'OLCT付\'))';
+                        }
+                        if (searchConditions.get('specificationNames')[5] == '12,500kVA') {
+                            query += ' AND (Name6__c = \'12,500kVA\' OR (Name3__c = \'12,500kVA\' OR Name2__c = \'OLCT付\'))';
+                        }
+                        if (searchConditions.get('specificationNames')[5] == '15,000kVA') {
+                            query += ' AND (Name6__c = \'15,000kVA\' OR (Name3__c = \'15,000kVA\' OR Name2__c = \'OLCT付\'))';
+                        }
+                        if (searchConditions.get('specificationNames')[5] == '20,000kVA') {
+                            query += ' AND (Name6__c = \'20,000kVA\' OR (Name3__c = \'20,000kVA\' OR Name2__c = \'OLCT付\'))';
+                        }
+                        if (searchConditions.get('specificationNames')[5] == '30,000kVA') {
+                            query += ' AND (Name6__c = \'30,000kVA\' OR (Name3__c = \'30,000kVA\' OR Name2__c = \'OLCT付\'))';
+                        }
+                    }
+
+                    //プルダウン1の値がガス スポットネットワークの場合、名称1にガス スポットネットワークを含む価格表を取得する
+                    if(searchConditions.get('specificationNames')[0] == 'ガス スポットネットワーク'){
+                        query += ' AND ((RecordType.DeveloperName = \'Detail\' AND Name1__c = \'ガス\') OR Name1__c = \'ガス スポットネットワーク\')';
+                        if (searchConditions.get('specificationNames')[5] == '750kVA') {
+                            query += ' AND (Name6__c = \'750kVA\' OR (Name3__c = \'750kVA\' OR Name2__c = \'OLCT付\'))';
+                        }
+                        if (searchConditions.get('specificationNames')[5] == '1,000kVA') {
+                            query += ' AND (Name6__c = \'1,000kVA\' OR (Name3__c = \'1,000kVA\' OR Name2__c = \'OLCT付\'))';
+                        }
+                        if (searchConditions.get('specificationNames')[5] == '1,200kVA') {
+                            query += ' AND (Name6__c = \'1,200kVA\' OR (Name3__c = \'1,200kVA\' OR Name2__c = \'OLCT付\'))';
+                        }
+                        if (searchConditions.get('specificationNames')[5] == '1,250kVA') {
+                            query += ' AND (Name6__c = \'1,250kVA\' OR (Name3__c = \'1,250kVA\' OR Name2__c = \'OLCT付\'))';
+                        }
+                        if (searchConditions.get('specificationNames')[5] == '2,000kVA') {
+                            query += ' AND (Name6__c = \'2,000kVA\' OR (Name3__c = \'2,000kVA\' OR Name2__c = \'OLCT付\'))';
+                        }
+                        if (searchConditions.get('specificationNames')[5] == '3,000kVA') {
+                            query += ' AND (Name6__c = \'3,000kVA\' OR (Name3__c = \'3,000kVA\' OR Name2__c = \'OLCT付\'))';
+                        }
+                        if (searchConditions.get('specificationNames')[5] == '4,000kVA') {
+                            query += ' AND (Name6__c = \'4,000kVA\' OR (Name3__c = \'4,000kVA\' OR Name2__c = \'OLCT付\'))';
+                        }
+                        if (searchConditions.get('specificationNames')[5] == '5,000kVA') {
+                            query += ' AND (Name6__c = \'5,000kVA\' OR (Name3__c = \'5,000kVA\' OR Name2__c = \'OLCT付\'))';
+                        }
+                        if (searchConditions.get('specificationNames')[5] == '7,500kVA') {
+                            query += ' AND (Name6__c = \'7,500kVA\' OR (Name3__c = \'7,500kVA\' OR Name2__c = \'OLCT付\'))';
+                        }
+                        if (searchConditions.get('specificationNames')[5] == '10,000kVA') {
+                            query += ' AND (Name6__c = \'10,000kVA\' OR (Name3__c = \'10,000kVA\' OR Name2__c = \'OLCT付\'))';
+                        }
+                        if (searchConditions.get('specificationNames')[5] == '12,500kVA') {
+                            query += ' AND (Name6__c = \'12,500kVA\' OR (Name3__c = \'12,500kVA\' OR Name2__c = \'OLCT付\'))';
+                        }
+                        if (searchConditions.get('specificationNames')[5] == '15,000kVA') {
+                            query += ' AND (Name6__c = \'15,000kVA\' OR (Name3__c = \'15,000kVA\' OR Name2__c = \'OLCT付\'))';
+                        }
+                        if (searchConditions.get('specificationNames')[5] == '20,000kVA') {
+                            query += ' AND (Name6__c = \'20,000kVA\' OR (Name3__c = \'20,000kVA\' OR Name2__c = \'OLCT付\'))';
+                        }
+                        if (searchConditions.get('specificationNames')[5] == '30,000kVA') {
+                            query += ' AND (Name6__c = \'30,000kVA\' OR (Name3__c = \'30,000kVA\' OR Name2__c = \'OLCT付\'))';
+                        }
+                    }
+
+                    //プルダウン1の値がモールド スポットネットワークの場合、名称1にモールド スポットネットワークを含む価格表を取得する
+                    if(searchConditions.get('specificationNames')[0] == 'モールド スポットネットワーク'){
+                        query += ' AND ((RecordType.DeveloperName = \'Detail\' AND Name1__c = \'モールド\') OR Name1__c = \'モールド スポットネットワーク\')';
+                        if (searchConditions.get('specificationNames')[5] == '750kVA') {
+                            query += ' AND (Name6__c = \'750kVA\' OR (Name5__c = \'750kVA\' OR Name2__c = \'OLCT付\'))';
+                        }
+                        if (searchConditions.get('specificationNames')[5] == '1,000kVA') {
+                            query += ' AND (Name6__c = \'1,000kVA\' OR (Name5__c = \'1,000kVA\' OR Name2__c = \'OLCT付\'))';
+                        }
+                        if (searchConditions.get('specificationNames')[5] == '1,200kVA') {
+                            query += ' AND (Name6__c = \'1,200kVA\' OR (Name5__c = \'1,200kVA\' OR Name2__c = \'OLCT付\'))';
+                        }
+                        if (searchConditions.get('specificationNames')[5] == '1,250kVA') {
+                            query += ' AND (Name6__c = \'1,250kVA\' OR (Name5__c = \'1,250kVA\' OR Name2__c = \'OLCT付\'))';
+                        }
+                        if (searchConditions.get('specificationNames')[5] == '1,500kVA') {
+                            query += ' AND (Name6__c = \'1,500kVA\' OR (Name5__c = \'1,500kVA\' OR Name2__c = \'OLCT付\'))';
+                        }
+                        if (searchConditions.get('specificationNames')[5] == '2,000kVA') {
+                            query += ' AND (Name6__c = \'2,000kVA\' OR (Name5__c = \'2,000kVA\' OR Name2__c = \'OLCT付\'))';
+                        }
+                        if (searchConditions.get('specificationNames')[5] == '2,500kVA') {
+                            query += ' AND (Name6__c = \'2,500kVA\' OR (Name5__c = \'2,500kVA\' OR Name2__c = \'OLCT付\'))';
+                        }
+                        if (searchConditions.get('specificationNames')[5] == '3,000kVA') {
+                            query += ' AND (Name6__c = \'3,000kVA\' OR (Name5__c = \'3,000kVA\' OR Name2__c = \'OLCT付\'))';
+                        }
+                        if (searchConditions.get('specificationNames')[5] == '4,000kVA') {
+                            query += ' AND (Name6__c = \'4,000kVA\' OR (Name5__c = \'4,000kVA\' OR Name2__c = \'OLCT付\'))';
+                        }
+                        if (searchConditions.get('specificationNames')[5] == '5,000kVA') {
+                            query += ' AND (Name6__c = \'5,000kVA\' OR (Name5__c = \'5,000kVA\' OR Name2__c = \'OLCT付\'))';
+                        }
+                        //名称3が11,000Vの場合
+                        if (searchConditions.get('specificationNames')[3] == '11,000V') {
+                            query += ' AND (Name4__c = \'11,000V\' OR (Name3__c = \'11,000V\'OR Name2__c = \'OLCT付\'))';
+                        }
+                        //名称3が22,000Vの場合
+                        if (searchConditions.get('specificationNames')[3] == '22,000V') {
+                            query += ' AND (Name4__c = \'22,000V\' OR (Name3__c = \'22,000V\'OR Name2__c = \'OLCT付\'))';
+                        }
+                        //名称3が33,000Vの場合
+                        if (searchConditions.get('specificationNames')[3] == '33,000V') {
+                            query += ' AND (Name4__c = \'33,000V\' OR (Name3__c = \'33,000V\'OR Name2__c = \'OLCT付\'))';
+                        }
+                    }
+                    //プルダウン1の値が収納盤の場合、名称1に収納盤を含む価格表を取得する
+                    if(searchConditions.get('specificationNames')[0] == '収納盤'){
+                        query += ' AND (Name5__c = \'収納盤\' OR Name2__c = \'OLCT付\')';
+                    }
+                    //プルダウン1の値が油 変圧器の場合、名称1に油 変圧器を含む価格表を取得する
+                    if(searchConditions.get('specificationNames')[0] == '油変圧器'){
+                        query += ' AND Name1__c = \'油\'';
+                        if (searchConditions.get('specificationNames')[5] == '1,000kVA') {
+                            query += ' AND (Name3__c = \'1,000kVA\' OR Name2__c = \'OLCT付\')';
+                        }
+                        if (searchConditions.get('specificationNames')[5] == '1,200kVA') {
+                            query += ' AND (Name3__c = \'1,200kVA\' OR Name2__c = \'OLCT付\')';
+                        }
+                        if (searchConditions.get('specificationNames')[5] == '1,250kVA') {
+                            query += ' AND (Name3__c = \'1,250kVA\' OR Name2__c = \'OLCT付\')';
+                        }
+                        if (searchConditions.get('specificationNames')[5] == '2,000kVA') {
+                            query += ' AND (Name3__c = \'2,000kVA\' OR Name2__c = \'OLCT付\')';
+                        }
+                        if (searchConditions.get('specificationNames')[5] == '3,000kVA') {
+                            query += ' AND (Name3__c = \'3,000kVA\' OR Name2__c = \'OLCT付\')';
+                        }
+                        if (searchConditions.get('specificationNames')[5] == '4,000kVA') {
+                            query += ' AND (Name3__c = \'4,000kVA\' OR Name2__c = \'OLCT付\')';
+                        }
+                        if (searchConditions.get('specificationNames')[5] == '5,000kVA') {
+                            query += ' AND (Name3__c = \'5,000kVA\' OR Name2__c = \'OLCT付\')';
+                        }
+                        if (searchConditions.get('specificationNames')[5] == '7,500kVA') {
+                            query += ' AND (Name3__c = \'7,500kVA\' OR Name2__c = \'OLCT付\')';
+                        }
+                        if (searchConditions.get('specificationNames')[5] == '10,000kVA') {
+                            query += ' AND (Name3__c = \'10,000kVA\' OR Name2__c = \'OLCT付\')';
+                        }
+                        if (searchConditions.get('specificationNames')[5] == '12,500kVA') {
+                            query += ' AND (Name3__c = \'12,500kVA\' OR Name2__c = \'OLCT付\')';
+                        }
+                        if (searchConditions.get('specificationNames')[5] == '15,000kVA') {
+                            query += ' AND (Name3__c = \'15,000kVA\' OR Name2__c = \'OLCT付\')';
+                        }
+                        if (searchConditions.get('specificationNames')[5] == '20,000kVA') {
+                            query += ' AND (Name3__c = \'20,000kVA\' OR Name2__c = \'OLCT付\')';
+                        }
+                        if (searchConditions.get('specificationNames')[5] == '30,000kVA') {
+                            query += ' AND (Name3__c = \'30,000kVA\' OR Name2__c = \'OLCT付\')';
+                        }
+                    }
+                    //プルダウン1の値がガス 変圧器の場合、名称1にガス 変圧器を含む価格表を取得する
+                    if(searchConditions.get('specificationNames')[0] == 'ガス変圧器'){
+                        query += ' AND Name1__c = \'ガス\'';
+                        if (searchConditions.get('specificationNames')[5] == '750kVA') {
+                            query += ' AND (Name3__c = \'750kVA\' OR Name2__c = \'OLCT付\')';
+                        }
+                        if (searchConditions.get('specificationNames')[5] == '1,000kVA') {
+                            query += ' AND (Name3__c = \'1,000kVA\' OR Name2__c = \'OLCT付\')';
+                        }
+                        if (searchConditions.get('specificationNames')[5] == '1,200kVA') {
+                            query += ' AND (Name3__c = \'1,200kVA\' OR Name2__c = \'OLCT付\')';
+                        }
+                        if (searchConditions.get('specificationNames')[5] == '1,250kVA') {
+                            query += ' AND (Name3__c = \'1,250kVA\' OR Name2__c = \'OLCT付\')';
+                        }
+                        if (searchConditions.get('specificationNames')[5] == '2,000kVA') {
+                            query += ' AND (Name3__c = \'2,000kVA\' OR Name2__c = \'OLCT付\')';
+                        }
+                        if (searchConditions.get('specificationNames')[5] == '3,000kVA') {
+                            query += ' AND (Name3__c = \'3,000kVA\' OR Name2__c = \'OLCT付\')';
+                        }
+                        if (searchConditions.get('specificationNames')[5] == '4,000kVA') {
+                            query += ' AND (Name3__c = \'4,000kVA\' OR Name2__c = \'OLCT付\')';
+                        }
+                        if (searchConditions.get('specificationNames')[5] == '5,000kVA') {
+                            query += ' AND (Name3__c = \'5,000kVA\' OR Name2__c = \'OLCT付\')';
+                        }
+                        if (searchConditions.get('specificationNames')[5] == '7,500kVA') {
+                            query += ' AND (Name3__c = \'7,500kVA\' OR Name2__c = \'OLCT付\')';
+                        }
+                        if (searchConditions.get('specificationNames')[5] == '10,000kVA') {
+                            query += ' AND (Name3__c = \'10,000kVA\' OR Name2__c = \'OLCT付\')';
+                        }
+                        if (searchConditions.get('specificationNames')[5] == '12,500kVA') {
+                            query += ' AND (Name3__c = \'12,500kVA\' OR Name2__c = \'OLCT付\')';
+                        }
+                        if (searchConditions.get('specificationNames')[5] == '15,000kVA') {
+                            query += ' AND (Name3__c = \'15,000kVA\' OR Name2__c = \'OLCT付\')';
+                        }
+                        if (searchConditions.get('specificationNames')[5] == '20,000kVA') {
+                            query += ' AND (Name3__c = \'20,000kVA\' OR Name2__c = \'OLCT付\')';
+                        }
+                        if (searchConditions.get('specificationNames')[5] == '30,000kVA') {
+                            query += ' AND (Name3__c = \'30,000kVA\' OR Name2__c = \'OLCT付\')';
+                        }
+                    }
+                    //プルダウン1の値がモールド 変圧器の場合、名称1にモールド 変圧器を含む価格表を取得する
+                    if(searchConditions.get('specificationNames')[0] == 'モールド 変圧器'){
+                        query += ' AND Name1__c = \'モールド\'';
+                        //名称3が11,000Vの場合
+                        if (searchConditions.get('specificationNames')[3] == '11,000V') {
+                            query += ' AND (Name3__c = \'11,000V\'OR Name2__c = \'OLCT付\')';
+                            if (searchConditions.get('specificationNames')[5] == '750kVA') {
+                                query += ' AND (Name5__c = \'750kVA\' OR Name2__c = \'OLCT付\')';
+                            }
+                            if (searchConditions.get('specificationNames')[5] == '1,000kVA') {
+                                query += ' AND (Name5__c = \'1,000kVA\' OR Name2__c = \'OLCT付\')';
+                            }
+                            if (searchConditions.get('specificationNames')[5] == '1,200kVA') {
+                                query += ' AND (Name5__c = \'1,200kVA\' OR Name2__c = \'OLCT付\')';
+                            }
+                            if (searchConditions.get('specificationNames')[5] == '1,250kVA') {
+                                query += ' AND (Name5__c = \'1,250kVA\' OR Name2__c = \'OLCT付\')';
+                            }
+                            if (searchConditions.get('specificationNames')[5] == '1,500kVA') {
+                                query += ' AND (Name5__c = \'1,500kVA\' OR Name2__c = \'OLCT付\')';
+                            }
+                            if (searchConditions.get('specificationNames')[5] == '2,000kVA') {
+                                query += ' AND (Name5__c = \'2,000kVA\' OR Name2__c = \'OLCT付\')';
+                            }
+                            if (searchConditions.get('specificationNames')[5] == '2,500kVA') {
+                                query += ' AND (Name5__c = \'2,500kVA\' OR Name2__c = \'OLCT付\')';
+                            }
+                            if (searchConditions.get('specificationNames')[5] == '3,000kVA') {
+                                query += ' AND (Name5__c = \'3,000kVA\' OR Name2__c = \'OLCT付\')';
+                            }
+                            if (searchConditions.get('specificationNames')[5] == '4,000kVA') {
+                                query += ' AND (Name5__c = \'4,000kVA\' OR Name2__c = \'OLCT付\')';
+                            }
+                            if (searchConditions.get('specificationNames')[5] == '5,000kVA') {
+                                query += ' AND (Name5__c = \'5,000kVA\' OR Name2__c = \'OLCT付\')';
+                            }
+                        }
+                        //名称3が22,000Vの場合
+                        if (searchConditions.get('specificationNames')[3] == '22,000V') {
+                            query += ' AND (Name3__c = \'22,000V\'OR Name2__c = \'OLCT付\')';
+                            if (searchConditions.get('specificationNames')[5] == '750kVA') {
+                                query += ' AND (Name5__c = \'750kVA\' OR Name2__c = \'OLCT付\')';
+                            }
+                            if (searchConditions.get('specificationNames')[5] == '1,000kVA') {
+                                query += ' AND (Name5__c = \'1,000kVA\' OR Name2__c = \'OLCT付\')';
+                            }
+                            if (searchConditions.get('specificationNames')[5] == '1,200kVA') {
+                                query += ' AND (Name5__c = \'1,200kVA\' OR Name2__c = \'OLCT付\')';
+                            }
+                            if (searchConditions.get('specificationNames')[5] == '1,250kVA') {
+                                query += ' AND (Name5__c = \'1,250kVA\' OR Name2__c = \'OLCT付\')';
+                            }
+                            if (searchConditions.get('specificationNames')[5] == '1,500kVA') {
+                                query += ' AND (Name5__c = \'1,500kVA\' OR Name2__c = \'OLCT付\')';
+                            }
+                            if (searchConditions.get('specificationNames')[5] == '2,000kVA') {
+                                query += ' AND (Name5__c = \'2,000kVA\' OR Name2__c = \'OLCT付\')';
+                            }
+                            if (searchConditions.get('specificationNames')[5] == '2,500kVA') {
+                                query += ' AND (Name5__c = \'2,500kVA\' OR Name2__c = \'OLCT付\')';
+                            }
+                            if (searchConditions.get('specificationNames')[5] == '3,000kVA') {
+                                query += ' AND (Name5__c = \'3,000kVA\' OR Name2__c = \'OLCT付\')';
+                            }
+                            if (searchConditions.get('specificationNames')[5] == '4,000kVA') {
+                                query += ' AND (Name5__c = \'4,000kVA\' OR Name2__c = \'OLCT付\')';
+                            }
+                            if (searchConditions.get('specificationNames')[5] == '5,000kVA') {
+                                query += ' AND (Name5__c = \'5,000kVA\' OR Name2__c = \'OLCT付\')';
+                            }
+                        }
+                        //名称3が33,000Vの場合
+                        if (searchConditions.get('specificationNames')[3] == '33,000V') {
+                            query += ' AND (Name3__c = \'22,000V\'OR Name2__c = \'OLCT付\')';
+                            if (searchConditions.get('specificationNames')[5] == '750kVA') {
+                                query += ' AND (Name5__c = \'750kVA\' OR Name2__c = \'OLCT付\')';
+                            }
+                            if (searchConditions.get('specificationNames')[5] == '1,000kVA') {
+                                query += ' AND (Name5__c = \'1,000kVA\' OR Name2__c = \'OLCT付\')';
+                            }
+                            if (searchConditions.get('specificationNames')[5] == '1,200kVA') {
+                                query += ' AND (Name5__c = \'1,200kVA\' OR Name2__c = \'OLCT付\')';
+                            }
+                            if (searchConditions.get('specificationNames')[5] == '1,250kVA') {
+                                query += ' AND (Name5__c = \'1,250kVA\' OR Name2__c = \'OLCT付\')';
+                            }
+                            if (searchConditions.get('specificationNames')[5] == '1,500kVA') {
+                                query += ' AND (Name5__c = \'1,500kVA\' OR Name2__c = \'OLCT付\')';
+                            }
+                            if (searchConditions.get('specificationNames')[5] == '2,000kVA') {
+                                query += ' AND (Name5__c = \'2,000kVA\' OR Name2__c = \'OLCT付\')';
+                            }
+                            if (searchConditions.get('specificationNames')[5] == '2,500kVA') {
+                                query += ' AND (Name5__c = \'2,500kVA\' OR Name2__c = \'OLCT付\')';
+                            }
+                            if (searchConditions.get('specificationNames')[5] == '3,000kVA') {
+                                query += ' AND (Name5__c = \'3,000kVA\' OR Name2__c = \'OLCT付\')';
+                            }
+                            if (searchConditions.get('specificationNames')[5] == '4,000kVA') {
+                                query += ' AND (Name5__c = \'4,000kVA\' OR Name2__c = \'OLCT付\')';
+                            }
+                            if (searchConditions.get('specificationNames')[5] == '5,000kVA') {
+                                query += ' AND (Name5__c = \'5,000kVA\' OR Name2__c = \'OLCT付\')';
+                            }
+                        }
+                    }
+                }
                 query += '       ) OR (RecordType.DeveloperName = \'Chassis\' ';
                 //見積項目.大分類名が「変圧器」かつ見積項目.小分類名が「高低圧変圧器」or「機器事業部 変圧器」の場合、
                 //価格表.小分類名=「変圧器収納盤」を条件追加する。
@@ -581,10 +1075,13 @@ public with sharing class DetailController {
                     query += ' ';
                 }
                 //筐体の場合、小分類条件追加
-                if ((majorClassification=='UPS')
-                    || (majorClassification=='発電機' && (minorClassification=='エンジン(DG)' || minorClassification=='エンジン(GTG)'))
+                if (
+                    //　20230829 不要になる　Start
+                    // (majorClassification=='UPS')|| 
+                    //　20230829 不要になる　Start
+                    (majorClassification=='発電機' && (minorClassification=='エンジン(DG)' || minorClassification=='エンジン(GTG)'))
                     || (majorClassification=='コントロールセンタ(C/C)' && (minorClassification == '200V' || minorClassification == '400V') )
-                    || (majorClassification=='CCTVカメラ設備')
+                    || (majorClassification=='CCTVカメラ設備[国交省本省宛て提出機器単体費等]')
                     ) {
                     //条件指定の場合、機器の小分類条件を追加
                     if(String.isNotBlank(minorClassification)) query += '  AND  MinorClassificationName__c =:minorClassification';
@@ -685,11 +1182,18 @@ public with sharing class DetailController {
             objDT.totalRecords = totalRecords;
             objDT.records = pageRecords;
             objDT.newRecords = newRecordsList;
-            objDT.intensifyRecords = (intensifys!=null && intensifys.size() > 0?
-                                        intensifys.values()
-                                        :null);
+
+            List<PricingTableInputOnly> intensifyTmp = null;
+            if (intensifys!=null && intensifys.size() > 0){
+                intensifyTmp = new List<PricingTableInputOnly>();
+                for(String key : intensifys.keySet()) {
+                    intensifyTmp.addAll(intensifys.get(key));
+                }
+            }
+            objDT.intensifyRecords = intensifyTmp;
             return JSON.serialize(objDT);
     }
+
 
     @AuraEnabled
     /**
@@ -716,7 +1220,8 @@ public with sharing class DetailController {
                                                                 WC__c,
                                                                 Price__c,
                                                                 ProvisionPrice__c,
-                                                                Weight__c
+                                                                Weight__c,
+                                                                DetailRecordDisplayNumberText__c
                                                               FROM Detail__c 
                                                               WHERE Device__c =:deviceId]);
 
@@ -738,7 +1243,73 @@ public with sharing class DetailController {
             for (Detail__c item : details) {
                 if(item.PricingTableUniqueKey__c!=null) {
                     Id priceId = priceIds.get(item.PricingTableUniqueKey__c);
-                    if (priceId!=null) detailsMap.put(priceId ,item);
+                    if (priceId!=null) {
+                        detailsMap.put(priceId ,item);
+                    }
+                }
+            }
+            return detailsMap;
+        } catch(Exception ex) {
+            System.debug('An Exception: ' + ex);
+            return null;
+        }
+    }
+
+
+    @AuraEnabled
+    /**
+     * 機器に対して　既に登録済みの内訳情報を取得
+     * 
+     *  @param deviceId 機器Id
+     */
+    Public static Map<Id, List<Detail__c>> getDetailRecords(Id deviceId) {
+        try {
+            //機器Idより、既に登録済みの内訳情報を取得
+            Map<Id, List<Detail__c>> detailsMap = new Map<Id, List<Detail__c>>();
+            Map<String, Id> priceIds = new Map<String, Id>();
+            List<Detail__c> details = new List<Detail__c>([SELECT Id, 
+                                                                DetailCategory__c,
+                                                                Quantity__c, 
+                                                                //PricingTable__c,
+                                                                PricingTableUniqueKey__c,
+                                                                CreditWC__c,
+                                                                WcCoefficient__c,
+                                                                CreditWeight__c,
+                                                                UnitPrice__c,
+                                                                UnitPriceCoefficient__c,
+                                                                ProvisionUnitPrice__c,
+                                                                WC__c,
+                                                                Price__c,
+                                                                ProvisionPrice__c,
+                                                                Weight__c,
+                                                                DetailRecordDisplayNumberText__c
+                                                              FROM Detail__c 
+                                                              WHERE Device__c =:deviceId]);
+
+            Set<String> uniqueKeys = new Set<String>();
+            for (Detail__c item : details) {
+                if(item.PricingTableUniqueKey__c!=null) uniqueKeys.add(item.PricingTableUniqueKey__c);
+            }
+            //ユニークキーより　価格表を検索
+            if (uniqueKeys.size() > 0) {
+                List<PricingTable__c> priceList = [SELECT Id, UniqueKey__c
+                                                    FROM  PricingTable__c
+                                                    WHERE UniqueKey__c=:uniqueKeys] ;
+                for(PricingTable__c temp : priceList){
+                    if(temp.UniqueKey__c!=null) priceIds.put(temp.UniqueKey__c, temp.Id);
+                }
+            } 
+
+            //一つの価格表情報が内訳には1件しかない。。
+            for (Detail__c item : details) {
+                if(item.PricingTableUniqueKey__c!=null) {
+                    Id priceId = priceIds.get(item.PricingTableUniqueKey__c);
+                    if (priceId!=null) {
+                        List<Detail__c> detailList = detailsMap.get(priceId);
+                        if (detailList == null) detailList = new List<Detail__c>();
+                        detailList.add(item);
+                        detailsMap.put(priceId ,detailList);
+                    }
                 }
             }
             return detailsMap;
@@ -756,7 +1327,7 @@ public with sharing class DetailController {
      */
     private static Map<String, PricingTableNewRowObj> setNewRecords(
                                     String deviceId,
-                                    Map<String, PricingTableInputOnly> intensifys){
+                                    Map<String, List<PricingTableInputOnly>> intensifys){
         Map<String, PricingTableNewRowObj> rtnMap = new Map<String, PricingTableNewRowObj>();
         List<Detail__c> details = new List<Detail__c>([SELECT Id, Name,Name1__c,Name2__c,Name3__c,Name4__c,Name5__c,
                     Quantity__c, 
@@ -772,7 +1343,9 @@ public with sharing class DetailController {
                     WC__c,
                     Price__c,
                     ProvisionPrice__c,
-                    Weight__c
+                    Weight__c,
+                    MasterCode__c,
+                    DetailRecordDisplayNumberText__c
                 FROM Detail__c 
                 WHERE Device__c =:deviceId
                  AND PricingTableUniqueKey__c = null
@@ -817,7 +1390,7 @@ public with sharing class DetailController {
                 inputObj.ProvisionPrice =  detail.ProvisionPrice__c;
                 inputObj.Weight = detail.Weight__c;
                 //入力情報に保持
-                intensifys.put(id, inputObj);
+                intensifys.put(id, new List<PricingTableInputOnly>{inputObj});
                 rowIndex = rowIndex + 1;
             }
         }
@@ -830,29 +1403,36 @@ public with sharing class DetailController {
      * 
      *  @param detailMap 登録された内訳
      */
-    private static Map<String, PricingTableInputOnly> setIntensifyRecord(Map<Id, Detail__c> detailMap){
-        Map<String, PricingTableInputOnly> rtnList = null;//戻り値
+    private static Map<String, List<PricingTableInputOnly>> setIntensifyRecord(Map<Id, List<Detail__c>> detailMap){
+        Map<String, List<PricingTableInputOnly>> rtnList = null;//戻り値
         //検索結果がある場合、編集を行う。
         if (detailMap!=null && detailMap.size() > 0) {
-            rtnList = new Map<String, PricingTableInputOnly>();
+            rtnList = new Map<String, List<PricingTableInputOnly>>();
             for(String priceId : detailMap.keyset()){
-                Detail__c detail = detailMap.get(priceId);
-                if (detail.DetailCategory__c=='仕様') continue;
-                PricingTableInputOnly item = new PricingTableInputOnly();
-                item.Id = priceId;//価格表Id
-                item.Quantity = detail.Quantity__c;//数量
-                item.CreditWC = detail.CreditWC__c;//単位WC
-                item.WCCoefficient = detail.WcCoefficient__c;//WC係数
-                item.UnitPriceCoefficient = detail.UnitPriceCoefficient__c;//単価係数
-                item.ProvisionUnitPrice = detail.ProvisionUnitPrice__c;//提供単価
-                item.UnitWeight = detail.CreditWeight__c;//重量
-                item.WC = detail.WC__c;//WC
-                item.Price = detail.Price__c;//価格
-                item.ProvisionPrice = detail.ProvisionPrice__c;//提供価格
-                item.Weight = detail.Weight__c;//重量
-                //単価入力可能の場合、                
-                item.UnitPrice = detail.UnitPrice__c;//単価
-                rtnList.put(priceId, item);
+                List<Detail__c> detailList = detailMap.get(priceId);
+                List<PricingTableInputOnly> priceList = new List<PricingTableInputOnly>();
+                
+                Integer index = 1;
+                for (Detail__c detail : detailList) {
+                    if (detail.DetailCategory__c=='仕様') continue;
+                    PricingTableInputOnly item = new PricingTableInputOnly();
+                    item.Id = priceId + String.valueOf(index).leftPad(4, '0');//価格表Id
+                    item.Quantity = detail.Quantity__c;//数量
+                    item.CreditWC = detail.CreditWC__c;//単位WC
+                    item.WCCoefficient = detail.WcCoefficient__c;//WC係数
+                    item.UnitPriceCoefficient = detail.UnitPriceCoefficient__c;//単価係数
+                    item.ProvisionUnitPrice = detail.ProvisionUnitPrice__c;//提供単価
+                    item.UnitWeight = detail.CreditWeight__c;//重量
+                    item.WC = detail.WC__c;//WC
+                    item.Price = detail.Price__c;//価格
+                    item.ProvisionPrice = detail.ProvisionPrice__c;//提供価格
+                    item.Weight = detail.Weight__c;//重量
+                    //単価入力可能の場合、                
+                    item.UnitPrice = detail.UnitPrice__c;//単価
+                    priceList.add(item);
+                    index = index + 1;
+                }
+                if (priceList.size()>0)rtnList.put(priceId, priceList);
             }
         }
         return rtnList;
@@ -867,105 +1447,25 @@ public with sharing class DetailController {
      */
     private static List<PricingTableCusObj> setPageRecord(
                                     List<PricingTable__c> records,
-                                    Map<String, PricingTableInputOnly> detailMap,
+                                    Map<String, List<PricingTableInputOnly>> detailMap,
                                     Map<String, PricingTableNewRowObj> newRowsMap){
         List<PricingTableCusObj> rtnList = null;//戻り値
         //検索結果がある場合、編集を行う。
         if (records!=null && records.size() > 0) {
             rtnList = new List<PricingTableCusObj>();
             for (PricingTable__c record : records) {
-                PricingTableCusObj item = new PricingTableCusObj();
-                item.isCreate = false;
-                item.Id = record.Id;
-                item.Name = record.Name ;
-                item.RecordTypeDeveloperName = record.RecordType.DeveloperName;
-                item.MajorClassificationName = record.MajorClassificationName__c;
-                item.MinorClassificationName = record.MinorClassificationName__c;
-                //名称1~4の列は削除して、代わりに価格表.表示用テキストと価格表.マスタコードを表示する
-                item.Name1 = record.DisplayName__c;
-                item.Name2 = record.MasterCode__c;
-
-                item.UnitPrice = record.Price__c;
-                item.isPriceEdit = false;//ディフォルトが入力不可。
-                item.isWCRate = false;//ディフォルトが「EP=WC×◯」ではない
-
-                //マスタに単価が入っておらず名称2に「EP=WC×◯」と記載されており、
-                //更にWC算出レートが設定されているマスタが100件程度存在しています。
-                if (String.isNotBlank(record.Name2__c) && record.Name2__c.contains('EP=WC')) {
-                    item.isWCRate = true;
-                    List<String> parts = record.Name2__c.split('×');
-                    String wcRate = parts[parts.size()-1];
-                    item.WcCalculationRate = decimal.valueOf(wcRate);
-                    item.WCCoefficient = item.WcCalculationRate;
-                //名称2が「EP=標準価格×◯◯」と言う形式だった場合、単価の欄を手入力出来るようにする
-                }else if (String.isNotBlank(record.Name2__c) && record.Name2__c.contains('EP=標準価格')) {
-                    item.isPriceEdit = true;//単価が入力可能にする
-                    item.UnitPriceName= record.Id+'@UnitPric';
-                    item.UnitPriceSpan = (item.UnitPrice!=null?item.UnitPrice.format():'');
-                }
-
-                item.isPriceTableWC = false;
-                //価格表にWC__cが指定された場合
-                if (record.WC__c != null) {
-                    item.isPriceTableWC = true;
-                    //単位WC
-                    item.CreditWC = record.WC__c;
-                    item.CreditWCSpan = record.WC__c.format();
-                }
-                //コンポネットId
-                item.UnitPriceCoefficientName = record.Id+'@UnitPriceCoefficient';
-                item.QuantityName = record.Id+'@Quantity';
-                item.CreditWCName = record.Id+'@CreditWC';
-                item.WCCoefficientName = record.Id+'@WCCoefficient';
-                item.ProvisionUnitPriceName = record.Id+'@ProvisionUnitPrice';
-                item.UnitWeightName = record.Id+'@UnitWeight';
-                //単位重量、重量
-                item.UnitWeight =  record.Weight__c;
-                item.UnitWeightSpan =  (item.UnitWeight!=null?item.UnitWeight.format():'');
-
+                List<PricingTableInputOnly> detailList;
                 //内訳に登録された場合、数量、価格を設定
                 if (detailMap!=null && detailMap.size()>0
-                    && detailMap.get(record.Id)!=null) {
-                    //単価係数＝単価係数（内訳）
-                    item.UnitPriceCoefficient=detailMap.get(record.Id).UnitPriceCoefficient;
-
-                    //価格＝数量（内訳）＊単価（価格表）
-                    item.Price = detailMap.get(record.Id).Price;
-
-                    //数量＝数量（内訳）
-                    item.Quantity = detailMap.get(record.Id).Quantity;
-                    item.QuantitySpan =  (item.Quantity!=null?item.Quantity.format():'');
-                    //価格表に設定されない場合のみ　内訳に登録された内容で表示
-                    if(!item.isPriceTableWC){
-                        //単位WC
-                        item.CreditWC = detailMap.get(record.Id).CreditWC;
-                        item.CreditWCSpan = (item.CreditWC!=null?item.CreditWC.format():'');
-
+                    && detailMap.get(record.Id)!=null)detailList = detailMap.get(record.Id);
+                //
+                if (detailList!=null && detailList.size()>0) {
+                    for (PricingTableInputOnly tmp : detailList) {
+                        rtnList.add(setDataLine(record,tmp));
                     }
-                    //WC係数＝WC係数（内訳)
-                    item.WCCoefficient = (item.isWCRate?item.WcCalculationRate:detailMap.get(record.Id).WCCoefficient);
-                    //WC＝数量（内訳）＊単位WC（内訳の単位WC）
-                    item.WC = detailMap.get(record.Id).WC;
-                    //提供単価＝提供単価（内訳）
-                    item.ProvisionUnitPrice = detailMap.get(record.Id).ProvisionUnitPrice;
-                    item.ProvisionUnitPriceSpan = (item.ProvisionUnitPrice!=null?item.ProvisionUnitPrice.format():'');
-                    //提供単価＝数量（内訳）＊提供単価（内訳）
-                    item.ProvisionPrice = detailMap.get(record.Id).ProvisionPrice;
-
-                    //単価入力の場合、明細の単価により設定・表示する。
-                    if(item.isPriceEdit) {
-                        item.UnitPrice = detailMap.get(record.Id).UnitPrice;
-                        item.UnitPriceSpan = (item.UnitPrice!=null?item.UnitPrice.format():'');
-                    }
-
-                    item.Weight =  detailMap.get(record.Id).Weight;
+                }else {
+                    rtnList.add(setDataLine(record,null));
                 }
-                item.Note = record.Note__c;
-                item.SpecialFlag = false;
-                if(record.MajorClassificationName__c == '大型映像装置' || record.MajorClassificationName__c == '中央監視'){
-                    item.SpecialFlag = true;
-                }
-                rtnList.add(item);
             }
         }
 
@@ -1030,6 +1530,104 @@ public with sharing class DetailController {
         return rtnList;
     }
 
+    Private static PricingTableCusObj setDataLine(PricingTable__c record, PricingTableInputOnly inputObj){
+        PricingTableCusObj item = new PricingTableCusObj();
+        item.isCreate = false;
+        item.Id = (inputObj!=null?inputObj.Id:record.Id);
+        item.Name = record.Name ;
+        item.RecordTypeDeveloperName = record.RecordType.DeveloperName;
+        item.MajorClassificationName = record.MajorClassificationName__c;
+        item.MinorClassificationName = record.MinorClassificationName__c;
+        //名称1~4の列は削除して、代わりに価格表.表示用テキストと価格表.マスタコードを表示する
+        item.Name1 = record.DisplayName__c;
+        item.Name2 = record.DetailRecordDisplayNumberText__c;//明細レコード表示順
+
+        item.UnitPrice = record.Price__c;
+        item.isPriceEdit = false;//ディフォルトが入力不可。
+        item.isWCRate = false;//ディフォルトが「EP=WC×◯」ではない
+
+
+        //マスタに単価が入っておらず名称2に「EP=WC×◯」と記載されており、
+        //更にWC算出レートが設定されているマスタが100件程度存在しています。
+        if (String.isNotBlank(record.Name2__c) && record.Name2__c.contains('EP=WC')) {
+            item.isWCRate = true;
+            List<String> parts = record.Name2__c.split('×');
+            String wcRate = parts[parts.size()-1];
+            item.WcCalculationRate = decimal.valueOf(wcRate);
+            item.WCCoefficient = item.WcCalculationRate;
+        //名称2が「EP=標準価格×◯◯」と言う形式だった場合、単価の欄を手入力出来るようにする
+        }else if (String.isNotBlank(record.Name2__c) && record.Name2__c.contains('EP=標準価格')) {
+            item.isPriceEdit = true;//単価が入力可能にする
+            item.UnitPriceName= item.Id  +'@UnitPric';
+            item.UnitPriceSpan = (item.UnitPrice!=null?item.UnitPrice.format():'');
+        }
+
+        item.isPriceTableWC = false;
+        //価格表にWC__cが指定された場合
+        if (record.WC__c != null) {
+            item.isPriceTableWC = true;
+            //単位WC
+            item.CreditWC = record.WC__c;
+            item.CreditWCSpan = record.WC__c.format();
+        }
+        //コンポネットId
+        item.UnitPriceCoefficientName = item.Id  +'@UnitPriceCoefficient';
+        item.QuantityName = item.Id  +'@Quantity';
+        item.CreditWCName = item.Id  +'@CreditWC';
+        item.WCCoefficientName = item.Id  +'@WCCoefficient';
+        item.ProvisionUnitPriceName = item.Id  +'@ProvisionUnitPrice';
+        item.UnitWeightName = item.Id +'@UnitWeight';
+        //代理店提供単価
+        item.ProvisionUnitPrice = record.ProvisionPrice__c;
+        item.ProvisionUnitPriceSpan = (item.ProvisionUnitPrice!=null?item.ProvisionUnitPrice.format():'');
+        //単位重量、重量
+        item.UnitWeight =  record.Weight__c;
+        item.UnitWeightSpan =  (item.UnitWeight!=null?item.UnitWeight.format():'');
+
+        //内訳に登録された場合、数量、価格を設定
+        if (inputObj!=null) {
+            //単価係数＝単価係数（内訳）
+            item.UnitPriceCoefficient=inputObj.UnitPriceCoefficient;
+
+            //価格＝数量（内訳）＊単価（価格表）
+            item.Price = inputObj.Price;
+
+            //数量＝数量（内訳）
+            item.Quantity = inputObj.Quantity;
+            item.QuantitySpan =  (item.Quantity!=null?item.Quantity.format():'');
+            //価格表に設定されない場合のみ　内訳に登録された内容で表示
+            if(!item.isPriceTableWC){
+                //単位WC
+                item.CreditWC = inputObj.CreditWC;
+                item.CreditWCSpan = (item.CreditWC!=null?item.CreditWC.format():'');
+
+            }
+            //WC係数＝WC係数（内訳)
+            item.WCCoefficient = (item.isWCRate?item.WcCalculationRate:inputObj.WCCoefficient);
+            //WC＝数量（内訳）＊単位WC（内訳の単位WC）
+            item.WC = inputObj.WC;
+            //提供単価＝提供単価（内訳）
+            //item.ProvisionUnitPrice = inputObj.ProvisionUnitPrice;
+            //item.ProvisionUnitPriceSpan = (item.ProvisionUnitPrice!=null?item.ProvisionUnitPrice.format():'');
+            //提供単価＝数量（内訳）＊提供単価（内訳）
+            item.ProvisionPrice = inputObj.ProvisionPrice;
+
+            //単価入力の場合、明細の単価により設定・表示する。
+            if(item.isPriceEdit) {
+                item.UnitPrice = inputObj.UnitPrice;
+                item.UnitPriceSpan = (item.UnitPrice!=null?item.UnitPrice.format():'');
+            }
+
+            item.Weight =  inputObj.Weight;
+        }
+        item.Note = record.Note__c;
+        item.SpecialFlag = false;
+        if(record.MajorClassificationName__c == '大型映像装置' || record.MajorClassificationName__c == '中央監視'){
+            item.SpecialFlag = true;
+        }
+        return item;
+    }
+
     @AuraEnabled
     /**
      * 内訳入力A画面 画面入力内容を内訳に保存
@@ -1080,17 +1678,18 @@ public with sharing class DetailController {
             for(PricingTableInputOnly obj : priceList){    
                 String pId = obj.Id;
                 if (!pId.contains('rowIndex')) {
+                    if (pId.length()>18)pId=pId.left(18);
                     pricingTableIds.add((Id)pId);
                 }
             }
             //価格表情報情報を取得
-            Map<Id,PricingTable__c> pricingTableList = new Map<Id,PricingTable__c>([SELECT Id,RecordType.DeveloperName,
+            Map<Id,PricingTable__c> pricingTableList = new Map<Id,PricingTable__c>([SELECT Id,RecordType.DeveloperName,MasterCode__c,DetailRecordDisplayNumberText__c,
                                             UniqueKey__c, Name, MajorClassificationCode__c, MajorClassificationName__c, 
                                             MinorClassificationCode__c, MinorClassificationName__c,
                                             CategoryCode__c, CategoryName__c, RECNO__c, 
                                             Name1__c, Name2__c, Name3__c, Name4__c, Name5__c, Name6__c,
                                             Name7__c, Name8__c, Name9__c, Name10__c,
-                                            WC__c, Price__c,
+                                            WC__c, Price__c, ProvisionPrice__c,
                                             WcCalculationRate__c,
                                             Note__c,Weight__c,DisplayName__c,
                                             detailedStatementText__c,SpecialSpecificationNo__c
@@ -1121,10 +1720,10 @@ public with sharing class DetailController {
             //入力情報件数ごとに処理
             for(PricingTableInputOnly obj : priceList){
                 String pId = obj.Id;
-
                 PricingTable__c pricingTable;
                 //追加行の場合
                 if (!pId.contains('rowIndex')) {
+                    if (pId.length()>18)pId=pId.left(18);
                     pricingTable = pricingTableList.get(pId);
                 }
                 
@@ -1169,21 +1768,21 @@ public with sharing class DetailController {
                         detail.Name10__c = pricingTable.Name10__c;//名称１０
                         //筐体
                         if (pricingTable.RecordType.DeveloperName=='Chassis') {
-
-                           if (deviceList.get(0).MajorClassification__c == '大型映像装置'
-                                && (deviceList.get(0).MinorClassification__c == '屋内'
-                                || deviceList.get(0).MinorClassification__c == '屋外')){
-                                    detail.Name4__c=null;
-                                    detail.Name5__c=null;
-                                    //大分類名「大型映像装置」の筐体を保存する場合は、ヘッダ.ラベル4
-                                    if (metaMap != null && String.isNotBlank(metaMap.meta4)) {
-                                        detail.Name4__c = metaMap.meta4;//
-                                    }
-                                    //大分類名「大型映像装置」の筐体を保存する場合は、ヘッダ.ラベル5
-                                    if (metaMap != null && String.isNotBlank(metaMap.meta5)) {
-                                        detail.Name5__c = metaMap.meta5;//
-                                    }
+                            
+                            if (deviceList.get(0).MajorClassification__c == '大型映像装置'
+                            && (deviceList.get(0).MinorClassification__c == '屋内'
+                            || deviceList.get(0).MinorClassification__c == '屋外')){
+                                detail.Name4__c=null;
+                                detail.Name5__c=null;
+                                //大分類名「大型映像装置」の筐体を保存する場合は、ヘッダ.ラベル4
+                                if (metaMap != null && String.isNotBlank(metaMap.meta4)) {
+                                    detail.Name4__c = metaMap.meta4;//
                                 }
+                                //大分類名「大型映像装置」の筐体を保存する場合は、ヘッダ.ラベル5
+                                if (metaMap != null && String.isNotBlank(metaMap.meta5)) {
+                                    detail.Name5__c = metaMap.meta5;//
+                                }
+                            }
                             detail.DetailCategory__c='筐体';//"筐体" "明細"
                         }else{
                             detail.DetailCategory__c='明細';//"筐体" "明細"
@@ -1198,19 +1797,25 @@ public with sharing class DetailController {
                         detail.CategoryCode__c = pricingTable.CategoryCode__c;//種類コード
                         detail.detailedStatementText__c = pricingTable.detailedStatementText__c;//価格表.内訳書出力用テキスト
                         detail.SpecialSpecificationNo__c= pricingTable.SpecialSpecificationNo__c;//価格表.特殊仕様No
-
-                        detail.ProvisionUnitPrice__c = obj.ProvisionUnitPrice;//提供単価
-                        detail.CreditWeight__c = pricingTable.Weight__c;//単位重量
                         detail.Quantity__c = quantity;//数量
+                        detail.ProvisionUnitPrice__c = pricingTable.ProvisionPrice__c;//提供単価
+                        detail.CreditWeight__c = pricingTable.Weight__c;//単位重量
                         detail.WcCalculationRate__c=pricingTable.WcCalculationRate__c;//WC算出レート
                         detail.Device__c = deviceId;//機器ID
                         // detail.PricingTable__c = pricingTable.Id;//価格表Id
                         detail.PricingTableUniqueKey__c = pricingTable.UniqueKey__c;//価格表ユニークキー
-
-                        detailList.add(detail); 
-                    //新規追加行の場合
+                        
+                        detail.MasterCode__c = pricingTable.MasterCode__c;//マスタコード
+                        
+                        detail.DetailRecordDisplayNumberText__c = pricingTable.DetailRecordDisplayNumberText__c;//明細レコード表示順
+                        // 2024/02/20 TS田村 追記
+                        Boolean containsEvtPtLa = containsEVT_PT_LA(pId,quantity);
+                        if(containsEvtPtLa != true){
+                            detailList.add(detail); 
+                        }
+                        //新規追加行の場合
                     }else if (pId.contains('rowIndex')){
-
+                        
                         PricingTableNewRowObj newRowObj = newRowsMap.get(pId);
                         if (newRowObj!=null) {
                             Detail__c detail = new Detail__c();
@@ -1225,7 +1830,7 @@ public with sharing class DetailController {
                             detail.ProvisionUnitPrice__c    = newRowObj.ProvisionUnitPrice;//提供単価
                             detail.CreditWeight__c = newRowObj.UnitWeight;//単位重量
                             detail.Quantity__c = newRowObj.Quantity;//数量
-                            detail.Note__c = newRowObj.Note.substringBefore(' WC×').substringBefore(' 単価×');//備考
+                            detail.Note__c = (String.isNotBlank(newRowObj.Note)?newRowObj.Note.substringBefore('WC×').substringBefore('単価×'):'');//備考
                             if(newRowObj.WCCoefficient != null && newRowObj.CreditWC != null){
                                 detail.Note__c += ' WC×' + String.valueOf(newRowObj.WCCoefficient);
                             }else if(newRowObj.UnitPriceCoefficient != null && newRowObj.UnitPrice != null){
@@ -1750,15 +2355,15 @@ public with sharing class DetailController {
         //小分類が指定していない
         if(String.isBlank(deveice.MinorClassification__c)) {
             name1Map = [SELECT Name1__c, COUNT(ID) 
-                        FROM PricingTable__c 
-                        WHERE MajorClassificationName__c = :major //機器大分類と一致
-                            AND CategoryCode__c =:categoryCode //機器周波数と一致
-                            AND BU__c =:bu   //BUコード
-                            AND RecordType.DeveloperName = 'Chassis' //筐体のみ
-                            AND Name1__c != null //空白以外
-                        GROUP BY Name1__c
-                        Order by Max(Specification1DisplayOrder__c)];
-        //小分類が指定している
+            FROM PricingTable__c 
+            WHERE MajorClassificationName__c = :major //機器大分類と一致
+            AND CategoryCode__c =:categoryCode //機器周波数と一致
+            AND BU__c =:bu   //BUコード
+            AND RecordType.DeveloperName = 'Chassis' //筐体のみ
+            AND Name1__c != null //空白以外
+            GROUP BY Name1__c
+            Order by Max(Specification1DisplayOrder__c)];
+            //小分類が指定している
         }else { 
             name1Map = [SELECT Name1__c, COUNT(ID) 
                         FROM PricingTable__c 
@@ -2388,5 +2993,23 @@ public with sharing class DetailController {
             }
         }
         return rtnLst;
+    }
+
+    // 2024/02/20 TS田村 追記 EVT・PT・LAでBUが施設の場合にtrueを返す
+    @AuraEnabled
+    public static Boolean containsEVT_PT_LA(String pricingTableId, Decimal quantity) {
+
+        pricingTableId= pricingTableId.left(18);
+        PricingTable__c pt = [SELECT Id, Name1__c, BU__c,CharacterSymbol__c FROM PricingTable__c WHERE Id =:pricingTableId];
+        String Name1 = pt.Name1__c;
+        String CharacterSymbol = pt.CharacterSymbol__c;
+        String BU = pt.BU__c;
+        if (CharacterSymbol != null &&
+        (CharacterSymbol.contains('EVT') || CharacterSymbol.contains('ZPT')  || CharacterSymbol.contains('VT') || CharacterSymbol.contains('LA') || CharacterSymbol.contains('NWVT') || CharacterSymbol.contains('NWCT')) &&
+        BU == 'S' &&
+        quantity > 1) {
+            return true;
+        }
+        return false;
     }
 }

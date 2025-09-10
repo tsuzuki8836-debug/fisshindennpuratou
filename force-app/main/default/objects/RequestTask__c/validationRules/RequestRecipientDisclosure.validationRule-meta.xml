@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ValidationRule xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>RequestRecipientDisclosure</fullName>
+    <active>true</active>
+    <description>「依頼先以外への開示」にチェックがある　かつ「開示場所1～3」がすべて空欄　である際にエラーを表示する。</description>
+    <errorConditionFormula>AND( ISPICKVAL( DiscloseExceptRequestDestination__c , &quot;開示可&quot;) ,
+           ISPICKVAL( RequestDestinationCc__c , &quot;&quot;)  ,
+           ISPICKVAL( RequestDestinationCc2__c ,&quot;&quot;) ,
+           ISPICKVAL( RequestDestinationCc3__c,&quot;&quot; ) 
+)</errorConditionFormula>
+    <errorDisplayField>DiscloseExceptRequestDestination__c</errorDisplayField>
+    <errorMessage>「開示場所1～3」に1つ以上値を選択してください。</errorMessage>
+</ValidationRule>

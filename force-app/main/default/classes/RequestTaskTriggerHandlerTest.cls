@@ -61,10 +61,12 @@ private class RequestTaskTriggerHandlerTest {
         insert opp;
 
         RequestTask__c rt = createRequestTask(opp);
+        rt.Applicant__c = UserInfo.getUserId();
         insert rt;
 
         Test.startTest();
         rt.Name = '件名変更';
+        rt.Applicant__c = null; // 初期化
         update rt;
         Test.stopTest();
 
@@ -223,10 +225,12 @@ private class RequestTaskTriggerHandlerTest {
             TaskCategory__c = '提案書作成依頼',
             DueDate__c = Date.today(),
             RequestDestination__c = '神電',
-            RequestTo__c = '神電施設エンジ',
+            RequestTo__c = '神電・社会営',
             ApprovalPattern__c = '承認者自動設定',
             Opportunity__c = opp.Id,
-            Requester__c = '本社　施設・二'
+            Requester__c = '本社　施設・二',
+            UserDeptApproved__c = true,
+            RequestDestinationCc__c = '神電'
         );
         return rt;
     }

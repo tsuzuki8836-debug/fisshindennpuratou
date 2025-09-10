@@ -2,6 +2,7 @@ import { LightningElement, track ,api} from 'lwc';
 import { ShowToastEvent } from 'lightning/platformShowToastEvent';
 import getHighVoltageScreenInfo from '@salesforce/apex/DetailsInputControllerForHighVoltage.getHighVoltageScreenInfo';
 import getAllPriceFor1InputOnly from '@salesforce/apex/DetailsInputControllerForHighVoltage.getAllPriceFor1InputOnly';
+import containsEVT_PT_LA from '@salesforce/apex/DetailsInputControllerForHighVoltage.containsEVT_PT_LA';
 
 
 export default class DetailsInputScreenBForHighVoltage extends LightningElement {
@@ -195,10 +196,33 @@ export default class DetailsInputScreenBForHighVoltage extends LightningElement 
         let cnt= event.detail.cnt;
         let price= event.detail.price;
 
+        // 2024/02/14 TS田村　追記
+        containsEVT_PT_LA({pricingTableId: idChanged, quantity: cnt})
+        .then(data => {
+            if (data == true) {
+                console.log('result' + data);
+                this.QuantityCheck();
+                cnt = '';
+            }
+        });
+        console.log('tk' + cnt);
         this.addtoIuputRecords(idChanged,cnt,price);//入力情報に追加
 
         this.setTotalPrice();//金額を合計
-    } 
+    }
+
+    // 2024/02/14 TS田村　追記
+    QuantityCheck(){
+        console.log('ShowToast');
+        const errorEvent = new ShowToastEvent({
+            title: 'エラー',
+            message: '「LA」「VT、PT」「ZVT、GPT、EVT」「ネットワークVT」「ネットワークCT」に2以上は入力できません。',
+            variant: 'error',//info/success/warning/error
+            mode: 'dismissable'
+        });
+        this.dispatchEvent(errorEvent);
+    }
+
     onCommonCheckboxTableInputChange(event){
         console.log('parent onCommonTableInputChange start');
 
@@ -232,39 +256,39 @@ export default class DetailsInputScreenBForHighVoltage extends LightningElement 
         var inputsRecords = this.inputsRecords;
         var isNotIn = true;
 
-        if(idChanged in this.combinationTable) {
-            var com = this.combinationTable[idChanged];
-            var comType = '';
-            var tempCom = com.split('@@');
-            if(tempCom[0] == 'DS') {
-                comType = 'DS'
-                this.combinationAmpDS = cnt!=0&&cnt!=''?tempCom[1]:''
-            } else {
-                comType = 'VCB'
-                this.combinationAmpVCB = cnt!=0&&cnt!=''?tempCom[1]:'' 
-            }
+        // if(idChanged in this.combinationTable) {
+        //     var com = this.combinationTable[idChanged];
+        //     var comType = '';
+        //     var tempCom = com.split('@@');
+        //     if(tempCom[0] == 'DS') {
+        //         comType = 'DS'
+        //         this.combinationAmpDS = cnt!=0&&cnt!=''?tempCom[1]:''
+        //     } else {
+        //         comType = 'VCB'
+        //         this.combinationAmpVCB = cnt!=0&&cnt!=''?tempCom[1]:'' 
+        //     }
 
-            if((this.combinationAmpDS != '' && this.combinationAmpVCB != '') &&
-                (this.combinationAmpDS != this.combinationAmpVCB) &&
-                !(this.combinationAmpDS == '600A' && this.combinationAmpVCB == '400A')){
-                isNotIn = false;
-                const errEvent = new ShowToastEvent({
-                    title: '入力エラー',
-                    message: '定格電流が真空遮断器(VCB)と異なっています。',
-                    variant: 'error',
-                    mode: 'dismissable'
-                });
-                this.dispatchEvent(errEvent);
-                if(comType=='DS') {
-                    this.combinationAmpDS = '';
-                    this.template.querySelector('c-common-table[data-id="disconnectorTable"]').setQuantityObj(idChanged, '');
-                } else {
-                    this.combinationAmpVCB = '';
-                    this.template.querySelector('c-common-table[data-id="vcBreakerTable"]').setQuantityObj(idChanged, '');
-                }
-                return;
-            }
-        }
+        //     if((this.combinationAmpDS != '' && this.combinationAmpVCB != '') &&
+        //         (this.combinationAmpDS != this.combinationAmpVCB) &&
+        //         !(this.combinationAmpDS == '600A' && this.combinationAmpVCB == '400A')){
+        //         isNotIn = false;
+        //         const errEvent = new ShowToastEvent({
+        //             title: '入力エラー',
+        //             message: '定格電流が真空遮断器(VCB)と異なっています。',
+        //             variant: 'error',
+        //             mode: 'dismissable'
+        //         });
+        //         this.dispatchEvent(errEvent);
+        //         if(comType=='DS') {
+        //             this.combinationAmpDS = '';
+        //             this.template.querySelector('c-common-table[data-id="disconnectorTable"]').setQuantityObj(idChanged, '');
+        //         } else {
+        //             this.combinationAmpVCB = '';
+        //             this.template.querySelector('c-common-table[data-id="vcBreakerTable"]').setQuantityObj(idChanged, '');
+        //         }
+        //         return;
+        //     }
+        // }
 
         if (inputsRecords!=null && inputsRecords.length > 0) {
             //一時保存情報を最新化する

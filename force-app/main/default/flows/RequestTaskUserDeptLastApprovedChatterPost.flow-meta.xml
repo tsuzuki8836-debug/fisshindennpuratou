@@ -1,0 +1,506 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Flow xmlns="http://soap.sforce.com/2006/04/metadata">
+    <actionCalls>
+        <description>テキストテンプレートの内容を依頼タスクに紐づけてChatter投稿する。</description>
+        <name>action_ChatterPost</name>
+        <label>Chatter投稿</label>
+        <locationX>308</locationX>
+        <locationY>1140</locationY>
+        <actionName>chatterPost</actionName>
+        <actionType>chatterPost</actionType>
+        <flowTransactionModel>CurrentTransaction</flowTransactionModel>
+        <inputParameters>
+            <name>text</name>
+            <value>
+                <elementReference>text_approvedByDepartment</elementReference>
+            </value>
+        </inputParameters>
+        <inputParameters>
+            <name>subjectNameOrId</name>
+            <value>
+                <elementReference>$Record.Id</elementReference>
+            </value>
+        </inputParameters>
+        <nameSegment>chatterPost</nameSegment>
+        <storeOutputAutomatically>true</storeOutputAutomatically>
+        <versionSegment>1</versionSegment>
+    </actionCalls>
+    <apiVersion>55.0</apiVersion>
+    <description>依頼タスク.状況が依頼先対応中に更新された場合にトリガし、1分後にChatter投稿する。</description>
+    <environments>Default</environments>
+    <formulas>
+        <description>依頼タスク.CC10に値が入力されている場合、「CC10 @[入力値]」を出力する。
+未入力の場合は空白を出力する。</description>
+        <name>formula_MentionTarget10To</name>
+        <dataType>String</dataType>
+        <expression>IF ( ISBLANK( {!$Record.MentionTarget10__c} ) , &apos;&apos;, &apos;CC10 @[&apos; &amp; {!$Record.MentionTarget10__c} &amp; &apos;]&apos; &amp; BR() )</expression>
+    </formulas>
+    <formulas>
+        <description>依頼タスク.CC1（To）に値が入力されている場合、「CC1 @[To.入力値]+改行」を出力する。
+未入力の場合は空白を出力する。</description>
+        <name>formula_MentionTarget1To</name>
+        <dataType>String</dataType>
+        <expression>IF ( ISBLANK( {!$Record.MentionTarget1__c} ) , &apos;&apos;, &apos;CC1 @[&apos; &amp; {!$Record.MentionTarget1__c} &amp; &apos;]&apos; &amp; BR() )</expression>
+    </formulas>
+    <formulas>
+        <description>依頼タスク.CC2（To）に値が入力されている場合、「CC2 @[To.入力値]+改行」を出力する。
+未入力の場合は空白を出力する。</description>
+        <name>formula_MentionTarget2To</name>
+        <dataType>String</dataType>
+        <expression>IF ( ISBLANK( {!$Record.MentionTarget2__c} ) , &apos;&apos;, &apos;CC2 @[&apos; &amp; {!$Record.MentionTarget2__c} &amp; &apos;]&apos; &amp; BR() )</expression>
+    </formulas>
+    <formulas>
+        <description>依頼タスク.CC3（To）に値が入力されている場合、「CC3 @[To.入力値]+改行」を出力する。
+未入力の場合は空白を出力する。</description>
+        <name>formula_MentionTarget3To</name>
+        <dataType>String</dataType>
+        <expression>IF ( ISBLANK( {!$Record.MentionTarget3__c} ) , &apos;&apos;, &apos;CC3 @[&apos; &amp; {!$Record.MentionTarget3__c} &amp; &apos;]&apos; &amp; BR() )</expression>
+    </formulas>
+    <formulas>
+        <description>依頼タスク.CC4（To）に値が入力されている場合、「CC4 @[To.入力値]+改行」を出力する。
+未入力の場合は空白を出力する。</description>
+        <name>formula_MentionTarget4To</name>
+        <dataType>String</dataType>
+        <expression>IF ( ISBLANK( {!$Record.MentionTarget4__c} ) , &apos;&apos;, &apos;CC4 @[&apos; &amp; {!$Record.MentionTarget4__c} &amp; &apos;]&apos; &amp; BR() )</expression>
+    </formulas>
+    <formulas>
+        <description>依頼タスク.CC5（To）に値が入力されている場合、「CC5 @[To.入力値]」を出力する。
+未入力の場合は空白を出力する。</description>
+        <name>formula_MentionTarget5To</name>
+        <dataType>String</dataType>
+        <expression>IF ( ISBLANK( {!$Record.MentionTarget5__c} ) , &apos;&apos;, &apos;CC5 @[&apos; &amp; {!$Record.MentionTarget5__c} &amp; &apos;]&apos; &amp; BR() )</expression>
+    </formulas>
+    <formulas>
+        <description>依頼タスク.CC6に値が入力されている場合、「CC6 @[入力値]」を出力する。
+未入力の場合は空白を出力する。</description>
+        <name>formula_MentionTarget6To</name>
+        <dataType>String</dataType>
+        <expression>IF ( ISBLANK( {!$Record.MentionTarget6__c} ) , &apos;&apos;, &apos;CC6 @[&apos; &amp; {!$Record.MentionTarget6__c} &amp; &apos;]&apos; &amp; BR() )</expression>
+    </formulas>
+    <formulas>
+        <description>依頼タスク.CC7に値が入力されている場合、「CC7 @[入力値]」を出力する。
+未入力の場合は空白を出力する。</description>
+        <name>formula_MentionTarget7To</name>
+        <dataType>String</dataType>
+        <expression>IF ( ISBLANK( {!$Record.MentionTarget7__c} ) , &apos;&apos;, &apos;CC7 @[&apos; &amp; {!$Record.MentionTarget7__c} &amp; &apos;]&apos; &amp; BR() )</expression>
+    </formulas>
+    <formulas>
+        <description>依頼タスク.CC8に値が入力されている場合、「CC8 @[入力値]」を出力する。
+未入力の場合は空白を出力する。</description>
+        <name>formula_MentionTarget8To</name>
+        <dataType>String</dataType>
+        <expression>IF ( ISBLANK( {!$Record.MentionTarget8__c} ) , &apos;&apos;, &apos;CC8 @[&apos; &amp; {!$Record.MentionTarget8__c} &amp; &apos;]&apos; &amp; BR() )</expression>
+    </formulas>
+    <formulas>
+        <description>依頼タスク.CC9に値が入力されている場合、「CC9 @[入力値]」を出力する。
+未入力の場合は空白を出力する。</description>
+        <name>formula_MentionTarget9To</name>
+        <dataType>String</dataType>
+        <expression>IF ( ISBLANK( {!$Record.MentionTarget9__c} ) , &apos;&apos;, &apos;CC9 @[&apos; &amp; {!$Record.MentionTarget9__c} &amp; &apos;]&apos; &amp; BR() )</expression>
+    </formulas>
+    <formulas>
+        <description>依頼タスク.開示場所1CCグループ2に値が入力されている場合、「開示場所1CCグループ2@[ChatterグループID](改行文字)」を出力する。
+未入力の場合は空文字列を出力する。</description>
+        <name>formula_RequestCc12Mention</name>
+        <dataType>String</dataType>
+        <expression>IF( ISBLANK( {!var_RequestCc12ChatterGroupId} ), &apos;&apos;, &apos;開示場所1CCグループ2 @[&apos; &amp; {!var_RequestCc12ChatterGroupId} &amp; &apos;]&apos; &amp; BR() )</expression>
+    </formulas>
+    <formulas>
+        <description>依頼タスク.開示場所1CCグループ1に値が入力されている場合、「開示場所1CCグループ1@[ChatterグループID](改行文字)」を出力する。
+未入力の場合は空文字列を出力する。</description>
+        <name>formula_RequestCc1Mention</name>
+        <dataType>String</dataType>
+        <expression>IF( ISBLANK( {!var_RequestCc1ChatterGroupId} ), &apos;&apos;, &apos;開示場所1CCグループ1 @[&apos; &amp; {!var_RequestCc1ChatterGroupId} &amp; &apos;]&apos; &amp; BR() )</expression>
+    </formulas>
+    <formulas>
+        <description>依頼タスク.開示場所2CCグループ2に値が入力されている場合、「開示場所2CCグループ2@[ChatterグループID](改行文字)」を出力する。
+未入力の場合は空文字列を出力する。</description>
+        <name>formula_RequestCc22Mention</name>
+        <dataType>String</dataType>
+        <expression>IF( ISBLANK( {!var_RequestCc22ChatterGroupId} ), &apos;&apos;, &apos;開示場所2CCグループ2 @[&apos; &amp; {!var_RequestCc22ChatterGroupId} &amp; &apos;]&apos; &amp; BR() )</expression>
+    </formulas>
+    <formulas>
+        <description>依頼タスク.開示場所2CCグループ1に値が入力されている場合、「開示場所2CCグループ1@[ChatterグループID](改行文字)」を出力する。
+未入力の場合は空文字列を出力する。</description>
+        <name>formula_RequestCc2Mention</name>
+        <dataType>String</dataType>
+        <expression>IF( ISBLANK( {!var_RequestCc2ChatterGroupId} ), &apos;&apos;, &apos;開示場所2CCグループ1 @[&apos; &amp; {!var_RequestCc2ChatterGroupId} &amp; &apos;]&apos; &amp; BR() )</expression>
+    </formulas>
+    <formulas>
+        <description>依頼タスク.開示場所3CCグループ2に値が入力されている場合、「開示場所3CCグループ2@[ChatterグループID](改行文字)」を出力する。
+未入力の場合は空文字列を出力する。</description>
+        <name>formula_RequestCc32Mention</name>
+        <dataType>String</dataType>
+        <expression>IF( ISBLANK( {!var_RequestCc32ChatterGroupId} ), &apos;&apos;, &apos;開示場所3CCグループ2 @[&apos; &amp; {!var_RequestCc32ChatterGroupId} &amp; &apos;]&apos; &amp; BR() )</expression>
+    </formulas>
+    <formulas>
+        <description>依頼タスク.開示場所3CCグループ1に値が入力されている場合、「開示場所3CCグループ1@[ChatterグループID](改行文字)」を出力する。
+未入力の場合は空文字列を出力する。</description>
+        <name>formula_RequestCc3Mention</name>
+        <dataType>String</dataType>
+        <expression>IF( ISBLANK( {!var_RequestCc3ChatterGroupId} ), &apos;&apos;, &apos;開示場所3CCグループ1 @[&apos; &amp; {!var_RequestCc3ChatterGroupId} &amp; &apos;]&apos; &amp; BR() )</expression>
+    </formulas>
+    <formulas>
+        <description>依頼タスク.CCグループ5に値が入力されている場合、「CCグループ5@[ChatterグループID](改行文字)」を出力する。
+未入力の場合は空文字列を入力する。</description>
+        <name>formula_RequestCc4Mention</name>
+        <dataType>String</dataType>
+        <expression>IF( ISBLANK( {!var_RequestCc4ChatterGroupId} ), &apos;&apos;, &apos;CCグループ5 @[&apos; &amp; {!var_RequestCc4ChatterGroupId} &amp; &apos;]&apos; &amp; BR() )</expression>
+    </formulas>
+    <formulas>
+        <description>依頼タスク.CCグループ6に値が入力されている場合、「CCグループ6@[ChatterグループID](改行文字)」を出力する。
+未入力の場合は空文字列を入力する。</description>
+        <name>formula_RequestCc5Mention</name>
+        <dataType>String</dataType>
+        <expression>IF( ISBLANK( {!var_RequestCc5ChatterGroupId} ), &apos;&apos;, &apos;CCグループ6 @[&apos; &amp; {!var_RequestCc5ChatterGroupId} &amp; &apos;]&apos; &amp; BR() )</expression>
+    </formulas>
+    <formulas>
+        <description>依頼タスク.依頼先CCグループ2に値が入力されている場合、「依頼先CCグループ2@[ChatterグループID](改行文字)」を出力する。
+未入力の場合は空文字列を出力する。</description>
+        <name>formula_RequestTo2Mention</name>
+        <dataType>String</dataType>
+        <expression>IF( ISBLANK( {!var_RequestTo2ChatterGroupId} ), &apos;&apos;, &apos;依頼先CCグループ2 @[&apos; &amp; {!var_RequestTo2ChatterGroupId} &amp; &apos;]&apos; &amp; BR() )</expression>
+    </formulas>
+    <formulas>
+        <description>依頼タスク.依頼先CCグループ1に値が入力されている場合、「依頼先CCグループ1@[ChatterグループID](改行文字)」を出力する。
+未入力の場合は空文字列を出力する。</description>
+        <name>formula_RequestToMention</name>
+        <dataType>String</dataType>
+        <expression>IF( ISBLANK( {!var_RequestToChatterGroupId} ), &apos;&apos;, &apos;依頼先CCグループ1 @[&apos; &amp; {!var_RequestToChatterGroupId} &amp; &apos;]&apos; &amp; BR() )</expression>
+    </formulas>
+    <interviewLabel>依頼タスク更新 {!$Flow.CurrentDateTime}</interviewLabel>
+    <label>依頼タスク自部門承認時Chatter投稿</label>
+    <processMetadataValues>
+        <name>BuilderType</name>
+        <value>
+            <stringValue>LightningFlowBuilder</stringValue>
+        </value>
+    </processMetadataValues>
+    <processMetadataValues>
+        <name>CanvasMode</name>
+        <value>
+            <stringValue>AUTO_LAYOUT_CANVAS</stringValue>
+        </value>
+    </processMetadataValues>
+    <processMetadataValues>
+        <name>OriginBuilderType</name>
+        <value>
+            <stringValue>LightningFlowBuilder</stringValue>
+        </value>
+    </processMetadataValues>
+    <processType>AutoLaunchedFlow</processType>
+    <recordLookups>
+        <description>開示場所1CCグループ2の値に対応するChatterグループIDを取得する。</description>
+        <name>get_RequestCc12ChatterGroupId</name>
+        <label>開示場所1CCグループ2ChatterグループID取得</label>
+        <locationX>308</locationX>
+        <locationY>600</locationY>
+        <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
+        <connector>
+            <targetReference>get_RequestCc2ChatterGroupId</targetReference>
+        </connector>
+        <filterLogic>and</filterLogic>
+        <filters>
+            <field>Label</field>
+            <operator>EqualTo</operator>
+            <value>
+                <elementReference>$Record.RequestCc12__c</elementReference>
+            </value>
+        </filters>
+        <object>SBUGroup__mdt</object>
+        <outputAssignments>
+            <assignToReference>var_RequestCc12ChatterGroupId</assignToReference>
+            <field>ChatterGroupId__c</field>
+        </outputAssignments>
+    </recordLookups>
+    <recordLookups>
+        <description>開示場所1CCグループ1の値に対応するChatterグループIDを取得する。</description>
+        <name>get_RequestCc1ChatterGroupId</name>
+        <label>開示場所1CCグループ1ChatterグループID取得</label>
+        <locationX>308</locationX>
+        <locationY>492</locationY>
+        <assignNullValuesIfNoRecordsFound>true</assignNullValuesIfNoRecordsFound>
+        <connector>
+            <targetReference>get_RequestCc12ChatterGroupId</targetReference>
+        </connector>
+        <filterLogic>and</filterLogic>
+        <filters>
+            <field>Label</field>
+            <operator>EqualTo</operator>
+            <value>
+                <elementReference>$Record.RequestCc1__c</elementReference>
+            </value>
+        </filters>
+        <object>SBUGroup__mdt</object>
+        <outputAssignments>
+            <assignToReference>var_RequestCc1ChatterGroupId</assignToReference>
+            <field>ChatterGroupId__c</field>
+        </outputAssignments>
+    </recordLookups>
+    <recordLookups>
+        <description>開示場所2CCグループ2の値に対応するChatterグループIDを取得する。</description>
+        <name>get_RequestCc22ChatterGroupId</name>
+        <label>開示場所2CCグループ2ChatterグループID取得</label>
+        <locationX>308</locationX>
+        <locationY>816</locationY>
+        <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
+        <connector>
+            <targetReference>get_RequestCc3ChatterGroupId</targetReference>
+        </connector>
+        <filterLogic>and</filterLogic>
+        <filters>
+            <field>Label</field>
+            <operator>EqualTo</operator>
+            <value>
+                <elementReference>$Record.RequestCc22__c</elementReference>
+            </value>
+        </filters>
+        <object>SBUGroup__mdt</object>
+        <outputAssignments>
+            <assignToReference>var_RequestCc22ChatterGroupId</assignToReference>
+            <field>ChatterGroupId__c</field>
+        </outputAssignments>
+    </recordLookups>
+    <recordLookups>
+        <description>開示場所2CCグループ1の値に対応するChatterグループIDを取得する。</description>
+        <name>get_RequestCc2ChatterGroupId</name>
+        <label>開示場所2CCグループ1ChatterグループID取得</label>
+        <locationX>308</locationX>
+        <locationY>708</locationY>
+        <assignNullValuesIfNoRecordsFound>true</assignNullValuesIfNoRecordsFound>
+        <connector>
+            <targetReference>get_RequestCc22ChatterGroupId</targetReference>
+        </connector>
+        <filterLogic>and</filterLogic>
+        <filters>
+            <field>Label</field>
+            <operator>EqualTo</operator>
+            <value>
+                <elementReference>$Record.RequestCc2__c</elementReference>
+            </value>
+        </filters>
+        <object>SBUGroup__mdt</object>
+        <outputAssignments>
+            <assignToReference>var_RequestCc2ChatterGroupId</assignToReference>
+            <field>ChatterGroupId__c</field>
+        </outputAssignments>
+    </recordLookups>
+    <recordLookups>
+        <description>開示場所3CCグループ2の値に対応するChatterグループIDを取得する。</description>
+        <name>get_RequestCc32ChatterGroupId</name>
+        <label>開示場所3CCグループ2ChatterグループID取得</label>
+        <locationX>308</locationX>
+        <locationY>1032</locationY>
+        <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
+        <connector>
+            <targetReference>action_ChatterPost</targetReference>
+        </connector>
+        <filterLogic>and</filterLogic>
+        <filters>
+            <field>Label</field>
+            <operator>EqualTo</operator>
+            <value>
+                <elementReference>$Record.RequestCc32__c</elementReference>
+            </value>
+        </filters>
+        <object>SBUGroup__mdt</object>
+        <outputAssignments>
+            <assignToReference>var_RequestCc32ChatterGroupId</assignToReference>
+            <field>ChatterGroupId__c</field>
+        </outputAssignments>
+    </recordLookups>
+    <recordLookups>
+        <description>開示場所3CCグループ1の値に対応するChatterグループIDを取得する。</description>
+        <name>get_RequestCc3ChatterGroupId</name>
+        <label>開示場所3CCグループ1ChatterグループID取得</label>
+        <locationX>308</locationX>
+        <locationY>924</locationY>
+        <assignNullValuesIfNoRecordsFound>true</assignNullValuesIfNoRecordsFound>
+        <connector>
+            <targetReference>get_RequestCc32ChatterGroupId</targetReference>
+        </connector>
+        <filterLogic>and</filterLogic>
+        <filters>
+            <field>Label</field>
+            <operator>EqualTo</operator>
+            <value>
+                <elementReference>$Record.RequestCc3__c</elementReference>
+            </value>
+        </filters>
+        <object>SBUGroup__mdt</object>
+        <outputAssignments>
+            <assignToReference>var_RequestCc3ChatterGroupId</assignToReference>
+            <field>ChatterGroupId__c</field>
+        </outputAssignments>
+    </recordLookups>
+    <recordLookups>
+        <description>依頼先CCグループ2の値に対応するChatterグループIDを取得する。</description>
+        <name>get_RequestTo2ChatterGroupId</name>
+        <label>依頼先CCグループ2ChatterグループID取得</label>
+        <locationX>308</locationX>
+        <locationY>384</locationY>
+        <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
+        <connector>
+            <targetReference>get_RequestCc1ChatterGroupId</targetReference>
+        </connector>
+        <filterLogic>and</filterLogic>
+        <filters>
+            <field>Label</field>
+            <operator>EqualTo</operator>
+            <value>
+                <elementReference>$Record.RequestTo2__c</elementReference>
+            </value>
+        </filters>
+        <object>SBUGroup__mdt</object>
+        <outputAssignments>
+            <assignToReference>var_RequestTo2ChatterGroupId</assignToReference>
+            <field>ChatterGroupId__c</field>
+        </outputAssignments>
+    </recordLookups>
+    <recordLookups>
+        <description>依頼先CCグループ1の値に対応するChatterグループIDを取得する。</description>
+        <name>get_RequestToChatterGroupId</name>
+        <label>依頼先CCグループ1ChatterグループID取得</label>
+        <locationX>308</locationX>
+        <locationY>276</locationY>
+        <assignNullValuesIfNoRecordsFound>true</assignNullValuesIfNoRecordsFound>
+        <connector>
+            <targetReference>get_RequestTo2ChatterGroupId</targetReference>
+        </connector>
+        <filterLogic>and</filterLogic>
+        <filters>
+            <field>Label</field>
+            <operator>EqualTo</operator>
+            <value>
+                <elementReference>$Record.RequestTo__c</elementReference>
+            </value>
+        </filters>
+        <object>SBUGroup__mdt</object>
+        <outputAssignments>
+            <assignToReference>var_RequestToChatterGroupId</assignToReference>
+            <field>ChatterGroupId__c</field>
+        </outputAssignments>
+    </recordLookups>
+    <start>
+        <locationX>50</locationX>
+        <locationY>0</locationY>
+        <doesRequireRecordChangedToMeetCriteria>true</doesRequireRecordChangedToMeetCriteria>
+        <filterLogic>and</filterLogic>
+        <filters>
+            <field>Status__c</field>
+            <operator>EqualTo</operator>
+            <value>
+                <stringValue>依頼先対応中</stringValue>
+            </value>
+        </filters>
+        <object>RequestTask__c</object>
+        <recordTriggerType>Update</recordTriggerType>
+        <scheduledPaths>
+            <name>OneMinuteAfterUserDeptLastApproved</name>
+            <connector>
+                <targetReference>get_RequestToChatterGroupId</targetReference>
+            </connector>
+            <label>自部門承認1分後</label>
+            <offsetNumber>1</offsetNumber>
+            <offsetUnit>Minutes</offsetUnit>
+            <timeSource>RecordTriggerEvent</timeSource>
+        </scheduledPaths>
+        <triggerType>RecordAfterSave</triggerType>
+    </start>
+    <status>Active</status>
+    <textTemplates>
+        <description>依頼タスク.状況が自部門承認済/依頼発信に変更された際にChatter通知するテキスト。</description>
+        <name>text_approvedByDepartment</name>
+        <isViewedAsPlainText>true</isViewedAsPlainText>
+        <text>担当者@[{!$Record.OwnerId}]
+申請者@[{!$Record.Applicant__c}]
+以下の依頼タスクが自部門承認済/依頼発信となりました。
+案件名：{!$Record.Opportunity__r.Name}
+件名：{!$Record.Name}
+依頼区分：{!$Record.TaskCategory__c}
+依頼/変更依頼コメント：{!$Record.TaskDetail__c}
+
+{!formula_RequestToMention}{!formula_RequestTo2Mention}{!formula_RequestCc1Mention}{!formula_RequestCc12Mention}{!formula_RequestCc2Mention}{!formula_RequestCc22Mention}{!formula_RequestCc3Mention}{!formula_RequestCc32Mention}
+{!formula_MentionTarget1To}{!formula_MentionTarget2To}{!formula_MentionTarget3To}{!formula_MentionTarget4To}{!formula_MentionTarget5To}{!formula_MentionTarget6To}{!formula_MentionTarget7To}{!formula_MentionTarget8To}{!formula_MentionTarget9To}{!formula_MentionTarget10To}</text>
+    </textTemplates>
+    <variables>
+        <description>開示場所1CCグループ2に対応するChatterグループID。</description>
+        <name>var_RequestCc12ChatterGroupId</name>
+        <dataType>String</dataType>
+        <isCollection>false</isCollection>
+        <isInput>false</isInput>
+        <isOutput>false</isOutput>
+    </variables>
+    <variables>
+        <description>CCグループ2 (RequestCc1__c) に対応するChatterグループID。</description>
+        <name>var_RequestCc1ChatterGroupId</name>
+        <dataType>String</dataType>
+        <isCollection>false</isCollection>
+        <isInput>false</isInput>
+        <isOutput>false</isOutput>
+    </variables>
+    <variables>
+        <description>開示場所2CCグループ2 (RequestCc22__c) に対応するChatterグループID。</description>
+        <name>var_RequestCc22ChatterGroupId</name>
+        <dataType>String</dataType>
+        <isCollection>false</isCollection>
+        <isInput>false</isInput>
+        <isOutput>false</isOutput>
+    </variables>
+    <variables>
+        <description>CCグループ3 (RequestCc2__c) に対応するChatterグループID。</description>
+        <name>var_RequestCc2ChatterGroupId</name>
+        <dataType>String</dataType>
+        <isCollection>false</isCollection>
+        <isInput>false</isInput>
+        <isOutput>false</isOutput>
+    </variables>
+    <variables>
+        <description>開示場所3CCグループ2 (RequestCc32__c) に対応するChatterグループID。</description>
+        <name>var_RequestCc32ChatterGroupId</name>
+        <dataType>String</dataType>
+        <isCollection>false</isCollection>
+        <isInput>false</isInput>
+        <isOutput>false</isOutput>
+    </variables>
+    <variables>
+        <description>CCグループ4 (RequestCc3__c) に対応するChatterグループID。</description>
+        <name>var_RequestCc3ChatterGroupId</name>
+        <dataType>String</dataType>
+        <isCollection>false</isCollection>
+        <isInput>false</isInput>
+        <isOutput>false</isOutput>
+    </variables>
+    <variables>
+        <description>CCグループ5 (RequestCc4__c) に対応するChatterグループID。</description>
+        <name>var_RequestCc4ChatterGroupId</name>
+        <dataType>String</dataType>
+        <isCollection>false</isCollection>
+        <isInput>false</isInput>
+        <isOutput>false</isOutput>
+    </variables>
+    <variables>
+        <description>CCグループ6 (RequestCc5__c) に対応するChatterグループID。</description>
+        <name>var_RequestCc5ChatterGroupId</name>
+        <dataType>String</dataType>
+        <isCollection>false</isCollection>
+        <isInput>false</isInput>
+        <isOutput>false</isOutput>
+    </variables>
+    <variables>
+        <description>依頼先CCグループ2 (RequestTo2__c) に対応するChatterグループID。</description>
+        <name>var_RequestTo2ChatterGroupId</name>
+        <dataType>String</dataType>
+        <isCollection>false</isCollection>
+        <isInput>false</isInput>
+        <isOutput>false</isOutput>
+    </variables>
+    <variables>
+        <description>CCグループ1 (RequestTo__c) に対応するChatterグループID。</description>
+        <name>var_RequestToChatterGroupId</name>
+        <dataType>String</dataType>
+        <isCollection>false</isCollection>
+        <isInput>false</isInput>
+        <isOutput>false</isOutput>
+    </variables>
+</Flow>

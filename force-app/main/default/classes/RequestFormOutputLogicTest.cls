@@ -25,12 +25,14 @@
 
         RequestTask__c requestTask = new RequestTask__c(
             // insertに必要な項目
-            DueDate__c = Date.newInstance(2025, 5, 10)
+            DueDate__c =  Date.today().addDays(10)
             , Requester__c = '本社　施設'
-            , RequestDestination__c = 'その他'
+            , RequestDestination__c = '神電'
             , RequestDestination_other__c = 'テスト依頼先場所'
             , TaskCategory__c = taskCategory
             , Opportunity__c = opportunity.Id
+            , UserDeptApproved__c = true
+            , DiscloseExceptRequestDestination__c = '開示不可'
         );
         insert requestTask;
         RequestFormOutputGenerator.getRequestTask(requestTask.Id);
@@ -247,12 +249,14 @@
 
         RequestTask__c requestTask = new RequestTask__c(
             // insertに必要な項目
-            DueDate__c = Date.newInstance(2025, 5, 10)
+            DueDate__c = Date.today().addDays(10)
             , Requester__c = '本社　施設'
-            , RequestDestination__c = 'その他'
+            , RequestDestination__c = '神電'
             , RequestDestination_other__c = 'テスト依頼先場所'
             , TaskCategory__c = '提案書作成依頼'
             , Opportunity__c = opportunity.Id
+            , UserDeptApproved__c = true
+            , DiscloseExceptRequestDestination__c = '開示不可'
         );
         insert requestTask;
 

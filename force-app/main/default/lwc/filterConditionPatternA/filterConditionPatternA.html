@@ -1,6 +1,6 @@
 <template>        
     <div class="slds-box slds-p-around_none slds-m-top_x-small slds-m-bottom_medium slds-m-horizontal_none">
-        <lightning-accordion allow-multiple-sections-open >
+        <lightning-accordion allow-multiple-sections-open active-section-name="sec1">
             <lightning-accordion-section name="sec1" label="検索条件">
             <!-- 仕様条件の表示を制御 -->
             <template if:true={isNameShow}>
@@ -636,9 +636,10 @@
                     </lightning-layout-item>
                 </lightning-layout>                
             </template>
+            <!--
             <lightning-layout  class="c-container">
                 <lightning-layout-item size="2" padding="around-small">
-                    <!-- 検索条件：コード１ -->
+                    <! 検索条件：コード１ >
                     <div class="slds-form-element slds-form-element_horizontal">
                         <label class="slds-form-element__label">{code1_LabelName}</label>
                         <div class="slds-form-element__control">
@@ -652,7 +653,7 @@
                     </div>
                 </lightning-layout-item>
                 <lightning-layout-item size="2" padding="around-small">
-                    <!-- 検索条件：コード２ -->
+                    <! 検索条件：コード２ >
                     <div class="slds-form-element slds-form-element_horizontal">
                         <label class="slds-form-element__label">{code2_LabelName}</label>
                         <div class="slds-form-element__control">
@@ -666,7 +667,7 @@
 
                 </lightning-layout-item>
                 <lightning-layout-item size="2" padding="around-small">
-                    <!-- 検索条件：コード３ -->
+                    <! 検索条件：コード３ >
                     <div class="slds-form-element slds-form-element_horizontal">
                         <label class="slds-form-element__label">{code3_LabelName}</label>
                         <div class="slds-form-element__control">
@@ -680,7 +681,7 @@
                     </div>
                 </lightning-layout-item>
                 <lightning-layout-item size="2" padding="around-small">
-                    <!-- 検索条件：コード４ -->
+                    <! 検索条件：コード４ >
                     <div class="slds-form-element slds-form-element_horizontal">
                         <label class="slds-form-element__label">{code4_LabelName}</label>
                         <div class="slds-form-element__control">
@@ -694,17 +695,18 @@
                         </div>
                     </div>
                 </lightning-layout-item>
+
                 <lightning-layout-item size="2"  padding="around-small">
-                    <!-- 空白 -->
+                    <! 空白 >
                 </lightning-layout-item>
                 <lightning-layout-item size="2"  padding="around-small">
-                    <!-- 検索ボタン：コード検索 -->
+                    <! 検索ボタン：コード検索 >
                     <div>
                         <button class="slds-button slds-align_absolute-center slds-button_brand search-button" onclick={onCodeSearch} title="CodeSearch">コード 検 索</button>
                     </div>
                 </lightning-layout-item>
-
             </lightning-layout>
+            -->
             <lightning-layout  class="c-container">
                 <!-- 検索条件：名称 -->
             <lightning-layout-item size="4" padding="around-small">

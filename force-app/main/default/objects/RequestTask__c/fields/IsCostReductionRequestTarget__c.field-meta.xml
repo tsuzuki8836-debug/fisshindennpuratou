@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>IsCostReductionRequestTarget__c</fullName>
+    <externalId>false</externalId>
+    <formula>AND (
+  ISPICKVAL(TaskCategory__c , &quot;原低依頼&quot;),
+  OR (
+    ISPICKVAL(RequestTo__c, &quot;神電公共営&quot;),
+    ISPICKVAL(RequestTo__c, &quot;神電社会営&quot;),
+    ISPICKVAL(RequestTo__c, &quot;長電施設営&quot;),
+    ISPICKVAL(RequestTo__c, &quot;配電社会営&quot;),
+    ISPICKVAL(RequestTo__c, &quot;配電スマ営&quot;),
+    ISPICKVAL(RequestTo__c, &quot;本プラ・都公建&quot;),
+    ISPICKVAL(RequestTo__c, &quot;本プラ・広公建&quot;),
+    ISPICKVAL(RequestTo__c, &quot;本プラ・施設建&quot;),
+    ISPICKVAL(RequestTo__c, &quot;本プラ・東北建&quot;),
+    ISPICKVAL(RequestTo__c, &quot;北支・プラ建・建設&quot;),
+    ISPICKVAL(RequestTo__c, &quot;中部支・プラ建・建設&quot;),
+    ISPICKVAL(RequestTo__c, &quot;西支・プラ建・建設一&quot;),
+    ISPICKVAL(RequestTo__c, &quot;西支・プラ建・建設二&quot;),
+    ISPICKVAL(RequestTo__c, &quot;九支・プラ建・建設課&quot;)
+     )
+)</formula>
+    <label>対象製作所_原低依頼</label>
+    <trackHistory>false</trackHistory>
+    <trackTrending>false</trackTrending>
+    <type>Checkbox</type>
+</CustomField>

@@ -12,8 +12,9 @@
                 </lightning-layout-item>
             </lightning-layout>
         </template>
+
         <template if:false={isDisplayError}>
-            <lightning-accordion allow-multiple-sections-open >
+            <lightning-accordion active-section-name="sec1" allow-multiple-sections-open >
                 <lightning-accordion-section name="sec1" label="検索条件">
                     <div>
                         <lightning-layout multiple-rows class="c-container">
@@ -29,67 +30,119 @@
                                                     onchange={handleScreenTypeChange} ></lightning-combobox>
                                         </div>
                                     </lightning-layout-item>
-
-                                    <!-- 特高TRの条件 -->
-                                    <lightning-layout-item padding="around-small" size="4">
-                                        <div class="header-column">
-                                            <lightning-combobox
-                                                    name="priceCondition5"
-                                                    label={priceCondition5Label}
-                                                    value={priceCondition5}
-                                                    options={options5}
-                                                    onchange={handleCon5Change}></lightning-combobox>
-                                        </div>
-                                    </lightning-layout-item>
-                                    <lightning-layout-item padding="around-small" size="4">
-                                        <div class="header-column">
-                                            <lightning-combobox
-                                                    name="priceCondition3"
-                                                    label="OLTC"
-                                                    value={priceCondition3}
-                                                    options={options3}
-                                                    onchange={handleCon3Change}></lightning-combobox>
-                                        </div>
-                                    </lightning-layout-item>
-                                </lightning-layout>
-                            </lightning-layout-item>
-                            <lightning-layout-item size="12"  padding="around-small">
-                                <lightning-layout>
-                                    <template if:false={isMoldType}>
+                                    <template if:true={isFacility}>
                                         <lightning-layout-item padding="around-small" size="4">
                                             <div class="header-column">
                                                 <lightning-combobox
-                                                        name="priceCondition1"
-                                                        label="設置場所"
-                                                        value={priceCondition1}
-                                                        options={options1}
-                                                        onchange={handleCon1Change}></lightning-combobox>
+                                                        name="priceCondition3"
+                                                        label="OLTC"
+                                                        value={priceCondition3}
+                                                        options={options3}
+                                                        onchange={handleCon3Change}></lightning-combobox>
+                                            </div>
+                                        </lightning-layout-item>
+                                        <lightning-layout-item padding="around-small" size="4">
+                                            <div class="header-column">
+                                                <lightning-combobox
+                                                        name="priceCondition2"
+                                                        label="電圧仕様"
+                                                        value={priceCondition2}
+                                                        options={voltageSpecification}
+                                                        onchange={handleCon2Change}></lightning-combobox>
                                             </div>
                                         </lightning-layout-item>
                                     </template>
-                                    <lightning-layout-item padding="around-small" size="4">
-                                        <div class="header-column">
-                                            <lightning-combobox
-                                                    name="priceCondition2"
-                                                    label="電圧仕様"
-                                                    value={priceCondition2}
-                                                    options={voltageSpecification}
-                                                    onchange={handleCon2Change}></lightning-combobox>
-                                        </div>
-                                    </lightning-layout-item>
-                                    <lightning-layout-item padding="around-small" size="4">
-                                        <div class="header-column">
-                                            <lightning-combobox
-                                                    name="priceCondition4"
-                                                    label="スポットネットワーク"
-                                                    value={priceCondition4}
-                                                    options={options4}
-                                                    onchange={handleCon4Change}></lightning-combobox>
-                                        </div>
-                                    </lightning-layout-item>
+                                    <!-- 特高TRの条件 -->
+                                    <template if:false={isFacility}>
+                                        <lightning-layout-item padding="around-small" size="4">
+                                            <div class="header-column">
+                                                <lightning-combobox
+                                                        name="priceCondition5"
+                                                        label={priceCondition5Label}
+                                                        value={priceCondition5}
+                                                        options={options5}
+                                                        onchange={handleCon5Change}></lightning-combobox>
+                                            </div>
+                                        </lightning-layout-item>
+                                        <lightning-layout-item padding="around-small" size="4">
+                                            <div class="header-column">
+                                                <lightning-combobox
+                                                        name="priceCondition3"
+                                                        label="OLTC"
+                                                        value={priceCondition3}
+                                                        options={options3}
+                                                        onchange={handleCon3Change}></lightning-combobox>
+                                            </div>
+                                        </lightning-layout-item>
+                                    </template>
                                 </lightning-layout>
                             </lightning-layout-item>
-
+                            <template if:true={isFacility}>
+                                <lightning-layout-item size="12"  padding="around-small">
+                                    <lightning-layout>
+                                        <lightning-layout-item padding="around-small" size="4">
+                                            <div class="header-column">
+                                                <lightning-combobox
+                                                        name="priceCondition4"
+                                                        label="スポットネットワーク"
+                                                        value={priceCondition4}
+                                                        options={options4}
+                                                        onchange={handleCon4Change}></lightning-combobox>
+                                            </div>
+                                        </lightning-layout-item>
+                                        <template if:true={isMoldType}>
+                                            <lightning-layout-item padding="around-small" size="4">
+                                                <div class="header-column">
+                                                    <lightning-combobox
+                                                            name="priceCondition5"
+                                                            label={priceCondition5Label}
+                                                            value={priceCondition5}
+                                                            options={options5}
+                                                            onchange={handleCon5Change}></lightning-combobox>
+                                                </div>
+                                            </lightning-layout-item>
+                                        </template>
+                                    </lightning-layout>
+                                </lightning-layout-item>
+                            </template>
+                            <template if:false={isFacility}>
+                                <lightning-layout-item size="12"  padding="around-small">
+                                    <lightning-layout>
+                                        <template if:false={isMoldType}>
+                                            <lightning-layout-item padding="around-small" size="4">
+                                                <div class="header-column">
+                                                    <lightning-combobox
+                                                            name="priceCondition1"
+                                                            label="設置場所"
+                                                            value={priceCondition1}
+                                                            options={options1}
+                                                            onchange={handleCon1Change}></lightning-combobox>
+                                                </div>
+                                            </lightning-layout-item>
+                                        </template>
+                                        <lightning-layout-item padding="around-small" size="4">
+                                            <div class="header-column">
+                                                <lightning-combobox
+                                                        name="priceCondition2"
+                                                        label="電圧仕様"
+                                                        value={priceCondition2}
+                                                        options={voltageSpecification}
+                                                        onchange={handleCon2Change}></lightning-combobox>
+                                            </div>
+                                        </lightning-layout-item>
+                                        <lightning-layout-item padding="around-small" size="4">
+                                            <div class="header-column">
+                                                <lightning-combobox
+                                                        name="priceCondition4"
+                                                        label="スポットネットワーク"
+                                                        value={priceCondition4}
+                                                        options={options4}
+                                                        onchange={handleCon4Change}></lightning-combobox>
+                                            </div>
+                                        </lightning-layout-item>
+                                    </lightning-layout>
+                                </lightning-layout-item>
+                            </template>
                             <lightning-layout-item size="12" padding="around-small">
                                 <div>
                                     <button class="slds-button slds-align_absolute-center slds-button_brand search-button" 
@@ -132,7 +185,7 @@
 
                 <template if:false={isNoData}>
                     <b>{displayTableLabel}</b>
-                    <table class="slds-table slds-table_cell-buffer slds-table_bordered slds-table_col-bordered">
+                    <table class="slds-table slds-table_cell-buffer slds-table_bordered slds-table_col-bordered slds-no-row-hover">
                         <thead>
                             <template iterator:row={headerList}>
                                 <tr key={row.value.cellList} class="slds-line-height_reset">
@@ -178,7 +231,7 @@
     
                                         </template>
                                         <template if:true={cell.value.isEdit}>
-                                            <td key={cell.value.value}>
+                                            <td key={cell.value.value} style="border-right:thick double rgb(229, 229, 229);">
                                                 <div class="slds-truncate slds-text-align_center">
                                                     <lightning-input type="checkbox" 
                                                     data-id={cell.value.value.id} 

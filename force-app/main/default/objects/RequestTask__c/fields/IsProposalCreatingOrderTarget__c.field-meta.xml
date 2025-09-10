@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>IsProposalCreatingOrderTarget__c</fullName>
+    <externalId>false</externalId>
+    <formula>AND (
+     ISPICKVAL(TaskCategory__c , &quot;提案書作成依頼&quot;),
+     OR (
+         ISPICKVAL(RequestTo__c, &quot;神電公共営・本駐神電社シ一一計&quot;),
+         ISPICKVAL(RequestTo__c, &quot;神電公共営・神電社シ一二計&quot;),
+         ISPICKVAL(RequestTo__c, &quot;神電施設エンジ&quot;),
+         ISPICKVAL(RequestTo__c, &quot;配電東配計&quot;),
+         ISPICKVAL(RequestTo__c, &quot;配電西配計&quot;),
+         ISPICKVAL(RequestTo__c, &quot;長電施電シ&quot;),
+         ISPICKVAL(RequestTo__c, &quot;長電映シ&quot;)
+     )
+)</formula>
+    <label>対象製作所_提案書作成依頼</label>
+    <trackHistory>false</trackHistory>
+    <trackTrending>false</trackTrending>
+    <type>Checkbox</type>
+</CustomField>

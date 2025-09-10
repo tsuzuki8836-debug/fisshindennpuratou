@@ -8,175 +8,180 @@ public class DeviceTriggerLogic {
     @testvisible private static final Integer PRICE_B = 200000*1000;
     // 項目取得Utilクラスをインスタンス化
     GetAllFieldsUtil util = new GetAllFieldsUtil();
-//コメントアウト理由:機器管理費について、見積積算プロジェクトでは対応しないのでコメントアウト
-    // public void equipManageCostCalculation(Set<id> quoteIds){
+
+    // public void equipManageCostCalculation(List<Device__c> newList, List<Device__c> oldList){
+    //     Set<Id> quoteIds = new Set<Id>();
+    //     for(Device__c newDev : newList){
+    //         quoteIds.add(newDev.Quote__c);
+    //     }
+    //     for(Device__c oldDev : oldList){
+    //         quoteIds.add(oldDev.Quote__c);
+    //     }
     //     if(quoteIds.isEmpty()) return;
-    //     List<Quote__c> qtList = getQuotes(quoteIds);
-    //     for(Quote__c qt : qtList){
-    //         if(qt.Devices__r.isEmpty()){
+    //     List<Quote__c> quoteList = getQuotes(quoteIds);
+    //     for(Quote__c quote : quoteList){
+    //         if(quote.Devices__r.isEmpty()){
     //             //機器管理費
-    //             qt.EquipManageCost__c = null;
+    //             quote.EquipManageCost__c = null;
     //             //機器管理費率
-    //             qt.EquipManageCostRate__c = null;
+    //             quote.EquipManageCostRate__c = null;
     //         }else{
-    //             setQuoteValues(qt);
+    //             setQuoteValues(quote,quote.Devices__r);
     //         }
     //     }
-    //     update qtList;
-    // }
-
-    // private void setQuoteValues(Quote__c quote){
-    //     // 機器単体費
-    //     Double sumPriceTarget = getSumPriceTarget(quote.Devices__r);
-    //     //機器管理費率
-    //     Double equipManageCostRate = getEquipManageCostRate(sumPriceTarget);
-    //     //機器管理費
-    //     quote.EquipManageCost__c = sumPriceTarget * equipManageCostRate;
-    //     //機器管理費率
-    //     quote.EquipManageCostRate__c = equipManageCostRate * 100;
-
+    //     update quoteList;
     // }
     
+    // private void setQuoteValues(Quote__c quote, List<Device__c> deviceList){
+    //     //支給品・移設品・製作のみ有りフラグ
+    //     Boolean suppliesFlag = false;
+    //     //見積対象外有りフラグ
+    //     Boolean noTargetFlag = false;
+    //     //機器単体費
+    //     Double sumPriceTarget = Double.valueOf(quote.MachineUnitAmount__c);
+    //     System.debug('sumPriceTarget =' + sumPriceTarget);
+    //     //機器管理費率計算
+    //     Decimal equipManageCostRate = getEquipManageCostRate(sumPriceTarget);
+    //     System.debug('補正前equipManageCostRate =' + equipManageCostRate);
 
-    // /**
-    //  * 機器単体費を取得
-    //  */
-    
-    // private Double getSumPriceTarget(List<Device__c> deviceList){
-    //     Double sumPriceTarget = 0.0;
-    //     for(Device__c dv : deviceList){
-    //         sumPriceTarget += dv.PriceSum__c;
+    //     for(Device__c d : deviceList){
+    //         if(d.EquipManageCostTarget__c == true && (d.QuoteTarget__c == '支給品' || d.QuoteTarget__c == '移設品' || d.QuoteTarget__c == '見積対象(製作のみ)' || d.QuoteTarget__c == '見積対象外(製作のみ)')){
+    //             suppliesFlag = true;
+    //         }else if(d.EquipManageCostTarget__c == true && d.QuoteTarget__c == '見積対象外'){
+    //             noTargetFlag = true;
+    //         }
     //     }
-
-    //     return sumPriceTarget;
+        
+    //     //機器管理費設定
+    //     if(suppliesFlag == true){
+    //         equipManageCostRate = calculateEquipManageCostInSupplies(quote,deviceList,sumPriceTarget,equipManageCostRate);
+    //     }else if(noTargetFlag == true){
+    //         quote.EquipManageCost__c = calculateEquipManageCostInNoTarget(quote,deviceList,equipManageCostRate);
+    //     }else{
+    //         quote.EquipManageCost__c = sumPriceTarget * (equipManageCostRate / 100);
+    //     }
+    //     System.debug('補正後equipManageCostRate =' + equipManageCostRate);
+        
+    //     //機器管理費率設定
+    //     quote.EquipManageCostRate__c = equipManageCostRate;
     // }
-    
 
     // /**
     //  * 機器管理費率を取得
     //  */
-    
-    // private Double getEquipManageCostRate(Double sumPriceTarget){
-    //     Double equipManageCostRate;
+    // private Decimal getEquipManageCostRate(Double sumPriceTarget){
+    //     Decimal equipManageCostRate;
     //     //PRICE_A = 14,000千円  ,  PRICE_B = 200,000千円
     //     if(sumPriceTarget <= PRICE_A){
     //         //機器単体費が 14,000千円以下
-    //         equipManageCostRate = (18.22)/100;            
+    //         equipManageCostRate = 18.22;            
     //     }else if(sumPriceTarget>PRICE_A && sumPriceTarget<=PRICE_B){
     //         //EXPONENT = -0.4711
-    //         equipManageCostRate = ( 42380.2 * (Math.pow(sumPriceTarget, EXPONENT)) )/100;            
+    //         equipManageCostRate = 42380.2 * (Math.pow(sumPriceTarget, EXPONENT));
+    //         //小数3位以下を四捨五入
+    //         equipManageCostRate = equipManageCostRate.setScale(2,RoundingMode.HALF_UP);
     //     }else{
     //         //機器単体費が200,000千円を越える
-    //         equipManageCostRate = (5.21)/100;
+    //         equipManageCostRate = 5.21;
     //     }
 
     //     return equipManageCostRate;
     // }
-    
 
     // /**
-    //  * レコードタイプ「官需」の見積の機器を取得
-    //  */
-    
-    // public List<Device__c> getDeviceTargetRectype(List<Device__c> quoteList){
-    //     List<Device__c> deviceList = new List<Device__c>();
-    //     Map<Id, List<Device__c>> quoteIdByDevices = getQuoteIdByDevice(quoteList);
-    //     Set<Id> quoteIdSet = getQuoteIdsRecTypeOfficialDemand(quoteIdByDevices.keySet());
-    //     if(quoteIdSet.isEmpty()) return deviceList;
-    //     for(Id qtId : quoteIdSet){
-    //         for(Device__c dv : quoteIdByDevices.get(qtId)){
-    //             deviceList.add(dv);
-    //         }
-    //     }
-
-    //     return deviceList;
-    // }
-    
-
-    // /**
-    //  * 機器管理費集計対象がチェックのリスト
-    //  */
-    
-    // public List<Device__c> getDeviceTragetCheckedList(List<Device__c> newList){
-    //     List<Device__c> newDeviceList = new List<Device__c>();
-    //     for(Device__c dv : newList){
-    //         if(dv.EquipManageCostTarget__c){
-    //             newDeviceList.add(dv);
-    //         }
-    //     }
-
-    //     return newDeviceList;
-    // }
-    
-
-    // /**
+    //  * 支給品・移設品・製作のみを含む機器管理費計算
+    //  * @param quote 見積レコード
+    //  * @param deviceList 見積に紐づく見積項目のリスト
+    //  * @param sumPriceTarget 支給品や移設品、製作のみの価格も含めた金額（見積対象外も含む）
+    //  * @param equipManageCostRate 補正前機器管理費率
     //  * 
     //  */
-    
-    // public List<Device__c> getDeviceValueChangedList(List<Device__c> deviceList, Map<Id, Device__c> oldMap, Map<Id, Device__c> newMap){
-    //     //変更したデータリスト
-    //     List<Device__c> dvDataChangedList = new List<Device__c>();
-    //     //機器管理費集計対象
-    //     Boolean oldDvEquipManageCostTarget;
-    //     Boolean newDvEquipManageCostTarget;
-    //     //価格改定後の金額
-    //     Double newDvPriceSum;
-    //     Double oldDvPriceSum;
-
-    //     for(Device__c dv : deviceList){            
-    //         oldDvEquipManageCostTarget = oldMap.get(dv.Id).EquipManageCostTarget__c;
-    //         oldDvPriceSum = oldMap.get(dv.Id).PriceSum__c;
-    //         newDvEquipManageCostTarget = newMap.get(dv.Id).EquipManageCostTarget__c;
-    //         newDvPriceSum = newMap.get(dv.Id).PriceSum__c;
-    //         if(dv.EquipManageCostTarget__c){
-    //             if(oldDvEquipManageCostTarget != newDvEquipManageCostTarget){
-    //                 dvDataChangedList.add(dv);
-    //             }else{
-    //                 if(oldDvPriceSum != newDvPriceSum){
-    //                     dvDataChangedList.add(dv);
+    // private Decimal calculateEquipManageCostInSupplies(Quote__c quote, List<Device__c> deviceList, Decimal sumPriceTarget, Decimal equipManageCostRate){
+    //     //支給品や移設品、製作のみ(見積対象外も含む)の金額
+    //     Decimal suppliesPrice = 0.0;
+    //     //支給品や移設品、製作のみ以外の機器単体費（見積対象外も含む）→見積対象と見積対象外の金額
+    //     Decimal sumPriceTargetExceptSupplies = 0.0;
+    //     //支給品や移設品の価格は含めない金額（見積対象外含まない）→見積対象と見積対象(製作のみ)の金額
+    //     Decimal sumPriceTargetExceptSuppliesInProduction = 0.0;
+    //     //機器管理費率補正係数
+    //     Decimal equipManageCostRateCoefficient;
+    //     //補正後機器管理費率
+    //     Decimal correctionEquipManageCostRate;
+    //     for(Device__c dv : deviceList){
+    //         if(dv.MajorClassification__c != 'システムインテグレーション費' && dv.EquipManageCostTarget__c == true){
+    //             if(dv.QuoteTarget__c == '支給品' || dv.QuoteTarget__c == '移設品' || dv.QuoteTarget__c == '見積対象(製作のみ)' || dv.QuoteTarget__c == '見積対象外(製作のみ)'){
+    //                 suppliesPrice += dv.ClientAnswerAmountTotal__c;
+    //                 if(dv.QuoteTarget__c == '見積対象(製作のみ)'){
+    //                     sumPriceTargetExceptSuppliesInProduction += dv.ClientAnswerAmountTotal__c;
+    //                 }
+    //             }else if(dv.QuoteTarget__c == '見積対象' || dv.QuoteTarget__c == '見積対象外'){
+    //                 sumPriceTargetExceptSupplies += dv.ClientAnswerAmountTotal__c;
+    //                 if(dv.QuoteTarget__c == '見積対象'){
+    //                     sumPriceTargetExceptSuppliesInProduction += dv.ClientAnswerAmountTotal__c;
     //                 }
     //             }
-    //         }else{
-    //             if(oldDvEquipManageCostTarget != newDvEquipManageCostTarget){
-    //                 dvDataChangedList.add(dv);
-    //             }
     //         }
     //     }
+    //     //機器管理費率補正係数算出
+    //     equipManageCostRateCoefficient = (sumPriceTargetExceptSupplies + (suppliesPrice * 0.5)) / sumPriceTarget;
+    //     //小数3位以下を四捨五入
+    //     equipManageCostRateCoefficient = equipManageCostRateCoefficient.setScale(2,RoundingMode.HALF_UP);
 
-    //     return dvDataChangedList;
+    //     //補正後機器管理費率算出
+    //     correctionEquipManageCostRate = equipManageCostRate * equipManageCostRateCoefficient;
+    //     //小数3位以下を四捨五入
+    //     correctionEquipManageCostRate = correctionEquipManageCostRate.setScale(2,RoundingMode.HALF_UP);
+
+    //     //機器管理費算出
+    //     quote.EquipManageCost__c = sumPriceTargetExceptSuppliesInProduction * (correctionEquipManageCostRate / 100);
+
+    //     //各種工事区分の値を設定
+    //     quote.suppliesMachineUnitAmount__c = suppliesPrice;
+    //     quote.removeSuppliesMachineUnitAmount__c = sumPriceTargetExceptSupplies;
+    //     quote.Target_MachineUnitAmount__c = sumPriceTargetExceptSuppliesInProduction;
+    //     quote.temEquipManageCostRate__c = equipManageCostRate;
+    //     quote.equipManageCostRateCoefficient__c = equipManageCostRateCoefficient;
+
+    //     return correctionEquipManageCostRate;
     // }
 
-    // public Map<Id, List<Device__c>> getQuoteIdByDevice(List<Device__c> newList){
-    //     Map<Id, List<Device__c>> quoteIdDeviceMap = new Map<Id, List<Device__c>>();
-    //     for(Device__c dv : newList){
-    //         if(quoteIdDeviceMap.get(dv.Quote__c) == null){
-    //             List<Device__c> dvList = new List<Device__c>();
-    //             dvList.add(dv);
-    //             quoteIdDeviceMap.put(dv.Quote__c, dvList);
-    //         }else{
-    //             quoteIdDeviceMap.get(dv.Quote__c).add(dv);
+    // /**
+    //  * 見積対象外を含む機器管理費計算
+    //  * @param quote 見積レコード
+    //  * @param deviceList 見積に紐づく見積項目のリスト
+    //  * @param equipManageCostRate 機器管理費率
+    //  * 
+    //  */
+    // private Double calculateEquipManageCostInNoTarget(Quote__c quote, List<Device__c> deviceList, Decimal equipManageCostRate){
+    //     //見積対象の機器単体費
+    //     Decimal quoteTargetPrice = 0.0;
+    //     //再計算後の機器管理費
+    //     Decimal correctionEquipManageCost = 0.0;
+        
+    //     for(Device__c dv : deviceList){
+    //         if(dv.QuoteTarget__c == '見積対象' && dv.MajorClassification__c != 'システムインテグレーション費' && dv.EquipManageCostTarget__c == true){
+    //             quoteTargetPrice += dv.ClientAnswerAmountTotal__c;
     //         }
     //     }
+        
+    //     //機器管理費再計算
+    //     correctionEquipManageCost = quoteTargetPrice * (equipManageCostRate / 100);
+    //     //各種工事区分の値を設定
+    //     quote.Target_MachineUnitAmount__c = quoteTargetPrice;
 
-    //     return quoteIdDeviceMap;
+    //     return correctionEquipManageCost;
     // }
-
-    // private Set<Id>  getQuoteIdsRecTypeOfficialDemand(Set<Id> quoteIds){
-    //     Map<Id, Quote__c> quoteMap = new Map<Id, Quote__c>([SELECT Id FROM Quote__c WHERE Id IN: quoteIds AND RecordTypeId =: recTypeOfficialDemandId]);
-
-    //     return quoteMap.keySet();
-    // }    
 
     // private List<Quote__c> getQuotes(Set<id> quoteIds){
-    //     return [SELECT Id, (SELECT Id, PriceSum__c FROM Devices__r WHERE EquipManageCostTarget__c =: true)
+    //     return [SELECT Id, MachineUnitAmount__c,(SELECT Id, QuoteTarget__c, ClientAnswerAmountTotal__c, MajorClassification__c, EquipManageCostTarget__c FROM Devices__r WHERE EquipManageCostTarget__c =: true AND MajorClassification__c != 'システムインテグレーション費')
     //             FROM Quote__c
-    //             WHERE Id IN : quoteIds];
+    //             WHERE Id IN : quoteIds AND RecordTypeId =: recTypeOfficialDemandId AND EquipmentCostExistence__c = 'あり' AND SectionExistence__c = 'なし'];
     // }
     
 
     public void cloneDeviceAndRelatedRecords(List<Device__c> newDevices){
         //マスタ機器レコード <マスタ機器のId, 新規機器のId>
-        Map<Id, Id> cloneDeviceIdMap = this.getCloneDeviceIds(newDevices);
+        Map<Id, Set<Id>> cloneDeviceIdMap = this.getCloneDeviceIds(newDevices);
         //コピーする内訳のリスト
         List<Detail__c> dtlCloneList = new List<Detail__c>();
         
@@ -187,13 +192,15 @@ public class DeviceTriggerLogic {
             //関連内訳を確認する
             for(Id dvId : dvRelated.keySet()){
                 //System.debug('明細数' + dvRelated.get(dvId).Details__r.size());
-                for(Detail__c dtl : dvRelated.get(dvId).Details__r){
-                    //内訳がある場合はコピーする
-                    Detail__c dtlClone = dtl.clone(false,true);
-                    //内訳の機器Idを設定する
-                    dtlClone.Device__c = cloneDeviceIdMap.get(dvId);
-                    //内訳を集める
-                    dtlCloneList.add(dtlClone);
+                for(Detail__c dtl : dvRelated.get(dvId).Details__r){                    
+                    for(Id dId : cloneDeviceIdMap.get(dvId)){
+                        //内訳がある場合はコピーする
+                        Detail__c dtlClone = dtl.clone(false,true);
+                        //内訳の機器Idを設定する
+                        dtlClone.Device__c = dId;
+                        //内訳を集める
+                        dtlCloneList.add(dtlClone);
+                    }
                 }              
             }
             if(dtlCloneList.isEmpty()) return;
@@ -205,16 +212,51 @@ public class DeviceTriggerLogic {
     /**
      * マスタ機器のIDを取得
      */
-    private Map<Id, Id> getCloneDeviceIds(List<Device__c> newList){        
-        Map<Id, Id> idMap = new Map<Id, Id>();        
+    private Map<Id, Set<Id>> getCloneDeviceIds(List<Device__c> newList){        
+        Map<Id, Set<Id>> idMap = new Map<Id, Set<Id>>();        
         for (Device__c d : newList) {
             if(d.isClone()){
-                idMap.put(d.getCloneSourceId(), d.Id);
+                // 同じ見積項目の複数回コピーに対応（2023/12/20 TS鈴木）Start
+                if(idMap.get(d.getCloneSourceId()) != null && !idMap.get(d.getCloneSourceId()).isEmpty()){
+                    Set<Id> idSet = idMap.get(d.getCloneSourceId());
+                    idSet.add(d.Id);
+                    idMap.put(d.getCloneSourceId(), idSet);
+                }else{
+                    Set<Id> idSet = new Set<Id>();
+                    idSet.add(d.Id);
+                    idMap.put(d.getCloneSourceId(), idSet);
+                }
+                // 同じ見積項目の複数回コピーに対応（2023/12/20 TS鈴木）End
+                //idMap.put(d.getCloneSourceId(), idMap.get(d.getCloneSourceId()).add(d.Id));
             }
         }
         return idMap;        
     }
     
+    public void updateConstructionZone(List<Device__c> newDevices,List<Device__c> oldDevices){
+        Set<Id> constructionZoneIds = new Set<id>();
+        Set<Id> deviceIds = new Set<Id>();
+        for(Device__c d : newDevices){
+            deviceIds.add(d.Id);
+        }
+        for(Device__c d : oldDevices){
+            deviceIds.add(d.Id);
+            // 変更前の工事区分のIDを入れておく
+            constructionZoneIds.add(d.ConstructionZone__c);
+        }
+        List<Device__c> deviceList = new List<Device__c>([SELECT Id,ConstructionZone__c,Device_SmallCategory__c,Device_SmallCategory__r.Device_MiddleCategory__r.Device_LargeCategory__r.ConstructionZone__r.Id FROM Device__c WHERE Id IN: deviceIds]);
+        for(Device__c getDevice : deviceList){
+            //細別から辿った工事区分のIDを追加
+            constructionZoneIds.add(getDevice.Device_SmallCategory__r.Device_MiddleCategory__r.Device_LargeCategory__r.ConstructionZone__r.Id);
+            //システムインテグレーション用に見積項目の工事区分のIDを追加
+            constructionZoneIds.add(getDevice.ConstructionZone__c);
+        }
+        List<ConstructionZone__c> conZoneList = [SELECT Id FROM ConstructionZone__c WHERE Id IN : constructionZoneIds];
+        if(conZoneList.size() != 0 && conZoneList != null){
+            update conZoneList;
+        }
+    }
+
     /**
      * 関連内訳を取得
      */
@@ -315,6 +357,62 @@ public class DeviceTriggerLogic {
                     duplicateNumber += ']';
                 }
                 Trigger.new.get(0).addError('この見積の中に項目番号が重複する見積項目が存在しています。項目番号：' + duplicateNumber);
+            }
+        }
+    }
+
+    /**
+     * 工区自動入力
+     *
+     * @param device 登録する機器
+     * @return なし
+     */
+    public void deviceConstructionZoneSetting(List<Device__c> devices) {
+        // Set<Id> deviceIds = new Set<Id>();
+        // for(Device__c d : devices){
+        //     deviceIds.add(d.Id);
+        // }
+        //Map<Id, Device__c> deviceMap = new Map<Id, Device__c>([SELECT Id,ConstructionZoneId__c,Device_SmallCategory__c,Device_SmallCategory__r.Device_MiddleCategory__r.Device_LargeCategory__r.ConstructionZone__r.Id FROM Device__c WHERE Id IN: deviceIds]);
+
+        for(Device__c d : devices){
+            if(d.Device_SmallCategory__c != null){
+                d.ConstructionZone__c = d.ConstructionZoneId__c;
+            }else if(d.Device_SmallCategory__c == null && d.MajorClassification__c != 'システムインテグレーション費'){
+                d.ConstructionZone__c = null;
+            }
+        }
+    }
+
+    /**
+     * 一般管理費率、工区有無、機器管理費有無更新
+     *
+     * @param device 登録する機器
+     * @return なし
+     */
+    public void updateFieldFromQuoteValues(List<Device__c> devices) {
+        Set<Id> deviceIds = new Set<Id>();
+        for(Device__c d : devices){
+            deviceIds.add(d.Id);
+        }
+        Map<Id, Device__c> reGetDeviceMap = new Map<Id, Device__c>([SELECT Id,Quote__r.GeneralAdministrativeExpensesPercent__c,Quote__r.EquipmentCostExistence__c,Quote__r.SectionExistence__c FROM Device__c WHERE Id IN :deviceIds]);
+        for(Device__c d : devices){
+            d.GeneralAdministrativeExpensesCopy__c = reGetDeviceMap.get(d.Id).Quote__r.GeneralAdministrativeExpensesPercent__c;
+            d.EquipmentCostExistence__c = reGetDeviceMap.get(d.Id).Quote__r.EquipmentCostExistence__c;
+            d.SectionExistence__c = reGetDeviceMap.get(d.Id).Quote__r.SectionExistence__c;
+        }
+    }
+
+    /**
+     * 工区有無、機器管理費有無、規格名更新
+     *
+     * @param device 登録する機器
+     * @return なし
+     */
+    public void updateOfficialDemandField(List<Device__c> devices) {
+        for(Device__c d : devices){
+            // 見積項目名と規格名を同名とするチェックボックスがtrueかつ見積レコードタイプが「官需」の場合、見積項目名を規格名に転記
+            if(d.DeviceNameEqualSpecificationName__c == true && d.RecordTypeOfQuote__c == '官需'){
+                d.SpecificationName__c = d.Name;
             }
         }
     }

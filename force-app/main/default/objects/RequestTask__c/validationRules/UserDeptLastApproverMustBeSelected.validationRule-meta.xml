@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ValidationRule xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>UserDeptLastApproverMustBeSelected</fullName>
+    <active>false</active>
+    <description>承認パターンが「承認者手動設定」かつ自部門最終承認者が選択されていない場合にエラーを表示する。</description>
+    <errorConditionFormula>AND( 
+				ISPICKVAL( ApprovalPattern__c, &quot;承認者手動設定&quot;)
+				, ISPICKVAL( UserDeptLastApprover__c, &quot;&quot;)
+)</errorConditionFormula>
+    <errorMessage>承認パターンが承認者手動設定の場合、自部門最終承認者は入力必須です。</errorMessage>
+</ValidationRule>

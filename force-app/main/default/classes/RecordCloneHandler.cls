@@ -64,8 +64,13 @@ public class RecordCloneHandler {
                 for(Integer i = 0; i < children.size(); i++) {
                     children[i].put('Id', null);
                     if(childSummary.isNamable) {
-                        String currentNameValue = (String) children[i].get(childSummary.nameField);
-                        children[i].put(childSummary.nameField, 'Cloned - ' + todayStr + ' : ' + currentNameValue);                 
+                        String currentNameValue = (String) children[i].get(childSummary.nameField);  
+                        //20241212 oh 見積・応札・手数料伺いコピーの分岐判断を追加する
+                        if(('QuoteBiddingInquiry__c').equals(String.valueOf(cloned.getSObjectType()))){
+                            children[i].put(childSummary.nameField, currentNameValue);   
+                        } else {
+                            children[i].put(childSummary.nameField, 'Cloned - ' + todayStr + ' : ' + currentNameValue);  
+                        }              
                     }
                     children[i].put(childSummary.parentRelationshipField, cloned.Id);
                     

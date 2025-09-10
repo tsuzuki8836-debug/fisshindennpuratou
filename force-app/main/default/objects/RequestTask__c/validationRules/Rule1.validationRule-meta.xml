@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ValidationRule xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Rule1</fullName>
+    <active>false</active>
+    <description>変更依頼時コメント入力必須</description>
+    <errorConditionFormula>AND(
+ ISCHANGED(Status__c ) ,
+ ISPICKVAL(Status__c , &apos;資料変更依頼&apos;) ,
+ PRIORVALUE(TaskDetail__c ) = TaskDetail__c
+)</errorConditionFormula>
+    <errorDisplayField>TaskDetail__c</errorDisplayField>
+    <errorMessage>資料変更依頼時のコメントを追記してください。</errorMessage>
+</ValidationRule>

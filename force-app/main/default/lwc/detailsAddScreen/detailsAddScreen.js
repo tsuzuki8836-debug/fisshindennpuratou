@@ -7,6 +7,7 @@ import getPricingTableRecords from '@salesforce/apex/DetailsAddController.getPri
 import getPricingTableRecordsByImage from '@salesforce/apex/DetailsAddController.getPricingTableRecordsByImage';
 import getDetailTableRecords from '@salesforce/apex/DetailsAddController.getDetailTableRecords';
 import getSymbolObjectRecords from '@salesforce/apex/DetailsAddController.getSymbolObjectRecords';
+import containsEVT_PT_LA from '@salesforce/apex/DetailsAddController.containsEVT_PT_LA';
 import buList from '@salesforce/label/c.BuList';
 import symbolObject from '@salesforce/resourceUrl/SymbolObject';
 import { isNotEmpty, priceCalculator } from 'c/commonUtil';
@@ -27,6 +28,9 @@ export default class DetailsAddScreen extends LightningElement {
     @track isPrev = true;//前ページあるかどうか
     @track isNext = true;//次ページあるかどうか
     @track searchFlg = '';//'1'⇒マスタ検索、'2'⇒画像検索、'3'⇒見積検索
+    @track isClearAll = true;//一括クリアボタン制御
+    @track isQuoteSearch = false;//チェックボックス制御用（見積検索の場合true)
+    @track quoteSelectList = []; //見積検索の選択されたデータ
 
     //------------------BU検索条件----------------
 	@track isBuShow = true;//表示する制御
@@ -57,9 +61,9 @@ export default class DetailsAddScreen extends LightningElement {
                             '回転数制御装置(VVVF)','MACTUS',
                             '計装機器','発電機','UPS',
                             // 'MELFLEX',
-                            '進相コンデンサ/リアクトル','大型映像装置','テレメータ装置',
-                            '無線装置(テレメータ･テレコントロール用)','放流警報装置','テレメータ装置(自律型)',
-                            'IP伝送装置','CCTVカメラ設備','本支社専用'];
+                            '進相コンデンサ/リアクトル','大型映像装置','テレメータ装置[国交省本省宛て提出機器単体費]',
+                            '無線装置(テレメータ･テレコントロール用)[国交省本省宛て提出機器単体費]','放流警報装置[国交省本省宛て提出機器単体費]','テレメータ装置(自律型)[国交省本省宛て提出機器単体費]',
+                            'IP伝送装置[国交省本省宛て提出機器単体費]','CCTVカメラ設備[国交省本省宛て提出機器単体費等]','本支社専用'];
 
     //------------------見積番号検索条件----------------
 	@track isQuoteNumberShow = true;//見積番号検索条件を表示する制御
@@ -88,6 +92,10 @@ export default class DetailsAddScreen extends LightningElement {
     @track symbolObjectList = []; //図記号検索の一覧
     @track soSelectList = []; //図記号検索の選択されたデータ
 
+    //------------------チェックボックス制御（見積検索のみ）-------------
+    @track isQuoteSearch = false;//チェックボックス制御用（見積検索の場合true)
+    @track quoteSelectList = []; //見積検索の選択されたデータ
+
     //画面初期処理
     connectedCallback() {
         //Buプルダウンを設定する
@@ -98,6 +106,28 @@ export default class DetailsAddScreen extends LightningElement {
             this.bu_Options.push(valSet);
         })
     }
+
+   //選択　チェックボックス　OnClick()
+   handlerQuoteCheckBoxChange(evt){
+        console.log('handlerQuoteCheckBoxChange Start');
+        var val = evt.target.checked;
+        var id = evt.currentTarget.dataset.id;
+        //外すの場合、保持リストから要素削除
+        if (this.quoteSelectList.includes(id) && !val) {
+            var index = this.quoteSelectList.indexOf(id);
+            this.quoteSelectList.splice(index, 1); 
+        //チェックオンの場合、保持リストに追加
+        }else if (!this.quoteSelectList.includes(id) && val) {
+            this.quoteSelectList.push(id);
+        }
+        console.log(this.quoteSelectList);
+        //親へ送信
+        const passEvent = new CustomEvent('checkboxchange', {
+            detail:{quoteSelectList:this.quoteSelectList} 
+        });
+        this.dispatchEvent(passEvent);
+    }
+
     //BU条件が変更された場合
     bu_Handler(evt){
         console.log(evt.target.value);
@@ -326,10 +356,12 @@ export default class DetailsAddScreen extends LightningElement {
             //一覧情報の設定
             this.detailRecords = resultData.records;
             this.isDisplayNoRecords= true;//[No records found]表示要否
+            this.isClearAll=true;
             //明細データがありの場合利用可にする
             if (this.detailRecords){
                 if(this.detailRecords.length>0){
                     this.isDisplayNoRecords= false;//[No records found]表示要否
+                    this.isClearAll=false;
                 }
             }
             this.intensifyRecords = resultData.intensifyRecords;
@@ -371,6 +403,7 @@ export default class DetailsAddScreen extends LightningElement {
             //一覧状態をクリア
             this.clearTableList();
             this.searchFlg = '3';
+            this.isQuoteSearch = true;
             //見積検索
             this.quoteSearch();
         }
@@ -391,11 +424,12 @@ export default class DetailsAddScreen extends LightningElement {
             //一覧情報の設定
             this.detailRecords = resultData.records;
             this.isDisplayNoRecords= true;//[No records found]表示要否
+            this.isClearAll=true;
             //明細データがありの場合利用可にする
             if (this.detailRecords){
                 if(this.detailRecords.length>0){
                     this.isDisplayNoRecords= false;//[No records found]表示要否
-
+                    this.isClearAll=false;
                     this.intensifyRecords = resultData.intensifyRecords;
                     //ページ情報の設定
                     this.pageNumber = resultData.pageNumber;
@@ -506,10 +540,12 @@ export default class DetailsAddScreen extends LightningElement {
             //一覧情報の設定
             this.detailRecords = resultData.records;
             this.isDisplayNoRecords= true;//[No records found]表示要否
+            this.isClearAll=true;
             //明細データがありの場合利用可にする
             if (this.detailRecords){
                 if(this.detailRecords.length>0){
                     this.isDisplayNoRecords= false;//[No records found]表示要否
+                    this.isClearAll=false;
                     this.isWeight = (!isNotEmpty(resultData.bu_Value) || resultData.bu_Value==='S'?false:true);;//施設、水環境、官需
                 }
             };
@@ -531,12 +567,53 @@ export default class DetailsAddScreen extends LightningElement {
     }
 
 
+    // 数量を全てクリアする
+    clearAllQuantity() {
+        //一時情報をクリア。
+        this.intensifyRecords.forEach((item) => {
+            //数量をクリア
+            if(isNotEmpty(item.Quantity))item.Quantity=null;
+            //数量より計算された合計をクリア
+            if(isNotEmpty(item.WC))item.WC=null;
+            if(isNotEmpty(item.Price))item.Price=null;
+            if(isNotEmpty(item.ProvisionPrice))item.ProvisionPrice=null;
+            if(isNotEmpty(item.Weight))item.Weight=null;
+        });
+        //集約対象リストを送信
+        this.dispatchEvent(new CustomEvent('quantitychange', {
+            detail: {intensifyRecords:this.intensifyRecords} 
+        }));
+
+        //一覧表示データをクリア
+        this.detailRecords.forEach((item) => {
+            //数量をクリア
+            if(isNotEmpty(item.Quantity)){
+                item.Quantity=null;
+                if(isNotEmpty(item.QuantitySpan))item.QuantitySpan='';
+                //各価格を計算する
+                item = this.calDetailRow(item.Id, item.Quantity, item.UnitPrice, item.UnitWeight, item.ProvisionPrice, item);
+                //内訳集約対象に各計算値を更新
+                this.addtoIntensifyRecords(item);
+                console.log(item);//計算後
+            }
+
+        });
+        //合計金額エリアを再計算
+        this.setTotalPrice();
+
+    }
+
+
 //--------------------図記号検索画面--------------------------
 
     //単位WCが変更された場合
     handleCreditWCChange(event){
         let objName = event.currentTarget.dataset.id;//Id@CreditWC
         var objInput=this.template.querySelector('input[data-id="'+objName+'"]');
+        //WCが全角入力された際に半角に変換する 2023/11/10
+        objInput.value = objInput.value.replace(/[０-９．]/g, function(s) {
+            return String.fromCharCode(s.charCodeAt(0) - 0xFEE0);
+        });
         // 項目チェック
         let validity = event.target.validity;
         if (!validity.valid) {
@@ -549,7 +626,7 @@ export default class DetailsAddScreen extends LightningElement {
             });
             this.dispatchEvent(errEvent);
             objInput.value='';
-            return;
+            // return;
         }
 
         const ids = objName.split('@');
@@ -566,7 +643,10 @@ export default class DetailsAddScreen extends LightningElement {
     handleWCCoefficientChange(event){
         let objName = event.currentTarget.dataset.id;//Id@WCCoefficient
         var objInput=this.template.querySelector('input[data-id="'+objName+'"]');
-
+        //WC係数が全角入力された際に半角に変換する 2023/11/10
+        objInput.value = objInput.value.replace(/[０-９．]/g, function(s) {
+            return String.fromCharCode(s.charCodeAt(0) - 0xFEE0);
+        });
         //仮　項目チェック
         let validity = event.target.validity;
         if (!validity.valid) {
@@ -579,7 +659,7 @@ export default class DetailsAddScreen extends LightningElement {
             });
             this.dispatchEvent(errEvent);
             objInput.value='';
-            return;
+            // return;
         }
 
 
@@ -597,6 +677,10 @@ export default class DetailsAddScreen extends LightningElement {
     handleUnitPriceCoefficientChange(event){
         let objName = event.currentTarget.dataset.id;//Id@UnitPriceCoefficient
         var objInput=this.template.querySelector('input[data-id="'+objName+'"]');
+        //WC係数が全角入力された際に半角に変換する 2023/11/10
+        objInput.value = objInput.value.replace(/[０-９．]/g, function(s) {
+            return String.fromCharCode(s.charCodeAt(0) - 0xFEE0);
+        });
         //項目チェック
         let validity = event.target.validity;
         if (!validity.valid) {
@@ -609,7 +693,7 @@ export default class DetailsAddScreen extends LightningElement {
             });
             this.dispatchEvent(errEvent);
             objInput.value='';
-            return;
+            // return;
         }
 
         const ids = objName.split('@');
@@ -639,7 +723,7 @@ export default class DetailsAddScreen extends LightningElement {
             });
             this.dispatchEvent(errEvent);
             objInput.value='';
-            return;
+            // return;
         }
 
         const ids = objName.split('@');
@@ -663,6 +747,30 @@ export default class DetailsAddScreen extends LightningElement {
         objInput.value = objInput.value.replace(/[０-９．]/g, function(s) {
             return String.fromCharCode(s.charCodeAt(0) - 0xFEE0);
         });
+        // 2024/02/20 TS田村 追記
+        containsEVT_PT_LA({pricingTableId: idChanged, quantity: objInput.value})
+        .then(result => {
+            if(result == true){
+                objInput.value = '';
+                const errEvent = new ShowToastEvent({
+                    title: 'エラー',
+                    message: '「LA」「VT、PT」「ZVT、GPT、EVT」「ネットワークVT」「ネットワークCT」に2以上は入力できません。',
+                    variant: 'error',
+                    mode: 'dismissable'
+                });
+                this.dispatchEvent(errEvent);
+                var detailRecords = this.detailRecords;
+                for(var i = 0; i < detailRecords.length; i++){
+                    var detail = detailRecords[i];
+                    if(detail.Id == idChanged){
+                        console.log(detail.Id);
+                        detail['QuantitySpan'] = '';
+                        detail['Quantity'] = '';
+                        detail['Price'] = '';
+                    }
+                }
+            }
+        });
 
         //仮　項目チェック
         let validity = event.target.validity;
@@ -676,7 +784,7 @@ export default class DetailsAddScreen extends LightningElement {
             });
             this.dispatchEvent(errEvent);
             objInput.value='';
-            return;
+            // return;
         }
 
         this.calDetailRecords(idChanged);
@@ -695,6 +803,7 @@ export default class DetailsAddScreen extends LightningElement {
         var quantity = objInput.value;
         let unitPrice = objInput.dataset.name;//単価
         let unitWeight = objInput.dataset.weight;//単位重量
+        let provisionUnitPrice = objInput.dataset.provision;//提供単価
         //当行のデータを再計算
         var detailRecords = this.detailRecords;
         for(var j=0; j<detailRecords.length; j++) {
@@ -702,7 +811,7 @@ export default class DetailsAddScreen extends LightningElement {
             if(idChanged === idRecord) {
                 var detail = detailRecords[j];
                 //各価格を計算する
-                detailRecords[j] = this.calDetailRow(idChanged, quantity, unitPrice, unitWeight, detail);
+                detailRecords[j] = this.calDetailRow(idChanged, quantity, unitPrice, unitWeight, provisionUnitPrice, detail);
 
                 //内訳集約対象に追加
                 this.addtoIntensifyRecords(detailRecords[j]);
@@ -712,7 +821,7 @@ export default class DetailsAddScreen extends LightningElement {
     }
 
     //行単位で各価格を計算する
-    calDetailRow(idChanged, quantity, unitPrice, unitWeight, detail){
+    calDetailRow(idChanged, quantity, unitPrice, unitWeight, provisionUnitPrice, detail){
         
         let creditWCObjName = idChanged + '@CreditWC';//単位WCコンポの名称
         let wcObjName = idChanged + '@WCCoefficient';//WC係数コンポの名称
@@ -784,7 +893,7 @@ export default class DetailsAddScreen extends LightningElement {
         }else{
             //提供価格を計算する
             var provisionPrice = priceCalculator({
-                UnitPrice__c: provisionPriceInObj.value,
+                UnitPrice__c: provisionUnitPrice,
                 Quantity__c: quantity,
                 Coefficient__c: null
             });
@@ -797,8 +906,8 @@ export default class DetailsAddScreen extends LightningElement {
         detail['CreditWCSpan']=(isNotEmpty(creditWCObj.value)?Number(creditWCObj.value).toLocaleString():'');
         detail['WCCoefficient']=wcInObj.value;
         detail['UnitPriceCoefficient']=priceIntObj.value;
-        detail['ProvisionUnitPrice']= isNotEmpty(provisionPriceInObj)?provisionPriceInObj.value:'';
-        detail['ProvisionUnitPriceSpan']=(isNotEmpty(provisionPriceInObj)&&isNotEmpty(provisionPriceInObj.value)?Number(provisionPriceInObj.value).toLocaleString():'');
+        detail['ProvisionUnitPrice']= provisionUnitPrice;
+        detail['ProvisionUnitPriceSpan']=(isNotEmpty(provisionUnitPrice)?Number(provisionUnitPrice).toLocaleString():'');
         detail['UnitWeight']=unitWeight;
         detail['UnitWeightSpan']=(isNotEmpty(unitWeight)?Number(unitWeight).toLocaleString():'');
         detail['WC']=wcPrice;
@@ -879,6 +988,7 @@ export default class DetailsAddScreen extends LightningElement {
         this.isDisplayNoRecords= false;//データなし エラー表示の制御
         this.detailRecords=[];//一覧表示するデータ
         this.intensifyRecords =[];
+        this.quoteSelectList=[];
         this.pageSize = 500;//ページ毎に表示件数
         this.pageNumber = 1;//当前ページ
         this.totalRecords = 0;//データ数
@@ -886,10 +996,19 @@ export default class DetailsAddScreen extends LightningElement {
         this.recordEnd = 0;//ページ終了数
         this.recordStart = 0;//ページ開始数
         this.searchFlg = '';
+        this.isQuoteSearch = false;
+        this.isPrev = true;
+        this.isNext = true;
+        this.isClearAll=true;
         //親へ送信
         const passEvent = new CustomEvent('quantitychange', {
             detail:{intensifyRecords:this.intensifyRecords} 
         });
         this.dispatchEvent(passEvent);
+        //親へ送信
+        const checkEvent = new CustomEvent('checkboxchange', {
+            detail:{quoteSelectList:this.quoteSelectList} 
+        });
+        this.dispatchEvent(checkEvent);
     }
 }

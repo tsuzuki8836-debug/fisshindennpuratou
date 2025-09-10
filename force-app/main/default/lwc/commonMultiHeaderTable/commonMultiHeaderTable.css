@@ -5,3 +5,10 @@
 .td-border-bottom {
     border-bottom: var(--lwc-borderWidthThin,1px) solid var(--lwc-colorBorder,rgb(229, 229, 229));
 }
+tr:nth-child(even) {
+    background: #eff4ff;
+}
+
+tr:nth-child(odd) {
+    background: #fff;
+}

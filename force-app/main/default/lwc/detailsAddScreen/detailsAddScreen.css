@@ -42,7 +42,7 @@
     font-size: 11px;
 }
 .slds-table th{
-    z-index: 9;
+    z-index: 8;
 }
 .input-readonly {
     border: 0;
@@ -83,4 +83,58 @@
     text-align: right;
     pointer-events: none;
     z-index: 2;
+}
+
+/*ヘッダー固定*/
+.slds-table.slds-table_bordered.slds-table_col-bordered:first-child{
+    position: sticky;
+    left: 0;
+    top: 0;
+    z-index: 4;
+}
+/*ヘッダーを「名称」セルと他を分離し、「名称」セルを固定
+.sticky:nth-child(1){
+    position: sticky;
+    left: 0;
+    top: 0;
+    z-index: 9;
+}*/
+
+/*ヘッダーを「名称」セルと他を分離し、「名称」セルを固定*/
+.slds-table thead th:nth-child(1){
+    position: sticky;
+    left: 0;
+    top: 0;
+    z-index: 10;
+}
+
+/*名称列の下を固定*/
+.slds-cell_action-mode:nth-child(1){
+    position: sticky;
+    left: 0;
+    z-index: 3;
+}
+/*チェックボックスがある場合、ヘッダーを名称列より左と他を分離し、名称列より左を固定*/
+.slds-table thead th.sticky:first-child{
+    min-width: 80px;/*2023/09/06 add by TS木佐貫　チェックボックスセルの最小幅を決定*/
+    position: sticky;
+    left: 0;
+    top: 0;
+    z-index: 10;
+}
+.slds-table thead th.sticky:nth-child(2){
+    position: sticky;
+    left: 80px;
+    top: 0;
+    z-index: 10;
+}
+.slds-cell_action-mode.sticky:nth-child(1){
+    position: sticky;
+    left: 0;
+    z-index: 3;
+}
+.slds-cell_action-mode.sticky:nth-child(2){
+    position: sticky;
+    left: 80px;
+    z-index: 3;
 }

@@ -1,0 +1,146 @@
+<template>
+    <div
+        class="slds-box slds-p-around_none slds-m-top_x-small slds-m-bottom_medium slds-m-horizontal_none">
+        <div class="c-container">
+                    <lightning-layout>
+                        <!-- 検索条件：設置場所 -->
+                            <lightning-layout-item size = "6" padding="around-small">
+                                <div class="slds-form-element">
+                                    <div class="slds-form-element__control">
+                                        <lightning-combobox
+                                            name="progress"
+                                            label="設置場所"
+                                            value={selectedValue}
+                                            options={classic_Options}
+                                            onchange={onChangeHandler} 
+                                            variant="label-inline"></lightning-combobox>
+                                    </div>
+                                </div>
+                            </lightning-layout-item>
+                        <!-- 検索条件：定格電圧 -->
+                            <lightning-layout-item size = "6" padding="around-small">
+                                <div class="slds-form-element">
+                                    <div class="slds-form-element__control">
+                                        <lightning-combobox
+                                            name="progress"
+                                            label="定格電圧"
+                                            value={selectedValue2}
+                                            options={classic_Options2}
+                                            onchange={onChangeHandler2} 
+                                            variant="label-inline"></lightning-combobox>
+                                    </div>
+                                </div>
+                            </lightning-layout-item>
+                    </lightning-layout>
+                    <lightning-layout>
+                        <!-- 検索条件：定格遮断電流 -->
+                        <template if:true = {showButtonclassicOptions3}>
+                            <lightning-layout-item size = "6" padding="around-small">
+                                <div class="slds-form-element">
+                                    <div class="slds-form-element__control">
+                                        <!-- onchange={name1_Handler} -->
+                                        <lightning-combobox
+                                            name="progress"
+                                            label="定格遮断電流"
+                                            value={selectedValue3}
+                                            options={classic_Options3}
+                                            onchange={onChangeHandler3} 
+                                            variant="label-inline"></lightning-combobox>
+                                    </div>
+                                </div>
+                            </lightning-layout-item>
+                        </template>
+                        <!-- 検索条件：定格電流 -->
+                        <lightning-layout-item size = "6" padding="around-small">
+                            <div class="slds-form-element">
+                                <div class="slds-form-element__control">
+                                    <lightning-combobox
+                                        name="progress"
+                                        label="定格電流"
+                                        value={selectedValue4}
+                                        options={classic_Options4}
+                                        onchange={onChangeHandler4} 
+                                        variant="label-inline"></lightning-combobox>
+                                </div>
+                            </div>
+                        </lightning-layout-item>
+                    </lightning-layout>
+                    <!-- 検索条件：絶縁方式 -->
+                    <template if:true = {showButtonclassicOptions5}>
+                        <lightning-layout>
+                            <lightning-layout-item size = "6" padding="around-small">
+                                <div class="slds-form-element">
+                                    <div class="slds-form-element__control">
+                                        <lightning-combobox
+                                            name="progress"
+                                            label="絶縁方式"
+                                            value={selectedValue5}
+                                            options={classic_Options5}
+                                            onchange={onChangeHandler5} 
+                                            variant="label-inline"></lightning-combobox>
+                                    </div>
+                                </div>
+                            </lightning-layout-item>
+                        </lightning-layout>
+                    </template>
+                <!-- </lightning-layout-item> -->
+                <lightning-layout-item size="2" padding="around-small">
+                    <div>
+                        <button class="slds-button slds-align_absolute-center slds-button_brand search-button"
+                            onclick={onSearch} title="Search">検索</button>
+                    </div>
+                </lightning-layout-item>
+
+        </div>
+        <div class="c-container">
+            <lightning-layout>
+                <lightning-layout-item padding="around-small">
+                    <div class="header-column">
+                        <p>
+                            <b>価格合計：<lightning-formatted-number value={displayTotal}></lightning-formatted-number></b>
+                        </p>
+                    </div>
+                </lightning-layout-item>
+            </lightning-layout>
+        </div>
+<!-- テーブル（66kV C-GISユニット単価 or 22kV C-GISユニット単価 or ブロックキュービクルユニット単価） -->
+        <lightning-layout>
+            <template if:true={unitPriceTable}>
+                <c-common-table data-id="unitPriceTable" table-obj={unitPriceTable}
+                    oncommontableinputchange={onCommonTableInputChange} value={test}>
+                </c-common-table>
+            </template>
+        </lightning-layout>
+        <template if:true={isHavenote2}>
+            <lightning-layout>
+                <lightning-layout-item>
+                    <b>
+                        <ul class="slds-m-around_medium" style="border: 1px solid #0c0c0c;">      
+                            <template iterator:note={noteList2}>
+                                <li key={note.value}>{note.value}</li>
+                            </template>
+                        </ul>
+                    </b>
+                </lightning-layout-item>
+            </lightning-layout>
+        </template>
+
+        <template if:false={loaded}>
+            <div class="c-container">
+                <lightning-layout>
+                    <lightning-layout-item padding="around-small">
+                        <div class="header-column">
+                            <p>
+                                <b>価格合計：<lightning-formatted-number value={displayTotal}></lightning-formatted-number>
+                                    </b>
+                            </p>
+                        </div>
+                    </lightning-layout-item>
+                </lightning-layout>
+            </div>
+        </template>
+    </div>
+    <template if:true={loaded}>
+        <lightning-spinner alternative-text="Loading" size="small"></lightning-spinner>
+    </template>
+</template>

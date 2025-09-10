@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ValidationRule xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>RequesrDestinationOther</fullName>
+    <active>false</active>
+    <errorConditionFormula>AND(
+    ISPICKVAL(RequestDestination__c, &apos;その他&apos;),
+				ISBLANK(RequestDestination_other__c) 
+)</errorConditionFormula>
+    <errorMessage>依頼先で「その他」を選択した場合、「依頼先場所」は入力必須です。</errorMessage>
+</ValidationRule>

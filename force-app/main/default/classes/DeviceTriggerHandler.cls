@@ -4,28 +4,31 @@ public class DeviceTriggerHandler {
 
     public void onAfterInsert(List<Device__c> newList){
         logic.cloneDeviceAndRelatedRecords(newList);
+        logic.updateConstructionZone(newList,new List<Device__c>());
         // List<Device__c> deviceTargetList = logic.getDeviceTargetRectype(newList);
         // if(deviceTargetList.isEmpty()) return;
         // deviceTargetList = logic.getDeviceTragetCheckedList(deviceTargetList);
         // if(deviceTargetList.isEmpty()) return;
         // Map<Id, List<Device__c>> quoteIdMap = logic.getQuoteIdByDevice(deviceTargetList);
-        // logic.equipManageCostCalculation(quoteIdMap.keySet());
+        //logic.equipManageCostCalculation(newList,new List<Device__c>());
     }
 
     public void onAfterUpdate (Map<Id, Device__c> oldMap, Map<Id, Device__c> newMap) {
+        logic.updateConstructionZone(newMap.values(),oldMap.values());
         // List<Device__c> deviceTargetList = logic.getDeviceTargetRectype(newMap.values());
         // if(deviceTargetList.isEmpty()) return;
         // deviceTargetList = logic.getDeviceValueChangedList(deviceTargetList, oldMap, newMap);
         // if(deviceTargetList.isEmpty()) return;
         // Map<Id, List<Device__c>> quoteIdMap = logic.getQuoteIdByDevice(deviceTargetList);
-        // logic.equipManageCostCalculation(quoteIdMap.keySet());
+        //logic.equipManageCostCalculation(newMap.values(),oldMap.values());
     }
 
     public void onAfterDelete(List<Device__c> oldList){
+        logic.updateConstructionZone(new List<Device__c>(),oldList);
         // List<Device__c> deviceTargetList = logic.getDeviceTargetRectype(oldList);
         // if(deviceTargetList.isEmpty()) return;
         // Map<Id, List<Device__c>> quoteIdMap = logic.getQuoteIdByDevice(deviceTargetList);
-        // logic.equipManageCostCalculation(quoteIdMap.keySet());
+        //logic.equipManageCostCalculation(new List<Device__c>(),oldList);
     }
 
     /**
@@ -39,7 +42,7 @@ public class DeviceTriggerHandler {
         for (Device__c d : deviceList) {
             String value = d.Quantity__c;
             System.debug('value'+value);
-            logic.convertFullToHalf(value);
+            //logic.convertFullToHalf(value);
             d.Quantity__c = logic.convertFullToHalf(value);
             System.debug('d='+d.Quantity__c);
             if(quotemap.containskey(d.Quote__c)){
@@ -50,6 +53,8 @@ public class DeviceTriggerHandler {
             }
         }
         logic.quoteSpecificationNumberCheck(quotemap);
+        logic.updateOfficialDemandField(deviceList);
+        logic.deviceConstructionZoneSetting(deviceList);
     }
 
     /**
@@ -63,7 +68,7 @@ public class DeviceTriggerHandler {
         for (Device__c d : deviceList) {
             String value = d.Quantity__c;
             System.debug('value'+value);
-            logic.convertFullToHalf(value);
+            //logic.convertFullToHalf(value);
             d.Quantity__c = logic.convertFullToHalf(value);
             System.debug('d='+d.Quantity__c);
             if(quotemap.containskey(d.Quote__c)){
@@ -74,5 +79,8 @@ public class DeviceTriggerHandler {
             }
         }
         logic.quoteSpecificationNumberCheck(quotemap);
+        logic.deviceConstructionZoneSetting(deviceList);
+        logic.updateFieldFromQuoteValues(deviceList);
+        logic.updateOfficialDemandField(deviceList);
     }
 }

@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>IsFactoryEngineerSelectionRequeTarget__c</fullName>
+    <externalId>false</externalId>
+    <formula>AND (
+  ISPICKVAL(TaskCategory__c , &quot;製作所技術者選定依頼&quot;),
+  OR (
+    ISPICKVAL(RequestTo__c, &quot;神電公共営&quot;),
+    ISPICKVAL(RequestTo__c, &quot;神電社会営&quot;),
+    ISPICKVAL(RequestTo__c, &quot;配電社会営&quot;),
+    ISPICKVAL(RequestTo__c, &quot;配電スマ営&quot;)
+  )
+)</formula>
+    <label>対象製作所_製作所技術者選定依頼</label>
+    <trackHistory>false</trackHistory>
+    <trackTrending>false</trackTrending>
+    <type>Checkbox</type>
+</CustomField>

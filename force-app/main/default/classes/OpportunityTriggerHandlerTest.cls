@@ -167,8 +167,8 @@ private class OpportunityTriggerHandlerTest {
     private static void recalculationOppBySRInfoTest() {
 
         Profile prof = [SELECT Id FROM Profile WHERE Name = '部門管理者' LIMIT 1];
-        UserRole role = [SELECT Id FROM UserRole WHERE Name = '01_社会環境事業部' LIMIT 1];
-        User user = createUser(prof.Id, role.Id, 'terrasky-melco-admin', '官需', '01_社会環境事業部', '施設環境部', '第一課');
+        UserRole role = [SELECT Id FROM UserRole WHERE Name = '01_ファシリティインフラシステム事業部' LIMIT 1];
+        User user = createUser(prof.Id, role.Id, 'terrasky-melco-admin', '官需', '01_本社', '施設環境部', '第一課');
         insert user;
 
         System.runAs(user) {
@@ -467,8 +467,8 @@ private class OpportunityTriggerHandlerTest {
     private static void recalculationOppBySRInfoTest2() {
 
         Profile prof = [SELECT Id FROM Profile WHERE Name = '部門管理者' LIMIT 1];
-        UserRole role = [SELECT Id FROM UserRole WHERE Name = '01_社会環境事業部' LIMIT 1];
-        User user = createUser(prof.Id, role.Id, 'terrasky-melco-admin', '官需', '01_社会環境事業部', '施設環境部', '第一課');
+        UserRole role = [SELECT Id FROM UserRole WHERE Name = '01_ファシリティインフラシステム事業部' LIMIT 1];
+        User user = createUser(prof.Id, role.Id, 'terrasky-melco-admin', '官需', '01_本社', '施設環境部', '第一課');
         insert user;
 
         System.runAs(user) {
@@ -602,8 +602,8 @@ private class OpportunityTriggerHandlerTest {
     private static void recalculationOppBySRInfoTest3() {
 
         Profile prof = [SELECT Id FROM Profile WHERE Name = '部門管理者' LIMIT 1];
-        UserRole role = [SELECT Id FROM UserRole WHERE Name = '01_社会環境事業部' LIMIT 1];
-        User user = createUser(prof.Id, role.Id, 'terrasky-melco-admin', '官需', '01_社会環境事業部', '施設環境部', '第一課');
+        UserRole role = [SELECT Id FROM UserRole WHERE Name = '01_ファシリティインフラシステム事業部' LIMIT 1];
+        User user = createUser(prof.Id, role.Id, 'terrasky-melco-admin', '官需', '01_本社', '施設環境部', '第一課');
         insert user;
 
         System.runAs(user) {
@@ -726,8 +726,8 @@ private class OpportunityTriggerHandlerTest {
     private static void recalculationOppBySRInfoTest4() {
 
         Profile prof = [SELECT Id FROM Profile WHERE Name = '部門管理者' LIMIT 1];
-        UserRole role = [SELECT Id FROM UserRole WHERE Name = '01_社会環境事業部' LIMIT 1];
-        User user = createUser(prof.Id, role.Id, 'terrasky-melco-admin', '官需', '01_社会環境事業部', '施設環境部', '第一課');
+        UserRole role = [SELECT Id FROM UserRole WHERE Name = '01_ファシリティインフラシステム事業部' LIMIT 1];
+        User user = createUser(prof.Id, role.Id, 'terrasky-melco-admin', '官需', '01_本社', '施設環境部', '第一課');
         insert user;
 
         System.runAs(user) {
@@ -907,8 +907,8 @@ private class OpportunityTriggerHandlerTest {
     private static void createNewInternalApprovalTest(){
         //テスト準備
         Profile prof = [SELECT Id FROM Profile WHERE Name = '部門管理者' LIMIT 1];
-        UserRole role = [SELECT Id FROM UserRole WHERE Name = '01_社会環境事業部' LIMIT 1];
-        User user = createUser(prof.Id, role.Id, 'terrasky-melco-admin', '官需', '01_社会環境事業部', '施設環境部', '第一課');
+        UserRole role = [SELECT Id FROM UserRole WHERE Name = '01_ファシリティインフラシステム事業部' LIMIT 1];
+        User user = createUser(prof.Id, role.Id, 'terrasky-melco-admin', '官需', '01_本社', '施設環境部', '第一課');
         insert user;
 
         System.runAs(user) {

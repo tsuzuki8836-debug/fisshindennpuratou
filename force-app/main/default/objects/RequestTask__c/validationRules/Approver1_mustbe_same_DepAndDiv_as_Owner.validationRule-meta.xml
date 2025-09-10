@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ValidationRule xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Approver1_mustbe_same_DepAndDiv_as_Owner</fullName>
+    <active>true</active>
+    <description>承認パターンが「承認者手動設定」 かつ 承認者1にユーザが設定されている かつ 依頼タスクの所有者と承認者1ユーザの本支社/製作所が異なる場合、エラーを表示する。</description>
+    <errorConditionFormula>AND(
+     UserDeptApproved__c = false,
+    NOT ( ISBLANK (Approver1__c) ),
+    TEXT(Approver1__r.DepartmentAndDivision__c) &lt;&gt; TEXT(Owner:User.DepartmentAndDivision__c)
+)</errorConditionFormula>
+    <errorDisplayField>Approver1__c</errorDisplayField>
+    <errorMessage>自部門承認者1は所有者と同じ本支社/製作所のユーザを指定してください。</errorMessage>
+</ValidationRule>

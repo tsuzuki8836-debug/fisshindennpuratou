@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>IsQuotationInquiryTarget__c</fullName>
+    <externalId>false</externalId>
+    <formula>AND (
+  ISPICKVAL(TaskCategory__c , &quot;見積照会&quot;),
+  OR (
+    ISPICKVAL(RequestTo__c, &quot;本駐神電社シ一一計&quot;),
+    ISPICKVAL(RequestTo__c, &quot;神電社シ一二計&quot;),
+    ISPICKVAL(RequestTo__c, &quot;[水環境BU・官需BU]本プラ・都公建&quot;),
+    ISPICKVAL(RequestTo__c, &quot;[水環境BU・官需BU]本プラ・広公建&quot;),
+    ISPICKVAL(RequestTo__c, &quot;[水環境BU・官需BU]本プラ・施設建&quot;),
+    ISPICKVAL(RequestTo__c, &quot;[水環境BU・官需BU]本プラ・東北建&quot;),
+    ISPICKVAL(RequestTo__c, &quot;[水環境BU・官需BU]北支・プラ建・建設&quot;),
+    ISPICKVAL(RequestTo__c, &quot;[水環境BU・官需BU]中部支・プラ建・建設&quot;),
+    ISPICKVAL(RequestTo__c, &quot;[水環境BU・官需BU]西支・プラ建・建設一&quot;),
+    ISPICKVAL(RequestTo__c, &quot;[水環境BU・官需BU]西支・プラ建・建設二&quot;),
+    ISPICKVAL(RequestTo__c, &quot;[水環境BU・官需BU]九支・プラ建・建設課&quot;),
+    ISPICKVAL(RequestTo__c, &quot;[官需BU]神電社会営&quot;),
+    ISPICKVAL(RequestTo__c, &quot;[施設BU]神電社会営&quot;),
+    ISPICKVAL(RequestTo__c, &quot;[水環境BU・官需BU]長電施設営&quot;),
+    ISPICKVAL(RequestTo__c, &quot;[施設BU]長電施設営&quot;),
+    ISPICKVAL(RequestTo__c, &quot;[官需BU]配電社会営&quot;),
+    ISPICKVAL(RequestTo__c, &quot;[施設BU]配電社会営&quot;),
+    ISPICKVAL(RequestTo__c, &quot;配電スマ営&quot;),
+    ISPICKVAL(RequestTo__c, &quot;[施設BU]本プラ・施設建&quot;),
+    ISPICKVAL(RequestTo__c, &quot;[施設BU]本プラ・東北建&quot;),
+    ISPICKVAL(RequestTo__c, &quot;[施設BU]北支・プラ建・建設&quot;),
+    ISPICKVAL(RequestTo__c, &quot;[施設BU]中部支・プラ建・建設&quot;),
+    ISPICKVAL(RequestTo__c, &quot;[施設BU]西支・プラ建・建設一&quot;),
+    ISPICKVAL(RequestTo__c, &quot;[施設BU]西支・プラ建・建設二&quot;),
+    ISPICKVAL(RequestTo__c, &quot;[施設BU]九支・プラ建・建設課&quot;)
+  )
+)</formula>
+    <label>対象製作所_見積照会</label>
+    <trackHistory>false</trackHistory>
+    <trackTrending>false</trackTrending>
+    <type>Checkbox</type>
+</CustomField>

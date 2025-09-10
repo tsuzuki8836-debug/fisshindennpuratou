@@ -1,7 +1,7 @@
 <template>
     <div class="slds-box slds-p-around_none slds-m-top_x-small slds-m-bottom_medium slds-m-horizontal_none">
         <!-- 選択された仕様 slds-scrollable_x-->
-        <div  class="c-container">
+        <div class="c-container">
             <lightning-layout>
             <lightning-layout-item padding="around-small">
                 <div class="header-column">
@@ -94,7 +94,6 @@
                 </template>
 
                 <template if:false={isNodata}>
-
                 <template if:true={bodyList}>
                     <!-- 一覧 Info-->
                     <div class="slds-truncate slds-text-align_left">
@@ -105,8 +104,9 @@
                             {title2_2}
                         </template>
                     </div>
-                    <table class="slds-table slds-table_cell-buffer slds-table_bordered slds-table_col-bordered">
-                    <!-- 一覧　ヘッダー -->   
+                    <div style={GetStyle}>
+                    <table class="slds-table slds-table_cell-buffer slds-table_bordered slds-table_col-bordered slds-no-row-hover sticky slds-max-width">
+                        <!-- 一覧　ヘッダー -->   
                         <thead>
                             <template iterator:row={headerList}>
                                 <tr key={row.value.cellList} class="slds-line-height_reset">
@@ -146,7 +146,7 @@
                                                         <div class="slds-truncate slds-text-align_right"><lightning-formatted-text value={cell.value.value}></lightning-formatted-text></div>
                                                     </template>
                                                     <template if:false={cell.value.isRight}>
-                                                        <div class="slds-truncate slds-text-align_left"><lightning-formatted-text value={cell.value.value}></lightning-formatted-text></div>
+                                                        <div class="slds-truncate slds-text-align_left sticky"><lightning-formatted-text value={cell.value.value}></lightning-formatted-text></div>
                                                     </template>
                                                 </td>
                                             </template>
@@ -164,7 +164,7 @@
 
                                         </template>
                                         <template if:true={cell.value.isEdit}>
-                                            <td key={cell.value.value}>
+                                            <td key={cell.value.value} style="border-right:thick double rgb(229, 229, 229);">
                                                 <div class="slds-truncate slds-text-align_center">
                                                     <lightning-input type="checkbox" 
                                                     data-id={cell.value.value.Id} 
@@ -181,6 +181,7 @@
                             </template>
                         </tbody>
                     </table>
+                    </div>
                     <!-- 一覧 Footer-->
                     <div class="slds-text-align_left" style="white-space: break-spaces;">
                         <template if:true={isHighVoltage}>
@@ -194,6 +195,17 @@
                 </template>
             </div>
         </lightning-layout>
+        <div class="c-container">
+            <lightning-layout>
+            <lightning-layout-item padding="around-small">
+                <div class="header-column">
+                    <p>
+                        <b>本体価格：<lightning-formatted-number value={displayTotal}></lightning-formatted-number></b>
+                    </p>
+                </div>
+            </lightning-layout-item>
+            </lightning-layout>
+        </div>
         <template if:true={loader}>
             <lightning-spinner alternative-text="Loading" size="small"></lightning-spinner>
         </template>

@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>MentionCc__c</fullName>
+    <externalId>false</externalId>
+    <formula>IF ( !ISPICKVAL(RequestCc__c,&apos;&apos;) ,
+&apos;Cc.@[&apos;&amp;CASE( RequestCc__c ,
+&apos;F1&apos;, $Label.CG01,
+&apos;F2&apos;, $Label.CG02,
+&apos;F3&apos;, $Label.CG03,
+&apos;F4&apos;, $Label.CG04,
+&apos;F5&apos;, $Label.CG05,
+&apos;F6&apos;, $Label.CG06,
+&apos;F7&apos;, $Label.CG07,
+&apos;F8&apos;, $Label.CG08,
+&apos;F9&apos;, $Label.CG09,
+&apos;F10&apos;, $Label.CG10,
+&apos;F11&apos;, $Label.CG11,
+&apos;F12&apos;, $Label.CG12,
+&apos;P1&apos;, $Label.CG13,
+&apos;P2&apos;, $Label.CG14,
+&apos;P3&apos;, $Label.CG15,
+&apos;P4&apos;, $Label.CG16,
+&apos;P5&apos;, $Label.CG17,
+&apos;P6&apos;, $Label.CG18,
+&apos;P7&apos;, $Label.CG19,
+&apos;S1&apos;, $Label.CG20,
+&apos;S2&apos;, $Label.CG21,
+&apos;S3&apos;, $Label.CG22,
+/*&apos;S4&apos;, $Label.CG23  20200401廃止 */ 
+&apos;S5&apos;, $Label.CG24,
+&apos;S6&apos;, $Label.CG25,
+&apos;S7&apos;, $Label.CG26,
+&apos;S8&apos;, $Label.CG27,
+&apos;S9&apos;, $Label.CG28,
+&apos;S10&apos;, $Label.CG29,
+&apos;S11&apos;, $Label.CG30,
+&apos;S12&apos;, $Label.CG31,
+&apos;S13&apos;, $Label.CG32,
+&apos;S14&apos;, $Label.CG33,
+&apos;S15&apos;, $Label.CG34,
+&apos;S16&apos;, $Label.CG35,
+&apos;S17&apos;, $Label.CG36,
+&apos;S18&apos;, $Label.CG37,
+&apos;S19&apos;, $Label.CG38,
+&apos;&apos;)&amp;&apos;]&apos;,&apos;&apos;)</formula>
+    <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
+    <label>メンション先(Cc)</label>
+    <required>false</required>
+    <trackHistory>false</trackHistory>
+    <trackTrending>false</trackTrending>
+    <type>Text</type>
+    <unique>false</unique>
+</CustomField>

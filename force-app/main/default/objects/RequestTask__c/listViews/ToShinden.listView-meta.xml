@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ListView xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>ToShinden</fullName>
+    <columns>NAME</columns>
+    <columns>CREATEDBY_USER</columns>
+    <columns>TaskCategory__c</columns>
+    <columns>Status__c</columns>
+    <columns>EstimatedAnswerDate__c</columns>
+    <columns>Requester__c</columns>
+    <columns>RequestDestination__c</columns>
+    <columns>CompletionComment__c</columns>
+    <columns>UserDeptLastApprover__c</columns>
+    <columns>Approver1__c</columns>
+    <columns>ApproverDivision1__c</columns>
+    <columns>RequestTo__c</columns>
+    <columns>RequestFactoryName__c</columns>
+    <columns>FactoryDivision__c</columns>
+    <filterScope>Everything</filterScope>
+    <filters>
+        <field>RequestDestination__c</field>
+        <operation>equals</operation>
+        <value>神電</value>
+    </filters>
+    <label>01.神電宛の依頼タスク</label>
+</ListView>

@@ -11,6 +11,8 @@ export default class CommonCheckboxTable extends LightningElement {
     @track comment;
     @track isNodata;
     @track selectedId;
+
+    @track isboxtable = false;//筐体(高圧受配電盤)
     
     @api
     setTableObj(preObj) {
@@ -64,6 +66,11 @@ export default class CommonCheckboxTable extends LightningElement {
         if (this.tableObj){
             this.isNodata=false;
             this.secTitle=this.tableObj.secTitle;
+
+            this.isboxtable = false;
+            if (this.tableObj.secTitle && this.tableObj.secTitle.indexOf('筐体(高圧受配電盤)') != -1) {
+                this.isboxtable = true;
+            }
 
             if (this.tableObj.bodyList && this.tableObj.bodyList.length>0) {
                 this.comment=this.tableObj.comment;
@@ -154,5 +161,22 @@ export default class CommonCheckboxTable extends LightningElement {
     //空白、Null、undefined以外の場合 true
     isNotEmpty(val){
         return (val!=null &&val!='' && val!=undefined);
+    }
+
+    get getStyle() {
+        console.log(window.innerWidth);
+        if (this.tableObj.secTitle && this.tableObj.secTitle.indexOf('筐体(高圧受配電盤)') != -1) {
+            return 'overflow-x: auto;max-width:' + (window.innerWidth*0.6) + 'px';
+        }
+        return 'overflow-x: auto;max-width:' + (window.innerWidth*0.6) + 'px';
+    }
+
+    get getClass() {
+        if (this.tableObj.secTitle && this.tableObj.secTitle.indexOf('筐体(高圧受配電盤)') != -1) {
+            //固定の様式fixedTablesを適用
+            return 'slds-table slds-table_col-bordered slds-table_bordered slds-no-row-hover fiTable';
+        }
+        //それ以外の場合 
+        return 'slds-table slds-table_col-bordered slds-table_bordered slds-no-row-hover';
     }
 }

@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ValidationRule xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Approver1To5_MustBeDifferent</fullName>
+    <active>false</active>
+    <description>承認パターンが「承認者手動設定」かつ、承認者１～５に同じユーザが設定された場合にエラーを表示する。</description>
+    <errorConditionFormula>AND(
+    ISPICKVAL(ApprovalPattern__c, &apos;承認者手動設定&apos;)
+    , OR(
+        AND(
+            NOT(ISBLANK(Approver1__c))
+            , OR(
+                Approver1__c = Approver2__c
+                , Approver1__c = Approver3__c
+                , Approver1__c = Approver4__c
+                , Approver1__c = Approver5__c
+            )
+        )
+        , AND(
+            NOT(ISBLANK(Approver2__c))
+            , OR(
+                Approver2__c = Approver3__c
+                , Approver2__c = Approver4__c
+                , Approver2__c = Approver5__c
+            )
+        )
+        , AND(
+            NOT(ISBLANK(Approver3__c))
+            , OR(
+                Approver3__c = Approver4__c
+                , Approver3__c = Approver5__c
+            )
+        )
+        , AND(
+            NOT(ISBLANK(Approver4__c))
+            , Approver4__c = Approver5__c
+        )
+    )
+)</errorConditionFormula>
+    <errorMessage>自部門承認者1～4には同一ユーザを複数設定することはできません。</errorMessage>
+</ValidationRule>

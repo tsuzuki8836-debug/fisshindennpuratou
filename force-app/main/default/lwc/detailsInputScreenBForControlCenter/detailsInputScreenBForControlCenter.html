@@ -1,0 +1,243 @@
+<template>
+    <div class="c-container slds-box slds-p-around_none slds-m-top_x-small slds-m-bottom_medium slds-m-horizontal_none">
+        <lightning-layout>
+            <lightning-layout-item padding="around-small">
+                <div class="slds-form-element">
+                    <label class="slds-form-element__label">
+                        <span class="">EMC</span>
+                    </label>
+                </div>
+            </lightning-layout-item>
+
+            <lightning-layout-item size="1" padding="around-small" class="select-wipper">
+                <div class="slds-form-element">
+                    <div class="slds-form-element__control">
+                        <div class="slds-select_container">
+                            <select class="slds-select" onchange={onChangeHandler}>
+                                <template for:each={EMC_Options} for:item="option">
+                                    <template if:true={option.selected}>
+                                        <option key={option.label} class="uiInputSelectOption"
+                                            value={option.value} selected>{option.value}</option>
+                                    </template>
+                                    <template if:false={option.selected}>
+                                        <option key={option.label} class="uiInputSelectOption"
+                                            value={option.value}>{option.value}</option>
+                                    </template>
+                                </template>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+            </lightning-layout-item>
+
+            <lightning-layout-item padding="around-small">
+                <button class="slds-button slds-align_absolute-center slds-button_brand search-button" title="Search" onclick={onSearch}>検索</button>
+            </lightning-layout-item>
+        </lightning-layout>
+    </div>
+
+    <div class="c-container">
+            <lightning-layout>
+                <lightning-layout-item padding="around-small">
+                    <div class="header-column">
+                        <p>
+                            <b>価格合計：<lightning-formatted-number value={displayTotal}></lightning-formatted-number></b>
+                        </p>
+                    </div>
+                </lightning-layout-item>
+            </lightning-layout>
+    </div>
+
+    <div class="c-container slds-box slds-p-around_none slds-m-top_x-small slds-m-bottom_medium slds-m-horizontal_none slds-scrollable_x">
+        <!-- EMC総量 -->
+        <lightning-layout>
+            <template if:true={EMCTable}>
+                <c-common-table
+                    data-id="EMCTable"
+                    table-obj={EMCTable}
+                    oncommontableinputchange={onCommonTableInputChange}>
+                </c-common-table>
+            </template>
+        </lightning-layout>
+        <!-- 外箱（盤） -->
+        <lightning-layout>
+            <template if:true={outerBoxTable}>
+                <c-common-table
+                    data-id="outerBoxTable"
+                    table-obj={outerBoxTable}
+                    oncommontableinputchange={onCommonTableInputChange}
+                    is-one-selector="true"
+                    error-message="2つ以上の明細を追加する事は出来ません。">
+                </c-common-table>
+            </template>
+        </lightning-layout>
+
+        <!-- 制御用電源用変圧器 （単相2線、400V・200V/100V) -->
+        <lightning-layout>
+                <template if:true={controlPowerTransformerTable}>
+                    <c-common-table
+                        data-id="controlPowerTransformerTable"
+                        table-obj={controlPowerTransformerTable}
+                        oncommontableinputchange={onCommonTableInputChange}
+                        is-one-selector="true"
+                        error-message="2つ以上の明細を追加する事は出来ません。"
+                        >
+
+                    </c-common-table>
+                </template>
+        </lightning-layout>
+        <!-- 引込盤 ・ 引込ユニット -->
+        <lightning-layout>
+            <template if:true={pullInTable}>
+                <c-common-table
+                    data-id="pullInTable"
+                    table-obj={pullInTable}
+                    oncommontableinputchange={onCommonTableInputChange}
+                    is-one-selector="true"
+                    error-message="2つ以上の明細を追加する事は出来ません。">
+                </c-common-table>
+            </template>
+        </lightning-layout>
+        <template if:true={isPullInDescription}>
+            <div data-id="modal-content-id-2" class="slds-modal__content slds-p-around_medium">
+                <div>
+                    <p if:true={pullboardDescriptionImage}>
+                        <img src={pullboardDescriptionImage}>
+                    </p>
+                </div>
+            </div>
+        </template>
+        <!-- 非可逆 ・ 可逆ユニット -->
+        <lightning-layout>
+            <template if:true={reversibleTable}>
+                <c-common-table
+                    data-id="reversibleTable"
+                    table-obj={reversibleTable}
+                    oncommontableinputchange={onCommonTableInputChangeForCount}>
+                </c-common-table>
+            </template>
+        </lightning-layout>
+        <!-- スター ・ デルタユニット -->
+        <lightning-layout>
+            <template if:true={stardeltaTable}>
+                <c-common-table
+                    data-id="stardeltaTable"
+                    table-obj={stardeltaTable}
+                    oncommontableinputchange={onCommonTableInputChangeForCount}>
+                </c-common-table>
+            </template>
+        </lightning-layout>
+        <template if:true={isStarDeltaDescription}>
+            <div data-id="modal-content-id-2" class="slds-modal__content slds-p-around_medium">
+                <div>
+                    <p if:true={stardeltaDescriptionImage}>
+                        <img src={stardeltaDescriptionImage}>
+                    </p>
+                </div>
+            </div>
+        </template>
+        <!-- 電源送り（MCCB）ユニット -->
+        <lightning-layout>
+            <template if:true={MCCBTable}>
+                <c-common-table
+                    data-id="MCCBTable"
+                    table-obj={MCCBTable}
+                    oncommontableinputchange={onCommonTableInputChangeForCount}>
+                </c-common-table>
+            </template>
+        </lightning-layout>
+        <!-- 指示計・保護継電器類 -->
+        <lightning-layout>
+            <template if:true={indicatorTable}>
+                <c-common-table
+                    data-id="indicatorTable"
+                    table-obj={indicatorTable}
+                    oncommontableinputchange={onCommonTableInputChange}>
+                </c-common-table>
+            </template>
+        </lightning-layout>
+        <!-- リアクトル起動回路 -->
+        <lightning-layout>
+            <template if:true={reactorTable}>
+                <c-common-table
+                    data-id="reactorTable"
+                    table-obj={reactorTable}
+                    oncommontableinputchange={onCommonTableInputChange}>
+                </c-common-table>
+            </template>
+        </lightning-layout>
+        <template if:true={isReactorDescription}>
+            <div data-id="modal-content-id-2" class="slds-modal__content slds-p-around_medium">
+                <div>
+                    <p if:true={reactorDescriptionImage}>
+                        <img src={reactorDescriptionImage}>
+                    </p>
+                </div>
+            </div>
+        </template>
+        <!--Ｃ／Ｃ用 進相コンデンサ -->
+        <lightning-layout>
+            <template if:true={staticcondenserTable}>
+                <c-common-table
+                    data-id="staticcondenserTable"
+                    table-obj={staticcondenserTable}
+                    oncommontableinputchange={onCommonTableInputChange}>
+                </c-common-table>
+            </template>
+        </lightning-layout>
+        <!--インバータ（ＶＶＶＦ装置・可変電圧可変周波数装置） -->
+        <lightning-layout>
+            <template if:true={inverterTable}>
+                <c-common-table
+                    data-id="inverterTable"
+                    table-obj={inverterTable}
+                    oncommontableinputchange={onCommonTableInputChange}>
+                </c-common-table>
+            </template>
+        </lightning-layout>
+        <template if:true={isInverterDescription}>
+            <div data-id="modal-content-id-2" class="slds-modal__content slds-p-around_medium">
+                <div>
+                    <p if:true={inverterDescriptionImage}>
+                        <img src={inverterDescriptionImage}>
+                    </p>
+                </div>
+            </div>
+        </template>
+        <!--高力率コンバータ付インバータ -->
+        <lightning-layout>
+            <template if:true={highinverterTable}>
+                <c-common-table
+                    data-id="highinverterTable"
+                    table-obj={highinverterTable}
+                    oncommontableinputchange={onCommonTableInputChange}>
+                </c-common-table>
+            </template>
+        </lightning-layout>
+        <template if:true={isHighInverterDescription}>
+            <div data-id="modal-content-id-2" class="slds-modal__content slds-p-around_medium">
+                <div>
+                    <p if:true={highinverterDescriptionImage}>
+                        <img src={highinverterDescriptionImage}>
+                    </p>
+                </div>
+            </div>
+        </template>
+    </div>
+
+    <div class="c-container">
+        <lightning-layout>
+            <lightning-layout-item padding="around-small">
+                <div class="header-column">
+                    <p>
+                        <b>価格合計：<lightning-formatted-number value={displayTotal}></lightning-formatted-number></b>
+                    </p>
+                </div>
+            </lightning-layout-item>
+        </lightning-layout>
+    </div>
+
+    <template if:true={loaded}>
+        <lightning-spinner alternative-text="Loading" size="small"></lightning-spinner>
+    </template>
+</template>

@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>UserDeptLastApproverFormula__c</fullName>
+    <externalId>false</externalId>
+    <formula>IF(Approver4__c != null,&quot;承認者4&quot;,
+IF( Approver3__c != null,&quot;承認者3&quot;,
+IF( Approver2__c != null,&quot;承認者2&quot;,
+IF( Approver1__c != null,&quot;承認者1&quot;,&quot;&quot;)
+)))</formula>
+    <label>自部門最終承認者</label>
+    <required>false</required>
+    <trackHistory>false</trackHistory>
+    <trackTrending>false</trackTrending>
+    <type>Text</type>
+    <unique>false</unique>
+</CustomField>

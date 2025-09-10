@@ -11,6 +11,7 @@
 
             <lightning-layout>
             <lightning-layout-item padding="around-small">
+            <div style={getStyle}>
             <div class="slds-truncate slds-text-align_right">{comment}</div>
             <div class="slds-m-around_medium">
                 <template if:true={isNodata}>
@@ -21,9 +22,8 @@
                 </template>
 
                 <template if:false={isNodata}>
-                <table class="slds-table slds-no-row-hover slds-table_bordered slds-table_col-bordered">
+                <table class={getClass}>
                     <thead>
-
                         <template iterator:row={headerList}>
                             <tr key={row.value.cellList} class="slds-line-height_reset">
                                 <template iterator:cell={row.value.cellList}>
@@ -68,7 +68,7 @@
 
                                     </template>
                                     <template if:true={cell.value.isEdit}>
-                                        <td key={cell.value.value}>
+                                        <td key={cell.value.value} style="border-right:thick double rgb(229, 229, 229);">
                                             <div class="slds-truncate slds-text-align_center">
                                                 <input
                                                     type="checkbox" 
@@ -86,6 +86,7 @@
                     </tbody>
                 </table>
                 </template>
+            </div>
             </div>
             </lightning-layout-item>
             </lightning-layout>

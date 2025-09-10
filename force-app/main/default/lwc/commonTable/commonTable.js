@@ -1,4 +1,6 @@
 import { LightningElement, track ,api} from 'lwc';
+import containsEVT_PT_LA from '@salesforce/apex/DetailsInputControllerForSpHighVoltage.containsEVT_PT_LA';
+import containsEVT_PT_LA2 from '@salesforce/apex/DetailsInputControllerForHighVoltage.containsEVT_PT_LA';
 import { ShowToastEvent } from 'lightning/platformShowToastEvent';
 
 export default class CommonTable extends LightningElement {
@@ -14,12 +16,29 @@ export default class CommonTable extends LightningElement {
     @track isNodata;
     @track selectedId;
 
+    @track isFixed3 = false;//ヘッダが３行、データが２列を固定
+    @track isControlPowerTransformerTable = false;//制御用電源用変圧器
+    @track isStaticCondenserTable = false;//進相コンデンサ
+    @track isSetpullInTable = false;//引込盤・引込ユニット
+    @track isboxtable = false;//筐体(高圧受配電盤)
+
     @api
     setTableObj(preObj) {
         console.log("common Table setTableObj Loaded");
+
         if (preObj){
             this.isNodata=false;
             this.secTitle=preObj.secTitle;
+
+            //固定フラグ
+            this.isFixed3 = false;
+            this.isControlPowerTransformerTable = false;
+            //遮断器(MCCB)の場合
+            if (preObj.secTitle && preObj.secTitle.indexOf('配線用遮断器価格 （MCCB・ELB）') != -1) {
+                this.isFixed3 = true;
+            }
+            
+
             if (preObj.bodyList && preObj.bodyList.length>0){
                 this.comment=preObj.comment;
                 this.headerList=preObj.headerList;
@@ -57,9 +76,34 @@ export default class CommonTable extends LightningElement {
     //初期化処理
     connectedCallback() {
         console.log("common Table connectedCallback Loaded");
+        
         if (this.tableObj){
             this.isNodata=false;
             this.secTitle=this.tableObj.secTitle;
+
+            //固定フラグ
+            this.isFixed3 = false;
+            this.isControlPowerTransformerTable = false;
+            this.isStaticCondenserTable = false;
+            this.isSetpullInTable = false;
+            this.isboxtable = false;
+            //遮断器(MCCB)の場合
+            if (this.tableObj.secTitle && this.tableObj.secTitle.indexOf('配線用遮断器価格 （MCCB・ELB）') != -1) {
+                this.isFixed3 = true;
+            }
+            if (this.tableObj.secTitle && this.tableObj.secTitle.indexOf('制御用電源用変圧器 （単相２線、400.200V/100V)') != -1) {
+                this.isControlPowerTransformerTable = true;
+            }
+            if (this.tableObj.secTitle && this.tableObj.secTitle.indexOf('Ｃ／Ｃ用 進相コンデンサ') != -1) {
+                this.isStaticCondenserTable = true;
+            }
+            if (this.tableObj.secTitle && this.tableObj.secTitle.indexOf('引込盤 ・ 引込ユニット') != -1) {
+                this.isStaticCondenserTable = true;
+            }
+            if (this.tableObj.secTitle && this.tableObj.secTitle.indexOf('筐体(高圧受配電盤)') != -1) {
+                this.isboxtable = true;
+            }
+            
 
             if (this.tableObj.bodyList && this.tableObj.bodyList.length>0) {
                 this.comment=this.tableObj.comment;
@@ -100,13 +144,32 @@ export default class CommonTable extends LightningElement {
         let objName = event.currentTarget.dataset.id;
         let price = event.currentTarget.dataset.name;
         console.log('CommonTableInputChange  start2');
-
+        
         var objInput=this.template.querySelector('input[data-id="'+objName+'"]');
         //数量が全角入力された際に半角に変換する 2023/06/06 TS木佐貫
         objInput.value = objInput.value.replace(/[０-９]/g, function(s) {
             return String.fromCharCode(s.charCodeAt(0) - 0xFEE0);
         });
-
+        //TS田村 追記
+        console.log(objName);
+        console.log(objInput.value);
+        containsEVT_PT_LA({pricingTableId: objName, quantity: objInput.value})
+        .then(result => {
+            console.log(result);
+            if(result == true){
+                objInput.value = '';
+            }
+        });
+        //TS田村 追記
+        console.log(objName);
+        console.log(objInput.value);
+        containsEVT_PT_LA2({pricingTableId: objName, quantity: objInput.value})
+        .then(result => {
+            console.log(result);
+            if(result == true){
+                objInput.value = '';
+            }
+        });
         //仮　項目チェック
         let validity = event.target.validity;
         if (!validity.valid) {
@@ -120,10 +183,20 @@ export default class CommonTable extends LightningElement {
             console.log('CommonTableInputChange  start3');
             this.dispatchEvent(errEvent);
             console.log('CommonTableInputChange  start4');
+            //クリアして親に送信
             objInput.value='';
+            const passEvent = new CustomEvent('commontableinputchange', {
+                detail:{id:objName,
+                        cnt:objInput.value,
+                        price:price                    
+                        // ,option:event.currentTarget.dataset.option
+                        }
+            });
+            this.dispatchEvent(passEvent);
             return;
         }
-
+        console.log('this.selectedId::::'+this.selectedId);
+        console.log('this.objName::::'+objName);
         if(this.isOneSelector && objInput.value!=0 && objInput.value!='' && this.selectedId!=null && this.selectedId!=undefined && this.selectedId!=objName) {
             const errEvent = new ShowToastEvent({
                 title: '入力エラー',
@@ -134,7 +207,8 @@ export default class CommonTable extends LightningElement {
             console.log('CommonTableInputChange  start5');
             this.dispatchEvent(errEvent);
             console.log('CommonTableInputChange  start6');
-            this.setQuantityObj(objName, '')
+            objInput.value='';
+            // this.setQuantityObj(objName, '')
         } else {
             if (this.isOneSelector) this.selectedId = objInput.value!=0 && objInput.value!='' ? objName : null;
             const passEvent = new CustomEvent('commontableinputchange', {
@@ -153,9 +227,77 @@ export default class CommonTable extends LightningElement {
         return (val!=null &&val!='' && val!=undefined);
     }
 
+    //ウィンドウズの6割幅で表示
+    get getStyle() {
+        console.log(window.innerWidth);
+        //遮断器(MCCB)の場合
+        if (this.tableObj.secTitle && this.tableObj.secTitle.indexOf('配線用遮断器価格 （MCCB・ELB）') != -1) {
+            //横、縦のスクロールバーを表示
+            return 'overflow: auto;max-height: 540px; max-width:' + (window.innerWidth*0.6) + 'px';
+        }
+        if(this.tableObj.secTitle && this.tableObj.secTitle.indexOf('計器・保護継電器・変換器') != -1){
+            return 'overflow: auto;max-height: 540px; max-width:' + (window.innerWidth*0.6) + 'px';
+        }
+        if(this.tableObj.secTitle && this.tableObj.secTitle.indexOf('MELPRO-Dシリーズ') != -1){
+            return 'overflow: auto;max-height: 540px; max-width:' + (window.innerWidth*0.6) + 'px';
+        }
+        /*if (this.tableObj.secTitle && this.tableObj.secTitle.indexOf('筐体(高圧受配電盤)') != -1) {
+            return 'overflow-x: auto;max-width:' + (window.innerWidth*0.6) + 'px';
+        }*/
+        //それ以外の場合 縦スクロールバーだけ
+        return 'overflow-x: auto;max-width:' + (window.innerWidth*0.6) + 'px';
+    }
+    //テーブルの様式を設定
+    get getClass() {
+        //遮断器(MCCB)の場合
+        if (this.tableObj.secTitle && this.tableObj.secTitle.indexOf('配線用遮断器価格 （MCCB・ELB）') != -1) {
+            //固定の様式fixedTablesを適用
+            return 'slds-table slds-table_col-bordered slds-table_bordered slds-no-row-hover fixedTables';
+        }
+        if (this.tableObj.secTitle && this.tableObj.secTitle.indexOf('制御用電源用変圧器 （単相２線、400.200V/100V)') != -1) {
+            //固定の様式fixedTablesを適用
+            return 'slds-table slds-table_col-bordered slds-table_bordered slds-no-row-hover fixTable';
+        }
+        if (this.tableObj.secTitle && this.tableObj.secTitle.indexOf('Ｃ／Ｃ用 進相コンデンサ') != -1) {
+            //固定の様式fixedTableを適用
+            return 'slds-table slds-table_col-bordered slds-table_bordered slds-no-row-hover fixedTable';
+        }
+        if (this.tableObj.secTitle && this.tableObj.secTitle.indexOf('引込盤 ・ 引込ユニット') != -1) {
+            //固定の様式fixTableを適用
+            return 'slds-table slds-table_col-bordered slds-table_bordered slds-no-row-hover fixTable';
+        }
+        if (this.tableObj.secTitle && this.tableObj.secTitle.indexOf('断路器(DS)') != -1) {
+            //固定の様式fixTableを適用
+            return 'slds-table slds-table_col-bordered slds-table_bordered slds-no-row-hover fixTable';
+        }
+        if (this.tableObj.secTitle && this.tableObj.secTitle.indexOf('避雷器(LA)') != -1) {
+            //固定の様式fixTableを適用
+            return 'slds-table slds-table_col-bordered slds-table_bordered slds-no-row-hover fixTable2';
+        }
+        if (this.tableObj.secTitle && this.tableObj.secTitle.indexOf('負荷開閉器類LBS(LDS)') != -1) {
+            //固定の様式fixTableを適用
+            return 'slds-table slds-table_col-bordered slds-table_bordered slds-no-row-hover fixTable3';
+        }
+        if (this.tableObj.secTitle && this.tableObj.secTitle.indexOf('計器用変圧器(VT､PT)ヒューズ付') != -1) {
+            //固定の様式fixTableを適用
+            return 'slds-table slds-table_col-bordered slds-table_bordered slds-no-row-hover fixTable4';
+        }
+        if(this.tableObj.secTitle && this.tableObj.secTitle.indexOf('接地形計器用変圧器ヒューズ付(ZPT、GPT）') != -1){
+            return 'slds-table slds-table_col-bordered slds-table_bordered slds-no-row-hover fixTable';
+        }
+        if(this.tableObj.secTitle && this.tableObj.secTitle.indexOf('MELPRO-Dシリーズ') != -1){
+            return 'slds-table slds-table_col-bordered slds-table_bordered slds-no-row-hover fixTable5';
+        }
+        if(this.tableObj.secTitle && this.tableObj.secTitle.indexOf('計器・保護継電器・変換器') != -1){
+            return 'slds-table slds-table_col-bordered slds-table_bordered slds-no-row-hover fixTable6';
+        }
+        //それ以外の場合 
+        return 'slds-table slds-table_col-bordered slds-table_bordered slds-no-row-hover';
+    }
+
     @api
     setQuantityObj(tagId, value){
-        console.log('setQuantityObj  start');
+        console.log('setQuantityObj  start::::'+tagId+','+value);
         this.template.querySelector('input[data-id="'+tagId+'"]').value = value;
         this.selectedId = value!=0&&value!=''?tagId:null
     }

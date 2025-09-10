@@ -137,7 +137,7 @@ private class LedgerSheetOutputBizLogicTest {
             QuoteSpecificationNumber__c='1234567894',
             NETCalculateCategory__c='', // {受変電, UPS, 自家発, ビルシ, 映像, 労務}
             RecordTypeOfQuote__c='官需', // {施設, 水環境, 官需}
-            MajorClassification__c='無線装置（テレメータ･テレコントロール用）',
+            MajorClassification__c='無線装置(テレメータ･テレコントロール用)[国交省本省宛て提出機器単体費]',
             MinorClassification__c='70MHz帯無線装置(テレメータ･テレコントロール用)',
             ClientAnswerWeight_free__c=0,
             CreditWeight__c=0,

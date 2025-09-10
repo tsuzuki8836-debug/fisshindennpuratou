@@ -58,8 +58,9 @@ public with sharing class DetailControllerTest {
                     , MinorClassificationName__c = minor
                     , CategoryCode__c = (powerFrequency==Frequency_60Hz?'02':'01')
                     , Frequency__c = powerFrequency
+                    , Price__c = 1
                     , Name1__c = 'Name1'
-                    , Name2__c = 'Name2'
+                    , Name2__c = (major=='計装機器'?'EP=WC×2':'EP=標準価格')
                     , Name3__c = 'Name3'
                     , Name4__c = 'Name4'
                     , Name5__c = 'Name5'
@@ -68,6 +69,7 @@ public with sharing class DetailControllerTest {
                     , Name8__c = 'Name8'
                     , Name9__c = 'Name9'
                     , MasterCode__c = 'MasterCode'
+                    , Note__c = (major=='計装機器'?'note':'')
                     , RECNo__c = index
                 );
                 index = index + 1;
@@ -83,6 +85,7 @@ public with sharing class DetailControllerTest {
                         , CategoryCode__c = '00'
                         , CategoryName__c ='変圧器収納盤'
                         , Frequency__c = powerFrequency
+                        , Price__c = 1
                         , Name1__c = '変圧器収納盤(高圧)'
                         , Name2__c = 'Name2'
                         , Name3__c = 'Name3'
@@ -145,7 +148,7 @@ public with sharing class DetailControllerTest {
     @isTest static void picklistTest2_1() {
         String qRtName='施設';
         String major='進相コンデンサ/リアクトル';
-        String minor='機器事業部 低圧コンデンサ/リアクトル';
+        String minor='機器事業部 低損失高圧コンデンサ・リアクトル内蔵';
         String powerFrequency='50Hz';
 
         createDate(qRtName,major, minor, powerFrequency);
@@ -155,8 +158,43 @@ public with sharing class DetailControllerTest {
             Map<String, List<Map<String, String>>> nameChangedMap =  DetailController.getUniqueNamePicklist(dv.Id,'Name1');
         Test.stopTest();
 
-        System.assertEquals(10, initMap.get('label').size());
-        System.assertEquals(10, nameChangedMap.get('label').size());
+        System.assertEquals(11, initMap.get('label').size());
+        System.assertEquals(11, nameChangedMap.get('label').size());
+
+    }
+
+    //小分類が空の場合
+    @isTest static void picklistTest2_3() {
+        String qRtName='水環境';
+        String major='高圧受配電盤';
+        String minor='';
+        String powerFrequency='60Hz';
+        createDate(qRtName,major, minor, powerFrequency);
+        Test.startTest();
+            //ラベル設定
+            Map<String, List<Map<String, String>>> initMap =  DetailController.getUniqueNamePicklist(dv.Id,'');            //ラベル設定
+            Map<String, List<Map<String, String>>> nameChangedMap =  DetailController.getUniqueNamePicklist(dv.Id,'Name1');
+        Test.stopTest();
+
+        System.assertEquals(5, initMap.get('label').size());
+        System.assertEquals(5, nameChangedMap.get('label').size());
+    
+    }
+   //小分類が空の場合
+   @isTest static void picklistTest2_4() {
+        String qRtName='施設';
+        String major='特高';
+        String minor='66kV C-GIS';
+        String powerFrequency='60Hz';
+        createDate(qRtName,major, minor, powerFrequency);
+        Test.startTest();
+            //ラベル設定
+            Map<String, List<Map<String, String>>> initMap =  DetailController.getUniqueNamePicklist(dv.Id,'');            //ラベル設定
+            Map<String, List<Map<String, String>>> nameChangedMap =  DetailController.getUniqueNamePicklist(dv.Id,'Name1');
+        Test.stopTest();
+
+        System.assertEquals(5, initMap.get('label').size());
+        System.assertEquals(5, nameChangedMap.get('label').size());
 
     }
     //MELFLEX
@@ -193,6 +231,787 @@ public with sharing class DetailControllerTest {
 
     }
 
+   //明細に既存がなし　
+   @isTest static void searchTest1_1() {
+        String qRtName='水環境';
+        String major='計装機器';
+        String minor='計装盤';
+        String powerFrequency='50Hz';
+
+        createDate(qRtName,major, minor, powerFrequency);
+
+        DetailController.PricingTableInputOnly intensify = new DetailController.PricingTableInputOnly();
+        DetailController.PricingTableInputOnly  newIntensify = new DetailController.PricingTableInputOnly();
+        PricingTable__c table = [Select Id From PricingTable__c where RecordType.DeveloperName = 'Chassis' LIMIT 1];
+
+        intensify.Id = table.Id;
+        intensify.Quantity = 1;
+        intensify.WCCoefficient = null;
+        intensify.CreditWC = null;
+        intensify.UnitPriceCoefficient = 1;
+        intensify.ProvisionUnitPrice = 1;
+        intensify.UnitWeight = 1;
+        intensify.unitPrice = 1;
+        DetailController.PricingTableNewRowObj newRow = new DetailController.PricingTableNewRowObj();
+        newRow.isCreate  =true;
+        newRow.Id = '1rowIndex1';
+        newRow.Name1 = 'Name1'; //名称１
+        newRow.Name2  = 'Name2'; ///名称２
+        newRow.Name3  = 'Name3'; ///名称３
+        newRow.CreditWC = 1; //単位WC ※入力
+        newRow.WCCoefficient = 1; //WC係数※入力
+        newRow.UnitPrice = 1;//単価
+        newRow.UnitPriceCoefficient = 1; //単価係数※入力
+        newRow.ProvisionUnitPrice = 1; //提供単価※入力
+        newRow.UnitWeight = 1; //単位重量
+        newRow.Quantity = 1; //数量※入力
+        newRow.WC  = 1;//WC
+        newRow.Price = 1; //価格
+        newRow.ProvisionPrice = 1; //提供価格
+        newRow.Weight = 1; //重量
+        newRow.Note = '備考';//備考
+        newRow.Name4 = 'Name4';//名称４
+
+        newIntensify.Id = newRow.Id;
+        newIntensify.Quantity = newRow.Quantity;
+        newIntensify.WCCoefficient = newRow.WCCoefficient;
+        newIntensify.CreditWC = newRow.CreditWC;
+        newIntensify.UnitPriceCoefficient = newRow.UnitPriceCoefficient;
+        newIntensify.ProvisionUnitPrice = newRow.ProvisionUnitPrice;
+        newIntensify.UnitWeight = newRow.UnitWeight;
+        List<DetailController.PricingTableInputOnly> intensifyRecords 
+                        = new List<DetailController.PricingTableInputOnly>{intensify,newIntensify};
+        List<DetailController.PricingTableNewRowObj> newRowRecords 
+                = new List<DetailController.PricingTableNewRowObj>{newRow};
+
+        List<String> specificationNames = new List<String>{'Name1','Name2','Name3','Name4'};
+        List<String> boardNames = new List<String>{'Name1','Name2','Name3','Name4'};
+        List<String> searchCodes = new List<String>{'MasterCode'};
+        List<String> searchName = new List<String>{'Name'};
+        
+        Map<String, List<String>>  searchConditions = new Map<String, List<String>>();
+
+        Test.startTest();
+        //ラベル設定
+        Map<String, List<Map<String, String>>> labelMap =  DetailController.getUniqueNamePicklist(dv.Id,'');
+
+        //初期検索
+        String rtnStr1 =  DetailController.getPricingTableRecords(
+                                '',
+                                dv.Id,
+                                200, 
+                                1,
+                                searchConditions,
+                                '',
+                                ''
+                                );
+        //画面条件指定
+        searchConditions.put('specificationNames',specificationNames);
+        searchConditions.put('boardNames',boardNames);
+        //仕様検索
+        String rtnStr2 =  DetailController.getPricingTableRecords(
+                                'SpecSearch',
+                                dv.Id,
+                                200, 
+                                1,
+                                searchConditions,
+                                JSON.serialize(intensifyRecords),
+                                JSON.serialize(newRowRecords)
+                                );
+        searchConditions.put('searchCodes',searchCodes);
+        //コード検索
+        String rtnStr3 =  DetailController.getPricingTableRecords(
+                                'CodeSearch',
+                                dv.Id,
+                                200, 
+                                1,
+                                searchConditions,
+                                JSON.serialize(intensifyRecords),
+                                JSON.serialize(newRowRecords)
+                                );
+        searchConditions.put('searchName',searchName);
+        //名称検索
+        String rtnStr4 =  DetailController.getPricingTableRecords(
+                                'NameSearch',
+                                dv.Id,
+                                200, 
+                                1,
+                                searchConditions,
+                                JSON.serialize(intensifyRecords),
+                                JSON.serialize(newRowRecords)
+                                );
+        //集約対象を検索する
+        String rtnStr5 =  DetailController.getPricingTableByintensify(
+            JSON.serialize(intensifyRecords),
+            JSON.serialize(newRowRecords));
+
+        //登録処理
+        String rtnStr6 =  DetailController.setDetail(
+                JSON.serialize(intensifyRecords),
+                JSON.serialize(newRowRecords),
+                '',
+                dv.Id,
+                true);
+        Test.stopTest();
+
+        System.assertNotEquals(null, rtnStr1);
+        System.assertNotEquals(null, rtnStr2);
+        System.assertNotEquals(null, rtnStr3);
+        System.assertNotEquals(null, rtnStr4);
+        System.assertNotEquals(null, rtnStr5);
+        System.assertEquals(String.valueof(quote.Id), rtnStr6);
+
+    }
+    //明細に既存がなし　
+   @isTest static void searchTest1_2() {
+        String qRtName='施設';
+        String major='進相コンデンサ/リアクトル';
+        String minor='';
+        String powerFrequency='60Hz';
+
+        createDate(qRtName,major, minor, powerFrequency);
+
+        DetailController.PricingTableInputOnly intensify = new DetailController.PricingTableInputOnly();
+        DetailController.PricingTableInputOnly  newIntensify = new DetailController.PricingTableInputOnly();
+        intensify.Id = tables.get(0).Id;
+        intensify.Quantity = 1;
+        intensify.WCCoefficient = 1;
+        intensify.CreditWC = 1;
+        intensify.UnitPriceCoefficient = 1;
+        intensify.ProvisionUnitPrice = 1;
+        intensify.UnitWeight = 1;
+        DetailController.PricingTableNewRowObj newRow = new DetailController.PricingTableNewRowObj();
+        newRow.isCreate  =true;
+        newRow.Id = '1rowIndex1';
+        newRow.Name1 = 'Name1'; //名称１
+        newRow.Name2  = 'Name2'; ///名称２
+        newRow.Name3  = 'Name3'; ///名称３
+        newRow.CreditWC = 1; //単位WC ※入力
+        newRow.WCCoefficient = 1; //WC係数※入力
+        newRow.UnitPrice = 1;//単価
+        newRow.UnitPriceCoefficient = 1; //単価係数※入力
+        newRow.ProvisionUnitPrice = 1; //提供単価※入力
+        newRow.UnitWeight = 1; //単位重量
+        newRow.Quantity = 1; //数量※入力
+        newRow.WC  = 1;//WC
+        newRow.Price = 1; //価格
+        newRow.ProvisionPrice = 1; //提供価格
+        newRow.Weight = 1; //重量
+        newRow.Note = '備考';//備考
+        newRow.Name4 = 'Name4';//名称４
+
+        newIntensify.Id = newRow.Id;
+        newIntensify.Quantity = newRow.Quantity;
+        newIntensify.WCCoefficient = newRow.WCCoefficient;
+        newIntensify.CreditWC = newRow.CreditWC;
+        newIntensify.UnitPriceCoefficient = newRow.UnitPriceCoefficient;
+        newIntensify.ProvisionUnitPrice = newRow.ProvisionUnitPrice;
+        newIntensify.UnitWeight = newRow.UnitWeight;
+        List<DetailController.PricingTableInputOnly> intensifyRecords 
+                        = new List<DetailController.PricingTableInputOnly>{intensify,newIntensify};
+        List<DetailController.PricingTableNewRowObj> newRowRecords 
+                = new List<DetailController.PricingTableNewRowObj>{newRow};
+
+        List<String> specificationNames = new List<String>{'Name1','Name2','Name3','Name4'};
+        List<String> boardNames = new List<String>{'Name1','Name2','Name3','Name4'};
+        List<String> searchCodes = new List<String>{'MasterCode'};
+        List<String> searchName = new List<String>{'Name'};
+        
+        Map<String, List<String>>  searchConditions = new Map<String, List<String>>();
+
+        Test.startTest();
+        //ラベル設定
+        Map<String, List<Map<String, String>>> labelMap =  DetailController.getUniqueNamePicklist(dv.Id,'');
+
+        //初期検索
+        String rtnStr1 =  DetailController.getPricingTableRecords(
+                                '',
+                                dv.Id,
+                                200, 
+                                1,
+                                searchConditions,
+                                '',
+                                ''
+                                );
+        //画面条件指定
+        searchConditions.put('specificationNames',specificationNames);
+        searchConditions.put('boardNames',boardNames);
+        //仕様検索
+        String rtnStr2 =  DetailController.getPricingTableRecords(
+                                'SpecSearch',
+                                dv.Id,
+                                200, 
+                                1,
+                                searchConditions,
+                                JSON.serialize(intensifyRecords),
+                                JSON.serialize(newRowRecords)
+                                );
+        searchConditions.put('searchCodes',searchCodes);
+        //コード検索
+        String rtnStr3 =  DetailController.getPricingTableRecords(
+                                'CodeSearch',
+                                dv.Id,
+                                200, 
+                                1,
+                                searchConditions,
+                                JSON.serialize(intensifyRecords),
+                                JSON.serialize(newRowRecords)
+                                );
+        searchConditions.put('searchName',searchName);
+        //名称検索
+        String rtnStr4 =  DetailController.getPricingTableRecords(
+                                'NameSearch',
+                                dv.Id,
+                                200, 
+                                1,
+                                searchConditions,
+                                JSON.serialize(intensifyRecords),
+                                JSON.serialize(newRowRecords)
+                                );
+        //集約対象を検索する
+        String rtnStr5 =  DetailController.getPricingTableByintensify(
+            JSON.serialize(intensifyRecords),
+            JSON.serialize(newRowRecords));
+
+        //登録処理
+        String rtnStr6 =  DetailController.setDetail(
+                JSON.serialize(intensifyRecords),
+                JSON.serialize(newRowRecords),
+                '',
+                dv.Id,
+                true);
+        Test.stopTest();
+
+        System.assertNotEquals(null, rtnStr1);
+        System.assertNotEquals(null, rtnStr2);
+        System.assertNotEquals(null, rtnStr3);
+        System.assertNotEquals(null, rtnStr4);
+        System.assertNotEquals(null, rtnStr5);
+        System.assertEquals(String.valueof(quote.Id), rtnStr6);
+
+    }
+       //明細に既存がなし　
+   @isTest static void searchTest1_3() {
+        String qRtName='施設';
+        String major='低圧・現場・リレー・ACB盤';
+        String minor='リレー盤';
+        String powerFrequency='50Hz';
+
+        createDate(qRtName,major, minor, powerFrequency);
+
+        DetailController.PricingTableInputOnly intensify = new DetailController.PricingTableInputOnly();
+        DetailController.PricingTableInputOnly  newIntensify = new DetailController.PricingTableInputOnly();
+        intensify.Id = tables.get(0).Id;
+        intensify.Quantity = 1;
+        intensify.WCCoefficient = 1;
+        intensify.CreditWC = 1;
+        intensify.UnitPriceCoefficient = 1;
+        intensify.ProvisionUnitPrice = 1;
+        intensify.UnitWeight = 1;
+        DetailController.PricingTableNewRowObj newRow = new DetailController.PricingTableNewRowObj();
+        newRow.isCreate  =true;
+        newRow.Id = '1rowIndex1';
+        newRow.Name1 = 'Name1'; //名称１
+        newRow.Name2  = 'Name2'; ///名称２
+        newRow.Name3  = 'Name3'; ///名称３
+        newRow.CreditWC = 1; //単位WC ※入力
+        newRow.WCCoefficient = 1; //WC係数※入力
+        newRow.UnitPrice = 1;//単価
+        newRow.UnitPriceCoefficient = 1; //単価係数※入力
+        newRow.ProvisionUnitPrice = 1; //提供単価※入力
+        newRow.UnitWeight = 1; //単位重量
+        newRow.Quantity = 1; //数量※入力
+        newRow.WC  = 1;//WC
+        newRow.Price = 1; //価格
+        newRow.ProvisionPrice = 1; //提供価格
+        newRow.Weight = 1; //重量
+        newRow.Note = '備考';//備考
+        newRow.Name4 = 'Name4';//名称４
+
+        newIntensify.Id = newRow.Id;
+        newIntensify.Quantity = newRow.Quantity;
+        newIntensify.WCCoefficient = newRow.WCCoefficient;
+        newIntensify.CreditWC = newRow.CreditWC;
+        newIntensify.UnitPriceCoefficient = newRow.UnitPriceCoefficient;
+        newIntensify.ProvisionUnitPrice = newRow.ProvisionUnitPrice;
+        newIntensify.UnitWeight = newRow.UnitWeight;
+        List<DetailController.PricingTableInputOnly> intensifyRecords 
+                        = new List<DetailController.PricingTableInputOnly>{intensify,newIntensify};
+        List<DetailController.PricingTableNewRowObj> newRowRecords 
+                = new List<DetailController.PricingTableNewRowObj>{newRow};
+
+        List<String> specificationNames = new List<String>{'Name1','Name2','Name3','Name4'};
+        List<String> boardNames = new List<String>{'Name1','Name2','Name3','Name4'};
+        List<String> searchCodes = new List<String>{'MasterCode'};
+        List<String> searchName = new List<String>{'Name'};
+        
+        Map<String, List<String>>  searchConditions = new Map<String, List<String>>();
+
+        Test.startTest();
+        //ラベル設定
+        Map<String, List<Map<String, String>>> labelMap =  DetailController.getUniqueNamePicklist(dv.Id,'');
+
+        //初期検索
+        String rtnStr1 =  DetailController.getPricingTableRecords(
+                                '',
+                                dv.Id,
+                                200, 
+                                1,
+                                searchConditions,
+                                '',
+                                ''
+                                );
+        //画面条件指定
+        searchConditions.put('specificationNames',specificationNames);
+        searchConditions.put('boardNames',boardNames);
+        //仕様検索
+        String rtnStr2 =  DetailController.getPricingTableRecords(
+                                'SpecSearch',
+                                dv.Id,
+                                200, 
+                                1,
+                                searchConditions,
+                                JSON.serialize(intensifyRecords),
+                                JSON.serialize(newRowRecords)
+                                );
+        searchConditions.put('searchCodes',searchCodes);
+        //コード検索
+        String rtnStr3 =  DetailController.getPricingTableRecords(
+                                'CodeSearch',
+                                dv.Id,
+                                200, 
+                                1,
+                                searchConditions,
+                                JSON.serialize(intensifyRecords),
+                                JSON.serialize(newRowRecords)
+                                );
+        searchConditions.put('searchName',searchName);
+        //名称検索
+        String rtnStr4 =  DetailController.getPricingTableRecords(
+                                'NameSearch',
+                                dv.Id,
+                                200, 
+                                1,
+                                searchConditions,
+                                JSON.serialize(intensifyRecords),
+                                JSON.serialize(newRowRecords)
+                                );
+        //集約対象を検索する
+        String rtnStr5 =  DetailController.getPricingTableByintensify(
+            JSON.serialize(intensifyRecords),
+            JSON.serialize(newRowRecords));
+
+        //登録処理
+        String rtnStr6 =  DetailController.setDetail(
+                JSON.serialize(intensifyRecords),
+                JSON.serialize(newRowRecords),
+                '',
+                dv.Id,
+                true);
+        Test.stopTest();
+
+        System.assertNotEquals(null, rtnStr1);
+        System.assertNotEquals(null, rtnStr2);
+        System.assertNotEquals(null, rtnStr3);
+        System.assertNotEquals(null, rtnStr4);
+        System.assertNotEquals(null, rtnStr5);
+        System.assertEquals(String.valueof(quote.Id), rtnStr6);
+
+    }
+
+   //明細に既存がなし　
+   @isTest static void searchTest1_4() {
+        String qRtName='施設';
+        String major='大型映像装置';
+        String minor='屋外';
+        String powerFrequency='50Hz';
+
+        createDate(qRtName,major, minor, powerFrequency);
+
+        DetailController.PricingTableInputOnly intensify = new DetailController.PricingTableInputOnly();
+        DetailController.PricingTableInputOnly  newIntensify = new DetailController.PricingTableInputOnly();
+        
+        PricingTable__c table = [Select Id From PricingTable__c where RecordType.DeveloperName = 'Chassis' LIMIT 1];
+        intensify.Id = table.Id;
+        intensify.Quantity = 1;
+        intensify.WCCoefficient = 1;
+        intensify.CreditWC = 1;
+        intensify.UnitPriceCoefficient = 1;
+        intensify.ProvisionUnitPrice = 1;
+        intensify.UnitWeight = 1;
+        DetailController.PricingTableNewRowObj newRow = new DetailController.PricingTableNewRowObj();
+        newRow.isCreate  =true;
+        newRow.Id = '1rowIndex1';
+        newRow.Name1 = 'Name1'; //名称１
+        newRow.Name2  = 'Name2'; ///名称２
+        newRow.Name3  = 'Name3'; ///名称３
+        newRow.CreditWC = 1; //単位WC ※入力
+        newRow.WCCoefficient = 1; //WC係数※入力
+        newRow.UnitPrice = 1;//単価
+        newRow.UnitPriceCoefficient = 1; //単価係数※入力
+        newRow.ProvisionUnitPrice = 1; //提供単価※入力
+        newRow.UnitWeight = 1; //単位重量
+        newRow.Quantity = 1; //数量※入力
+        newRow.WC  = 1;//WC
+        newRow.Price = 1; //価格
+        newRow.ProvisionPrice = 1; //提供価格
+        newRow.Weight = 1; //重量
+        newRow.Note = '備考';//備考
+        newRow.Name4 = 'Name4';//名称４
+
+        newIntensify.Id = newRow.Id;
+        newIntensify.Quantity = newRow.Quantity;
+        newIntensify.WCCoefficient = newRow.WCCoefficient;
+        newIntensify.CreditWC = newRow.CreditWC;
+        newIntensify.UnitPriceCoefficient = newRow.UnitPriceCoefficient;
+        newIntensify.ProvisionUnitPrice = newRow.ProvisionUnitPrice;
+        newIntensify.UnitWeight = newRow.UnitWeight;
+        List<DetailController.PricingTableInputOnly> intensifyRecords 
+                        = new List<DetailController.PricingTableInputOnly>{intensify,newIntensify};
+        List<DetailController.PricingTableNewRowObj> newRowRecords 
+                = new List<DetailController.PricingTableNewRowObj>{newRow};
+
+        List<String> specificationNames = new List<String>{'Name1','Name2','Name3','Name4'};
+        List<String> boardNames = new List<String>{'Name1','Name2','Name3','Name4'};
+        List<String> searchCodes = new List<String>{'MasterCode'};
+        List<String> searchName = new List<String>{'Name'};
+        
+        Map<String, List<String>>  searchConditions = new Map<String, List<String>>();
+
+        Test.startTest();
+        //ラベル設定
+        Map<String, List<Map<String, String>>> labelMap =  DetailController.getUniqueNamePicklist(dv.Id,'');
+
+        //初期検索
+        String rtnStr1 =  DetailController.getPricingTableRecords(
+                                '',
+                                dv.Id,
+                                200, 
+                                1,
+                                searchConditions,
+                                '',
+                                ''
+                                );
+        //画面条件指定
+        searchConditions.put('specificationNames',specificationNames);
+        searchConditions.put('boardNames',boardNames);
+        //仕様検索
+        String rtnStr2 =  DetailController.getPricingTableRecords(
+                                'SpecSearch',
+                                dv.Id,
+                                200, 
+                                1,
+                                searchConditions,
+                                JSON.serialize(intensifyRecords),
+                                JSON.serialize(newRowRecords)
+                                );
+        searchConditions.put('searchCodes',searchCodes);
+        //コード検索
+        String rtnStr3 =  DetailController.getPricingTableRecords(
+                                'CodeSearch',
+                                dv.Id,
+                                200, 
+                                1,
+                                searchConditions,
+                                JSON.serialize(intensifyRecords),
+                                JSON.serialize(newRowRecords)
+                                );
+        searchConditions.put('searchName',searchName);
+        //名称検索
+        String rtnStr4 =  DetailController.getPricingTableRecords(
+                                'NameSearch',
+                                dv.Id,
+                                200, 
+                                1,
+                                searchConditions,
+                                JSON.serialize(intensifyRecords),
+                                JSON.serialize(newRowRecords)
+                                );
+        //集約対象を検索する
+        String rtnStr5 =  DetailController.getPricingTableByintensify(
+            JSON.serialize(intensifyRecords),
+            JSON.serialize(newRowRecords));
+
+        //登録処理
+        String rtnStr6 =  DetailController.setDetail(
+                JSON.serialize(intensifyRecords),
+                JSON.serialize(newRowRecords),
+                '',
+                dv.Id,
+                true);
+        Test.stopTest();
+
+        System.assertNotEquals(null, rtnStr1);
+        System.assertNotEquals(null, rtnStr2);
+        System.assertNotEquals(null, rtnStr3);
+        System.assertNotEquals(null, rtnStr4);
+        System.assertNotEquals(null, rtnStr5);
+        System.assertEquals(String.valueof(quote.Id), rtnStr6);
+
+    }
+
+  //明細に既存がなし　
+  @isTest static void searchTest1_5() {
+        String qRtName='施設';
+        String major='コントロールセンタ(C/C)';
+        String minor='200V';
+        String powerFrequency='50Hz';
+
+        createDate(qRtName,major, minor, powerFrequency);
+
+        DetailController.PricingTableInputOnly intensify = new DetailController.PricingTableInputOnly();
+        DetailController.PricingTableInputOnly  newIntensify = new DetailController.PricingTableInputOnly();
+        
+        PricingTable__c table = [Select Id From PricingTable__c where RecordType.DeveloperName = 'Chassis' LIMIT 1];
+        intensify.Id = table.Id;
+        intensify.Quantity = 1;
+        intensify.WCCoefficient = null;
+        intensify.CreditWC = null;
+        intensify.UnitPriceCoefficient = 1;
+        intensify.ProvisionUnitPrice = 1;
+        intensify.unitPrice= 1;
+        intensify.UnitWeight = 1;
+        DetailController.PricingTableNewRowObj newRow = new DetailController.PricingTableNewRowObj();
+        newRow.isCreate  =true;
+        newRow.Id = '1rowIndex1';
+        newRow.Name1 = 'Name1'; //名称１
+        newRow.Name2  = 'Name2'; ///名称２
+        newRow.Name3  = 'Name3'; ///名称３
+        newRow.CreditWC = null; //単位WC ※入力
+        newRow.WCCoefficient = null; //WC係数※入力
+        newRow.UnitPrice = 1;//単価
+        newRow.UnitPriceCoefficient = 1; //単価係数※入力
+        newRow.ProvisionUnitPrice = 1; //提供単価※入力
+        newRow.UnitWeight = 1; //単位重量
+        newRow.Quantity = 1; //数量※入力
+        newRow.WC  = null;//WC
+        newRow.Price = 1; //価格
+        newRow.ProvisionPrice = 1; //提供価格
+        newRow.Weight = 1; //重量
+        newRow.Note = '備考';//備考
+        newRow.Name4 = 'Name4';//名称４
+
+        newIntensify.Id = newRow.Id;
+        newIntensify.Quantity = newRow.Quantity;
+        newIntensify.WCCoefficient = newRow.WCCoefficient;
+        newIntensify.CreditWC = newRow.CreditWC;
+        newIntensify.UnitPriceCoefficient = newRow.UnitPriceCoefficient;
+        newIntensify.ProvisionUnitPrice = newRow.ProvisionUnitPrice;
+        newIntensify.UnitWeight = newRow.UnitWeight;
+        List<DetailController.PricingTableInputOnly> intensifyRecords 
+                        = new List<DetailController.PricingTableInputOnly>{intensify,newIntensify};
+        List<DetailController.PricingTableNewRowObj> newRowRecords 
+                = new List<DetailController.PricingTableNewRowObj>{newRow};
+
+        List<String> specificationNames = new List<String>{'Name1','Name2','Name3','Name4'};
+        List<String> boardNames = new List<String>{'Name1','Name2','Name3','Name4'};
+        List<String> searchCodes = new List<String>{'MasterCode'};
+        List<String> searchName = new List<String>{'Name'};
+        
+        Map<String, List<String>>  searchConditions = new Map<String, List<String>>();
+
+        Test.startTest();
+        //ラベル設定
+        Map<String, List<Map<String, String>>> labelMap =  DetailController.getUniqueNamePicklist(dv.Id,'');
+
+        //初期検索
+        String rtnStr1 =  DetailController.getPricingTableRecords(
+                                '',
+                                dv.Id,
+                                200, 
+                                1,
+                                searchConditions,
+                                '',
+                                ''
+                                );
+        //画面条件指定
+        searchConditions.put('specificationNames',specificationNames);
+        searchConditions.put('boardNames',boardNames);
+        //仕様検索
+        String rtnStr2 =  DetailController.getPricingTableRecords(
+                                'SpecSearch',
+                                dv.Id,
+                                200, 
+                                1,
+                                searchConditions,
+                                JSON.serialize(intensifyRecords),
+                                JSON.serialize(newRowRecords)
+                                );
+        searchConditions.put('searchCodes',searchCodes);
+        //コード検索
+        String rtnStr3 =  DetailController.getPricingTableRecords(
+                                'CodeSearch',
+                                dv.Id,
+                                200, 
+                                1,
+                                searchConditions,
+                                JSON.serialize(intensifyRecords),
+                                JSON.serialize(newRowRecords)
+                                );
+        searchConditions.put('searchName',searchName);
+        //名称検索
+        String rtnStr4 =  DetailController.getPricingTableRecords(
+                                'NameSearch',
+                                dv.Id,
+                                200, 
+                                1,
+                                searchConditions,
+                                JSON.serialize(intensifyRecords),
+                                JSON.serialize(newRowRecords)
+                                );
+        //集約対象を検索する
+        String rtnStr5 =  DetailController.getPricingTableByintensify(
+            JSON.serialize(intensifyRecords),
+            JSON.serialize(newRowRecords));
+
+        //登録処理
+        String rtnStr6 =  DetailController.setDetail(
+                JSON.serialize(intensifyRecords),
+                JSON.serialize(newRowRecords),
+                '',
+                dv.Id,
+                true);
+        Test.stopTest();
+
+        System.assertNotEquals(null, rtnStr1);
+        System.assertNotEquals(null, rtnStr2);
+        System.assertNotEquals(null, rtnStr3);
+        System.assertNotEquals(null, rtnStr4);
+        System.assertNotEquals(null, rtnStr5);
+        System.assertEquals(String.valueof(quote.Id), rtnStr6);
+
+    }
+  //明細に既存がなし　
+  @isTest static void searchTest1_6() {
+        String qRtName='施設';
+        String major='高圧コンビ';
+        String minor='高圧コンビ盤';
+        String powerFrequency='50Hz';
+
+        createDate(qRtName,major, minor, powerFrequency);
+
+        DetailController.PricingTableInputOnly intensify = new DetailController.PricingTableInputOnly();
+        DetailController.PricingTableInputOnly  newIntensify = new DetailController.PricingTableInputOnly();
+        
+        PricingTable__c table = [Select Id From PricingTable__c where RecordType.DeveloperName = 'Chassis' LIMIT 1];
+        intensify.Id = table.Id;
+        intensify.Quantity = 1;
+        intensify.WCCoefficient = 1;
+        intensify.CreditWC = 1;
+        intensify.UnitPriceCoefficient = 1;
+        intensify.ProvisionUnitPrice = 1;
+        intensify.UnitWeight = 1;
+        DetailController.PricingTableNewRowObj newRow = new DetailController.PricingTableNewRowObj();
+        newRow.isCreate  =true;
+        newRow.Id = '1rowIndex1';
+        newRow.Name1 = 'Name1'; //名称１
+        newRow.Name2  = 'Name2'; ///名称２
+        newRow.Name3  = 'Name3'; ///名称３
+        newRow.CreditWC = 1; //単位WC ※入力
+        newRow.WCCoefficient = 1; //WC係数※入力
+        newRow.UnitPrice = 1;//単価
+        newRow.UnitPriceCoefficient = 1; //単価係数※入力
+        newRow.ProvisionUnitPrice = 1; //提供単価※入力
+        newRow.UnitWeight = 1; //単位重量
+        newRow.Quantity = 1; //数量※入力
+        newRow.WC  = 1;//WC
+        newRow.Price = 1; //価格
+        newRow.ProvisionPrice = 1; //提供価格
+        newRow.Weight = 1; //重量
+        newRow.Note = '備考';//備考
+        newRow.Name4 = 'Name4';//名称４
+
+        newIntensify.Id = newRow.Id;
+        newIntensify.Quantity = newRow.Quantity;
+        newIntensify.WCCoefficient = newRow.WCCoefficient;
+        newIntensify.CreditWC = newRow.CreditWC;
+        newIntensify.UnitPriceCoefficient = newRow.UnitPriceCoefficient;
+        newIntensify.ProvisionUnitPrice = newRow.ProvisionUnitPrice;
+        newIntensify.UnitWeight = newRow.UnitWeight;
+        List<DetailController.PricingTableInputOnly> intensifyRecords 
+                        = new List<DetailController.PricingTableInputOnly>{intensify,newIntensify};
+        List<DetailController.PricingTableNewRowObj> newRowRecords 
+                = new List<DetailController.PricingTableNewRowObj>{newRow};
+
+        List<String> specificationNames = new List<String>{'Name1','Name2','Name3','Name4'};
+        List<String> boardNames = new List<String>{'Name1','Name2','Name3','Name4'};
+        List<String> searchCodes = new List<String>{'MasterCode'};
+        List<String> searchName = new List<String>{'Name'};
+        
+        Map<String, List<String>>  searchConditions = new Map<String, List<String>>();
+
+        Test.startTest();
+        //ラベル設定
+        Map<String, List<Map<String, String>>> labelMap =  DetailController.getUniqueNamePicklist(dv.Id,'');
+
+        //初期検索
+        String rtnStr1 =  DetailController.getPricingTableRecords(
+                                '',
+                                dv.Id,
+                                200, 
+                                1,
+                                searchConditions,
+                                '',
+                                ''
+                                );
+        //画面条件指定
+        searchConditions.put('specificationNames',specificationNames);
+        searchConditions.put('boardNames',boardNames);
+        //仕様検索
+        String rtnStr2 =  DetailController.getPricingTableRecords(
+                                'SpecSearch',
+                                dv.Id,
+                                200, 
+                                1,
+                                searchConditions,
+                                JSON.serialize(intensifyRecords),
+                                JSON.serialize(newRowRecords)
+                                );
+        searchConditions.put('searchCodes',searchCodes);
+        //コード検索
+        String rtnStr3 =  DetailController.getPricingTableRecords(
+                                'CodeSearch',
+                                dv.Id,
+                                200, 
+                                1,
+                                searchConditions,
+                                JSON.serialize(intensifyRecords),
+                                JSON.serialize(newRowRecords)
+                                );
+        searchConditions.put('searchName',searchName);
+        //名称検索
+        String rtnStr4 =  DetailController.getPricingTableRecords(
+                                'NameSearch',
+                                dv.Id,
+                                200, 
+                                1,
+                                searchConditions,
+                                JSON.serialize(intensifyRecords),
+                                JSON.serialize(newRowRecords)
+                                );
+        //集約対象を検索する
+        String rtnStr5 =  DetailController.getPricingTableByintensify(
+            JSON.serialize(intensifyRecords),
+            JSON.serialize(newRowRecords));
+
+        //登録処理
+        String rtnStr6 =  DetailController.setDetail(
+                JSON.serialize(intensifyRecords),
+                JSON.serialize(newRowRecords),
+                '',
+                dv.Id,
+                true);
+        Test.stopTest();
+
+        System.assertNotEquals(null, rtnStr1);
+        System.assertNotEquals(null, rtnStr2);
+        System.assertNotEquals(null, rtnStr3);
+        System.assertNotEquals(null, rtnStr4);
+        System.assertNotEquals(null, rtnStr5);
+        System.assertEquals(String.valueof(quote.Id), rtnStr6);
+
+    }
+
     //明細に既存がなし　基本パターン１
     @isTest static void searchTest1() {
         String qRtName='施設';
@@ -214,7 +1033,7 @@ public with sharing class DetailControllerTest {
         DetailController.PricingTableNewRowObj newRow = new DetailController.PricingTableNewRowObj();
         newRow.isCreate  =true;
         newRow.Id = '1rowIndex1';
-        newRow.Name1 = 'Name1'; //名称１
+        newRow.Name1 = 'Name1'; //名称１　'Name1'
         newRow.Name2  = 'Name2'; ///名称２
         newRow.Name3  = 'Name3'; ///名称３
         newRow.CreditWC = 1; //単位WC ※入力
@@ -322,6 +1141,8 @@ public with sharing class DetailControllerTest {
 
 
     }
+
+
     //明細に既存が存在　
     @isTest static void searchTest2() {
         String qRtName='施設';
@@ -389,6 +1210,9 @@ public with sharing class DetailControllerTest {
                             dv.Id,
                             true);
 
+        //既に登録済みの内訳情報を取得
+        Map<Id, Detail__c> details = DetailController.getDetailRecordsByDeviceId(dv.Id);
+
         //初期検索
         String rtnStr1 =  DetailController.getPricingTableRecords(
                                 '',
@@ -440,6 +1264,7 @@ public with sharing class DetailControllerTest {
             JSON.serialize(newRowRecords));
 
         Test.stopTest();
+        System.assertEquals(true, details.size()>0);
         System.assertNotEquals(null, rtnStr1);
         System.assertNotEquals(null, rtnStr2);
         System.assertNotEquals(null, rtnStr3);
@@ -713,8 +1538,4 @@ public with sharing class DetailControllerTest {
         System.assertNotEquals(null, rtnStr5);
         System.assertEquals(String.valueof(quote.Id), rtnStr6);
     }
-
-
-
-
 }

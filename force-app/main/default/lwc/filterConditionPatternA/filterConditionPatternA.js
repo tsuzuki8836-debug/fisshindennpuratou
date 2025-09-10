@@ -249,12 +249,13 @@ export default class FilterConditionPatternA extends LightningElement {
         this.name8_isDisabled=true;
         this.name9_isDisabled=true;
         this.name10_isDisabled=true;
-
+        
         //パラメータ設定
         var name1 = null;
         if(!isInit){
             name1 = this.name1_SelectedOption
         }
+        console.log('wireUniqueNamePicklist：' + this.recordId + '：' + name1);
         //Apex呼び出す
         getUniqueNamePicklist({deviceId: this.recordId, name1: name1})
             .then(result => {
