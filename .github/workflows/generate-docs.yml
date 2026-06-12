@@ -2,15 +2,12 @@ name: Automatic Architecture Document Generation
 
 on:
   push:
-    # main または master ブランチへのプッシュ時のみに制限
     branches:
       - main
       - master
-    # ★重要: scripts/doc_generator/ フォルダ内のファイルが変更された時だけActionsを起動するガードレール
     paths:
       - 'scripts/doc_generator/**'
 
-# クラウドのランナー全体に対してNode.js 24環境でのJavaScriptアクション実行を強制
 env:
   FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: "true"
 
@@ -21,6 +18,12 @@ jobs:
     steps:
       - name: Check out repository
         uses: actions/checkout@v4
+
+      # ★根本解決: クラウドのLinuxサーバー環境に日本語フォント（Noto CJK）を自動インストールするガードレール
+      - name: Install Japanese Fonts
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y fonts-noto-cjk
 
       - name: Set up Node.js
         uses: actions/setup-node@v4
