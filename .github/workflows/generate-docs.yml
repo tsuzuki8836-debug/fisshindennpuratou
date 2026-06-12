@@ -1,0 +1,15 @@
+# ① クラウドサーバー内に Node.js 環境を自動で準備する指示
+- name: Set up Node.js
+  uses: actions/setup-node@v3
+
+# ② Node.jsのパッケージマネージャーを使って、Mermaid変換エンジンを自動インストールする指示
+- name: Install mermaid-cli
+  run: npm install -g @mermaid-js/mermaid-cli
+
+# ③ クラウドサーバー内に Python 環境を自動で準備する指示
+- name: Set up Python
+  uses: actions/setup-python@v4
+
+# ④ Pythonのパッケージマネージャーを使って、Excel操作ライブラリ（openpyxl）と画像処理ライブラリ（pillow）を自動インストールする指示
+- name: Install Python dependencies
+  run: pip install openpyxl pillow
