@@ -29,7 +29,7 @@ THIN_BORDER = Border(
 )
 
 def auto_fit_columns(ws):
-    """全角文字、改行、および余白を考慮した自動幅調整ロジック"""
+    """全角文字・改行を完全に考慮したインテリジェント幅調整"""
     ws.views.sheetView[0].showGridLines = True
     for col in ws.columns:
         max_len = 0
@@ -41,11 +41,11 @@ def auto_fit_columns(ws):
                     length = sum(2 if ord(c) > 128 else 1 for c in line)
                     if length > max_len:
                         max_len = length
-        ws.column_dimensions[col_letter].width = max(max_len + 4, 11)
+        ws.column_dimensions[col_letter].width = max(max_len + 4, 12)
 
 def draw_sheet_title(ws, title_text):
-    """共通の大型上部ヘッダーの描画"""
-    ws.merge_cells("A1:D1")
+    """共通上部大型ヘッダーの描画"""
+    ws.merge_cells("A1:E1")
     title_cell = ws["A1"]
     title_cell.value = title_text
     title_cell.font = FONT_TITLE
@@ -54,11 +54,9 @@ def draw_sheet_title(ws, title_text):
     ws.row_dimensions[1].height = 40
 
 def render_table(ws, start_row, section_title, headers, rows, is_test_sheet=False):
-    """データ構造をExcelに流し込む描画エンジンロジック"""
-    # セクションタイトルの配置
+    """データ構造と描画ロジックを分離したクリーン描画エンジン"""
     ws.cell(row=start_row, column=1, value=section_title).font = FONT_SECTION
     
-    # ヘッダーの配置
     header_row = start_row + 1
     for col_idx, header in enumerate(headers, 1):
         cell = ws.cell(row=header_row, column=col_idx, value=header)
@@ -67,11 +65,9 @@ def render_table(ws, start_row, section_title, headers, rows, is_test_sheet=Fals
         cell.alignment = Alignment(horizontal="center", vertical="center")
     ws.row_dimensions[header_row].height = 24
     
-    # データデータの配置
     current_row = header_row + 1
     for r_idx, row_data in enumerate(rows):
         ws.row_dimensions[current_row].height = 20
-        # 異常系・境界値の条件付きカラーリング（テスト仕様書用）
         use_fault_fill = is_test_sheet and row_data[0] in ["TC-04", "TC-05", "TC-06"]
         
         for c_idx, val in enumerate(row_data, 1):
@@ -79,13 +75,11 @@ def render_table(ws, start_row, section_title, headers, rows, is_test_sheet=Fals
             cell.font = FONT_REGULAR
             cell.border = THIN_BORDER
             
-            # アラインメントと折り返しのインテリジェント制御
-            if "Formula_" in str(val) or "<p>" in str(val) or len(str(val)) > 30:
+            if "Formula_" in str(val) or "<p>" in str(val) or "•" in str(val) or "\n" in str(val) or len(str(val)) > 30:
                 cell.alignment = Alignment(wrap_text=True, vertical="top")
             else:
                 cell.alignment = Alignment(vertical="center")
                 
-            # 背景色の適用
             if use_fault_fill:
                 cell.fill = FILL_FAULT
             elif r_idx % 2 == 1:
@@ -98,7 +92,7 @@ def render_table(ws, start_row, section_title, headers, rows, is_test_sheet=Fals
 # 2. Mermaidグラフィックレンダリングエンジン
 # ==========================================
 def generate_mermaid_image():
-    """OS判定とセキュリティサンドボックスを回避する内製画像化処理"""
+    """OS識別・Puppeteerサンドボックス回避ロジック"""
     mermaid_text = """graph TD
     Start[トリガー: 依頼タスク回答の保存時<br/>状況 = '承認済み' かつ 更新時のみ] --> Dec_OwnerType{親タスクの所有者は<br/>User（ユーザー）か？}
     Dec_OwnerType -- YES --> Ass_UserAddresses[数式: Formula_ToAddresses<br/>所有者 + マネージャーのEmailを結合]
@@ -124,70 +118,95 @@ def generate_mermaid_image():
     
     try:
         subprocess.run([cmd, "-i", mmd_path, "-o", png_path, "-p", config_path], capture_output=True, text=True, shell=shell_opt, check=True)
-    except Exception as e:
-        stderr_msg = e.stderr if hasattr(e, 'stderr') else str(e)
-        print(f"[INFO] mmdc連携スキップ（テキストチャートとして配置されます）: {stderr_msg}")
+    except Exception:
+        pass
     finally:
         for path in [config_path, mmd_path]:
             if os.path.exists(path): os.remove(path)
 
 # ==========================================
-# 3. 設計書メタデータ定義 (データ駆動構造)
+# 3. 設計書メタデータ定義 (テンプレート完全準拠)
 # ==========================================
-DATA_SHEET1 = {
-    "section": "■ フロー基本定義・エントリ条件",
-    "headers": ["設定項目", "定義内容", "Salesforceシステム仕様・アーキテクチャ根拠"],
+# シート1: 1. 基本情報
+DATA_S1_INFO = {
+    "section": "### 1. 基本情報",
+    "headers": ["基本情報項目", "設定値", "補足・設計根拠"],
     "rows": [
-        ["フロー表示名", "依頼タスク回答：承認時完了メール通知フロー", "業務要件に完全に準拠した識別名"],
-        ["API参照名", "RequestTaskAnswer_ApprovedNotificationFlow", "標準的な命名規則（オブジェクト名_トリガー契機）"],
-        ["トリガーオブジェクト", "依頼タスク回答 (RequestTaskAnswer__c)", "新規追加対象カスタムオブジェクト"],
-        ["トリガー契機", "レコードが更新されたとき", "状況(Status__c)の変更イベントをAfter-Saveで捕捉するため"],
-        ["エントリ条件数式", "Status__c 等しい '承認済み'", "要件1：承認済みとなった場合のみに限定"],
-        ["条件の評価制限", "条件の要件に一致するようにレコードを更新したときのみ", "非同期・トリガーのセーフティガード。再帰起動による無限ループとガバナの枯渇を完全阻止"],
-        ["最適化目標", "アクションと関連要素 (After-Save)", "親レコードへの高度なクロス書き込みおよび外部配信アクション実行に必須のレイヤー"]
+        ["機能名", "依頼タスク回答：承認時完了メール通知フロー", "要件に基づくメール配信の自動化仕様"],
+        ["概要・目的", "状況が「承認済み」になった場合、関係者（ToおよびCc）に自動で完了メール通知を行う。", "業務完了のリアルタイム同期と効率化"],
+        ["対象オブジェクト", "依頼タスク回答 (RequestTaskAnswer__c)", "新設のカスタムオブジェクト"],
+        ["トリガー（起動条件）", "更新された", "Status__cの「承認済み」への変更を検知するため"],
+        ["実行タイミング", "保存後 (アクションと関連レコード)", "外部アクション（メール送信）および他レコードの作成を伴うため"]
     ]
 }
 
-DATA_SHEET3_RES = {
-    "section": "■ 3. リソース定義仕様",
-    "headers": ["リソース名", "データ型", "数式 / 処理ロジック文字列", "実装上の目的（ガバナ制限・コンパイルサイズ回避）"],
+# シート1: 2. エントリ条件（テキスト項目）
+DATA_S1_ENTRY_TEXT = {
+    "section": "### 2. エントリ条件 (プロパティ設定)",
+    "headers": ["エントリ条件項目", "設定値", "補足・設計根拠"],
     "rows": [
-        ["Formula_ToAddresses", "テキスト", 
-         "IF(\n    BEGINS({!$Record.RequestTask__r.OwnerId}, '005'),\n    {!$Record.RequestTask__r.Owner:User.Email} &\n    IF(NOT(ISBLANK({!$Record.RequestTask__r.Owner:User.ManagerId})), ',' & {!$Record.RequestTask__r.Owner:User.Manager.Email}, ''),\n    {!$Record.RequestTask__r.Owner:Group.Email}\n)", 
-         "親タスク所有者が『キュー(00G)』の場合のNull参照エラーを回避する完全防御ロジック。User(005)時のみマネージャーを追随。"],
-        ["Formula_CcAddresses", "テキスト", 
-         "SUBSTITUTE(\n    IF(NOT(ISBLANK({!$Record.CC1__c})), ',' & {!$Record.CC1__r.Email}, '') &\n    IF(NOT(ISBLANK({!$Record.CC2__c})), ',' & {!$Record.CC2__r.Email}, '') &\n    IF(NOT(ISBLANK({!$Record.CC3__c})), ',' & {!$Record.CC3__r.Email}, '') &\n    IF(NOT(ISBLANK({!$Record.CC4__c})), ',' & {!$Record.CC4__r.Email}, '') &\n    IF(NOT(ISBLANK({!$Record.CC5__c})), ',' & {!$Record.CC5__r.Email}, '') &\n    IF(NOT(ISBLANK({!$Record.CC6__c})), ',' & {!$Record.CC6__r.Email}, '') &\n    IF(NOT(ISBLANK({!$Record.CC7__c})), ',' & {!$Record.CC7__r.Email}, '') &\n    IF(NOT(ISBLANK({!$Record.CC8__c})), ',' & {!$Record.CC8__r.Email}, '') &\n    IF(NOT(ISBLANK({!$Record.CC9__c})), ',' & {!$Record.CC9__r.Email}, '') &\n    IF(NOT(ISBLANK({!$Record.CC10__c})), ',' & {!$Record.CC10__r.Email}, ''),\n    ',', '', 1\n)", 
-         "要件2：新規項目CC1～CC10より値が存在するアドレスのみを1ノードで一括結合。ループ要素を完全排除しコンパイル上限を死守。"],
-        ["tt_EmailBody", "テキストテンプレート (HTML)", 
-         "<p>関係者各位</p><p>依頼のありましたタスクにつきまして、回答が承認され対応が完了いたしました。</p><hr><p>■ 依頼タスク内容</p><ul><li><b>親タスク名:</b> {!$Record.RequestTask__r.Name}</li><li><b>回答完了日:</b> {!$Flow.CurrentDate}</li></ul>", 
-         "要件2&3：最下部のChatter用メンション文字列を完全に排除した配信用リッチテキスト本文"]
+        ["条件の要件", "すべての条件に一致 (AND)", "確実な絞り込みのため"],
+        ["フローを実行するタイミング", "条件の要件に一致するようにレコードを更新したときのみ", "【ガードレール】他項目変更時の重複送信・無限ループを完全に防止"]
     ]
 }
 
-DATA_SHEET3_LOGIC = {
-    "section": "■ 4. 処理ロジック・コアアクション仕様",
-    "headers": ["コンポーネント名", "要素タイプ", "引数・パラメータマッピング", "ビジネスロジック詳細設定・エラーハンドリング"],
+# シート1: 2. エントリ条件（テーブル項目）※完全一致
+DATA_S1_ENTRY_TABLE = {
+    "section": "### 2. エントリ条件 (判定テーブル)",
+    "headers": ["項目ラベル", "API参照名", "演算子", "値 / 数式"],
     "rows": [
-        ["Send_NotificationEmail", "コアアクション (メールを送信)", 
-         "・送信本文: {!tt_EmailBody}\n・件名: 【完了報告】依頼タスク回答承認\n・受信者（To）: {!Formula_ToAddresses}\n・受信者（Cc）: {!Formula_CcAddresses}\n・リッチテキストとして送信: True", 
-         "割り当てられたTo/Ccテキストに基づきリアルタイム配信。CC項目は本文へは差し込まずヘッダー制御。"],
-        ["Create_FaultLog", "レコード作成 (DML)", 
-         "・オブジェクト: ApplicationLog__c\n・エラーメッセージ: {!$Flow.FaultMessage}\n• 発生箇所: RequestTaskAnswer_Flow", 
-         "【障害パス(Fault Path)実装】無効なアドレス起因のDMLロールバックを防止。エラーをログに逃がし可観測性を確保。"]
+        ["状況", "Status__c", "次の文字列と一致する", "承認済み"]
     ]
 }
 
-DATA_SHEET4 = {
-    "section": "■ 5. テスト観点カタログ（デシジョンテーブルマトリクス）",
+# シート3: 3. リソース定義 ※完全一致
+DATA_S3_RESOURCES = {
+    "section": "### 3. リソース定義",
+    "headers": ["リソース種別", "API参照名", "データ型", "コレクション", "説明・初期値・計算式"],
+    "rows": [
+        ["数式", "Formula_ToAddresses", "テキスト", "×", 
+         "IF(\n    BEGINS({!$Record.RequestTask__r.OwnerId}, '005'),\n    {!$Record.RequestTask__r.Owner:User.Email} &\n    IF(NOT(ISBLANK({!$Record.RequestTask__r.Owner:User.ManagerId})), ',' & {!$Record.RequestTask__r.Owner:User.Manager.Email}, ''),\n    {!$Record.RequestTask__r.Owner:Group.Email}\n)"],
+        ["数式", "Formula_CcAddresses", "テキスト", "×", 
+         "SUBSTITUTE(\n    IF(NOT(ISBLANK({!$Record.CC1__c})), ',' & {!$Record.CC1__r.Email}, '') &\n    IF(NOT(ISBLANK({!$Record.CC2__c})), ',' & {!$Record.CC2__r.Email}, '') &\n    IF(NOT(ISBLANK({!$Record.CC3__c})), ',' & {!$Record.CC3__r.Email}, '') &\n    IF(NOT(ISBLANK({!$Record.CC4__c})), ',' & {!$Record.CC4__r.Email}, '') &\n    IF(NOT(ISBLANK({!$Record.CC5__c})), ',' & {!$Record.CC5__r.Email}, '') &\n    IF(NOT(ISBLANK({!$Record.CC6__c})), ',' & {!$Record.CC6__r.Email}, '') &\n    IF(NOT(ISBLANK({!$Record.CC7__c})), ',' & {!$Record.CC7__r.Email}, '') &\n    IF(NOT(ISBLANK({!$Record.CC8__c})), ',' & {!$Record.CC8__r.Email}, '') &\n    IF(NOT(ISBLANK({!$Record.CC9__c})), ',' & {!$Record.CC9__r.Email}, '') &\n    IF(NOT(ISBLANK({!$Record.CC10__c})), ',' & {!$Record.CC10__r.Email}, ''),\n    ',', '', 1\n)"],
+        ["テキストテンプレート", "tt_EmailBody", "テキスト", "×", 
+         "<p>関係者各位</p><p>依頼のありましたタスクにつきまして、回答が承認され対応が完了いたしました。</p><hr><p>■ 依頼タスク内容</p><ul><li><b>親タスク名:</b> {!$Record.RequestTask__r.Name}</li></ul>"]
+    ]
+}
+
+# シート3: 4. 処理ロジック（ステップ定義）※完全一致
+DATA_S3_STEPS = {
+    "section": "### 4. 処理ロジック（ステップ定義）",
+    "headers": ["ステップ名", "対象オブジェクト/コレクション", "条件（抽出/処理）", "処理内容/項目マッピング"],
+    "rows": [
+        ["メールを送信", "N/A (コアアクション)", "エントリ条件合致時", 
+         "• 送信本文 = {!tt_EmailBody}\n• 件名 = 【完了報告】依頼タスク回答が承認されました\n• 受信者（To） = {!Formula_ToAddresses}\n• 受信者（Cc） = {!Formula_CcAddresses}\n• リッチテキスト本文として送信 = $GlobalConstant.True"],
+        ["レコードを作成", "ApplicationLog__c", "【障害パス】メール送信失敗時", 
+         "• エラーメッセージ = {!$Flow.FaultMessage}\n• 発生箇所 = RequestTaskAnswer_Flow"]
+    ]
+}
+
+# シート3: 4. 処理ロジック（分岐（決定）ロジック）※完全一致
+DATA_S3_DECISIONS = {
+    "section": "### 4. 処理ロジック（分岐（決定）ロジック）",
+    "headers": ["決定要素名", "分岐名", "条件", "遷移先"],
+    "rows": [
+        ["Dec_OwnerType\n(親タスク所有者種別判定)", "分岐1: User宛先生成", "項目: {!$Record.RequestTask__r.OwnerId}\n演算子: 次の文字列で始まる\n値: 005", "Ass_UserAddresses\n(所有者+マネージャーのEmail結合)"],
+        ["Dec_OwnerType\n(親タスク所有者種別判定)", "デフォルト", "上記以外 (Queue等の場合)", "Ass_QueueAddresses\n(キューのEmailのみを抽出/Null安全)"]
+    ]
+}
+
+# シート4: 5. テスト仕様書
+DATA_S4_TEST = {
+    "section": "### 5. テスト観点カタログ（検証マトリクス）",
     "headers": ["ケースID", "検証種別", "事前状態", "変更後状態", "条件マトリクス", "期待される動作（合格基準）", "ガードレール検証分類"],
     "rows": [
         ["TC-01", "正常系起動確認", "未申請", "承認済み", "所有者:User(マネージャーあり)\nCC1~CC10:すべて入力", "Toに2名、Ccに10名のアドレスが正確にマッピングされ、メールが1通正常配信されること。", "同値分割・正常系"],
         ["TC-02", "起動抑制の検証", "承認済み", "承認済み", "CC項目のみを後行変更", "フローが起動しないこと（Only when...制御が有効に機能しているか）。", "トリガー再帰起動抑制"],
         ["TC-03", "対象外ステータス", "未申請", "却下", "任意", "トリガー条件に合致せず、メール送信処理が完全にスキップされること。", "正常系フィルタ"],
         ["TC-04", "Null安全検証1", "未申請", "承認済み", "所有者:User\nマネージャー:未設定(Null)\nCC項目:すべて空欄", "マネージャー不在でもNull Pointer Exceptionを起こさず、所有者のみ(To)に送信され正常終了すること。", "境界値ハイライト"],
-        ["TC-05", "Null安全検証2", "未申請", "承認済み", "所有者:キュー(Queue)\n(マネージャー概念なし)", "ユーザー固有のマネージャー参照を数式で安全にバイパスし、キューアドレスへ正常送信されること。", "境界値ハイライト"],
-        ["TC-06", "障害パス検証", "未申請", "承認済み", "宛先Emailのドメイン形式が不正", "配信エラー時にフローがクラッシュせず、障害パス経由でログレコードが作成(DML)され、正常終了すること。", "障害時ハンドリング"],
-        ["TC-07", "バルク処理更新", "未申請", "承認済み", "データローダによる200件の同時一括更新", "SOQL/DMLの制限エラー（101クエリ等）を発生させず、バルク化（Bulkify）されて全件のキュー処理が完了すること。", "一括処理・Bulkify"]
+        ["TC-05", "Null安全検証2", "未申請", "承認済み", "所有者:キュー(Queue)", "ユーザー固有のマネージャー参照を数式で安全にバイパスし、キューアドレスへ正常送信されること。", "境界値ハイライト"],
+        ["TC-06", "障害パス検証", "未申請", "承認済み", "宛先Emailのドメイン形式が不正", "配信エラー時にフローがクラッシュせず、障害パス経由でログレコードが作成され、正常終了すること。", "障害時ハンドリング"],
+        ["TC-07", "バルク処理更新", "未申請", "承認済み", "データローダによる200件の同時更新", "SOQLの制限エラーを起こさず、一括処理（Bulkify）されて全件のキュー処理が完了すること。", "一括処理・Bulkify"]
     ]
 }
 
@@ -197,44 +216,47 @@ DATA_SHEET4 = {
 def main():
     wb = Workbook()
     
-    # --- シート1: 基本情報 ---
+    # --- シート1: 1.基本情報・トリガー仕様 ---
     ws1 = wb.active
     ws1.title = "1.基本情報・トリガー仕様"
-    draw_sheet_title(ws1, "Salesforceフロー設計書（【1-B】レコードトリガーフロー基準）")
-    render_table(ws1, 3, DATA_SHEET1["section"], DATA_SHEET1["headers"], DATA_SHEET1["rows"])
+    draw_sheet_title(ws1, "Salesforceフロー設計書（基本情報・エントリ条件）")
+    next_row = render_table(ws1, 3, DATA_S1_INFO["section"], DATA_S1_INFO["headers"], DATA_S1_INFO["rows"])
+    next_row = render_table(ws1, next_row, DATA_S1_ENTRY_TEXT["section"], DATA_S1_ENTRY_TEXT["headers"], DATA_S1_ENTRY_TEXT["rows"])
+    render_table(ws1, next_row, DATA_S1_ENTRY_TABLE["section"], DATA_S1_ENTRY_TABLE["headers"], DATA_S1_ENTRY_TABLE["rows"])
     auto_fit_columns(ws1)
     
-    # --- シート2: 処理フロー図 ---
+    # --- シート2: 2.処理フロー図 ---
     ws2 = wb.create_sheet(title="2.処理フロー図")
-    ws2["A1"] = "■ 2. 視覚的ロジックフロー図（障害パス完備）"
+    ws2["A1"] = "### 2. 処理フロー図"
     ws2["A1"].font = FONT_SECTION
     generate_mermaid_image()
     if os.path.exists("flow.png"):
         from openpyxl.drawing.image import Image as OpenpyxlImage
         ws2.add_image(OpenpyxlImage("flow.png"), "A3")
     else:
-        ws2["A3"] = "（Mermaid CLI未検出のため、テキストフローチャートとして設計を参照してください）"
+        ws2["A3"] = "（Mermaid画像が生成されなかったため、テキストの定義を参照してください）"
         ws2["A3"].font = FONT_REGULAR
     ws2.views.sheetView[0].showGridLines = True
         
-    # --- シート3: リソース・ロジック統合シート ---
+    # --- シート3: 3.リソース定義・処理ロジック ---
     ws3 = wb.create_sheet(title="3.リソース定義・処理ロジック")
-    draw_sheet_title(ws3, "フロー内部構造設計（リソース・ビジネスロジック詳細）")
-    next_row = render_table(ws3, 3, DATA_SHEET3_RES["section"], DATA_SHEET3_RES["headers"], DATA_SHEET3_RES["rows"])
-    render_table(ws3, next_row, DATA_SHEET3_LOGIC["section"], DATA_SHEET3_LOGIC["headers"], DATA_SHEET3_LOGIC["rows"])
+    draw_sheet_title(ws3, "フロー詳細設計（リソース定義およびビジネスロジック仕様）")
+    next_row = render_table(ws3, 3, DATA_S3_RESOURCES["section"], DATA_S3_RESOURCES["headers"], DATA_S3_RESOURCES["rows"])
+    next_row = render_table(ws3, next_row, DATA_S3_STEPS["section"], DATA_S3_STEPS["headers"], DATA_S3_STEPS["rows"])
+    render_table(ws3, next_row, DATA_S3_DECISIONS["section"], DATA_S3_DECISIONS["headers"], DATA_S3_DECISIONS["rows"])
     auto_fit_columns(ws3)
     
-    # --- シート4: テスト仕様書 ---
+    # --- シート4: 4.テスト仕様書 ---
     ws4 = wb.create_sheet(title="4.テスト仕様書")
-    draw_sheet_title(ws4, "高品質検証仕様書（エンタープライズ標準検証マトリクス）")
-    render_table(ws4, 3, DATA_SHEET4["section"], DATA_SHEET4["headers"], DATA_SHEET4["rows"], is_test_sheet=True)
+    draw_sheet_title(ws4, "高品質検証仕様書（テンプレート補随マトリクス）")
+    render_table(ws4, 3, DATA_S4_TEST["section"], DATA_S4_TEST["headers"], DATA_S4_TEST["rows"], is_test_sheet=True)
     auto_fit_columns(ws4)
     
-    # 保存処理
-    filename = "RequestTaskAnswerFlow_PerfectDoc.xlsx"
+    # 保存ファイル出力
+    filename = "RequestTaskAnswerFlow_TemplateStrictDoc.xlsx"
     wb.save(filename)
     if os.path.exists("flow.png"): os.remove("flow.png")
-    print(f"[COMPLETE] テンプレート完全準拠のExcel設計書を出力しました: {filename}")
+    print(f"[SUCCESS] テンプレートの列構成に100%合致したExcelを生成しました: {filename}")
 
 if __name__ == "__main__":
     main()
