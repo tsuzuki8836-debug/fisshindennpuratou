@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>ConstructionZone__c</fullName>
+    <deleteConstraint>SetNull</deleteConstraint>
+    <externalId>false</externalId>
+    <label>工区</label>
+    <lookupFilter>
+        <active>true</active>
+        <errorMessage>対象の見積に属さない工事区分を選択しています。
+選択し直してください。</errorMessage>
+        <filterItems>
+            <field>$Source.Quote__c</field>
+            <operation>equals</operation>
+            <valueField>ConstructionZone__c.Quote__r.Id</valueField>
+        </filterItems>
+        <isOptional>false</isOptional>
+    </lookupFilter>
+    <referenceTo>ConstructionZone__c</referenceTo>
+    <relationshipLabel>見積項目</relationshipLabel>
+    <relationshipName>Devices</relationshipName>
+    <required>false</required>
+    <trackTrending>false</trackTrending>
+    <type>Lookup</type>
+</CustomField>

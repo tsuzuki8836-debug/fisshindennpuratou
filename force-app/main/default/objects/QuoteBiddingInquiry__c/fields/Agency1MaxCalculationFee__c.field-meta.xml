@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Agency1MaxCalculationFee__c</fullName>
+    <externalId>false</externalId>
+    <formula>CEILING( TheoryFeeMax__c * Agency1_Factor_TradingStyle__c * Agency1_Factor_FunctionEvaluation__c * CategoryCoefficient__c * Agency1_Factor_Qualification__c * Factor_PriceExponential_Calculate__c * Agency1_OrderContributionRate__c / 100 ) * 100</formula>
+    <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
+    <label>代理店1_算出手数料(MAX)</label>
+    <precision>18</precision>
+    <required>false</required>
+    <scale>0</scale>
+    <trackHistory>false</trackHistory>
+    <trackTrending>false</trackTrending>
+    <type>Currency</type>
+</CustomField>

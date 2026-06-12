@@ -23,7 +23,6 @@
         </inputParameters>
         <nameSegment>chatterPost</nameSegment>
         <storeOutputAutomatically>true</storeOutputAutomatically>
-        <versionSegment>1</versionSegment>
     </actionCalls>
     <apiVersion>55.0</apiVersion>
     <description>依頼タスク.状況が依頼先対応中に更新された場合にトリガし、1分後にChatter投稿する。</description>

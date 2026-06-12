@@ -24,7 +24,7 @@
         <inputParameters>
             <name>emailSubject</name>
             <value>
-                <stringValue>【未承認アラート】あなた宛の承認依頼があります</stringValue>
+                <elementReference>var_MailTitle</elementReference>
             </value>
         </inputParameters>
         <inputParameters>
@@ -40,7 +40,6 @@
             </value>
         </inputParameters>
         <nameSegment>emailSimple</nameSegment>
-        <versionSegment>1</versionSegment>
     </actionCalls>
     <apiVersion>55.0</apiVersion>
     <assignments>
@@ -183,6 +182,12 @@
         </rules>
     </decisions>
     <environments>Default</environments>
+    <formulas>
+        <description>メール件名</description>
+        <name>var_MailTitle</name>
+        <dataType>String</dataType>
+        <expression>&quot;【未承認アラート】あなた宛の承認依頼があります「&quot; + {!$Record.OpportunityName__c}+ &quot;」&quot;</expression>
+    </formulas>
     <formulas>
         <name>var_RecordPageURL</name>
         <dataType>String</dataType>
@@ -391,8 +396,8 @@
                 <targetReference>get_ProcessInstanceByTargetId</targetReference>
             </connector>
             <label>24時間後</label>
-            <offsetNumber>1</offsetNumber>
-            <offsetUnit>Minutes</offsetUnit>
+            <offsetNumber>24</offsetNumber>
+            <offsetUnit>Hours</offsetUnit>
             <timeSource>RecordTriggerEvent</timeSource>
         </scheduledPaths>
         <triggerType>RecordAfterSave</triggerType>

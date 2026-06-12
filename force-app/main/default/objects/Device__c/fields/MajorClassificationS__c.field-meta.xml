@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>MajorClassificationS__c</fullName>
+    <externalId>false</externalId>
+    <formula>IF ( (Quote__r.RecordType.Name = &apos;施設&apos; &amp;&amp;  TEXT(MajorClassification__c)  = &apos;特高&apos; ), &apos;21&apos;
+, IF ( (Quote__r.RecordType.Name = &apos;施設&apos; &amp;&amp;  TEXT(MajorClassification__c)  = &apos;高圧受配電盤&apos; ), &apos;22&apos;
+, IF ( (Quote__r.RecordType.Name = &apos;施設&apos; &amp;&amp;  TEXT(MajorClassification__c)  = &apos;変圧器&apos; ), &apos;23&apos;
+, IF ( (Quote__r.RecordType.Name = &apos;施設&apos; &amp;&amp;  TEXT(MajorClassification__c)  = &apos;高圧コンビ&apos; ), &apos;24&apos;
+, IF ( (Quote__r.RecordType.Name = &apos;施設&apos; &amp;&amp;  TEXT(MajorClassification__c)  = &apos;進相コンデンサ/リアクトル&apos; ), &apos;25&apos;
+, IF ( (Quote__r.RecordType.Name = &apos;施設&apos; &amp;&amp;  TEXT(MajorClassification__c)  = &apos;低圧・現場・リレー・ACB盤&apos; ), &apos;26&apos;
+, IF ( (Quote__r.RecordType.Name = &apos;施設&apos; &amp;&amp;  TEXT(MajorClassification__c)  = &apos;コントロールセンタ（C/C)&apos; ), &apos;27&apos;
+, IF ( (Quote__r.RecordType.Name = &apos;施設&apos; &amp;&amp;  TEXT(MajorClassification__c)  = &apos;中継端子・接地端子盤&apos; ), &apos;28&apos;
+, IF ( (Quote__r.RecordType.Name = &apos;施設&apos; &amp;&amp;  TEXT(MajorClassification__c)  = &apos;発電機&apos; ), &apos;29&apos;
+, IF ( (Quote__r.RecordType.Name = &apos;施設&apos; &amp;&amp;  TEXT(MajorClassification__c)  = &apos;UPS&apos; ), &apos;30&apos;
+, IF ( (Quote__r.RecordType.Name = &apos;施設&apos; &amp;&amp;  TEXT(MajorClassification__c)  = &apos;MELBAS&apos; ), &apos;31&apos;
+, IF ( (Quote__r.RecordType.Name = &apos;施設&apos; &amp;&amp;  TEXT(MajorClassification__c)  = &apos;MELSAS&apos; ), &apos;32&apos;
+, IF ( (Quote__r.RecordType.Name = &apos;施設&apos; &amp;&amp;  TEXT(MajorClassification__c)  = &apos;大型映像装置&apos; ), &apos;33&apos;
+, IF ( (Quote__r.RecordType.Name = &apos;施設&apos; &amp;&amp;  TEXT(MajorClassification__c)  = &apos;共通機器&apos; ), &apos;51&apos;
+, IF ( (Quote__r.RecordType.Name = &apos;施設&apos; &amp;&amp;  TEXT(MajorClassification__c)  = &apos;技派・予備品等、他社&apos; ), &apos;61&apos;
+, IF ( (Quote__r.RecordType.Name = &apos;施設&apos; &amp;&amp;  TEXT(MajorClassification__c)  = &apos;本支社専用&apos; ), &apos;62&apos;
+, IF ( (Quote__r.RecordType.Name = &apos;施設&apos; &amp;&amp;  TEXT(MajorClassification__c)  = &apos;材料&apos; ), &apos;71&apos;
+, IF ( (Quote__r.RecordType.Name = &apos;施設&apos; &amp;&amp;  TEXT(MajorClassification__c)  = &apos;工事&apos; ), &apos;81&apos;
+, &apos;&apos;) ) ) ) ) ) ) ) ) ) ) ) ) ) ) ) ) )</formula>
+    <label>大分類コード（施設）</label>
+    <required>false</required>
+    <trackTrending>false</trackTrending>
+    <type>Text</type>
+    <unique>false</unique>
+</CustomField>

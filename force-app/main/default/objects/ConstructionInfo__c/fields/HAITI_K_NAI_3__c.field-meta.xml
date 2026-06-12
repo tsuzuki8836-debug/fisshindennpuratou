@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>HAITI_K_NAI_3__c</fullName>
+    <externalId>false</externalId>
+    <label>【削除予定】工事期間配置内容3</label>
+    <required>false</required>
+    <trackFeedHistory>false</trackFeedHistory>
+    <trackHistory>false</trackHistory>
+    <trackTrending>false</trackTrending>
+    <type>Picklist</type>
+    <valueSet>
+        <restricted>true</restricted>
+        <valueSetDefinition>
+            <sorted>false</sorted>
+            <value>
+                <fullName>機器製作＋工事期間</fullName>
+                <default>false</default>
+                <label>機器製作＋工事期間</label>
+            </value>
+            <value>
+                <fullName>現地工事期間のみ</fullName>
+                <default>false</default>
+                <label>現地工事期間のみ</label>
+            </value>
+            <value>
+                <fullName>機器製作期間のみ</fullName>
+                <default>false</default>
+                <label>機器製作期間のみ</label>
+            </value>
+        </valueSetDefinition>
+    </valueSet>
+</CustomField>

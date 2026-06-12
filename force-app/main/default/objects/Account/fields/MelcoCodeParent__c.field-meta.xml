@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>MelcoCodeParent__c</fullName>
+    <externalId>false</externalId>
+    <formula>IF( ParentId &lt;&gt; &apos;&apos;,
+  Parent.MelcoCodeFK__c   ,
+ &apos;&apos;
+)</formula>
+    <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
+    <label>本社統一企業コード</label>
+    <required>false</required>
+    <trackHistory>false</trackHistory>
+    <type>Text</type>
+    <unique>false</unique>
+</CustomField>

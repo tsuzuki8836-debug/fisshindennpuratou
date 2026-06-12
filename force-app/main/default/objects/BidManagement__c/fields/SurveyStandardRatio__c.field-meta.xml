@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>SurveyStandardRatio__c</fullName>
+    <description>調査基準価格÷予定価格（公表価格or推定価格）　※公表を優先</description>
+    <externalId>false</externalId>
+    <formula>IF (
+  OR( ISBLANK(PublishedEstimatePrice__c), ISNULL(PublishedEstimatePrice__c) ),
+  EstimatedSurveyStandardPrice__c / EstimatedPresumptionPrice__c, 
+  PublishedSurveyStandardPrice__c / PublishedEstimatePrice__c
+ )</formula>
+    <label>調査基準比率</label>
+    <precision>18</precision>
+    <required>false</required>
+    <scale>1</scale>
+    <trackHistory>false</trackHistory>
+    <trackTrending>false</trackTrending>
+    <type>Percent</type>
+</CustomField>

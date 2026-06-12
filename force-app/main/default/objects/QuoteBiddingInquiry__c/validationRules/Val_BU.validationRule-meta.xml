@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ValidationRule xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Val_BU</fullName>
+    <active>true</active>
+    <errorConditionFormula>AND(NOT(Creating__c),  ISPICKVAL(BU__c, &quot;&quot;))</errorConditionFormula>
+    <errorDisplayField>BU__c</errorDisplayField>
+    <errorMessage>BUは必須です</errorMessage>
+</ValidationRule>

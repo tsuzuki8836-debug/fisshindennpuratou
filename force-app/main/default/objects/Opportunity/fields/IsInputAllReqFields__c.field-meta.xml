@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>IsInputAllReqFields__c</fullName>
+    <externalId>false</externalId>
+    <formula>NOT(
+  OR(
+    ISBLANK(Name),
+    ISBLANK(AccountId),
+    ISBLANK(TEXT(StageName)),
+    ISBLANK(TEXT(OrderExpectation__c)),
+    ISBLANK(Region__c),
+    ISBLANK(TEXT(BU__c)),
+    ISBLANK(TEXT(SBU__c)),
+    ISBLANK(TEXT(Plant__c)),
+    ISBLANK(CloseDate),
+    ISBLANK(ScheduledSalesDate__c),
+    ISBLANK(TEXT(NeedConstruction__c)),
+    ISBLANK(TEXT(KOUJI_SYU__c)),
+    ISBLANK(TEXT(UKE_KBN__c)),
+    ISBLANK(TEXT(ConstructionDistinction__c)),
+    ISBLANK(TEXT(Handling__c)),
+    ISBLANK(TEXT(DemandOf__c)),
+    ISBLANK(TEXT(DemanDepartment__c)),
+    ISBLANK(TEXT(ExportCategory__c))
+  )
+)</formula>
+    <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
+    <label>必須項目入力フラグ</label>
+    <trackHistory>false</trackHistory>
+    <type>Checkbox</type>
+</CustomField>

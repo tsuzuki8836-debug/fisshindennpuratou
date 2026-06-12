@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ListView xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>MELCRMOPETOOL__MELGITCRM_OPERATION_7_REJECT</fullName>
+    <columns>NAME</columns>
+    <columns>MELCRMOPETOOL__Title__c</columns>
+    <columns>MELCRMOPETOOL__Content__c</columns>
+    <columns>MELCRMOPETOOL__Status__c</columns>
+    <columns>OWNER.ALIAS</columns>
+    <columns>MELCRMOPETOOL__Priority__c</columns>
+    <columns>CREATED_DATE</columns>
+    <filterScope>Everything</filterScope>
+    <filters>
+        <field>MELCRMOPETOOL__Status__c</field>
+        <operation>equals</operation>
+        <value>Status4</value>
+    </filters>
+    <filters>
+        <field>MELCRMOPETOOL__DevStatus__c</field>
+        <operation>equals</operation>
+        <value>レビュー却下</value>
+    </filters>
+    <label>B-7.システム管理者（レビュー却下）</label>
+</ListView>

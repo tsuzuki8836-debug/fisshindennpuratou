@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ValidationRule xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>CloseDateCheck</fullName>
+    <active>true</active>
+    <description>フェーズが「受注・オーダー管理」「オーダー完了」「失注」「削除」の場合、受注予定日は変更できない。</description>
+    <errorConditionFormula>AND( 
+  OR(
+    ISPICKVAL( StageName , &quot;受注・オーダー管理&quot;),
+    ISPICKVAL( StageName , &quot;オーダー完了&quot;),
+    ISPICKVAL( StageName , &quot;失注&quot;),
+    ISPICKVAL( StageName , &quot;削除&quot;)
+  ),
+    ISCHANGED( CloseDate ) ,
+    NOT($Profile.Name = &apos;データ移行管理者&apos;)
+)</errorConditionFormula>
+    <errorDisplayField>CloseDate</errorDisplayField>
+    <errorMessage>フェーズが受注・オーダー管理、オーダー完了、失注、削除の場合、受注予定日は変更できません。</errorMessage>
+</ValidationRule>

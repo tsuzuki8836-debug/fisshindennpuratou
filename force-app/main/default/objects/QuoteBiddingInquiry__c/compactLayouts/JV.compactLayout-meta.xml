@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CompactLayout xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>JV</fullName>
+    <fields>Name</fields>
+    <fields>RecordTypeId</fields>
+    <fields>ManagementNumber__c</fields>
+    <fields>HeadOfficeResponceDeadline__c</fields>
+    <fields>FinalApprover__c</fields>
+    <fields>JVName__c</fields>
+    <fields>Opportunity__c</fields>
+    <label>JV</label>
+</CompactLayout>

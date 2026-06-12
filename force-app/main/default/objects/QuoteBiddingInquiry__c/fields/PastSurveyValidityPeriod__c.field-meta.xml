@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>PastSurveyValidityPeriod__c</fullName>
+    <externalId>false</externalId>
+    <inlineHelpText>属性調査結果の有効期限は2年。</inlineHelpText>
+    <label>調査済の場合、有効期限</label>
+    <required>false</required>
+    <trackFeedHistory>false</trackFeedHistory>
+    <trackHistory>false</trackHistory>
+    <trackTrending>false</trackTrending>
+    <type>Date</type>
+</CustomField>

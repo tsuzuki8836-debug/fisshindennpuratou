@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ValidationRule xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>ShowAlert04</fullName>
+    <active>false</active>
+    <description>注文元の取引開始伺い完了日が入力されておらず、アラート解除のチェックが入っていない場合、フェーズを受注以降にすることができない。</description>
+    <errorConditionFormula>AND(
+ ISBLANK(Account.IsOpportunityStarted__c ),
+ !NoAlert1__c,
+OR(
+ ISPICKVAL(StageName ,&apos;受注&apos;),
+ ISPICKVAL(StageName ,&apos;オーダー管理&apos;),
+ ISPICKVAL(StageName ,&apos;クローズ&apos;)
+)
+)</errorConditionFormula>
+    <errorMessage>注文元の取引開始伺い完了日が入力されていません。</errorMessage>
+</ValidationRule>

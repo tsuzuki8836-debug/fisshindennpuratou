@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ValidationRule xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>PrimaryCustomerConfirmationResultCheck</fullName>
+    <active>false</active>
+    <description>商流数が2以上の場合、一次顧客の確認結果必須</description>
+    <errorConditionFormula>AND( 
+    CommercialDistributionNumber__c  &gt;= 2 , 
+    ISBLANK(PrimaryCustomerConfirmationResult__c ) ,
+     Creating__c == false
+)</errorConditionFormula>
+    <errorDisplayField>PrimaryCustomerConfirmationResult__c</errorDisplayField>
+    <errorMessage>商流が2つ以上ある場合、入力必須です</errorMessage>
+</ValidationRule>

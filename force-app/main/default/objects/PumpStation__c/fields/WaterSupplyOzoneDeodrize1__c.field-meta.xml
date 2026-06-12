@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>WaterSupplyOzoneDeodrize1__c</fullName>
+    <deleteConstraint>SetNull</deleteConstraint>
+    <description>上水のオゾン設備（脱臭）1</description>
+    <externalId>false</externalId>
+    <label>上水オゾン設備（脱臭）1</label>
+    <lookupFilter>
+        <active>true</active>
+        <filterItems>
+            <field>Account.RecordTypeId</field>
+            <operation>equals</operation>
+            <value>事業所</value>
+        </filterItems>
+        <isOptional>true</isOptional>
+    </lookupFilter>
+    <referenceTo>Account</referenceTo>
+    <relationshipLabel>機場 (オゾン設備（脱臭）1)</relationshipLabel>
+    <relationshipName>WaterSupplyOzoneDeodrize1s</relationshipName>
+    <required>false</required>
+    <trackFeedHistory>false</trackFeedHistory>
+    <trackHistory>false</trackHistory>
+    <trackTrending>false</trackTrending>
+    <type>Lookup</type>
+</CustomField>

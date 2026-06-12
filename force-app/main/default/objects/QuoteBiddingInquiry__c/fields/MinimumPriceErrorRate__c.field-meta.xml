@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>MinimumPriceErrorRate__c</fullName>
+    <externalId>false</externalId>
+    <formula>IF( 
+   OR(
+		ISNULL(LowestLimitEstimatedPrice__c),
+		LowestLimitEstimatedPrice__c == 0, 
+		ISNULL(LowestLimitPrice__c),
+		LowestLimitPrice__c == 0
+	),
+	NULL,
+	ABS(LowestLimitEstimatedPrice__c / LowestLimitPrice__c)
+)</formula>
+    <inlineHelpText>最低制限価格　推定価格／公表価格</inlineHelpText>
+    <label>最低制限価格　推定差異</label>
+    <precision>18</precision>
+    <required>false</required>
+    <scale>2</scale>
+    <trackHistory>false</trackHistory>
+    <trackTrending>false</trackTrending>
+    <type>Percent</type>
+</CustomField>

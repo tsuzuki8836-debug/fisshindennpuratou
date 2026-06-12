@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>RoleMatchedForList__c</fullName>
+    <externalId>false</externalId>
+    <formula>FIND(
+IF( AND(FIND(&apos; &apos;, $UserRole.Name , FIND(&apos; &apos;, $UserRole.Name ) +1 ) &gt; 0, FIND(&apos; &apos;, $UserRole.Name ,FIND(&apos; &apos;, $UserRole.Name , FIND(&apos; &apos;, $UserRole.Name ) +1 ) +1) &gt; 0)
+, LEFT( $UserRole.Name , FIND(&apos; &apos;, $UserRole.Name ,FIND(&apos; &apos;, $UserRole.Name , FIND(&apos; &apos;, $UserRole.Name ) +1 ) +1) -1)
+, $UserRole.Name)
+,Owner:User.UserRole.Name) &gt; 0</formula>
+    <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
+    <label>自身の部門(リスト用)</label>
+    <trackHistory>false</trackHistory>
+    <trackTrending>false</trackTrending>
+    <type>Checkbox</type>
+</CustomField>

@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>ClientName__c</fullName>
+    <deleteConstraint>SetNull</deleteConstraint>
+    <externalId>false</externalId>
+    <inlineHelpText>保存時に自動で設定されます。</inlineHelpText>
+    <label>最終顧客</label>
+    <referenceTo>Account</referenceTo>
+    <relationshipLabel>伺い商流明細 (最終顧客)</relationshipLabel>
+    <relationshipName>InquiryCommercialDistributionDetails</relationshipName>
+    <required>false</required>
+    <trackTrending>false</trackTrending>
+    <type>Lookup</type>
+</CustomField>

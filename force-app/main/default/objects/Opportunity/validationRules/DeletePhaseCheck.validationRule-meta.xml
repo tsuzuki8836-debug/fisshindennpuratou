@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ValidationRule xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>DeletePhaseCheck</fullName>
+    <active>true</active>
+    <description>フェーズが削除の時、削除要因を入力させる。
+削除要因がその他の場合は、削除要因その他も入力させる。</description>
+    <errorConditionFormula>AND(
+    ISPICKVAL(StageName, &quot;削除&quot;),
+    OR(
+        ISPICKVAL(DeleteReason__c , &quot;&quot; ),
+        AND(
+            ISPICKVAL( DeleteReason__c , &quot;その他&quot;),
+            ISBLANK( DeleteReason_Other__c )
+        )
+    ),
+    NOT($Profile.Name = &apos;データ移行管理者&apos;)
+)</errorConditionFormula>
+    <errorMessage>削除時には削除要因を入力してください。
+削除要因がその他の場合は、削除要因その他も入力してください。</errorMessage>
+</ValidationRule>

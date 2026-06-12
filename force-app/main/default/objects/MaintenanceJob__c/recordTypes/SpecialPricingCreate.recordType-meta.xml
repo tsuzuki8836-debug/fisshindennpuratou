@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<RecordType xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>SpecialPricingCreate</fullName>
+    <active>true</active>
+    <label>特殊仕様マスタ自動作成</label>
+    <picklistValues>
+        <picklist>BU__c</picklist>
+        <values>
+            <fullName>K</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>M</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>S</fullName>
+            <default>false</default>
+        </values>
+    </picklistValues>
+    <picklistValues>
+        <picklist>Whereabouts__c</picklist>
+        <values>
+            <fullName>明細</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>筐体</fullName>
+            <default>false</default>
+        </values>
+    </picklistValues>
+</RecordType>

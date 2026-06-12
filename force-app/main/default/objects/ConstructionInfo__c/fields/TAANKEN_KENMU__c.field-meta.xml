@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>TAANKEN_KENMU__c</fullName>
+    <externalId>false</externalId>
+    <label>他案件との兼務可否</label>
+    <required>false</required>
+    <trackFeedHistory>false</trackFeedHistory>
+    <trackHistory>false</trackHistory>
+    <trackTrending>false</trackTrending>
+    <type>Picklist</type>
+    <valueSet>
+        <restricted>true</restricted>
+        <valueSetDefinition>
+            <sorted>false</sorted>
+            <value>
+                <fullName>可</fullName>
+                <default>false</default>
+                <label>可</label>
+            </value>
+            <value>
+                <fullName>不可</fullName>
+                <default>false</default>
+                <label>不可</label>
+            </value>
+        </valueSetDefinition>
+    </valueSet>
+</CustomField>

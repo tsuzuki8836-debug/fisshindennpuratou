@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ValidationRule xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>LocationCostAgreementCheck</fullName>
+    <active>true</active>
+    <description>下記の場合、場所の損益合意状況は必須
+・価格案(MIN)_CPが入っているかつ、価格案(MIN)_CP&lt;価格案(MIN)_TCの場合
+・価格案(MIN)_CPが0かつ、価格案_CP&lt;価格案_TCの場合</description>
+    <errorConditionFormula>AND(
+    Refusal__c = false,
+    UnitPriceEstimation__c = false,
+    PriceList__c = false,
+    OR(RecordType.DeveloperName= &apos;M&apos;,RecordType.DeveloperName= &apos;O&apos;,RecordType.DeveloperName= &apos;SH&apos;),
+    OR(
+        AND(PriceProposal2CP__c &gt;0, PriceProposal2CP__c &lt;  PriceProposal2TC__c ),
+        AND(PriceProposal2CP__c = 0,  PriceProposal1CP__c  &lt;  PriceProposal1TC__c )
+    ),
+    ISBLANK(LocationCostAgreement__c),
+    NOT(Creating__c)
+)</errorConditionFormula>
+    <errorDisplayField>LocationCostAgreement__c</errorDisplayField>
+    <errorMessage>場所の損益合意状況は必須です</errorMessage>
+</ValidationRule>

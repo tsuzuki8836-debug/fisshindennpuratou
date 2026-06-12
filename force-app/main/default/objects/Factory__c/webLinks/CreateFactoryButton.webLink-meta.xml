@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<WebLink xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>CreateFactoryButton</fullName>
+    <availability>online</availability>
+    <displayType>massActionButton</displayType>
+    <encodingKey>UTF-8</encodingKey>
+    <height>600</height>
+    <linkType>url</linkType>
+    <masterLabel>場所別新規作成</masterLabel>
+    <openType>sidebar</openType>
+    <protected>false</protected>
+    <requireRowSelection>false</requireRowSelection>
+    <url>/lightning/o/Factory__c/new?defaultFieldValues=
+Opp1__c={!Opportunity.Id},
+BU__c={!Opportunity.BU__c},
+SR_CP__c={!Opportunity.Yen_CP_Currency__c}
+&amp;backgroundContext=%2Flightning%2Fr%2FOpportunity%2F{!Opportunity.Id}%2Fview</url>
+</WebLink>

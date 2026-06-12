@@ -23,6 +23,11 @@
                 <label>見積照会</label>
             </value>
             <value>
+                <fullName>原低依頼</fullName>
+                <default>false</default>
+                <label>原低依頼</label>
+            </value>
+            <value>
                 <fullName>写真撮影依頼</fullName>
                 <default>false</default>
                 <label>写真撮影依頼</label>
@@ -43,9 +48,14 @@
                 <label>製作所技術者選定依頼</label>
             </value>
             <value>
-                <fullName>原低依頼</fullName>
+                <fullName>先行手配依頼</fullName>
                 <default>false</default>
-                <label>原低依頼</label>
+                <label>先行手配依頼</label>
+            </value>
+            <value>
+                <fullName>技術者配置依頼</fullName>
+                <default>false</default>
+                <label>技術者配置依頼</label>
             </value>
             <value>
                 <fullName>その他依頼</fullName>
@@ -58,12 +68,6 @@
                 <default>false</default>
                 <isActive>false</isActive>
                 <label>仕様承諾通知</label>
-            </value>
-            <value>
-                <fullName>先行手配依頼</fullName>
-                <default>false</default>
-                <isActive>false</isActive>
-                <label>先行手配依頼</label>
             </value>
             <value>
                 <fullName>原低依頼(工事)</fullName>

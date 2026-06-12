@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ListView xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>X15_1_BU</fullName>
+    <columns>OppNumber__c</columns>
+    <columns>OpportunityNumber__c</columns>
+    <columns>OPPORTUNITY.NAME</columns>
+    <columns>SBU__c</columns>
+    <columns>ACCOUNT.NAME</columns>
+    <columns>OrderExpectation__c</columns>
+    <columns>OPPORTUNITY.STAGE_NAME</columns>
+    <columns>OPPORTUNITY.CLOSE_DATE</columns>
+    <columns>EstimatedTotalCP__c</columns>
+    <columns>EstimatedTotalWC1__c</columns>
+    <columns>Result_TotalCP__c</columns>
+    <columns>Result_TotalWC__c</columns>
+    <columns>Result_GP__c</columns>
+    <columns>PickDivision__c</columns>
+    <columns>CORE.USERS.FULL_NAME</columns>
+    <filterScope>Everything</filterScope>
+    <filters>
+        <field>PickDivision__c</field>
+        <operation>equals</operation>
+        <value>陸支　社シ一</value>
+    </filters>
+    <filters>
+        <field>BU__c</field>
+        <operation>equals</operation>
+        <value>官需,官公情報</value>
+    </filters>
+    <label>15-1.陸支　社シ一（官需官公BU）の案件</label>
+    <sharedTo>
+        <roleAndSubordinatesInternal>M041_shakaisystembu</roleAndSubordinatesInternal>
+    </sharedTo>
+</ListView>

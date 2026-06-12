@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>AntitrustComplianceQ1__c</fullName>
+    <externalId>false</externalId>
+    <label>見積引合/入札指名について競合先や業界団体に話し、情報交換した</label>
+    <required>false</required>
+    <trackFeedHistory>false</trackFeedHistory>
+    <trackHistory>false</trackHistory>
+    <trackTrending>false</trackTrending>
+    <type>Picklist</type>
+    <valueSet>
+        <restricted>true</restricted>
+        <valueSetDefinition>
+            <sorted>false</sorted>
+            <value>
+                <fullName>はい</fullName>
+                <default>false</default>
+                <label>はい</label>
+            </value>
+            <value>
+                <fullName>いいえ</fullName>
+                <default>false</default>
+                <label>いいえ</label>
+            </value>
+        </valueSetDefinition>
+    </valueSet>
+</CustomField>

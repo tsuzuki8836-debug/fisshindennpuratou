@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ValidationRule xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>ConstructionClassificationOtherCheck</fullName>
+    <active>true</active>
+    <errorConditionFormula>AND(
+    RecordType.DeveloperName = &quot;FeeInquiry&quot;,
+    TEXT(ConstructionClassification__c) = &quot;その他&quot;,
+     NOT(ISNEW())
+)</errorConditionFormula>
+    <errorDisplayField>ConstructionClassification__c</errorDisplayField>
+    <errorMessage>その他以外の工事区分を選んでください</errorMessage>
+</ValidationRule>

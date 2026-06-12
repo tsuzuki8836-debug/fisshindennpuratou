@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>AttributeSurveyRequirement__c</fullName>
+    <externalId>false</externalId>
+    <label>属性調査要否</label>
+    <required>false</required>
+    <trackTrending>false</trackTrending>
+    <type>Picklist</type>
+    <valueSet>
+        <restricted>true</restricted>
+        <valueSetDefinition>
+            <sorted>false</sorted>
+            <value>
+                <fullName>要(新規)</fullName>
+                <default>false</default>
+                <label>要(新規)</label>
+            </value>
+            <value>
+                <fullName>要(過去調査済)</fullName>
+                <default>false</default>
+                <label>要(過去調査済)</label>
+            </value>
+            <value>
+                <fullName>不要</fullName>
+                <default>false</default>
+                <label>不要</label>
+            </value>
+        </valueSetDefinition>
+    </valueSet>
+</CustomField>

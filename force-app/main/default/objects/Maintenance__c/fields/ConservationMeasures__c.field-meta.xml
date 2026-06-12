@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>ConservationMeasures__c</fullName>
+    <externalId>false</externalId>
+    <label>保全対策</label>
+    <required>false</required>
+    <trackHistory>false</trackHistory>
+    <trackTrending>false</trackTrending>
+    <type>Picklist</type>
+    <valueSet>
+        <restricted>true</restricted>
+        <valueSetDefinition>
+            <sorted>false</sorted>
+            <value>
+                <fullName>主要機器の更新済</fullName>
+                <default>false</default>
+                <label>主要機器の更新済</label>
+            </value>
+            <value>
+                <fullName>部品ﾚﾍﾞﾙ更新済(ヒューズ・リレー類)</fullName>
+                <default>false</default>
+                <label>部品ﾚﾍﾞﾙ更新済(ヒューズ・リレー類)</label>
+            </value>
+            <value>
+                <fullName>ほとんど未実施</fullName>
+                <default>false</default>
+                <label>ほとんど未実施</label>
+            </value>
+            <value>
+                <fullName>納入後未実施</fullName>
+                <default>false</default>
+                <label>納入後未実施</label>
+            </value>
+        </valueSetDefinition>
+    </valueSet>
+</CustomField>

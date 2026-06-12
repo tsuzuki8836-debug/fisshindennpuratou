@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>BidAgency1TradingStyle__c</fullName>
+    <externalId>false</externalId>
+    <formula>IF (
+RecordType.DeveloperName = &apos;M&apos;,
+TEXT(  Opportunity__r.Handling__c  ), 
+TEXT( DependentFeeInquiry__r.Agency1TradingStyle__c )
+)</formula>
+    <label>代理店1_取引形態</label>
+    <required>false</required>
+    <trackHistory>false</trackHistory>
+    <trackTrending>false</trackTrending>
+    <type>Text</type>
+    <unique>false</unique>
+</CustomField>

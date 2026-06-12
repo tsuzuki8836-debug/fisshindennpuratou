@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>RoleMatched__c</fullName>
+    <description>所有者の部門とログインユーザーの部門が同一かどうか、ロール名で判定します。
+同一部門の伺いのみ承認申請ボタンを表示します。</description>
+    <externalId>false</externalId>
+    <formula>IF( FIND(&apos; &apos;, $UserRole.Name , FIND(&apos; &apos;, $UserRole.Name ) +1 ) &gt; 0
+, LEFT( $UserRole.Name , FIND(&apos; &apos;, $UserRole.Name , FIND(&apos; &apos;, $UserRole.Name ) +1 )-1)
+, $UserRole.Name)
+=
+IF( FIND(&apos; &apos;, Owner:User.UserRole.Name , FIND(&apos; &apos;, Owner:User.UserRole.Name ) +1 ) &gt; 0
+, LEFT( Owner:User.UserRole.Name , FIND(&apos; &apos;, Owner:User.UserRole.Name , FIND(&apos; &apos;, Owner:User.UserRole.Name ) +1 )-1)
+, Owner:User.UserRole.Name)</formula>
+    <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
+    <label>同一部門</label>
+    <trackHistory>false</trackHistory>
+    <trackTrending>false</trackTrending>
+    <type>Checkbox</type>
+</CustomField>

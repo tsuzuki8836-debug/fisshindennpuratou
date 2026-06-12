@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ListView xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>R06_5</fullName>
+    <columns>NAME</columns>
+    <columns>HeadOfficeResponceDeadline__c</columns>
+    <columns>InquiryApprovalStatus__c</columns>
+    <columns>ResultContactStatus__c</columns>
+    <columns>CREATEDBY_USER</columns>
+    <columns>CurrentApproverText__c</columns>
+    <columns>FinalApprover__c</columns>
+    <filterScope>Everything</filterScope>
+    <filters>
+        <field>Opportunity__c</field>
+        <operation>notContain</operation>
+        <value>TEST</value>
+    </filters>
+    <filters>
+        <field>FinalApprover__c</field>
+        <operation>notEqual</operation>
+        <value>申請部門K,申請部門B,申請部門TL</value>
+    </filters>
+    <filters>
+        <field>InquiryApprovalStatus__c</field>
+        <operation>notEqual</operation>
+        <value>未申請</value>
+    </filters>
+    <filters>
+        <field>InquiryApprovalStatus__c</field>
+        <operation>equals</operation>
+        <value>事管推担当,BU推進部長,事管推課長,事管推部長,GM</value>
+    </filters>
+    <label>06-5.事管推担当未承認の伺い</label>
+    <sharedTo>
+        <role>M013_jigyoukanrisuishinbu</role>
+    </sharedTo>
+</ListView>

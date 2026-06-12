@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<WebLink xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>SVFLEXQuotecButton20220922025111801bf2</fullName>
+    <availability>online</availability>
+    <displayType>button</displayType>
+    <encodingKey>UTF-8</encodingKey>
+    <linkType>url</linkType>
+    <masterLabel>連携テスト_水・官需帳票</masterLabel>
+    <openType>replace</openType>
+    <protected>false</protected>
+    <url>/apex/svfcloud__PreviewPage?appId=Quote__c&amp;id={!Quote__c.Id}&amp;buttonFullName=SVFQuotecButton20220922025111801bf2</url>
+</WebLink>

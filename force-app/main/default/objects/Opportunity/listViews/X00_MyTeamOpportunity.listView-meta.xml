@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ListView xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>X00_MyTeamOpportunity</fullName>
+    <columns>OPPORTUNITY.NAME</columns>
+    <columns>OpportunityNumber__c</columns>
+    <columns>SBU__c</columns>
+    <columns>ACCOUNT.NAME</columns>
+    <columns>OrderExpectation__c</columns>
+    <columns>OPPORTUNITY.STAGE_NAME</columns>
+    <columns>OPPORTUNITY.CLOSE_DATE</columns>
+    <columns>EstimatedTotalCP__c</columns>
+    <columns>EstimatedTotalWC1__c</columns>
+    <columns>PickDivision__c</columns>
+    <columns>CORE.USERS.FULL_NAME</columns>
+    <filterScope>Team</filterScope>
+    <filters>
+        <field>OPPORTUNITY.STAGE_NAME</field>
+        <operation>equals</operation>
+        <value>基本計画,基本設計,実施設計,価格交渉 入札準備・入札</value>
+    </filters>
+    <label>00.私のチームの商談中の案件</label>
+</ListView>

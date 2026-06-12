@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>PrintOutFormat_MeiSai__c</fullName>
+    <externalId>false</externalId>
+    <fieldManageability>SubscriberControlled</fieldManageability>
+    <inlineHelpText>Example:
+
+               Col.1      Col.2      Col.3
+Row 1  [{名称1}],[{名称2}],[{名称3}]
+Row 2  [{名称4}],[{名称5}],[{名称6}]
+Row 3  [{名称7}],[{名称8}],[{名称9}]</inlineHelpText>
+    <label>プリントアウトフォーマット(明細)</label>
+    <required>false</required>
+    <type>TextArea</type>
+</CustomField>

@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ListView xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>tyubushi_shasiichi</fullName>
+    <columns>NAME</columns>
+    <filterScope>Everything</filterScope>
+    <filters>
+        <field>PickDivision__c</field>
+        <operation>equals</operation>
+        <value>中部支　社シ一</value>
+    </filters>
+    <label>中部支・社シ一</label>
+    <sharedTo>
+        <role>M05131_shakaisystemdaiikka_MEN</role>
+    </sharedTo>
+</ListView>

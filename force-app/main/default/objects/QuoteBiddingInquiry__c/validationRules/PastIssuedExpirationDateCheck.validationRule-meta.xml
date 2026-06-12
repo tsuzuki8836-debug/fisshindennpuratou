@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ValidationRule xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>PastIssuedExpirationDateCheck</fullName>
+    <active>true</active>
+    <description>「①一次顧客の顧客調査票(様式K1)の起票」が過去起票済の場合、(過去起票済の場合)有効期限は必須です</description>
+    <errorConditionFormula>AND(
+    PriceList__c = false,
+	ISPICKVAL(ExportManagementProvisionQ3__c,  &apos;過去起票済&apos;),
+	ISBLANK(PastIssuedExpirationDate__c),
+    NOT(Creating__c)
+)</errorConditionFormula>
+    <errorDisplayField>PastIssuedExpirationDate__c</errorDisplayField>
+    <errorMessage>(過去起票済の場合)有効期限は必須です</errorMessage>
+</ValidationRule>

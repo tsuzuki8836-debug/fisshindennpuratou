@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ListView xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>all_request3</fullName>
+    <columns>NAME</columns>
+    <columns>CREATEDBY_USER</columns>
+    <columns>TaskCategory__c</columns>
+    <columns>Status__c</columns>
+    <columns>DueDate__c</columns>
+    <columns>EstimatedAnswerDate__c</columns>
+    <columns>RequestDestination__c</columns>
+    <columns>ApprovalPattern__c</columns>
+    <columns>CREATED_DATE</columns>
+    <filterScope>Everything</filterScope>
+    <filters>
+        <field>Status__c</field>
+        <operation>equals</operation>
+        <value>依頼先対応済/依頼完了</value>
+    </filters>
+    <label>0-5.すべての依頼タスク（依頼完了フェーズ）</label>
+</ListView>

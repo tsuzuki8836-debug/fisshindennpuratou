@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ListView xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>All</fullName>
+    <columns>NAME</columns>
+    <columns>Name2__c</columns>
+    <columns>Name3__c</columns>
+    <columns>Device__c</columns>
+    <columns>PricingTable__c</columns>
+    <columns>UPDATEDBY_USER</columns>
+    <filterScope>Everything</filterScope>
+    <filters>
+        <field>Name1__c</field>
+        <operation>equals</operation>
+        <value>EVT・GPTユニット</value>
+    </filters>
+    <label>すべて選択</label>
+</ListView>

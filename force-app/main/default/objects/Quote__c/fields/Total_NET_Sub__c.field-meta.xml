@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Total_NET_Sub__c</fullName>
+    <externalId>false</externalId>
+    <formula>UPS_NET_Sub__c +  Building_System_NET_Sub__c +  Video_NET_Sub__c +  HousePowerGeneration_NET_Sub__c  +  Transforming_NET_Sub__c +  Labor_NET_Sub__c</formula>
+    <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
+    <label>自動計算全体NET（サブコン）</label>
+    <precision>18</precision>
+    <required>false</required>
+    <scale>0</scale>
+    <trackHistory>false</trackHistory>
+    <trackTrending>false</trackTrending>
+    <type>Currency</type>
+</CustomField>

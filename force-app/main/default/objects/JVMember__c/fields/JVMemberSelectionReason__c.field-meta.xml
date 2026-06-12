@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>JVMemberSelectionReason__c</fullName>
+    <externalId>false</externalId>
+    <inlineHelpText>選定根拠を明確にし、継続性を確保したパートナー選定を行うこと。</inlineHelpText>
+    <label>選定理由</label>
+    <required>false</required>
+    <trackTrending>false</trackTrending>
+    <type>TextArea</type>
+</CustomField>

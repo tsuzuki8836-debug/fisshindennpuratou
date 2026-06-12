@@ -112,10 +112,10 @@ public class CompetitorsResultTriggerHandler {
                     // 更新対象伺い
                     QuoteBiddingInquiry__c updTarget = qbis.get(comp.QuoteBiddingInquiry__c);
 
-                    // 競合結果に応じて更新される前の落札者を取得
-                    Id oldWinningBidder = updTarget.WinningBidder__c; // 落札者
-                    String oldManualWinningBidder = updTarget.ManualWinningBidder__c; // 落札者(手入力)
-                    Decimal oldWinningBidAmount = updTarget.WinningBidAmount__c; // 落札金額
+                    // // 競合結果に応じて更新される前の落札者を取得
+                    // Id oldWinningBidder = updTarget.WinningBidder__c; // 落札者
+                    // String oldManualWinningBidder = updTarget.ManualWinningBidder__c; // 落札者(手入力)
+                    // Decimal oldWinningBidAmount = updTarget.WinningBidAmount__c; // 落札金額
 
                     // 落札者/落札者(手動)
                     updTarget.WinningBidder__c = comp.Account__c;
@@ -139,10 +139,10 @@ public class CompetitorsResultTriggerHandler {
                     }
                     updTarget.WinningBidAmount__c = amount;
 
-                    if(oldWinningBidder != updTarget.WinningBidder__c || oldManualWinningBidder != updTarget.ManualWinningBidder__c || oldWinningBidAmount != updTarget.WinningBidAmount__c){
-                        // 結果報告ステータスを未申請に設定
-                        updTarget.ResultContactStatus__c = '未申請';   
-                    }
+                    // if(oldWinningBidder != updTarget.WinningBidder__c || oldManualWinningBidder != updTarget.ManualWinningBidder__c || oldWinningBidAmount != updTarget.WinningBidAmount__c){
+                    //     // 結果報告ステータスを未申請に設定
+                    //     updTarget.ResultContactStatus__c = '未申請';   
+                    // }
                 }
             }
         } else if (newWinners.size() == 0 && alreadyWinners.size() == 0){

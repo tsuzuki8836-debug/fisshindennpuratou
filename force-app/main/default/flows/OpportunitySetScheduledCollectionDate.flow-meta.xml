@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Flow xmlns="http://soap.sforce.com/2006/04/metadata">
+    <apiVersion>65.0</apiVersion>
+    <description>回収予定日が空白のとき、売り上げ予定日の翌々月末日を回収予定日に自動で反映させる
+ワークフロールール「【商談】回収予定日が空白のとき」から移行</description>
+    <environments>Default</environments>
+    <formulas>
+        <name>InsertScheduledCollectionDateFormula</name>
+        <dataType>Date</dataType>
+        <expression>IF ( MONTH ( $Record.ScheduledSalesDate__c) &lt;= 9,  DATE ( YEAR ( $Record.ScheduledSalesDate__c), MONTH ( $Record.ScheduledSalesDate__c) + 3, 1) - 1, DATE ( YEAR ( $Record.ScheduledSalesDate__c) +1, MONTH ( $Record.ScheduledSalesDate__c) -9, 1) - 1)</expression>
+    </formulas>
+    <interviewLabel>【案件】回収予定日を設定 {!$Flow.CurrentDateTime}</interviewLabel>
+    <label>【案件】回収予定日を設定</label>
+    <processMetadataValues>
+        <name>BuilderType</name>
+        <value>
+            <stringValue>LightningFlowBuilder</stringValue>
+        </value>
+    </processMetadataValues>
+    <processMetadataValues>
+        <name>CanvasMode</name>
+        <value>
+            <stringValue>AUTO_LAYOUT_CANVAS</stringValue>
+        </value>
+    </processMetadataValues>
+    <processType>AutoLaunchedFlow</processType>
+    <recordUpdates>
+        <description>回収予定日に、売り上げ予定日の翌々月末日を設定</description>
+        <name>updateScheduledCollectionDate</name>
+        <label>回収予定日を設定</label>
+        <locationX>0</locationX>
+        <locationY>0</locationY>
+        <inputAssignments>
+            <field>ScheduledCollectionDate__c</field>
+            <value>
+                <elementReference>InsertScheduledCollectionDateFormula</elementReference>
+            </value>
+        </inputAssignments>
+        <inputReference>$Record</inputReference>
+    </recordUpdates>
+    <start>
+        <locationX>0</locationX>
+        <locationY>0</locationY>
+        <connector>
+            <targetReference>updateScheduledCollectionDate</targetReference>
+        </connector>
+        <filterLogic>and</filterLogic>
+        <filters>
+            <field>ScheduledCollectionDate__c</field>
+            <operator>IsNull</operator>
+            <value>
+                <booleanValue>true</booleanValue>
+            </value>
+        </filters>
+        <object>Opportunity</object>
+        <recordTriggerType>CreateAndUpdate</recordTriggerType>
+        <triggerType>RecordBeforeSave</triggerType>
+    </start>
+    <status>Active</status>
+</Flow>

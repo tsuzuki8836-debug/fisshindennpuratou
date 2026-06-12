@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>CRM_Factory__c</fullName>
+    <externalId>false</externalId>
+    <formula>CASE(LocationName__c,
+        &quot;ＭＰＥ東&quot;,&quot;MPEC東&quot;,
+        &quot;ＭＰＥ西&quot;,&quot;MPEC西&quot;,
+        &quot;ＭＰＥ中&quot;,&quot;MPEC中&quot;,
+        &quot;ＭＰＥ九&quot;,&quot;MPEC九&quot;,
+        &quot;他社&quot;,&quot;他社品調達&quot;,
+        &quot;鎌ＩＳ推&quot;,&quot;神電横浜(鎌IS統）&quot;,
+        &quot;ＭＥＢＳ&quot;,&quot;ＭＥＢＳ&quot;,
+        &quot;ＴＭＥパ&quot;,&quot;TMEIC&quot;,
+        &quot;その他&quot;,&quot;他社品調達&quot;,
+        &quot;ビル工統&quot;,&quot;MEBS&quot;,
+        &quot;メルテク&quot;,&quot;MEBS&quot;,
+        &quot;九プラ営&quot;,&quot;九プラ建&quot;,
+        &quot;Ｃ電郡山&quot;,&quot;C電&quot;,
+        &quot;ＭＤＩＳ&quot;,&quot;他社品調達&quot;,
+        &quot;ＭＥＢＳ&quot;,&quot;MEBS&quot;,
+        &quot;ＭＴ横浜&quot;,&quot;MEBS&quot;,
+        &quot;ＭＴ東関&quot;,&quot;MEBS&quot;,
+        LocationName__c
+)</formula>
+    <label>CRM_製作所</label>
+    <required>false</required>
+    <trackHistory>false</trackHistory>
+    <trackTrending>false</trackTrending>
+    <type>Text</type>
+    <unique>false</unique>
+</CustomField>

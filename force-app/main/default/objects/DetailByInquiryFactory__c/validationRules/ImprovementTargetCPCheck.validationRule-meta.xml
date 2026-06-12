@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ValidationRule xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>ImprovementTargetCPCheck</fullName>
+    <active>true</active>
+    <description>「価格案(MIN)_TC」＞「価格案(MIN)_CP」の時、改善目標_CPは必須</description>
+    <errorConditionFormula>AND(
+    CPMin__c &lt;  TCMin__c,
+    ISBLANK(ImprovementTargetCP__c)
+)</errorConditionFormula>
+    <errorDisplayField>ImprovementTargetCP__c</errorDisplayField>
+    <errorMessage>改善目標_CPは必須です</errorMessage>
+</ValidationRule>

@@ -1,0 +1,343 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>CommonRatio1__c</fullName>
+    <externalId>false</externalId>
+    <label>共通費率</label>
+    <required>false</required>
+    <trackFeedHistory>false</trackFeedHistory>
+    <trackHistory>true</trackHistory>
+    <trackTrending>false</trackTrending>
+    <type>Picklist</type>
+    <valueSet>
+        <controllingField>BU__c</controllingField>
+        <restricted>true</restricted>
+        <valueSetDefinition>
+            <sorted>false</sorted>
+            <value>
+                <fullName>33% ： 製作所</fullName>
+                <default>false</default>
+                <label>33% ： 製作所</label>
+            </value>
+            <value>
+                <fullName>17% ： 製作所移牒他社品調達（機種コード：XO）</fullName>
+                <default>false</default>
+                <label>17% ： 製作所移牒他社品調達（機種コード：XO）</label>
+            </value>
+            <value>
+                <fullName>19% ： 神電移牒TMEIC製品（機種コード：YO）</fullName>
+                <default>false</default>
+                <label>19% ： 神電移牒TMEIC製品（機種コード：YO）</label>
+            </value>
+            <value>
+                <fullName>21% ： プラ統</fullName>
+                <default>false</default>
+                <label>21% ： プラ統</label>
+            </value>
+            <value>
+                <fullName>29% ： 通プラ（機種コード：97）</fullName>
+                <default>false</default>
+                <label>29% ： 通プラ（機種コード：97）</label>
+            </value>
+            <value>
+                <fullName>20% ： 他社品</fullName>
+                <default>false</default>
+                <label>20% ： 他社品</label>
+            </value>
+            <value>
+                <fullName>23% ： 製作所</fullName>
+                <default>false</default>
+                <label>23% ： 製作所</label>
+            </value>
+            <value>
+                <fullName>9% ： 製作所移牒他社品調達（機種コード：XO）</fullName>
+                <default>false</default>
+                <label>9% ： 製作所移牒他社品調達（機種コード：XO）</label>
+            </value>
+            <value>
+                <fullName>11% ： 神電移牒TMEIC製品（機種コード：YO）</fullName>
+                <default>false</default>
+                <label>11% ： 神電移牒TMEIC製品（機種コード：YO）</label>
+            </value>
+            <value>
+                <fullName>15% ： プラ統</fullName>
+                <default>false</default>
+                <label>15% ： プラ統</label>
+            </value>
+            <value>
+                <fullName>19% ： 通プラ（機種コード：97）</fullName>
+                <default>false</default>
+                <label>19% ： 通プラ（機種コード：97）</label>
+            </value>
+            <value>
+                <fullName>12% ： 他社品</fullName>
+                <default>false</default>
+                <label>12% ： 他社品</label>
+            </value>
+            <value>
+                <fullName>31% ： 製作所</fullName>
+                <default>false</default>
+                <label>31% ： 製作所</label>
+            </value>
+            <value>
+                <fullName>15% ： 製作所移牒他社品調達（機種コード：XO）</fullName>
+                <default>false</default>
+                <label>15% ： 製作所移牒他社品調達（機種コード：XO）</label>
+            </value>
+            <value>
+                <fullName>17% ： 神電移牒TMEIC製品（機種コード：YO）</fullName>
+                <default>false</default>
+                <label>17% ： 神電移牒TMEIC製品（機種コード：YO）</label>
+            </value>
+            <value>
+                <fullName>20% ： プラ統</fullName>
+                <default>false</default>
+                <label>20% ： プラ統</label>
+            </value>
+            <value>
+                <fullName>27% ： 通プラ（機種コード：97）</fullName>
+                <default>false</default>
+                <label>27% ： 通プラ（機種コード：97）</label>
+            </value>
+            <value>
+                <fullName>18% ： 他社品</fullName>
+                <default>false</default>
+                <label>18% ： 他社品</label>
+            </value>
+            <value>
+                <fullName>25% ： 製作所</fullName>
+                <default>false</default>
+                <label>25% ： 製作所</label>
+            </value>
+            <value>
+                <fullName>14% ： 製作所移牒他社品調達（機種コード：XO）</fullName>
+                <default>false</default>
+                <label>14% ： 製作所移牒他社品調達（機種コード：XO）</label>
+            </value>
+            <value>
+                <fullName>16% ： 神電移牒TMEIC製品（機種コード：YO）</fullName>
+                <default>false</default>
+                <label>16% ： 神電移牒TMEIC製品（機種コード：YO）</label>
+            </value>
+            <value>
+                <fullName>19% ： プラ統</fullName>
+                <default>false</default>
+                <label>19% ： プラ統</label>
+            </value>
+            <value>
+                <fullName>23% ： 通プラ（機種コード：97）</fullName>
+                <default>false</default>
+                <label>23% ： 通プラ（機種コード：97）</label>
+            </value>
+            <value>
+                <fullName>25% ：製作所（伊電長崎海外DV製品）</fullName>
+                <default>false</default>
+                <label>25% ：製作所（伊電長崎海外DV製品）</label>
+            </value>
+            <value>
+                <fullName>30% ： 製作所（神電海外水処理製品）</fullName>
+                <default>false</default>
+                <label>30% ： 製作所（神電海外水処理製品）</label>
+            </value>
+            <value>
+                <fullName>13% ：TMEIC （海外UPS製品）</fullName>
+                <default>false</default>
+                <label>13% ：TMEIC （海外UPS製品）</label>
+            </value>
+            <value>
+                <fullName>16% ： 旧通キ一、二　旧C電</fullName>
+                <default>false</default>
+                <label>16% ： 旧通キ一、二　旧C電</label>
+            </value>
+            <value>
+                <fullName>25% ： 旧通キ一、二　旧C電以外</fullName>
+                <default>false</default>
+                <label>25% ： 旧通キ一、二　旧C電以外</label>
+            </value>
+            <value>
+                <fullName>24% ： 旧通キ三、四　旧C電</fullName>
+                <default>false</default>
+                <label>24% ： 旧通キ三、四　旧C電</label>
+            </value>
+            <value>
+                <fullName>28% ： 旧通キ三、四　旧C電以外</fullName>
+                <default>false</default>
+                <label>28% ： 旧通キ三、四　旧C電以外</label>
+            </value>
+            <value>
+                <fullName>33% ： 海底ケーブル</fullName>
+                <default>false</default>
+                <label>33% ： 海底ケーブル</label>
+            </value>
+            <value>
+                <fullName>17% ： 他社品</fullName>
+                <default>false</default>
+                <label>17% ： 他社品</label>
+            </value>
+            <value>
+                <fullName>10% ： 製作所移牒他社品調達（機種コード：XO）</fullName>
+                <default>false</default>
+                <isActive>false</isActive>
+                <label>10% ： 製作所移牒他社品調達（機種コード：XO）</label>
+            </value>
+            <value>
+                <fullName>12% ： 神電移牒TMEIC製品（機種コード：YO）</fullName>
+                <default>false</default>
+                <isActive>false</isActive>
+                <label>12% ： 神電移牒TMEIC製品（機種コード：YO）</label>
+            </value>
+            <value>
+                <fullName>13% ： 他社品</fullName>
+                <default>false</default>
+                <isActive>false</isActive>
+                <label>13% ： 他社品</label>
+            </value>
+            <value>
+                <fullName>21% ： 製作所</fullName>
+                <default>false</default>
+                <isActive>false</isActive>
+                <label>21% ： 製作所</label>
+            </value>
+            <value>
+                <fullName>22% ： プラ統</fullName>
+                <default>false</default>
+                <isActive>false</isActive>
+                <label>22% ： プラ統</label>
+            </value>
+            <value>
+                <fullName>29% ： 製作所</fullName>
+                <default>false</default>
+                <isActive>false</isActive>
+                <label>29% ： 製作所</label>
+            </value>
+        </valueSetDefinition>
+        <valueSettings>
+            <controllingFieldValue>水環境</controllingFieldValue>
+            <valueName>33% ： 製作所</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>水環境</controllingFieldValue>
+            <valueName>17% ： 製作所移牒他社品調達（機種コード：XO）</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>水環境</controllingFieldValue>
+            <valueName>19% ： 神電移牒TMEIC製品（機種コード：YO）</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>水環境</controllingFieldValue>
+            <valueName>21% ： プラ統</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>水環境</controllingFieldValue>
+            <valueName>29% ： 通プラ（機種コード：97）</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>水環境</controllingFieldValue>
+            <valueName>20% ： 他社品</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>施設</controllingFieldValue>
+            <valueName>23% ： 製作所</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>施設</controllingFieldValue>
+            <valueName>9% ： 製作所移牒他社品調達（機種コード：XO）</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>施設</controllingFieldValue>
+            <valueName>11% ： 神電移牒TMEIC製品（機種コード：YO）</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>施設</controllingFieldValue>
+            <valueName>15% ： プラ統</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>施設</controllingFieldValue>
+            <valueName>19% ： 通プラ（機種コード：97）</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>施設</controllingFieldValue>
+            <valueName>12% ： 他社品</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>官需</controllingFieldValue>
+            <valueName>31% ： 製作所</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>官需</controllingFieldValue>
+            <valueName>15% ： 製作所移牒他社品調達（機種コード：XO）</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>官需</controllingFieldValue>
+            <valueName>17% ： 神電移牒TMEIC製品（機種コード：YO）</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>官需</controllingFieldValue>
+            <valueName>20% ： プラ統</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>官需</controllingFieldValue>
+            <valueName>27% ： 通プラ（機種コード：97）</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>官需</controllingFieldValue>
+            <valueName>18% ： 他社品</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>官公情報</controllingFieldValue>
+            <valueName>25% ： 製作所</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>官公情報</controllingFieldValue>
+            <valueName>14% ： 製作所移牒他社品調達（機種コード：XO）</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>官公情報</controllingFieldValue>
+            <valueName>16% ： 神電移牒TMEIC製品（機種コード：YO）</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>官公情報</controllingFieldValue>
+            <valueName>19% ： プラ統</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>官公情報</controllingFieldValue>
+            <valueName>23% ： 通プラ（機種コード：97）</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>官公情報</controllingFieldValue>
+            <controllingFieldValue>通シ</controllingFieldValue>
+            <valueName>17% ： 他社品</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>海Ｆシ</controllingFieldValue>
+            <valueName>25% ：製作所（伊電長崎海外DV製品）</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>海Ｆシ</controllingFieldValue>
+            <valueName>30% ： 製作所（神電海外水処理製品）</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>海Ｆシ</controllingFieldValue>
+            <valueName>13% ：TMEIC （海外UPS製品）</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>通シ</controllingFieldValue>
+            <valueName>16% ： 旧通キ一、二　旧C電</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>通シ</controllingFieldValue>
+            <valueName>25% ： 旧通キ一、二　旧C電以外</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>通シ</controllingFieldValue>
+            <valueName>24% ： 旧通キ三、四　旧C電</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>通シ</controllingFieldValue>
+            <valueName>28% ： 旧通キ三、四　旧C電以外</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>通シ</controllingFieldValue>
+            <valueName>33% ： 海底ケーブル</valueName>
+        </valueSettings>
+    </valueSet>
+</CustomField>

@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>ConfirmationResultTargetAttributeSurvey__c</fullName>
+    <externalId>false</externalId>
+    <inlineHelpText>当社の関係会社・代理店の1つ先が対象</inlineHelpText>
+    <label>備考（複数ルートに提出する場合は商流NO.2以降の一次顧客の確認結果を記載）</label>
+    <length>32768</length>
+    <trackFeedHistory>false</trackFeedHistory>
+    <trackHistory>false</trackHistory>
+    <trackTrending>false</trackTrending>
+    <type>LongTextArea</type>
+    <visibleLines>3</visibleLines>
+</CustomField>

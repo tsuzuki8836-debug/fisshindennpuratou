@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>SupplySite__c</fullName>
+    <deleteConstraint>SetNull</deleteConstraint>
+    <externalId>false</externalId>
+    <inlineHelpText>官需BUは入力必須です。</inlineHelpText>
+    <label>納入サイト</label>
+    <referenceTo>SupplySite__c</referenceTo>
+    <relationshipLabel>案件</relationshipLabel>
+    <relationshipName>SupplySiteOpportunities</relationshipName>
+    <required>false</required>
+    <trackFeedHistory>false</trackFeedHistory>
+    <trackHistory>false</trackHistory>
+    <type>Lookup</type>
+</CustomField>

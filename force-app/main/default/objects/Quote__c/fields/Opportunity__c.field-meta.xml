@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Opportunity__c</fullName>
+    <deleteConstraint>SetNull</deleteConstraint>
+    <externalId>false</externalId>
+    <inlineHelpText>明細の変圧器、コンデンサ、発電機は周波数により価格が異なるので、周波数の異なるエリアの案件をコピーする場合は注意してください</inlineHelpText>
+    <label>案件</label>
+    <referenceTo>Opportunity</referenceTo>
+    <relationshipLabel>見積</relationshipLabel>
+    <relationshipName>Quotations</relationshipName>
+    <required>false</required>
+    <trackFeedHistory>false</trackFeedHistory>
+    <trackHistory>false</trackHistory>
+    <trackTrending>false</trackTrending>
+    <type>Lookup</type>
+</CustomField>

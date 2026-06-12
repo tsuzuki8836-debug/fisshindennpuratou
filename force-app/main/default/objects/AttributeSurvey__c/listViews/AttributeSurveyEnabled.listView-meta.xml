@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ListView xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>AttributeSurveyEnabled</fullName>
+    <columns>NAME</columns>
+    <columns>Account__c</columns>
+    <columns>ApprovalStatus__c</columns>
+    <columns>CheckResultJudgment__c</columns>
+    <columns>ValidFormula__c</columns>
+    <columns>DateOfExpiry__c</columns>
+    <columns>LastApprovalDate__c</columns>
+    <columns>BranchOffice__c</columns>
+    <columns>ApplicationForConcurrentPost__c</columns>
+    <columns>OWNER.ALIAS</columns>
+    <columns>CREATEDBY_USER</columns>
+    <columns>UPDATEDBY_USER</columns>
+    <filterScope>Everything</filterScope>
+    <filters>
+        <field>ValidFormula__c</field>
+        <operation>equals</operation>
+        <value>1</value>
+    </filters>
+    <label>0.現在有効な属性調査結果のみ表示（全件）</label>
+</ListView>

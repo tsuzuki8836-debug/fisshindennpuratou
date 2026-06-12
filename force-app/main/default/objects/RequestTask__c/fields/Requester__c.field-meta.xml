@@ -14,6 +14,26 @@
         <valueSetDefinition>
             <sorted>false</sorted>
             <value>
+                <fullName>本社　通シ</fullName>
+                <default>false</default>
+                <label>本社　通シ</label>
+            </value>
+            <value>
+                <fullName>本社　通シ・管理</fullName>
+                <default>false</default>
+                <label>本社　通シ・管理</label>
+            </value>
+            <value>
+                <fullName>本社　通シ・通シ一</fullName>
+                <default>false</default>
+                <label>本社　通シ・通シ一</label>
+            </value>
+            <value>
+                <fullName>本社　通シ・通シ二</fullName>
+                <default>false</default>
+                <label>本社　通シ・通シ二</label>
+            </value>
+            <value>
                 <fullName>本社　施設</fullName>
                 <default>false</default>
                 <label>本社　施設</label>
@@ -34,9 +54,9 @@
                 <label>本社　施設・三</label>
             </value>
             <value>
-                <fullName>本社　施設・DCG</fullName>
+                <fullName>本社　施設・DC</fullName>
                 <default>false</default>
-                <label>本社　施設・DCG</label>
+                <label>本社　施設・DC</label>
             </value>
             <value>
                 <fullName>本社　施設・販企</fullName>
@@ -324,11 +344,6 @@
                 <label>中国支　岡山社三</label>
             </value>
             <value>
-                <fullName>中国支　山口社四</fullName>
-                <default>false</default>
-                <label>中国支　山口社四</label>
-            </value>
-            <value>
                 <fullName>四支　社会部</fullName>
                 <default>false</default>
                 <label>四支　社会部</label>
@@ -367,6 +382,12 @@
                 <fullName>九支　社シ・沖社シ</fullName>
                 <default>false</default>
                 <label>九支　社シ・沖社シ</label>
+            </value>
+            <value>
+                <fullName>中国支　山口社四</fullName>
+                <default>false</default>
+                <isActive>false</isActive>
+                <label>中国支　山口社四</label>
             </value>
             <value>
                 <fullName>中国支　鳥営</fullName>

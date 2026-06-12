@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>PreBidConfirmationAndContractDiscrepancy__c</fullName>
+    <externalId>false</externalId>
+    <inlineHelpText>CP・商流等重要項目が異なる場合は「相違あり」を選択し再伺い要</inlineHelpText>
+    <label>応札前確認内容と契約内容の相違有無</label>
+    <required>false</required>
+    <trackFeedHistory>false</trackFeedHistory>
+    <trackHistory>false</trackHistory>
+    <trackTrending>false</trackTrending>
+    <type>Picklist</type>
+    <valueSet>
+        <restricted>true</restricted>
+        <valueSetDefinition>
+            <sorted>false</sorted>
+            <value>
+                <fullName>相違なし</fullName>
+                <default>false</default>
+                <label>相違なし</label>
+            </value>
+            <value>
+                <fullName>相違あり</fullName>
+                <default>false</default>
+                <label>相違あり</label>
+            </value>
+        </valueSetDefinition>
+    </valueSet>
+</CustomField>

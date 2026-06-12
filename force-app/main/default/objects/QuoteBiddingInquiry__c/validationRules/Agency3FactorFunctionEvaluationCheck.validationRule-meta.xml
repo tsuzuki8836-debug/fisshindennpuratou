@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ValidationRule xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Agency3FactorFunctionEvaluationCheck</fullName>
+    <active>true</active>
+    <description>代理店3_評価点合計が40以下の場合、代理店3_機能評価（係数）は必須</description>
+    <errorConditionFormula>AND(
+    Agency3_EvaluationPointSum__c &lt;= 40,
+    NOT(ISBLANK( Agency3Name__c )),
+    OR(
+        ISPICKVAL( Agency3_Factor_FunctionEvaluationUnder40__c , &quot;40点超の場合選択不要&quot; ),
+        ISBLANK(TEXT( Agency3_Factor_FunctionEvaluationUnder40__c ))
+    ),
+    NOT(Creating__c)
+)</errorConditionFormula>
+    <errorDisplayField>Agency3_Factor_FunctionEvaluationUnder40__c</errorDisplayField>
+    <errorMessage>代理店3_機能評価（係数）は必須です</errorMessage>
+</ValidationRule>

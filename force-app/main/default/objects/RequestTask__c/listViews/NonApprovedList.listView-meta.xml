@@ -9,5 +9,5 @@
         <operation>equals</operation>
         <value>1</value>
     </filters>
-    <label>未承認一覧</label>
+    <label>私の未承認依頼タスク</label>
 </ListView>

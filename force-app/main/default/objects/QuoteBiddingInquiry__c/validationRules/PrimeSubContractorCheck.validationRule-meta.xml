@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ValidationRule xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>PrimeSubContractorCheck</fullName>
+    <active>true</active>
+    <description>元請/下請は価格表の場合任意</description>
+    <errorConditionFormula>AND(
+    RecordType.DeveloperName != &apos;FeeInquiry&apos;,
+    PriceList__c = false,
+    ISBLANK(TEXT(PrimeSubContractor__c)),
+    NOT(Creating__c)
+)</errorConditionFormula>
+    <errorDisplayField>PrimeSubContractor__c</errorDisplayField>
+    <errorMessage>元請/下請は必須です</errorMessage>
+</ValidationRule>

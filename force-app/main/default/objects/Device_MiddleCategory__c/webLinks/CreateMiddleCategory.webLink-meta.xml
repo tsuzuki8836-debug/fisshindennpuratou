@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<WebLink xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>CreateMiddleCategory</fullName>
+    <availability>online</availability>
+    <description>工種レコードの関連リストに表示するボタン</description>
+    <displayType>massActionButton</displayType>
+    <encodingKey>UTF-8</encodingKey>
+    <height>600</height>
+    <linkType>url</linkType>
+    <masterLabel>新規</masterLabel>
+    <openType>sidebar</openType>
+    <protected>false</protected>
+    <requireRowSelection>false</requireRowSelection>
+    <url>/lightning/o/Device_MiddleCategory__c/new?defaultFieldValues=Quote__c={!Device_LargeCategory__c.QuoteId__c},
+Device_LargeCategory__c={!Device_LargeCategory__c.Id}
+&amp;backgroundContext=%2Flightning%2Fr%2FDevice_LargeCategory__c%2F{!Device_LargeCategory__c.Id}%2Fview</url>
+</WebLink>

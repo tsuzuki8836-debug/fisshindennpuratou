@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>ExportManagementProvisionQ5__c</fullName>
+    <externalId>false</externalId>
+    <inlineHelpText>一次顧客の1つ先の取引先から最終顧客までの商流各社を指す</inlineHelpText>
+    <label>②二次顧客以降の全取引先をCRMに登録したか</label>
+    <required>false</required>
+    <trackFeedHistory>false</trackFeedHistory>
+    <trackHistory>false</trackHistory>
+    <trackTrending>false</trackTrending>
+    <type>Picklist</type>
+    <valueSet>
+        <restricted>true</restricted>
+        <valueSetDefinition>
+            <sorted>false</sorted>
+            <value>
+                <fullName>登録済</fullName>
+                <default>false</default>
+                <label>登録済</label>
+            </value>
+            <value>
+                <fullName>登録依頼中</fullName>
+                <default>false</default>
+                <label>登録依頼中</label>
+            </value>
+            <value>
+                <fullName>二次顧客以降なし</fullName>
+                <default>false</default>
+                <label>二次顧客以降なし</label>
+            </value>
+        </valueSetDefinition>
+    </valueSet>
+</CustomField>

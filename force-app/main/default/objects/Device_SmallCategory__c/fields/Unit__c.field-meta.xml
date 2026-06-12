@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Unit__c</fullName>
+    <externalId>false</externalId>
+    <inlineHelpText>見積項目が複数ある場合は入力してください（空欄の場合は「式」として扱われます）</inlineHelpText>
+    <label>単位</label>
+    <length>10</length>
+    <required>false</required>
+    <trackTrending>false</trackTrending>
+    <type>Text</type>
+    <unique>false</unique>
+</CustomField>

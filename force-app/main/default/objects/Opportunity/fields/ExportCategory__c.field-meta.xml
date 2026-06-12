@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>ExportCategory__c</fullName>
+    <externalId>false</externalId>
+    <label>輸出区分</label>
+    <required>false</required>
+    <trackFeedHistory>false</trackFeedHistory>
+    <trackHistory>false</trackHistory>
+    <type>Picklist</type>
+    <valueSet>
+        <valueSetDefinition>
+            <sorted>false</sorted>
+            <value>
+                <fullName>0 国内</fullName>
+                <default>true</default>
+                <label>0 国内</label>
+            </value>
+            <value>
+                <fullName>1 直輸為替無</fullName>
+                <default>false</default>
+                <label>1 直輸為替無</label>
+            </value>
+            <value>
+                <fullName>2 間接輸出</fullName>
+                <default>false</default>
+                <label>2 間接輸出</label>
+            </value>
+            <value>
+                <fullName>3 直輸為替有</fullName>
+                <default>false</default>
+                <label>3 直輸為替有</label>
+            </value>
+        </valueSetDefinition>
+    </valueSet>
+</CustomField>

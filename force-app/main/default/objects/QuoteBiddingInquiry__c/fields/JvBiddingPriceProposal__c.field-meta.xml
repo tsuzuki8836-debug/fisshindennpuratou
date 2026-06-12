@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>JvBiddingPriceProposal__c</fullName>
+    <externalId>false</externalId>
+    <inlineHelpText>未定の場合は概算額、設計変更の場合は増減額を入力。金額に応じて承認フローが設定されます。</inlineHelpText>
+    <label>JV応札価格案</label>
+    <precision>12</precision>
+    <required>false</required>
+    <scale>0</scale>
+    <trackFeedHistory>false</trackFeedHistory>
+    <trackHistory>false</trackHistory>
+    <trackTrending>false</trackTrending>
+    <type>Currency</type>
+</CustomField>

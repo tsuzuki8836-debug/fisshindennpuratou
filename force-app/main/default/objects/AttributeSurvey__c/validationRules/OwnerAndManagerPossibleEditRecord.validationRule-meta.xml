@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ValidationRule xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>OwnerAndManagerPossibleEditRecord</fullName>
+    <active>true</active>
+    <errorConditionFormula>AND(
+        NOT(ISNEW()),
+        NOT($Permission.AttributeSurveyPermission),
+        ISPICKVAL( ApprovalStatus__c , &quot;未申請&quot;) ,
+        $Profile.Name &lt;&gt; &quot;システム管理者&quot;,
+        $Profile.Name &lt;&gt; &quot;部門管理者&quot;,
+        $Profile.Name &lt;&gt; &quot;データ移行管理者&quot;,
+        Owner:User.Id &lt;&gt;  $User.Id,
+        Owner:User.ManagerId  &lt;&gt;  $User.Id,
+        Owner:User.Manager.ManagerId   &lt;&gt;  $User.Id,
+        Owner:User.ConcurrentManager__c   &lt;&gt;  $User.Id,
+        Owner:User.ConcurrentManager__r.ConcurrentManager__c  &lt;&gt;  $User.Id
+)</errorConditionFormula>
+    <errorMessage>編集権限がないため編集できません</errorMessage>
+</ValidationRule>

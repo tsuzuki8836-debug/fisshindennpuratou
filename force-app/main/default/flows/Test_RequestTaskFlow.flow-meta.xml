@@ -1,0 +1,586 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Flow xmlns="http://soap.sforce.com/2006/04/metadata">
+    <actionCalls>
+        <description>依頼先対応済／依頼完了時に所有者・申請者へメール通知する。</description>
+        <name>send_CompletionEmail</name>
+        <label>依頼完了メール通知</label>
+        <locationX>182</locationX>
+        <locationY>2039</locationY>
+        <actionName>emailSimple</actionName>
+        <actionType>emailSimple</actionType>
+        <connector>
+            <targetReference>update_requestTask</targetReference>
+        </connector>
+        <flowTransactionModel>CurrentTransaction</flowTransactionModel>
+        <inputParameters>
+            <name>recipientAddresses</name>
+            <value/>
+        </inputParameters>
+        <inputParameters>
+            <name>composeEmailContent</name>
+            <value>
+                <stringValue>True</stringValue>
+            </value>
+        </inputParameters>
+        <inputParameters>
+            <name>emailSubject</name>
+            <value>
+                <stringValue>【依頼完了】{!$Record.Name}</stringValue>
+            </value>
+        </inputParameters>
+        <inputParameters>
+            <name>emailBody</name>
+            <value>
+                <stringValue>以下の依頼タスクが完了されました。
+案件名：{!$Record.Opportunity__r.Name}
+件名：{!$Record.Name}
+依頼区分：{!$Record.TaskCategory__c}
+完了コメント：{!$Record.CompletionComment__c}</stringValue>
+            </value>
+        </inputParameters>
+        <inputParameters>
+            <name>useLineBreaks</name>
+        </inputParameters>
+        <inputParameters>
+            <name>recipientId</name>
+        </inputParameters>
+        <nameSegment>emailSimple</nameSegment>
+    </actionCalls>
+    <apiVersion>55.0</apiVersion>
+    <assignments>
+        <name>assign_approver1</name>
+        <label>承認者1設定</label>
+        <locationX>204</locationX>
+        <locationY>731</locationY>
+        <assignmentItems>
+            <assignToReference>$Record.Approver1__c</assignToReference>
+            <operator>Assign</operator>
+            <value>
+                <elementReference>$User.Id</elementReference>
+            </value>
+        </assignmentItems>
+        <connector>
+            <targetReference>BlankApplicant</targetReference>
+        </connector>
+    </assignments>
+    <assignments>
+        <name>assign_myDepartmentComplete</name>
+        <label>自部門承認済に変更</label>
+        <locationX>204</locationX>
+        <locationY>1331</locationY>
+        <assignmentItems>
+            <assignToReference>$Record.Status__c</assignToReference>
+            <operator>Assign</operator>
+            <value>
+                <stringValue>依頼先対応中</stringValue>
+            </value>
+        </assignmentItems>
+        <connector>
+            <targetReference>decision_isCompleted</targetReference>
+        </connector>
+    </assignments>
+    <assignments>
+        <description>依頼タスク.案件が未入力の場合は依頼タスク.場所別.案件を依頼タスク.案件に設定する</description>
+        <name>assign_opportunity</name>
+        <label>案件セット</label>
+        <locationX>204</locationX>
+        <locationY>431</locationY>
+        <assignmentItems>
+            <assignToReference>$Record.Opportunity__c</assignToReference>
+            <operator>Assign</operator>
+            <value>
+                <elementReference>$Record.Factory__r.Opp1__c</elementReference>
+            </value>
+        </assignmentItems>
+        <connector>
+            <targetReference>decision_approver1_blank</targetReference>
+        </connector>
+    </assignments>
+    <assignments>
+        <name>ClearManualCheck4</name>
+        <label>手動承認判定4クリア</label>
+        <locationX>204</locationX>
+        <locationY>1031</locationY>
+        <assignmentItems>
+            <assignToReference>$Record.ManualCheck4__c</assignToReference>
+            <operator>Assign</operator>
+            <value>
+                <booleanValue>false</booleanValue>
+            </value>
+        </assignmentItems>
+        <connector>
+            <targetReference>decision_UserDeptLastManuallyApproved</targetReference>
+        </connector>
+    </assignments>
+    <decisions>
+        <name>BlankApplicant</name>
+        <label>申請者が空</label>
+        <locationX>336</locationX>
+        <locationY>923</locationY>
+        <defaultConnector>
+            <targetReference>decision_UserDeptLastManuallyApproved</targetReference>
+        </defaultConnector>
+        <defaultConnectorLabel>申請者が空でない</defaultConnectorLabel>
+        <rules>
+            <name>Blank</name>
+            <conditionLogic>and</conditionLogic>
+            <conditions>
+                <leftValueReference>$Record.Applicant__c</leftValueReference>
+                <operator>IsNull</operator>
+                <rightValue>
+                    <booleanValue>true</booleanValue>
+                </rightValue>
+            </conditions>
+            <conditions>
+                <leftValueReference>$Record__Prior.Applicant__c</leftValueReference>
+                <operator>IsNull</operator>
+                <rightValue>
+                    <booleanValue>false</booleanValue>
+                </rightValue>
+            </conditions>
+            <connector>
+                <targetReference>ClearManualCheck4</targetReference>
+            </connector>
+            <label>申請者が空になった</label>
+        </rules>
+    </decisions>
+    <decisions>
+        <description>申請者（Applicant__c）が入力されている場合、Userレコードからメールアドレスを取得する。空の場合はスキップ。</description>
+        <name>decision_ApplicantEmailRequired</name>
+        <label>申請者メールアドレス取得要否</label>
+        <locationX>182</locationX>
+        <locationY>1739</locationY>
+        <defaultConnector>
+            <targetReference>send_CompletionEmail</targetReference>
+        </defaultConnector>
+        <defaultConnectorLabel>デフォルトの結果</defaultConnectorLabel>
+        <rules>
+            <name>isApplicantExist</name>
+            <conditionLogic>and</conditionLogic>
+            <conditions>
+                <leftValueReference>$Record.Applicant__c</leftValueReference>
+                <operator>NotEqualTo</operator>
+            </conditions>
+            <connector>
+                <targetReference>get_ApplicantUser</targetReference>
+            </connector>
+            <label>申請者あり</label>
+        </rules>
+    </decisions>
+    <decisions>
+        <name>decision_approver1_blank</name>
+        <label>承認者1が空</label>
+        <locationX>336</locationX>
+        <locationY>623</locationY>
+        <defaultConnector>
+            <targetReference>BlankApplicant</targetReference>
+        </defaultConnector>
+        <defaultConnectorLabel>承認者1が空でない</defaultConnectorLabel>
+        <rules>
+            <name>isBlank_approver1</name>
+            <conditionLogic>and</conditionLogic>
+            <conditions>
+                <leftValueReference>$Record.UserDeptApproved__c</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <booleanValue>false</booleanValue>
+                </rightValue>
+            </conditions>
+            <conditions>
+                <leftValueReference>$Record.Approver1__r.Id</leftValueReference>
+                <operator>IsNull</operator>
+                <rightValue>
+                    <booleanValue>true</booleanValue>
+                </rightValue>
+            </conditions>
+            <connector>
+                <targetReference>assign_approver1</targetReference>
+            </connector>
+            <label>承認者1が空</label>
+        </rules>
+    </decisions>
+    <decisions>
+        <name>decision_isCompleted</name>
+        <label>依頼先対応済／依頼完了になったか</label>
+        <locationX>336</locationX>
+        <locationY>1523</locationY>
+        <defaultConnector>
+            <targetReference>update_requestTask</targetReference>
+        </defaultConnector>
+        <defaultConnectorLabel>依頼先対応済／依頼完了でない</defaultConnectorLabel>
+        <rules>
+            <name>isCompleted</name>
+            <conditionLogic>and</conditionLogic>
+            <conditions>
+                <leftValueReference>$Record.Status__c</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <stringValue>依頼先対応済/依頼完了</stringValue>
+                </rightValue>
+            </conditions>
+            <conditions>
+                <leftValueReference>$Record__Prior.Status__c</leftValueReference>
+                <operator>NotEqualTo</operator>
+                <rightValue>
+                    <stringValue>依頼先対応済/依頼完了</stringValue>
+                </rightValue>
+            </conditions>
+            <connector>
+                <targetReference>get_OwnerUser</targetReference>
+            </connector>
+            <label>依頼先対応済／依頼完了</label>
+        </rules>
+    </decisions>
+    <decisions>
+        <description>依頼タスク.案件が未入力の場合は依頼タスク.場所別.案件を依頼タスク.案件に設定する</description>
+        <name>decision_opportunityIsBlank</name>
+        <label>案件が未入力</label>
+        <locationX>336</locationX>
+        <locationY>323</locationY>
+        <defaultConnector>
+            <targetReference>decision_approver1_blank</targetReference>
+        </defaultConnector>
+        <defaultConnectorLabel>案件セット対象外</defaultConnectorLabel>
+        <rules>
+            <name>isOpportunitySetTarget</name>
+            <conditionLogic>and</conditionLogic>
+            <conditions>
+                <leftValueReference>$Record.Opportunity__c</leftValueReference>
+                <operator>EqualTo</operator>
+            </conditions>
+            <conditions>
+                <leftValueReference>$Record.Factory__c</leftValueReference>
+                <operator>NotEqualTo</operator>
+            </conditions>
+            <connector>
+                <targetReference>assign_opportunity</targetReference>
+            </connector>
+            <label>案件セット対象</label>
+        </rules>
+    </decisions>
+    <decisions>
+        <name>decision_UserDeptLastManuallyApproved</name>
+        <label>『承認者手動設定』且つ、『状況』が『依頼作成』または『自部門承認中』且つ、指定された『自部門最終承認者』が承認したか</label>
+        <locationX>336</locationX>
+        <locationY>1223</locationY>
+        <defaultConnector>
+            <targetReference>decision_isCompleted</targetReference>
+        </defaultConnector>
+        <defaultConnectorLabel>承認していない</defaultConnectorLabel>
+        <rules>
+            <name>Approved</name>
+            <conditionLogic>1 AND (2 OR 3) AND ((4 AND 5) OR (6 AND 7) OR (8 AND 9) OR (10 AND 11))</conditionLogic>
+            <conditions>
+                <leftValueReference>$Record.ApprovalPattern__c</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <stringValue>承認者手動設定</stringValue>
+                </rightValue>
+            </conditions>
+            <conditions>
+                <leftValueReference>$Record.Status__c</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <stringValue>依頼作成</stringValue>
+                </rightValue>
+            </conditions>
+            <conditions>
+                <leftValueReference>$Record.Status__c</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <stringValue>自部門承認中</stringValue>
+                </rightValue>
+            </conditions>
+            <conditions>
+                <leftValueReference>$Record.ManualCheck1__c</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <booleanValue>true</booleanValue>
+                </rightValue>
+            </conditions>
+            <conditions>
+                <leftValueReference>$Record.UserDeptLastApproverFormula__c</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <stringValue>承認者1</stringValue>
+                </rightValue>
+            </conditions>
+            <conditions>
+                <leftValueReference>$Record.ManualCheck2__c</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <booleanValue>true</booleanValue>
+                </rightValue>
+            </conditions>
+            <conditions>
+                <leftValueReference>$Record.UserDeptLastApproverFormula__c</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <stringValue>承認者2</stringValue>
+                </rightValue>
+            </conditions>
+            <conditions>
+                <leftValueReference>$Record.ManualCheck3__c</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <booleanValue>true</booleanValue>
+                </rightValue>
+            </conditions>
+            <conditions>
+                <leftValueReference>$Record.UserDeptLastApproverFormula__c</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <stringValue>承認者3</stringValue>
+                </rightValue>
+            </conditions>
+            <conditions>
+                <leftValueReference>$Record.ManualCheck4__c</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <booleanValue>true</booleanValue>
+                </rightValue>
+            </conditions>
+            <conditions>
+                <leftValueReference>$Record.UserDeptLastApproverFormula__c</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <stringValue>承認者4</stringValue>
+                </rightValue>
+            </conditions>
+            <connector>
+                <targetReference>assign_myDepartmentComplete</targetReference>
+            </connector>
+            <label>承認した</label>
+        </rules>
+    </decisions>
+    <environments>Default</environments>
+    <formulas>
+        <name>formula_Applicant</name>
+        <dataType>String</dataType>
+        <expression>IF(!ISBLANK({!$Record.Applicant__c}), &apos;申請者&apos; &amp; &apos;@[&apos; &amp; {!$Record.Applicant__c} &amp; &apos;]&apos; &amp; BR() , &apos;&apos;)</expression>
+    </formulas>
+    <formulas>
+        <description>依頼タスク.メンション先10に値が入力されている場合、「メンション先10 @[入力値]」を出力する。
+未入力の場合は空白を出力する。</description>
+        <name>formula_MentionTarget10To</name>
+        <dataType>String</dataType>
+        <expression>IF ( ISBLANK( {!$Record.MentionTarget10__c} ) , &apos;&apos;, &apos;メンション先10 @[&apos; &amp; {!$Record.MentionTarget10__c} &amp; &apos;]&apos; &amp; BR() )</expression>
+    </formulas>
+    <formulas>
+        <description>依頼タスク.メンション先1（To）に値が入力されている場合、「メンション先1 @[To.入力値]+改行」を出力する。
+未入力の場合は空白を出力する。</description>
+        <name>formula_MentionTarget1To</name>
+        <dataType>String</dataType>
+        <expression>IF ( ISBLANK( {!$Record.MentionTarget1__c} ) , &apos;&apos;, &apos;メンション先1 @[&apos; &amp; {!$Record.MentionTarget1__c} &amp; &apos;]&apos; &amp; BR() )</expression>
+    </formulas>
+    <formulas>
+        <description>依頼タスク.メンション先2（To）に値が入力されている場合、「メンション先2 @[To.入力値]+改行」を出力する。
+未入力の場合は空白を出力する。</description>
+        <name>formula_MentionTarget2To</name>
+        <dataType>String</dataType>
+        <expression>IF ( ISBLANK( {!$Record.MentionTarget2__c} ) , &apos;&apos;, &apos;メンション先2 @[&apos; &amp; {!$Record.MentionTarget2__c} &amp; &apos;]&apos; &amp; BR() )</expression>
+    </formulas>
+    <formulas>
+        <description>依頼タスク.メンション先3（To）に値が入力されている場合、「メンション先3 @[To.入力値]+改行」を出力する。
+未入力の場合は空白を出力する。</description>
+        <name>formula_MentionTarget3To</name>
+        <dataType>String</dataType>
+        <expression>IF ( ISBLANK( {!$Record.MentionTarget3__c} ) , &apos;&apos;, &apos;メンション先3 @[&apos; &amp; {!$Record.MentionTarget3__c} &amp; &apos;]&apos; &amp; BR() )</expression>
+    </formulas>
+    <formulas>
+        <description>依頼タスク.メンション先4（To）に値が入力されている場合、「メンション先4 @[To.入力値]+改行」を出力する。
+未入力の場合は空白を出力する。</description>
+        <name>formula_MentionTarget4To</name>
+        <dataType>String</dataType>
+        <expression>IF ( ISBLANK( {!$Record.MentionTarget4__c} ) , &apos;&apos;, &apos;メンション先4 @[&apos; &amp; {!$Record.MentionTarget4__c} &amp; &apos;]&apos; &amp; BR() )</expression>
+    </formulas>
+    <formulas>
+        <description>依頼タスク.メンション先5（To）に値が入力されている場合、「メンション先5 @[To.入力値]」を出力する。
+未入力の場合は空白を出力する。</description>
+        <name>formula_MentionTarget5To</name>
+        <dataType>String</dataType>
+        <expression>IF ( ISBLANK( {!$Record.MentionTarget5__c} ) , &apos;&apos;, &apos;メンション先5 @[&apos; &amp; {!$Record.MentionTarget5__c} &amp; &apos;]&apos; &amp; BR() )</expression>
+    </formulas>
+    <formulas>
+        <description>依頼タスク.メンション先6に値が入力されている場合、「メンション先6 @[入力値]」を出力する。
+未入力の場合は空白を出力する。</description>
+        <name>formula_MentionTarget6To</name>
+        <dataType>String</dataType>
+        <expression>IF ( ISBLANK( {!$Record.MentionTarget6__c} ) , &apos;&apos;, &apos;メンション先6 @[&apos; &amp; {!$Record.MentionTarget6__c} &amp; &apos;]&apos; &amp; BR() )</expression>
+    </formulas>
+    <formulas>
+        <description>依頼タスク.メンション先7に値が入力されている場合、「メンション先7 @[入力値]」を出力する。
+未入力の場合は空白を出力する。</description>
+        <name>formula_MentionTarget7To</name>
+        <dataType>String</dataType>
+        <expression>IF ( ISBLANK( {!$Record.MentionTarget7__c} ) , &apos;&apos;, &apos;メンション先7 @[&apos; &amp; {!$Record.MentionTarget7__c} &amp; &apos;]&apos; &amp; BR() )</expression>
+    </formulas>
+    <formulas>
+        <description>依頼タスク.メンション先8に値が入力されている場合、「メンション先8 @[入力値]」を出力する。
+未入力の場合は空白を出力する。</description>
+        <name>formula_MentionTarget8To</name>
+        <dataType>String</dataType>
+        <expression>IF ( ISBLANK( {!$Record.MentionTarget8__c} ) , &apos;&apos;, &apos;メンション先8 @[&apos; &amp; {!$Record.MentionTarget8__c} &amp; &apos;]&apos; &amp; BR() )</expression>
+    </formulas>
+    <formulas>
+        <description>依頼タスク.メンション先9に値が入力されている場合、「メンション先9 @[入力値]」を出力する。
+未入力の場合は空白を出力する。</description>
+        <name>formula_MentionTarget9To</name>
+        <dataType>String</dataType>
+        <expression>IF ( ISBLANK( {!$Record.MentionTarget9__c} ) , &apos;&apos;, &apos;メンション先9 @[&apos; &amp; {!$Record.MentionTarget9__c} &amp; &apos;]&apos; &amp; BR() )</expression>
+    </formulas>
+    <interviewLabel>【テスト】依頼タスク更新 {!$Flow.CurrentDateTime}</interviewLabel>
+    <label>【テスト】依頼タスク更新</label>
+    <processMetadataValues>
+        <name>BuilderType</name>
+        <value>
+            <stringValue>LightningFlowBuilder</stringValue>
+        </value>
+    </processMetadataValues>
+    <processMetadataValues>
+        <name>CanvasMode</name>
+        <value>
+            <stringValue>AUTO_LAYOUT_CANVAS</stringValue>
+        </value>
+    </processMetadataValues>
+    <processMetadataValues>
+        <name>OriginBuilderType</name>
+        <value>
+            <stringValue>LightningFlowBuilder</stringValue>
+        </value>
+    </processMetadataValues>
+    <processType>AutoLaunchedFlow</processType>
+    <recordLookups>
+        <description>申請者（Applicant__c）のユーザーIDをもとにUserレコードを取得し、メールアドレスをvar_ApplicantEmailに格納する。</description>
+        <name>get_ApplicantUser</name>
+        <label>申請者ユーザー取得</label>
+        <locationX>50</locationX>
+        <locationY>1847</locationY>
+        <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
+        <connector>
+            <targetReference>send_CompletionEmail</targetReference>
+        </connector>
+        <filterLogic>and</filterLogic>
+        <filters>
+            <field>Id</field>
+            <operator>EqualTo</operator>
+            <value>
+                <elementReference>$Record.Applicant__c</elementReference>
+            </value>
+        </filters>
+        <object>User</object>
+        <outputAssignments>
+            <assignToReference>var_ApplicantEmail</assignToReference>
+            <field>Email</field>
+        </outputAssignments>
+    </recordLookups>
+    <recordLookups>
+        <description>所有者（OwnerId）のユーザーIDをもとにUserレコードを取得し、メールアドレスをvar_OwnerEmailに格納する。</description>
+        <name>get_OwnerUser</name>
+        <label>所有者ユーザー取得</label>
+        <locationX>182</locationX>
+        <locationY>1631</locationY>
+        <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
+        <connector>
+            <targetReference>decision_ApplicantEmailRequired</targetReference>
+        </connector>
+        <filterLogic>and</filterLogic>
+        <filters>
+            <field>Id</field>
+            <operator>EqualTo</operator>
+            <value>
+                <elementReference>$Record.OwnerId</elementReference>
+            </value>
+        </filters>
+        <object>User</object>
+        <outputAssignments>
+            <assignToReference>var_OwnerEmail</assignToReference>
+            <field>Email</field>
+        </outputAssignments>
+    </recordLookups>
+    <recordUpdates>
+        <name>update_requestTask</name>
+        <label>依頼タスク更新</label>
+        <locationX>336</locationX>
+        <locationY>2231</locationY>
+        <inputReference>$Record</inputReference>
+    </recordUpdates>
+    <start>
+        <locationX>210</locationX>
+        <locationY>0</locationY>
+        <connector>
+            <targetReference>decision_opportunityIsBlank</targetReference>
+        </connector>
+        <filterFormula>OR(
+    AND(
+        NOT({!$Record.UserDeptApproved__c}),
+        ISBLANK({!$Record.Approver1__r.Id})
+    ),/*自部門承認済みがFalse かつ 承認者1が空*/
+    AND(
+        ISPICKVAL({!$Record.Status__c}, &apos;依頼先対応済/依頼完了&apos;),
+        NOT(ISPICKVAL({!$Record__Prior.Status__c}, &apos;依頼先対応済/依頼完了&apos;))
+    ), /*完了になった*/
+    AND(
+        ISPICKVAL({!$Record.ApprovalPattern__c}, &apos;承認者手動設定&apos;),
+        OR(
+            ISPICKVAL({!$Record.Status__c}, &apos;依頼作成&apos;),
+            ISPICKVAL({!$Record.Status__c}, &apos;自部門承認中&apos;)
+        ),
+        OR(
+            AND(
+                {!$Record.UserDeptLastApproverFormula__c} = &apos;承認者1&apos;,
+                {!$Record.ManualCheck1__c}
+            ),
+            AND(
+                {!$Record.UserDeptLastApproverFormula__c} = &apos;承認者2&apos;,
+                {!$Record.ManualCheck2__c}
+            ),
+            AND(
+                {!$Record.UserDeptLastApproverFormula__c} = &apos;承認者3&apos;,
+                {!$Record.ManualCheck3__c}
+            ),
+            AND(
+                {!$Record.UserDeptLastApproverFormula__c} = &apos;承認者4&apos;,
+                {!$Record.ManualCheck4__c}
+            )
+        )
+    ),
+    AND(
+        ISBLANK({!$Record.Opportunity__c}),
+        NOT( ISBLANK({!$Record.Factory__c}))
+    ),/*案件が未入力 かつ 場所別がブランクでない*/
+    ISBLANK({!$Record.Applicant__c})
+)</filterFormula>
+        <object>RequestTask__c</object>
+        <recordTriggerType>CreateAndUpdate</recordTriggerType>
+        <triggerType>RecordAfterSave</triggerType>
+    </start>
+    <status>Obsolete</status>
+    <textTemplates>
+        <description>依頼タスク.状況が依頼先対応済／依頼完了に変更された際にChatter通知するテキスト。</description>
+        <name>text_isCompleted</name>
+        <isViewedAsPlainText>true</isViewedAsPlainText>
+        <text>担当者@[{!$Record.OwnerId}]
+{!formula_Applicant}以下の依頼タスクが完了されました。
+案件名：{!$Record.Opportunity__r.Name}
+件名：{!$Record.Name}
+依頼区分：{!$Record.TaskCategory__c}
+完了コメント：{!$Record.CompletionComment__c}
+
+{!formula_MentionTarget1To}{!formula_MentionTarget2To}{!formula_MentionTarget3To}{!formula_MentionTarget4To}{!formula_MentionTarget5To}{!formula_MentionTarget6To}{!formula_MentionTarget7To}{!formula_MentionTarget8To}{!formula_MentionTarget9To}{!formula_MentionTarget10To}</text>
+    </textTemplates>
+    <variables>
+        <name>var_ApplicantEmail</name>
+        <dataType>String</dataType>
+        <isCollection>false</isCollection>
+        <isInput>false</isInput>
+        <isOutput>false</isOutput>
+    </variables>
+    <variables>
+        <name>var_OwnerEmail</name>
+        <dataType>String</dataType>
+        <isCollection>false</isCollection>
+        <isInput>false</isInput>
+        <isOutput>false</isOutput>
+    </variables>
+</Flow>

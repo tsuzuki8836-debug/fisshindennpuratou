@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>DependentFeeInquiry__c</fullName>
+    <deleteConstraint>SetNull</deleteConstraint>
+    <externalId>false</externalId>
+    <inlineHelpText>手数料伺いを紐づけて保存すると代理店情報セクションが更新されます</inlineHelpText>
+    <label>参照先手数料伺い</label>
+    <lookupFilter>
+        <active>true</active>
+        <filterItems>
+            <field>QuoteBiddingInquiry__c.RecordType.DeveloperName</field>
+            <operation>equals</operation>
+            <value>FeeInquiry</value>
+        </filterItems>
+        <filterItems>
+            <field>QuoteBiddingInquiry__c.Opportunity__c</field>
+            <operation>equals</operation>
+            <valueField>$Source.Opportunity__c</valueField>
+        </filterItems>
+        <isOptional>false</isOptional>
+    </lookupFilter>
+    <referenceTo>QuoteBiddingInquiry__c</referenceTo>
+    <relationshipLabel>見積・応札・手数料伺い (参照先手数料伺い)</relationshipLabel>
+    <relationshipName>DependentFeeInquiryShip</relationshipName>
+    <required>false</required>
+    <trackFeedHistory>false</trackFeedHistory>
+    <trackHistory>true</trackHistory>
+    <trackTrending>false</trackTrending>
+    <type>Lookup</type>
+</CustomField>

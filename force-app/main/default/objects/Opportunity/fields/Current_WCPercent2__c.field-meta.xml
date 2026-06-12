@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Current_WCPercent2__c</fullName>
+    <externalId>false</externalId>
+    <formula>IF( OR(ISNULL(Result_TotalCP__c),ISNULL(Result_TotalWC__c )), IF( OR(ISNULL(Latest_Forecast_TotalCP__c),ISNULL(Latest_Forecast_TotalWC__c)), IF( OR(ISNULL(Order_Forecast_TotalCP__c),ISNULL(Order_Forecast_TotalWC__c )), WCPercent__c, Order_Forecast_WCPercent__c), Latest_Forecast_WCPercent__c), Result_WCPercent__c)</formula>
+    <label>WC率(実績&gt;最終予想最新&gt;最終予想受注時&gt;商談)</label>
+    <precision>18</precision>
+    <required>false</required>
+    <scale>1</scale>
+    <trackHistory>false</trackHistory>
+    <type>Percent</type>
+</CustomField>

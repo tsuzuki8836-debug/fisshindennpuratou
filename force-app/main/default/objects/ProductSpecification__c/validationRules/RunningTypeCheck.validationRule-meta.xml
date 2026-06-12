@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ValidationRule xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>RunningTypeCheck</fullName>
+    <active>true</active>
+    <description>運転方式が、発電機同志の並列運転（●台）の場合、並列運転台数に入力がないとエラー</description>
+    <errorConditionFormula>AND(
+    ISPICKVAL( RunningType__c  , &apos;発電機同志の並列運転（●台）&apos;),
+    NumberOfParallelOperationDows__c  = null,
+    NOT($Profile.Name = &apos;データ移行管理者&apos;)
+)</errorConditionFormula>
+    <errorDisplayField>NumberOfParallelOperationDows__c</errorDisplayField>
+    <errorMessage>運転方式が、発電機同志の並列運転（●台）の場合、並列運転台数に入力して下さい</errorMessage>
+</ValidationRule>

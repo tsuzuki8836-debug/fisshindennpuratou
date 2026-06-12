@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<WebLink xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Sansan_CI__BizCard_NotDistribution</fullName>
+    <availability>online</availability>
+    <description>Classic用</description>
+    <displayType>massActionButton</displayType>
+    <linkType>javascript</linkType>
+    <masterLabel>紐付けしない(使用禁止)</masterLabel>
+    <openType>onClickJavaScript</openType>
+    <protected>false</protected>
+    <requireRowSelection>true</requireRowSelection>
+    <url>{!REQUIRESCRIPT(&quot;/soap/ajax/38.0/connection.js&quot;)} 
+{!REQUIRESCRIPT(&quot;/soap/ajax/38.0/apex.js&quot;)} 
+
+function getErrorMessages(results) {
+	var messages = [];
+	for (var i = 0; i &lt; results.length; i++) {
+	  var r = results[i];
+	  if (!r.getBoolean(&quot;success&quot;)) {
+	    messages = messages.concat(getMessagesOfAResult(r));
+	  }
+	}
+	return messages;
+
+}
+
+function getMessagesOfAResult(res) {
+	var messages = [];
+	var errors = res.getArray(&quot;errors&quot;);
+	for (var i = 0; i &lt; errors.length; i++) {
+	  e = errors[i];
+	  messages.push(e.message);
+	}
+	return messages;
+}
+  
+var records = {!GETRECORDIDS($ObjectType.Sansan_CI__BizCard__c)}; 
+
+if (records.length &lt; 1 ) { 
+    alert(&apos;1つ以上名刺を選択してください&apos;);
+} else { 
+    var result = window.confirm(&apos;選択した名刺を振分け対象外にします。&apos;);
+    if( result ) {
+	    var objs = [];
+	    for (var i = 0; i &lt; records.length; i++) {
+	        var obj = new sforce.SObject(&apos;BizCard__c&apos;);
+	        obj.id = records[i];
+	        obj.IsNotDistribution__c = &quot;true&quot;;
+	        objs.push(obj);
+	    }
+	    var updateResults = sforce.connection.update(objs);
+	    
+	    var messages = getErrorMessages(updateResults);
+
+	    if (messages.length &gt; 0) {
+		  var message = &quot;&quot;;
+	      for (var i = 0; i &lt; messages.length; i++) {
+	      	message = message + messages[i];
+	      }
+	      alert(messages.join(&quot;\n&quot;));
+	    }else{
+		    location.href=&apos;/&apos; + records[0].substring(0,3);
+		}
+
+    }
+}</url>
+</WebLink>

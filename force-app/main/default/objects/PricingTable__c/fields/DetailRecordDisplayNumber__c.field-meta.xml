@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>DetailRecordDisplayNumber__c</fullName>
+    <externalId>false</externalId>
+    <formula>IF ( ISPICKVAL(BU__c, &apos;M&apos;) , &apos;1&apos;
+ , IF (ISPICKVAL(BU__c, &apos;S&apos;), &apos;2&apos;, &apos;3&apos;) ) &amp; 
+  MajorClassificationCode__c  &amp; 
+   MinorClassificationCode__c  &amp; 
+   IF ( RecordType.DeveloperName =&apos;Chassis&apos;, &apos;0&apos;, &apos;1&apos;)  &amp; 
+    RIGHT( CategoryCode__c , 1)  &amp; 
+       LPAD( TEXT( SpecialSpecificationNo__c ) , 2, &apos;0&apos;)   &amp; 
+        LPAD( TEXT( RECNo__c ) , 5, &apos;0&apos;)</formula>
+    <label>明細レコード表示順(数式)</label>
+    <required>false</required>
+    <trackTrending>false</trackTrending>
+    <type>Text</type>
+    <unique>false</unique>
+</CustomField>

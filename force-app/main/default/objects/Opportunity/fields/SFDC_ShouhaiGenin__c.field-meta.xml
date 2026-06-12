@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>SFDC_ShouhaiGenin__c</fullName>
+    <externalId>false</externalId>
+    <inlineHelpText>フェーズに連動。
+成立、ロスト時に必須入力。</inlineHelpText>
+    <label>勝敗原因</label>
+    <required>false</required>
+    <trackFeedHistory>false</trackFeedHistory>
+    <trackHistory>false</trackHistory>
+    <type>Picklist</type>
+    <valueSet>
+        <controllingField>StageName</controllingField>
+        <valueSetDefinition>
+            <sorted>false</sorted>
+            <value>
+                <fullName>価格</fullName>
+                <default>false</default>
+                <label>価格</label>
+            </value>
+            <value>
+                <fullName>営業力</fullName>
+                <default>false</default>
+                <label>営業力</label>
+            </value>
+            <value>
+                <fullName>提案ソリューション</fullName>
+                <default>false</default>
+                <label>提案ソリューション</label>
+            </value>
+            <value>
+                <fullName>商品力</fullName>
+                <default>false</default>
+                <label>商品力</label>
+            </value>
+            <value>
+                <fullName>その他</fullName>
+                <default>false</default>
+                <label>その他</label>
+            </value>
+        </valueSetDefinition>
+    </valueSet>
+</CustomField>

@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>ApprovalPattern__c</fullName>
+    <externalId>false</externalId>
+    <inlineHelpText>承認者を手動で指定したい場合は承認者手動設定を選択する</inlineHelpText>
+    <label>承認者設定方法(自動／手動）</label>
+    <required>false</required>
+    <trackFeedHistory>false</trackFeedHistory>
+    <trackHistory>true</trackHistory>
+    <trackTrending>false</trackTrending>
+    <type>Picklist</type>
+    <valueSet>
+        <restricted>true</restricted>
+        <valueSetDefinition>
+            <sorted>false</sorted>
+            <value>
+                <fullName>自動設定</fullName>
+                <default>false</default>
+                <label>自動設定</label>
+            </value>
+            <value>
+                <fullName>手動設定</fullName>
+                <default>false</default>
+                <label>手動設定</label>
+            </value>
+        </valueSetDefinition>
+    </valueSet>
+</CustomField>

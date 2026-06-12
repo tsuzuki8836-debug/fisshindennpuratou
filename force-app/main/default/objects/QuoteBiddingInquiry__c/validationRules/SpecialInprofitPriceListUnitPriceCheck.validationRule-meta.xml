@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ValidationRule xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>SpecialInprofitPriceListUnitPriceCheck</fullName>
+    <active>true</active>
+    <description>特別不採算チェックの場合、価格表OR単価見積チェックNG</description>
+    <errorConditionFormula>AND(SpecialInprofitProject__c = true, 
+    OR( PriceList__c = true,  UnitPriceEstimation__c = true)
+)</errorConditionFormula>
+    <errorDisplayField>SpecialInprofitProject__c</errorDisplayField>
+    <errorMessage>特別不採算の場合、価格表もしくは単価見積を選択することはできません</errorMessage>
+</ValidationRule>

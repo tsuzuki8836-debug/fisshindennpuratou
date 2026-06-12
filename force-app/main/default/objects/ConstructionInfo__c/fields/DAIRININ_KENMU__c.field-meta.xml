@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>DAIRININ_KENMU__c</fullName>
+    <externalId>false</externalId>
+    <label>現場代理人との兼務可否</label>
+    <required>false</required>
+    <trackFeedHistory>false</trackFeedHistory>
+    <trackHistory>true</trackHistory>
+    <trackTrending>false</trackTrending>
+    <type>Picklist</type>
+    <valueSet>
+        <restricted>true</restricted>
+        <valueSetDefinition>
+            <sorted>false</sorted>
+            <value>
+                <fullName>可</fullName>
+                <default>false</default>
+                <label>可</label>
+            </value>
+            <value>
+                <fullName>不可Ａ</fullName>
+                <default>false</default>
+                <label>不可Ａ</label>
+            </value>
+            <value>
+                <fullName>不可Ｂ</fullName>
+                <default>false</default>
+                <label>不可Ｂ</label>
+            </value>
+        </valueSetDefinition>
+    </valueSet>
+</CustomField>

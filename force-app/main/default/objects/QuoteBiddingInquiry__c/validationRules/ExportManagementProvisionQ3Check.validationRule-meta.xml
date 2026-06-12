@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ValidationRule xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>ExportManagementProvisionQ3Check</fullName>
+    <active>true</active>
+    <errorConditionFormula>AND(
+ OR(RecordType.DeveloperName = &apos;M&apos;
+  ,RecordType.DeveloperName = &apos;O&apos;
+  ,RecordType.DeveloperName = &apos;SH&apos;)
+, Creating__c = false
+, Refusal__c = false
+, PriceList__c = false
+, CASESAFEID(PrimaryCustomer__c) != $Label.ACCOUNT_UNKNOWN
+, CASESAFEID(PrimaryCustomer__c) != $Label.ACCOUNT_UNDECIDED
+, ISBLANK( TEXT(ExportManagementProvisionQ3__c)))</errorConditionFormula>
+    <errorDisplayField>ExportManagementProvisionQ3__c</errorDisplayField>
+    <errorMessage>①一次顧客の顧客調査票(様式K1)の起票要否の選択は必須です。</errorMessage>
+</ValidationRule>

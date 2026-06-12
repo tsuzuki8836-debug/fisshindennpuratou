@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ListView xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>UnapprovedDemographicSurvey_my</fullName>
+    <columns>NAME</columns>
+    <columns>Account__c</columns>
+    <columns>ApprovalStatus__c</columns>
+    <columns>CheckResultJudgment__c</columns>
+    <columns>ValidFormula__c</columns>
+    <columns>LastApprovalDate__c</columns>
+    <columns>CREATEDBY_USER</columns>
+    <filterScope>Mine</filterScope>
+    <filters>
+        <field>ApprovalStatus__c</field>
+        <operation>notEqual</operation>
+        <value>承認済</value>
+    </filters>
+    <label>00.私の未承認の属性調査一覧</label>
+</ListView>

@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>importFactoryFromOppp__c</fullName>
+    <defaultValue>false</defaultValue>
+    <externalId>false</externalId>
+    <inlineHelpText>チェックを付けて保存してからブラウザを更新すると、案件の場所別（設計変更の場合はSR情報）から伺い場所別数値明細を最新化します</inlineHelpText>
+    <label>伺い場所別数値明細最新化</label>
+    <trackFeedHistory>false</trackFeedHistory>
+    <trackHistory>false</trackHistory>
+    <trackTrending>false</trackTrending>
+    <type>Checkbox</type>
+</CustomField>

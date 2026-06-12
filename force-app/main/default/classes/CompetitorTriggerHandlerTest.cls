@@ -65,6 +65,7 @@ public with sharing class CompetitorTriggerHandlerTest {
             StageName = '価格交渉 入札準備・入札',
             ForecastCategoryName = 'Best Case',
             Name = 'テスト案件',
+            ConstructionDistinction__c = '更新（自社既設）',
             EstablishedCompany__c = '三菱',
             SupplySite__c = createSupplySite().id,
             CloseDate = closeDate

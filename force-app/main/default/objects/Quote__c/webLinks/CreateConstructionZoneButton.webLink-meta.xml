@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<WebLink xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>CreateConstructionZoneButton</fullName>
+    <availability>online</availability>
+    <displayType>button</displayType>
+    <encodingKey>UTF-8</encodingKey>
+    <height>600</height>
+    <linkType>url</linkType>
+    <masterLabel>工区入力</masterLabel>
+    <openType>sidebar</openType>
+    <protected>false</protected>
+    <url>/lightning/o/ConstructionZone__c/new?defaultFieldValues=Quote__c={!Quote__c.Id},&amp;backgroundContext=%2Flightning%2Fr%2FQuote__c%2F{!Quote__c.Id}%2Fview</url>
+</WebLink>

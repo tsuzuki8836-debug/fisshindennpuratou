@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Price__c</fullName>
+    <externalId>false</externalId>
+    <formula>IF( NOT(ISNULL( WcCoefficient__c ) )
+, IF(ISNULL(CreditWC__c ),0,CreditWC__c ) * WcCoefficient__c * Quantity__c * IF( Name1__c = &quot;ソフトウェア(画面/帳票作成)&quot;,1.2 , 1)
+, UnitPrice__c * IF(ISNULL(UnitPriceCoefficient__c),1,UnitPriceCoefficient__c) * Quantity__c * IF( Name1__c = &quot;ソフトウェア(画面/帳票作成)&quot;,1.2 , 1)
+)</formula>
+    <label>金額</label>
+    <precision>18</precision>
+    <required>false</required>
+    <scale>0</scale>
+    <trackHistory>false</trackHistory>
+    <trackTrending>false</trackTrending>
+    <type>Currency</type>
+</CustomField>

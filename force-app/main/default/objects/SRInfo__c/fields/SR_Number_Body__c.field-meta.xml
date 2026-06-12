@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>SR_Number_Body__c</fullName>
+    <description>売報番号のボディ番号</description>
+    <externalId>false</externalId>
+    <formula>LEFT( SUBSTITUTE( SR_Number__c, &apos;-&apos;, &apos;&apos; ), 9 )</formula>
+    <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
+    <label>売報番号（ボディ番号）</label>
+    <required>false</required>
+    <trackHistory>false</trackHistory>
+    <trackTrending>false</trackTrending>
+    <type>Text</type>
+    <unique>false</unique>
+</CustomField>

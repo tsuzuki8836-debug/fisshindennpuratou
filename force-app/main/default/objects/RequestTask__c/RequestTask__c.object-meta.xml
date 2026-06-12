@@ -163,7 +163,6 @@
         <type>Text</type>
     </nameField>
     <searchLayouts>
-        <excludedStandardButtons>New</excludedStandardButtons>
         <listViewButtons>BulkApproval</listViewButtons>
         <searchResultsAdditionalFields>CREATEDBY_USER</searchResultsAdditionalFields>
         <searchResultsAdditionalFields>TaskCategory__c</searchResultsAdditionalFields>

@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>FillerBox__c</fullName>
+    <externalId>false</externalId>
+    <label>給油口ボックス</label>
+    <required>false</required>
+    <trackFeedHistory>false</trackFeedHistory>
+    <trackHistory>false</trackHistory>
+    <trackTrending>false</trackTrending>
+    <type>Picklist</type>
+    <valueSet>
+        <restricted>true</restricted>
+        <valueSetDefinition>
+            <sorted>false</sorted>
+            <value>
+                <fullName>無</fullName>
+                <default>false</default>
+                <label>無</label>
+            </value>
+            <value>
+                <fullName>有（壁掛）</fullName>
+                <default>false</default>
+                <label>有（壁掛）</label>
+            </value>
+            <value>
+                <fullName>有（自立）</fullName>
+                <default>false</default>
+                <label>有（自立）</label>
+            </value>
+            <value>
+                <fullName>有（埋込）</fullName>
+                <default>false</default>
+                <label>有（埋込）</label>
+            </value>
+        </valueSetDefinition>
+    </valueSet>
+</CustomField>

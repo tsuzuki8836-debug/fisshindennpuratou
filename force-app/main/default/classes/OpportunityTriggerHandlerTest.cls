@@ -936,7 +936,7 @@ private class OpportunityTriggerHandlerTest {
             List<Opportunity> oppList = new List<Opportunity>();
 
             Opportunity opp1 = new Opportunity(
-                Name = 'Test Opp',
+                Name = 'Test Opp <name test>',
                 AccountId = acc.Id,
                 StageName = '基本計画',
                 OrderExpectation__c = '1',
@@ -960,7 +960,7 @@ private class OpportunityTriggerHandlerTest {
             oppList.add(opp1);
 
             Opportunity opp2 = new Opportunity(
-                Name = 'Test Opp2',
+                Name = 'Test Opp2*',
                 AccountId = acc.Id,
                 StageName = '基本設計',
                 OrderExpectation__c = '1',
@@ -999,11 +999,11 @@ private class OpportunityTriggerHandlerTest {
 
             // 案件１
             System.assertEquals('伺い関連', internalApprovals[0].Name);
-            System.assertEquals('Test Opp', internalApprovals[0].Opportunity__r.name);
+            System.assertEquals('Test Opp ＜name test＞', internalApprovals[0].Opportunity__r.name);
 
             // 案件２
             System.assertEquals('伺い関連', internalApprovals2[0].Name);
-            System.assertEquals('Test Opp2', internalApprovals2[0].Opportunity__r.name);
+            System.assertEquals('Test Opp2＊', internalApprovals2[0].Opportunity__r.name);
         }
     }
 }

@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>SystemIntegrationFee_formula__c</fullName>
+    <externalId>false</externalId>
+    <formula>IF( ISPICKVAL(SectionExistence__c , &quot;あり&quot;),  SystemIntegrationFee_Rollup__c  ,  SystemIntegrationFee__c )</formula>
+    <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
+    <label>システムインテグレーション費合計</label>
+    <precision>18</precision>
+    <required>false</required>
+    <scale>0</scale>
+    <trackHistory>false</trackHistory>
+    <trackTrending>false</trackTrending>
+    <type>Currency</type>
+</CustomField>

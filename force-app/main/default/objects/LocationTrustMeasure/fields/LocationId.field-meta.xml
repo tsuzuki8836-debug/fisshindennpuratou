@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>LocationId</fullName>
+    <inlineHelpText>ビジネスで占めている店舗、ホテル、その他の物理的なロケーション。各信頼対策は 1 つのロケーションにあります。ロケーションに外部参照がない場合、トラストカードは表示されません。エラーが表示される場合は、ロケーションを編集して外部参照を追加してください。</inlineHelpText>
+    <type>Lookup</type>
+</CustomField>

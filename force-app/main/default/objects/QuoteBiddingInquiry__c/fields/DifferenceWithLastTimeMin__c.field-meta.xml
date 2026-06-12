@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>DifferenceWithLastTimeMin__c</fullName>
+    <externalId>false</externalId>
+    <formula>IF ( ISBLANK(DependentFeeInquiry__c) ,
+   0,
+   IF (Agency1MinFee__c==null,0,Agency1MinFee__c) - IF(DependentFeeInquiry__r.Agency1MinFee__c==null,0,DependentFeeInquiry__r.Agency1MinFee__c) + 
+   IF (Agency2MinFee__c==null,0,Agency2MinFee__c) - IF(DependentFeeInquiry__r.Agency2MinFee__c==null,0,DependentFeeInquiry__r.Agency2MinFee__c)+ 
+   IF (Agency3MinFee__c==null,0,Agency3MinFee__c) - IF(DependentFeeInquiry__r.Agency3MinFee__c==null,0,DependentFeeInquiry__r.Agency3MinFee__c))</formula>
+    <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
+    <label>前回との差額(Min)</label>
+    <precision>18</precision>
+    <required>false</required>
+    <scale>0</scale>
+    <trackHistory>false</trackHistory>
+    <trackTrending>false</trackTrending>
+    <type>Currency</type>
+</CustomField>

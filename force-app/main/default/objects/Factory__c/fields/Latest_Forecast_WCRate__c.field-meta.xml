@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Latest_Forecast_WCRate__c</fullName>
+    <externalId>false</externalId>
+    <formula>Latest_Forecast_SRWC__c / Latest_Forecast_SR_CP__c</formula>
+    <label>３．最終予想WC率（最新）</label>
+    <precision>18</precision>
+    <required>false</required>
+    <scale>1</scale>
+    <trackHistory>false</trackHistory>
+    <trackTrending>false</trackTrending>
+    <type>Percent</type>
+</CustomField>

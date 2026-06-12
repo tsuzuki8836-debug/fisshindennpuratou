@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ValidationRule xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>JVInvestmentRatioCheck</fullName>
+    <active>true</active>
+    <description>JV形式が甲型の場合、JV出資比率は必須です</description>
+    <errorConditionFormula>AND(
+	ISPICKVAL(JVFormat__c,  &apos;甲型&apos;),
+	ISBLANK(JVInvestmentRatio__c),
+    NOT(Creating__c)
+)</errorConditionFormula>
+    <errorDisplayField>JVInvestmentRatio__c</errorDisplayField>
+    <errorMessage>JV出資比率は必須です</errorMessage>
+</ValidationRule>

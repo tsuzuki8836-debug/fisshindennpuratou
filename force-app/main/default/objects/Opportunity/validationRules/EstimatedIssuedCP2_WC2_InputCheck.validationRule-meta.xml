@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ValidationRule xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>EstimatedIssuedCP2_WC2_InputCheck</fullName>
+    <active>true</active>
+    <description>発行予定日②が入力されていて、発行CP①・②と発行WC①・②の入力がない場合、エラー</description>
+    <errorConditionFormula>AND( 
+   NOT( ISBLANK(EstimatedIssuedDate_02__c ) ) ,
+   OR( 
+       ISBLANK(EstimatedIssuedCP_02__c )  ,  
+       ISBLANK(EstimatedIssuedWC_02__c ), 
+       ISBLANK( EstimatedIssuedCP_01__c ) , 
+       ISBLANK( EstimatedIssuedWC_01__c ) 
+    ) ,
+    NOT($Profile.Name = &apos;データ移行管理者&apos;)
+)</errorConditionFormula>
+    <errorMessage>発行予定日②の入力がある場合、発行CP①・②と発行WC①・②も入力が必要です。</errorMessage>
+</ValidationRule>

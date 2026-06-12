@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ListView xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>X14</fullName>
+    <columns>NAME</columns>
+    <columns>PickDivision__c</columns>
+    <columns>SBU__c</columns>
+    <columns>PumpStation__c</columns>
+    <columns>Opportunity__c</columns>
+    <columns>LastCustomer__c</columns>
+    <columns>SubmitDate__c</columns>
+    <columns>BidOpenDate__c</columns>
+    <columns>SuccessfulBidder__c</columns>
+    <columns>BidAmount__c</columns>
+    <columns>CompanyBidAmount__c</columns>
+    <columns>OWNER.ALIAS</columns>
+    <filterScope>Everything</filterScope>
+    <filters>
+        <field>PickDivision__c</field>
+        <operation>contains</operation>
+        <value>神奈支　社会シ,神奈支　社シ一,神奈支　社シ二</value>
+    </filters>
+    <label>14.神奈川支社の入札</label>
+</ListView>

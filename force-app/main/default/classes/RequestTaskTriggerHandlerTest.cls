@@ -65,12 +65,15 @@ private class RequestTaskTriggerHandlerTest {
         insert rt;
 
         Test.startTest();
-        rt.Name = '件名変更';
+        rt.Name = '件名変更<\\/:*?"|>';
         rt.Applicant__c = null; // 初期化
         update rt;
         Test.stopTest();
 
+        RequestTask__c result = [SELECT ID, Name FROM RequestTask__c WHERE ID = :rt.Id];
+
         System.assertEquals(Approval.isLocked(rt.id), false, 'レコードロックがされていない');
+        System.assertEquals('件名変更＜￥／：＊？”｜＞', result.Name, '件名の該当半角記号が全角に変換');
     }
 
     /**

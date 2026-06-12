@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ValidationRule xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>JVMemberRatioRule</fullName>
+    <active>true</active>
+    <errorConditionFormula>AND(
+    ISPICKVAL( QuoteBiddingInquiry__r.JVFormat__c , &apos;甲型&apos;),
+    ISBLANK( JVMemberRatio__c )
+)</errorConditionFormula>
+    <errorDisplayField>JVMemberRatio__c</errorDisplayField>
+    <errorMessage>見積・応札伺い.JV形式が甲型の場合入力が必須です。</errorMessage>
+</ValidationRule>

@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<WebLink xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Sansan_CI__IsNotDistributionButton</fullName>
+    <availability>online</availability>
+    <description>Classic用詳細画面ボタン</description>
+    <displayType>button</displayType>
+    <linkType>javascript</linkType>
+    <masterLabel>関連づけしない</masterLabel>
+    <openType>onClickJavaScript</openType>
+    <protected>false</protected>
+    <url>/** /flow/UpdateBizCard?recordId={!Sansan_CI__BizCard__c.Id} */
+
+{!REQUIRESCRIPT(&quot;/soap/ajax/38.0/connection.js&quot;)}
+{!REQUIRESCRIPT(&quot;/soap/ajax/38.0/apex.js&quot;)}
+
+var record = &quot;{!Sansan_CI__BizCard__c.Id}&quot;;
+
+var result = window.confirm(&apos;選択した名刺を振分け対象外にします。&apos;);
+if( result ) {
+	var objs = [];
+	var obj = new sforce.SObject(&apos;Sansan_CI__BizCard__c&apos;);
+	obj.id = record;
+	obj.Sansan_CI__IsNotDistribution__c = &quot;true&quot;;
+	objs.push(obj);
+	var results = sforce.connection.update(objs);
+	window.location.reload();
+
+}</url>
+</WebLink>

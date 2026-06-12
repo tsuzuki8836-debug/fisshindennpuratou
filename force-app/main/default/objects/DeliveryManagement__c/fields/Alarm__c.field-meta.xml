@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Alarm__c</fullName>
+    <externalId>false</externalId>
+    <formula>IF (  OR( AND(  AND( IssueDate1__c  &gt;=   TODAY()  , IssueDate1__c - 7 &lt;=    TODAY()  )   ,     NOT(TEXT(Alart1__c) = &quot;承諾済み&quot;)  ),
+              AND(  AND( ApproveDate1__c &gt;=   TODAY()  ,  ApproveDate1__c - 7 &lt;=  TODAY()  )  ,   NOT(TEXT(Alart2__c ) = &quot;承諾済み&quot;) ) ,
+              AND(  AND( CarryingDate1__c &gt;=  TODAY()  , CarryingDate1__c  - 10 &lt;=  TODAY()  )  , NOT(TEXT(Alart3__c ) = &quot;承諾済み&quot;) )  ,
+              AND(  AND( CarryingDate1__c &gt;=   TODAY()  ,  CarryingDate1__c - 2 &lt;=  TODAY()   )  , Alart01__c = false )  ,
+              AND(AND( OnSiteWitness1__c &gt;=   TODAY()  ,  OnSiteWitness1__c - 7 &lt;=  TODAY()   )   , NOT(TEXT(Alart5__c)    = &quot;承諾済み&quot;) ) ,
+              AND(  AND( OnSiteWitnessPlanningDate1__c &gt;=  TODAY()  , OnSiteWitnessPlanningDate1__c - 14 &lt;=  TODAY()  )  , NOT(TEXT(Alart6__c )  = &quot;承諾済み&quot;)  ), 
+               AND(  AND( OnSiteWitnessPlanningDate1__c &gt;=  TODAY()  , OnSiteWitnessPlanningDate1__c - 7 &lt;=  TODAY()  )  , Alart03__c = false  ) ),
+              &quot;期限前&quot;, null
+         )</formula>
+    <label>期限前アラーム</label>
+    <required>false</required>
+    <trackHistory>false</trackHistory>
+    <trackTrending>false</trackTrending>
+    <type>Text</type>
+    <unique>false</unique>
+</CustomField>

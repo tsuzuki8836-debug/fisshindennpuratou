@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>PriceProposalSalesFee__c</fullName>
+    <description>見積伺いで利用</description>
+    <externalId>false</externalId>
+    <formula>BidAgency1Fee__c + BidAgency2Fee__c + BidAgency3Fee__c</formula>
+    <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
+    <inlineHelpText>「代理店情報」の代理店1_手数料＋代理店2_手数料＋代理店3_手数料の合計値が表示されます。修正、削除が必要な場合は、「代理店情報」を修正ください。</inlineHelpText>
+    <label>価格案_手数料</label>
+    <precision>18</precision>
+    <required>false</required>
+    <scale>0</scale>
+    <trackHistory>false</trackHistory>
+    <trackTrending>false</trackTrending>
+    <type>Currency</type>
+</CustomField>

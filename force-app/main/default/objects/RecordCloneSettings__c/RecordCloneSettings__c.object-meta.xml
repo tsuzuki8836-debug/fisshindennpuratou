@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomObject xmlns="http://soap.sforce.com/2006/04/metadata">
+    <customSettingsType>List</customSettingsType>
+    <description>RecordCloneの設定を保持するカスタム設定</description>
+    <enableFeeds>false</enableFeeds>
+    <label>RecordClone設定</label>
+    <visibility>Public</visibility>
+</CustomObject>

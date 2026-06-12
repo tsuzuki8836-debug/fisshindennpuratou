@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ListView xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>MyOpportunities</fullName>
+    <columns>OppNumber__c</columns>
+    <columns>OpportunityNumber__c</columns>
+    <columns>OPPORTUNITY.NAME</columns>
+    <columns>SBU__c</columns>
+    <columns>ACCOUNT.NAME</columns>
+    <columns>OPPORTUNITY.CLOSE_DATE</columns>
+    <columns>OrderExpectation__c</columns>
+    <columns>OPPORTUNITY.STAGE_NAME</columns>
+    <columns>EstimatedTotalCP__c</columns>
+    <columns>EstimatedTotalWC1__c</columns>
+    <columns>CORE.USERS.ALIAS</columns>
+    <columns>TotalCPForReporting__c</columns>
+    <columns>OPPORTUNITY.WON</columns>
+    <columns>MPEC_opp__c</columns>
+    <filterScope>Mine</filterScope>
+    <filters>
+        <field>OPPORTUNITY.RECORDTYPE</field>
+        <operation>equals</operation>
+        <value>Opportunity.OpportunityRecordType1</value>
+    </filters>
+    <label>私の案件</label>
+</ListView>

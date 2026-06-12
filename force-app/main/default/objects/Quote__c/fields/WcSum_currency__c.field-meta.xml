@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>WcSum_currency__c</fullName>
+    <externalId>false</externalId>
+    <formula>IF ( ISBLANK(Transforming_WC_currency__c) , 0, Transforming_WC_currency__c)
++ IF ( ISBLANK(UPS_WC_currency__c ) , 0, UPS_WC_currency__c )
++ IF ( ISBLANK(HousePowerGeneration_WC_currency__c ) , 0, HousePowerGeneration_WC_currency__c )
++ IF ( ISBLANK(Building_System_WC_currency__c ) , 0, Building_System_WC_currency__c )
++ IF ( ISBLANK(Video_WC_currency__c ) , 0, Video_WC_currency__c )
++ IF ( ISBLANK(Labor_WC_currency__c) , 0, Labor_WC_currency__c)</formula>
+    <label>WC金額合計</label>
+    <precision>18</precision>
+    <required>false</required>
+    <scale>0</scale>
+    <trackHistory>false</trackHistory>
+    <trackTrending>false</trackTrending>
+    <type>Currency</type>
+</CustomField>

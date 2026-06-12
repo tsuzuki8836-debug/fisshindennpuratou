@@ -4,14 +4,14 @@ public without sharing class RequestTaskTriggerHandler {
     public static Boolean errorHappenFlg = false;
 
     public void isBeforeInsert(List<RequestTask__c> triggerNew){
-        // 状況の更新
-        this.updateStatus(triggerNew);
+        // 状況、件名の更新
+        this.updateFields(triggerNew);
     }
     public void isBeforeUpdate(List<RequestTask__c> triggerNew, Map<Id, RequestTask__c> triggerOldMap){
         // 承認履歴項目の初期化
         this.clearApprovalHsitories(triggerNew, triggerOldMap);
-        // 状況の更新
-        this.updateStatus(triggerNew);
+        // 状況、件名の更新
+        this.updateFields(triggerNew);
     }
 
     public void isAfterUpdate(List<RequestTask__c> triggerNew,Map<Id, RequestTask__c> triggerOldMap){
@@ -55,7 +55,7 @@ public without sharing class RequestTaskTriggerHandler {
                     system.debug('@@未承認アラート番号が値ありからnullに更新される、かつ更新後のレコード.状況が「」の場合はレコードロック解除対象としない。');
                     continue;
                 }
-                
+
                 if(rt.ApprovalPattern__c == '承認者手動設定' &&
                     (
                         (String.isBlank(rt.Approver2__c) && triggerOldMap.get(rt.Id).UnapprovedRemindNumber__c == 1 && rt.UnapprovedRemindNumber__c == 2) ||
@@ -97,7 +97,7 @@ public without sharing class RequestTaskTriggerHandler {
         Approval.UnLockResult[] results = Approval.unlock(targetIdList, true);
         System.debug('非同期処理によるロック解除操作の対象件数 = ' + results.size());
     }
-    
+
     /**
      * 承認履歴項目の初期化
      */
@@ -128,16 +128,19 @@ public without sharing class RequestTaskTriggerHandler {
             }
         }
     }
-    
+
     /**
-     * 状況の更新
+     * 状況、件名の更新
      */
-    public void updateStatus(List<RequestTask__c> triggerNew){
+    public void updateFields(List<RequestTask__c> triggerNew){
         for (RequestTask__c rt : triggerNew) {
+            // 件名の記号を全角に変換
+            rt.Name = ReplaceChar.convertHalfToFullForFileName(rt.Name);
+
             // 自部門承認済み・依頼先承認不要の場合に「依頼先対応済/依頼完了」に更新
             if (rt.Status__c != '依頼先対応済/依頼完了' && rt.UserDeptApproved__c && rt.SkipRequestApproval__c) {
                 rt.Status__c = '依頼先対応済/依頼完了';
-            }            
+            }
         }
     }
 }

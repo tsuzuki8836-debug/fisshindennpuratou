@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ListView xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>WaterEnvironment</fullName>
+    <columns>NAME</columns>
+    <columns>SpecialCalculationTitle__c</columns>
+    <columns>MajorClassificationCode__c</columns>
+    <columns>MinorClassificationCode__c</columns>
+    <columns>Whereabouts__c</columns>
+    <columns>CategoryCode__c</columns>
+    <columns>SpecialSpecificationNo__c</columns>
+    <columns>SpecialSpecification__c</columns>
+    <columns>BU__c</columns>
+    <columns>Name3__c</columns>
+    <columns>Name4__c</columns>
+    <columns>Name5__c</columns>
+    <filterScope>Everything</filterScope>
+    <filters>
+        <field>BU__c</field>
+        <operation>equals</operation>
+        <value>M</value>
+    </filters>
+    <filters>
+        <field>SpecialCalculationTitle__c</field>
+        <operation>equals</operation>
+        <value>特高TR 油入</value>
+    </filters>
+    <label>水環境用</label>
+</ListView>

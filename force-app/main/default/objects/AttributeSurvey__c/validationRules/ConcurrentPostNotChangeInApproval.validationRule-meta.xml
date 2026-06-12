@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ValidationRule xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>ConcurrentPostNotChangeInApproval</fullName>
+    <active>true</active>
+    <errorConditionFormula>AND(
+    NOT( ISPICKVAL( ApprovalStatus__c , &quot;未申請&quot;) ), 
+    NOT( ISPICKVAL( ApprovalStatus__c , &quot;承認済&quot;) ), 
+    ISCHANGED( ApplicationForConcurrentPost__c )
+)</errorConditionFormula>
+    <errorDisplayField>ApplicationForConcurrentPost__c</errorDisplayField>
+    <errorMessage>申請中は編集できません</errorMessage>
+</ValidationRule>

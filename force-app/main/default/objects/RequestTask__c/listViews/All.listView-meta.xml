@@ -10,6 +10,7 @@
     <columns>RequestDestination__c</columns>
     <columns>ApprovalPattern__c</columns>
     <columns>CREATED_DATE</columns>
+    <columns>CurrentApprover__c</columns>
     <filterScope>Everything</filterScope>
     <label>すべての依頼タスク</label>
 </ListView>

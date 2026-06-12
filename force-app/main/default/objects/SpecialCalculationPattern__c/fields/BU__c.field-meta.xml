@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>BU__c</fullName>
+    <description>S：施設、M：水環境、K：官需</description>
+    <externalId>false</externalId>
+    <label>BU</label>
+    <required>false</required>
+    <trackTrending>false</trackTrending>
+    <type>Picklist</type>
+    <valueSet>
+        <restricted>true</restricted>
+        <valueSetName>BU</valueSetName>
+    </valueSet>
+</CustomField>

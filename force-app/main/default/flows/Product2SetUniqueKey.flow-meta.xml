@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Flow xmlns="http://soap.sforce.com/2006/04/metadata">
+    <apiVersion>65.0</apiVersion>
+    <description>ワークフロールール「【製品】製品名を一意キーにコピー」から移行</description>
+    <environments>Default</environments>
+    <interviewLabel>【製品】製品名を一意キーにコピー {!$Flow.CurrentDateTime}</interviewLabel>
+    <label>【製品】製品名を一意キーにコピー</label>
+    <migratedFromWorkflowRuleName>【製品】製品名を一意キーにコピー</migratedFromWorkflowRuleName>
+    <processMetadataValues>
+        <name>BuilderType</name>
+        <value>
+            <stringValue>LightningFlowBuilder</stringValue>
+        </value>
+    </processMetadataValues>
+    <processMetadataValues>
+        <name>CanvasMode</name>
+        <value>
+            <stringValue>AUTO_LAYOUT_CANVAS</stringValue>
+        </value>
+    </processMetadataValues>
+    <processType>AutoLaunchedFlow</processType>
+    <recordUpdates>
+        <name>updateUniqueKey</name>
+        <label>製品名を一意キーにコピー</label>
+        <locationX>0</locationX>
+        <locationY>0</locationY>
+        <inputAssignments>
+            <field>UniqueKey__c</field>
+            <value>
+                <elementReference>$Record.Name</elementReference>
+            </value>
+        </inputAssignments>
+        <inputReference>$Record</inputReference>
+    </recordUpdates>
+    <start>
+        <locationX>0</locationX>
+        <locationY>0</locationY>
+        <connector>
+            <targetReference>updateUniqueKey</targetReference>
+        </connector>
+        <filterFormula>{!$Record.Name} &lt;&gt; {!$Record.UniqueKey__c}</filterFormula>
+        <object>Product2</object>
+        <recordTriggerType>CreateAndUpdate</recordTriggerType>
+        <triggerType>RecordBeforeSave</triggerType>
+    </start>
+    <status>Active</status>
+</Flow>

@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Device_MiddleCategory__c</fullName>
+    <deleteConstraint>Restrict</deleteConstraint>
+    <externalId>false</externalId>
+    <label>種別</label>
+    <lookupFilter>
+        <active>true</active>
+        <errorMessage>対象の見積に属さない種別を選択しています。
+選択し直してください。</errorMessage>
+        <filterItems>
+            <field>$Source.Quote__c</field>
+            <operation>equals</operation>
+            <valueField>Device_MiddleCategory__c.Quote__r.Id</valueField>
+        </filterItems>
+        <isOptional>false</isOptional>
+    </lookupFilter>
+    <referenceTo>Device_MiddleCategory__c</referenceTo>
+    <relationshipLabel>細別</relationshipLabel>
+    <relationshipName>Device_SmallCategorys</relationshipName>
+    <required>true</required>
+    <trackTrending>false</trackTrending>
+    <type>Lookup</type>
+</CustomField>

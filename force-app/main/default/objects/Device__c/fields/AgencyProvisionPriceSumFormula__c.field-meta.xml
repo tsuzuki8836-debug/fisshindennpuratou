@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>AgencyProvisionPriceSumFormula__c</fullName>
+    <externalId>false</externalId>
+    <formula>IF( ISNULL( CreditAgencyProvisionUnitPrice__c )
+, AgencyProvisionPriceSum__c * IF(ISBLANK(  QuantityNumeric__c ),1, QuantityNumeric__c )
+, CreditAgencyProvisionUnitPrice__c * IF(ISBLANK(  QuantityNumeric__c ),1, QuantityNumeric__c )
+)</formula>
+    <label>代理店提供価格合計</label>
+    <precision>18</precision>
+    <required>false</required>
+    <scale>0</scale>
+    <trackTrending>false</trackTrending>
+    <type>Currency</type>
+</CustomField>

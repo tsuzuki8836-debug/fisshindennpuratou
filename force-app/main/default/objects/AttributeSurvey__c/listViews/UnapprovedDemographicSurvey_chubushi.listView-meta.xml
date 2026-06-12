@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ListView xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>UnapprovedDemographicSurvey_chubushi</fullName>
+    <columns>NAME</columns>
+    <columns>Account__c</columns>
+    <columns>ApprovalStatus__c</columns>
+    <columns>CheckResultJudgment__c</columns>
+    <columns>ValidFormula__c</columns>
+    <columns>LastApprovalDate__c</columns>
+    <columns>CREATEDBY_USER</columns>
+    <filterScope>Everything</filterScope>
+    <filters>
+        <field>ApprovalStatus__c</field>
+        <operation>notEqual</operation>
+        <value>承認済</value>
+    </filters>
+    <filters>
+        <field>BranchOffice__c</field>
+        <operation>contains</operation>
+        <value>07_中部支社</value>
+    </filters>
+    <label>07.未承認の属性調査一覧を表示（中部支）</label>
+</ListView>

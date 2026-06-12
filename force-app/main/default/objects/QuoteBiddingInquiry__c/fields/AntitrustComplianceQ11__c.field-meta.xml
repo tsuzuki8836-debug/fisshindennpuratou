@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>AntitrustComplianceQ11__c</fullName>
+    <externalId>false</externalId>
+    <inlineHelpText>同業他社との接触伺いを提出しない場合は「独禁法遵守チェック結果コメント」に理由を記載ください。</inlineHelpText>
+    <label>(入札方法が「紙」の場合)同業他社との接触伺いを提出した</label>
+    <required>false</required>
+    <trackFeedHistory>false</trackFeedHistory>
+    <trackHistory>false</trackHistory>
+    <trackTrending>false</trackTrending>
+    <type>Picklist</type>
+    <valueSet>
+        <restricted>true</restricted>
+        <valueSetDefinition>
+            <sorted>false</sorted>
+            <value>
+                <fullName>はい</fullName>
+                <default>false</default>
+                <label>はい</label>
+            </value>
+            <value>
+                <fullName>いいえ</fullName>
+                <default>false</default>
+                <label>いいえ</label>
+            </value>
+        </valueSetDefinition>
+    </valueSet>
+</CustomField>

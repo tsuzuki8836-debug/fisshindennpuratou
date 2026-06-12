@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ValidationRule xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>SBUCheck</fullName>
+    <active>true</active>
+    <errorConditionFormula>TEXT( SBU__c )  != TEXT( Parent__r.SBU__c )</errorConditionFormula>
+    <errorDisplayField>SBU__c</errorDisplayField>
+    <errorMessage>納入サイトと同一のSBUを設定してください。</errorMessage>
+</ValidationRule>

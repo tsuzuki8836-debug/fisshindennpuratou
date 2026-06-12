@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ValidationRule xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>ConstructionClassificationCheck</fullName>
+    <active>true</active>
+    <description>工事区分は価格表の場合任意</description>
+    <errorConditionFormula>AND(
+    PriceList__c = false,
+    ISBLANK(TEXT(ConstructionClassification__c)),
+    NOT(Creating__c)
+)</errorConditionFormula>
+    <errorDisplayField>ConstructionClassification__c</errorDisplayField>
+    <errorMessage>工事区分は必須です</errorMessage>
+</ValidationRule>

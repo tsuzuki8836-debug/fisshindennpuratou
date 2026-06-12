@@ -7,7 +7,7 @@
     </allowedSubmitters>
     <allowedSubmitters>
         <submitter>M01_shakaikankyojigyobu</submitter>
-        <type>roleSubordinates</type>
+        <type>roleSubordinatesInternal</type>
     </allowedSubmitters>
     <approvalPageFields>
         <field>Name</field>
@@ -57,6 +57,14 @@
                 <name>IncrementUnapprovedRemindNumber</name>
                 <type>FieldUpdate</type>
             </action>
+            <action>
+                <name>SetRequestApprovalDatetime1</name>
+                <type>FieldUpdate</type>
+            </action>
+            <action>
+                <name>SetRequestApproverRole1</name>
+                <type>FieldUpdate</type>
+            </action>
         </approvalActions>
         <assignedApprover>
             <approver>
@@ -72,7 +80,7 @@
             </criteriaItems>
         </entryCriteria>
         <ifCriteriaNotMet>GotoNextStep</ifCriteriaNotMet>
-        <label>フリー設定承認ステップ１（自部門スキップ）</label>
+        <label>依頼先承認1</label>
         <name>FreeSettingApprovalProcess1_skip</name>
     </approvalStep>
     <approvalStep>
@@ -80,6 +88,14 @@
         <approvalActions>
             <action>
                 <name>IncrementUnapprovedRemindNumber</name>
+                <type>FieldUpdate</type>
+            </action>
+            <action>
+                <name>SetRequestApprovalDatetime2</name>
+                <type>FieldUpdate</type>
+            </action>
+            <action>
+                <name>SetRequestApproverRole2</name>
                 <type>FieldUpdate</type>
             </action>
         </approvalActions>
@@ -97,7 +113,7 @@
             </criteriaItems>
         </entryCriteria>
         <ifCriteriaNotMet>GotoNextStep</ifCriteriaNotMet>
-        <label>フリー設定承認ステップ2（自部門スキップ）</label>
+        <label>依頼先承認2</label>
         <name>FreeSettingApprovalProcess2_skip</name>
         <rejectBehavior>
             <type>RejectRequest</type>
@@ -108,6 +124,14 @@
         <approvalActions>
             <action>
                 <name>IncrementUnapprovedRemindNumber</name>
+                <type>FieldUpdate</type>
+            </action>
+            <action>
+                <name>SetRequestApprovalDatetime3</name>
+                <type>FieldUpdate</type>
+            </action>
+            <action>
+                <name>SetRequestApproverRole3</name>
                 <type>FieldUpdate</type>
             </action>
         </approvalActions>
@@ -125,7 +149,7 @@
             </criteriaItems>
         </entryCriteria>
         <ifCriteriaNotMet>GotoNextStep</ifCriteriaNotMet>
-        <label>フリー設定承認ステップ3（自部門スキップ）</label>
+        <label>依頼先承認3</label>
         <name>FreeSettingApprovalProcess3_skip</name>
         <rejectBehavior>
             <type>RejectRequest</type>
@@ -133,6 +157,16 @@
     </approvalStep>
     <approvalStep>
         <allowDelegate>true</allowDelegate>
+        <approvalActions>
+            <action>
+                <name>SetRequestApprovalDatetime4</name>
+                <type>FieldUpdate</type>
+            </action>
+            <action>
+                <name>SetRequestApproverRole4</name>
+                <type>FieldUpdate</type>
+            </action>
+        </approvalActions>
         <assignedApprover>
             <approver>
                 <name>RequestApprover4__c</name>
@@ -146,7 +180,7 @@
                 <operation>notEqual</operation>
             </criteriaItems>
         </entryCriteria>
-        <label>フリー設定承認ステップ4（自部門スキップ）</label>
+        <label>依頼先承認4</label>
         <name>FreeSettingApprovalProcess4_skip</name>
         <rejectBehavior>
             <type>RejectRequest</type>
@@ -159,6 +193,11 @@
             <field>RequestTask__c.UserDeptApproved__c</field>
             <operation>equals</operation>
             <value>True</value>
+        </criteriaItems>
+        <criteriaItems>
+            <field>RequestTask__c.SkipRequestApproval__c</field>
+            <operation>equals</operation>
+            <value>False</value>
         </criteriaItems>
     </entryCriteria>
     <finalApprovalActions>
@@ -241,7 +280,15 @@
             <type>FieldUpdate</type>
         </action>
         <action>
+            <name>SetApplicantRole</name>
+            <type>FieldUpdate</type>
+        </action>
+        <action>
             <name>SetApplicantsMailAddress</name>
+            <type>FieldUpdate</type>
+        </action>
+        <action>
+            <name>SetApplicationDatetime</name>
             <type>FieldUpdate</type>
         </action>
     </initialSubmissionActions>
@@ -250,7 +297,7 @@
         <useApproverFieldOfRecordOwner>false</useApproverFieldOfRecordOwner>
         <userHierarchyField>Manager</userHierarchyField>
     </nextAutomatedApprover>
-    <processOrder>36</processOrder>
+    <processOrder>2</processOrder>
     <recallActions>
         <action>
             <name>ApplicantEmailToBlank</name>

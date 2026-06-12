@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Sansan_CI__AutomaticReprocessingFlg__c</fullName>
+    <deprecated>false</deprecated>
+    <externalId>false</externalId>
+    <formula>ISPICKVAL(Sansan_CI__DigitizationStatus__c, &apos;completed&apos;) &amp;&amp; (ISNULL(Sansan_CI__AutomaticNextProcessingDate__c)  || Sansan_CI__AutomaticNextProcessingDate__c &lt;  NOW())</formula>
+    <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
+    <label>自動連係_再処理対象</label>
+    <trackHistory>false</trackHistory>
+    <trackTrending>false</trackTrending>
+    <type>Checkbox</type>
+</CustomField>

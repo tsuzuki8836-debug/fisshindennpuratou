@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ValidationRule xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>LastCustomerCategoryCheck</fullName>
+    <active>true</active>
+    <errorConditionFormula>AND(
+ NOT(ISPICKVAL(ConstructionClassification__c, &apos;新設&apos;)), 
+ NOT(ISPICKVAL(ConstructionClassification__c, &apos;更新（他社既設）&apos;)), 
+ OR(
+  ISPICKVAL(LastCustomerCategory__c, &apos;新規顧客&apos;), 
+  ISPICKVAL(LastCustomerCategory__c, &apos;継続顧客・新規部門&apos;)
+ )
+)</errorConditionFormula>
+    <errorDisplayField>LastCustomerCategory__c</errorDisplayField>
+    <errorMessage>「新規顧客」「継続顧客・新規部門」は工事区分が新設、更新（他社既設）時のみ選択できます。工事区分を見直してください。</errorMessage>
+</ValidationRule>

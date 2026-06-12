@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ValidationRule xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>PlannedPriceExistenceCheck</fullName>
+    <active>true</active>
+    <description>下記の場合、予定価格　公表有無は必須
+レコードタイプが応札伺いまたは設計変更応札伺いかつ入札名の入力がある時に
+・官需・民需が「官需」かつ元請/下請が「元請」
+・または官需・民需が「官需」かつ応札体制が「協業」</description>
+    <errorConditionFormula>AND(
+    PriceList__c = false,
+    OR(RecordType.DeveloperName= &apos;O&apos;,
+        AND(RecordType.DeveloperName= &apos;SH&apos;,NOT(ISBLANK(BidName__c)))
+    ),
+    OR(
+        AND(
+            ISPICKVAL(PublicOrPrivateDemand__c ,  &apos;官需&apos;),
+            ISPICKVAL( PrimeSubContractor__c ,  &apos;元請&apos;)
+        ),
+        AND(
+            ISPICKVAL(PublicOrPrivateDemand__c ,  &apos;官需&apos;),
+            ISPICKVAL(BidForm__c ,  &apos;協業&apos;)
+        )
+    ),
+    ISBLANK(TEXT(PlannedPriceExistence__c)),
+    NOT(Creating__c)
+)</errorConditionFormula>
+    <errorDisplayField>PlannedPriceExistence__c</errorDisplayField>
+    <errorMessage>予定価格　公表有無は必須です</errorMessage>
+</ValidationRule>

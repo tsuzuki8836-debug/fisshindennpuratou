@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ListView xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>X12_1</fullName>
+    <columns>OppNumber__c</columns>
+    <columns>OpportunityNumber__c</columns>
+    <columns>OPPORTUNITY.NAME</columns>
+    <columns>SBU__c</columns>
+    <columns>ACCOUNT.NAME</columns>
+    <columns>OrderExpectation__c</columns>
+    <columns>OPPORTUNITY.STAGE_NAME</columns>
+    <columns>OPPORTUNITY.CLOSE_DATE</columns>
+    <columns>EstimatedTotalCP__c</columns>
+    <columns>EstimatedTotalWC1__c</columns>
+    <columns>PickDivision__c</columns>
+    <columns>CORE.USERS.FULL_NAME</columns>
+    <filterScope>Everything</filterScope>
+    <filters>
+        <field>PickDivision__c</field>
+        <operation>equals</operation>
+        <value>東北支　社会シ部・社シ一</value>
+    </filters>
+    <filters>
+        <field>OPPORTUNITY.RECORDTYPE</field>
+        <operation>equals</operation>
+        <value>Opportunity.OpportunityRecordType1</value>
+    </filters>
+    <filters>
+        <field>OPPORTUNITY.STAGE_NAME</field>
+        <operation>equals</operation>
+        <value>基本計画,基本設計,実施設計,価格交渉 入札準備・入札,受注・オーダー管理</value>
+    </filters>
+    <label>12-1.東北支 　社シ一案件</label>
+</ListView>

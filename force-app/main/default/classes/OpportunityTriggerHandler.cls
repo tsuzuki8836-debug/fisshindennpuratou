@@ -9,7 +9,7 @@ public class OpportunityTriggerHandler {
     // 集計先項目名（案件）
     private String pItemName1  = 'TotalCP__c';                  // １．商談CP
     private String pItemName2  = 'TotalWC__c';                  // １．商談WC
-    private String pItemName3  = 'TC__c';                       // １．商談TC    
+    private String pItemName3  = 'TC__c';                       // １．商談TC
     private String pItemName4  = 'Order_TotalCP__c';            // ２．SRCP（受注時）
     private String pItemName5  = 'Order_TotalWC__c';            // ２．SRWC（受注時）
     // private String pItemName6  = 'Order_TC__c';                 // ２．SRTC（受注時）
@@ -225,13 +225,13 @@ public class OpportunityTriggerHandler {
         sumQuery += ' WHERE ' + RelationName + ' IN :oppIdList';
         sumQuery += ' AND ' + facDeleteFlag + ' = false';
         sumQuery += ' GROUP BY ' + RelationName;
-        
+
         // 集計結果を取得して案件に反映する
         AggregateResult[] groupedResults = Database.query(sumQuery);
         for (AggregateResult Res : groupedResults) {
             Id recId = (Id)Res.get(RelationName);
             // sObject updateRec = createObject(pObjectName);   //-- 2021.06.25 コスト構造対応 DEL
-            
+
             if (pItemName1 != null)  newMap.get(recId).put(pItemName1,  Res.get('SumValue1'));
             if (pItemName2 != null)  newMap.get(recId).put(pItemName2,  Res.get('SumValue2'));
             if (pItemName3 != null)  newMap.get(recId).put(pItemName3,  Res.get('SumValue3'));
@@ -263,7 +263,7 @@ public class OpportunityTriggerHandler {
             if (!procRecords.contains(targetId)) {
                 // sObject updateRec = createObject(pObjectName);   //-- 2021.06.25 コスト構造対応 DEL
                 // updateRec.put('Id', targetId);                   //-- 2021.06.25 コスト構造対応 DEL
-                
+
                 if (pItemName1 != null)  newMap.get(targetId).put(pItemName1, 0);
                 if (pItemName2 != null)  newMap.get(targetId).put(pItemName2, 0);
                 if (pItemName3 != null)  newMap.get(targetId).put(pItemName3, 0);
@@ -426,7 +426,7 @@ public class OpportunityTriggerHandler {
             }
 
             // 売上実績が設定されたら案件フェーズを「オーダー完了」にする
-            if (newMap.get(recId).Result_TotalCP__c != oldMap.get(recId).Result_TotalCP__c 
+            if (newMap.get(recId).Result_TotalCP__c != oldMap.get(recId).Result_TotalCP__c
                 || newMap.get(recId).Result_TotalWC__c != oldMap.get(recId).Result_TotalWC__c
                 || newMap.get(recId).Result_Difference__c != oldMap.get(recId).Result_Difference__c
                 || newMap.get(recId).Result_AdditionalCost__c != oldMap.get(recId).Result_AdditionalCost__c
@@ -455,8 +455,8 @@ public class OpportunityTriggerHandler {
                 opp.Result_Difference__c = null;
                 opp.Result_AdditionalCost__c = null;
                 opp.Result_SalesDate__c = null;
-				opp.Order_SalesDate__c = null;
-				opp.Latest_SalesDate__c = null;
+                opp.Order_SalesDate__c = null;
+                opp.Latest_SalesDate__c = null;
             }
         }
 
@@ -470,10 +470,10 @@ public class OpportunityTriggerHandler {
     private void setMarginByOrder(Map<Id, Opportunity> newMap,Set<Id> getOppIdSet) {
 
         // オーダー管理台帳から商談番号、販売手数料を取得する
-        List<OrderManagementLedger__c> ordList = 
-            [SELECT OpportunityNumber__c, Margin__c 
-                FROM OrderManagementLedger__c 
-                WHERE OpportunityNumber__c IN :opNumberMap.keySet() 
+        List<OrderManagementLedger__c> ordList =
+            [SELECT OpportunityNumber__c, Margin__c
+                FROM OrderManagementLedger__c
+                WHERE OpportunityNumber__c IN :opNumberMap.keySet()
                 ORDER BY OpportunityNumber__c];
 
         System.debug('★opNumberMap：' + opNumberMap);
@@ -545,7 +545,7 @@ public class OpportunityTriggerHandler {
         if (srList.size() == 0) {
             return;
         }
-        
+
         Id oppId = null;
         List<String> srNumbers = new List<String>();
 
@@ -676,7 +676,7 @@ public class OpportunityTriggerHandler {
      * 失注or削除ではない案件が作成、更新された時、案件更新日時分秒を設定、更新する
      */
     private void setLastModifiedDateTimeInOpp(List<Opportunity> oppList, Boolean isUpdate){
-        
+
         for(Opportunity opp : oppList){
             opp.LastModifiedDateInOpp__c = Date.valueOf(Datetime.now());
             String str = String.valueOf(Datetime.now()).replace('-','');
@@ -705,6 +705,8 @@ public class OpportunityTriggerHandler {
 
         for(Opportunity opp : newList){
             if(oppMap == null ||!pIds.contains(UserInfo.getProfileId())) {
+                // 案件名の記号を全角に変換
+                opp.Name = ReplaceChar.convertHalfToFullForFileName(opp.Name);
                 // 発行予定日①を設定
                 opp.EstimatedIssuedDate_01__c = opp.CloseDate;
                 // サイト②を自動入力
@@ -715,10 +717,10 @@ public class OpportunityTriggerHandler {
                 if(opp.ScheduledCollectionDate3__c == null){
                     opp.site3__c = opp.Website__c;
                 }
-                
+
                 //消費税率項目の免税対応の処理
                 String NoTax = '免税'; 
-                
+
                 // CP・WC・回収予定金額をリセットして自動設定する
                 if(opp.AutoCalculateCheck__c){
                     Decimal cp = opp.TotalCP__c == null ? null : (opp.TotalCP__c * (opp.Probability1__c * 0.01)).setScale(0, RoundingMode.HALF_UP);
@@ -760,7 +762,7 @@ public class OpportunityTriggerHandler {
      * 紐づく場所別の更新
      */
     private void updateFactories(Map<Id, Opportunity> newMap, Map<Id, Opportunity> oldMap){
-        
+
         Set<Id> oppIds = new Set<Id>();
 
         // 係数が更新された案件に紐づく場所別の更新

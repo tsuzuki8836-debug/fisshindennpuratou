@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ListView xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>X10</fullName>
+    <columns>NAME</columns>
+    <columns>Opp__c</columns>
+    <columns>Account__c</columns>
+    <columns>Prod__c</columns>
+    <columns>OccurredPlace__c</columns>
+    <columns>AccrualDateTime__c</columns>
+    <columns>Status__c</columns>
+    <columns>HandlingLevel__c</columns>
+    <columns>DeliveryDate__c</columns>
+    <filterScope>Everything</filterScope>
+    <filters>
+        <field>Status__c</field>
+        <operation>equals</operation>
+        <value>未着手</value>
+    </filters>
+    <label>10.ステータスが未着手のもの</label>
+</ListView>

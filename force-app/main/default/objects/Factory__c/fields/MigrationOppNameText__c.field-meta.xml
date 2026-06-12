@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>MigrationOppNameText__c</fullName>
+    <description>3/7 場所別移行データの正常移行を確認するために、場所別移行データ内の案件名テキストを投入するために作成
+案件の案件名と場所別案件名を突合せるレポートを作成し、場所別が正常に移行出来ているかを確認する。</description>
+    <externalId>false</externalId>
+    <label>移行確認用案件名</label>
+    <length>255</length>
+    <required>false</required>
+    <trackFeedHistory>false</trackFeedHistory>
+    <trackHistory>false</trackHistory>
+    <trackTrending>false</trackTrending>
+    <type>Text</type>
+    <unique>false</unique>
+</CustomField>

@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ValidationRule xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>RecordTypeCheck</fullName>
+    <active>true</active>
+    <errorConditionFormula>OR( AND(TEXT(Opportunity__r.BU__c) = &quot;施設&quot;, RecordType.Name != &quot;施設&quot; ),
+AND(TEXT(Opportunity__r.BU__c) = &quot;水環境&quot;, RecordType.Name = &quot;施設&quot; ),
+AND(TEXT(Opportunity__r.BU__c) = &quot;官需&quot;, RecordType.Name = &quot;施設&quot; )
+)</errorConditionFormula>
+    <errorMessage>案件のBUと見積のレコードタイプが異なっています。
+正しいレコードタイプでデータを作成し直して下さい。</errorMessage>
+</ValidationRule>

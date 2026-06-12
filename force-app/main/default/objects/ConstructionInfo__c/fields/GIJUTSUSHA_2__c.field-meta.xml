@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>GIJUTSUSHA_2__c</fullName>
+    <description>工事情報に配置される技術者名を入力するテキスト項目。※旧参照項目（MAN_2）からテキスト化。</description>
+    <externalId>false</externalId>
+    <label>技術者2</label>
+    <length>255</length>
+    <required>false</required>
+    <trackFeedHistory>false</trackFeedHistory>
+    <trackHistory>false</trackHistory>
+    <trackTrending>false</trackTrending>
+    <type>Text</type>
+    <unique>false</unique>
+</CustomField>

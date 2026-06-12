@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ListView xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Listview14</fullName>
+    <columns>NAME</columns>
+    <columns>SBU__c</columns>
+    <columns>Account__c</columns>
+    <columns>State__c</columns>
+    <filterScope>Everything</filterScope>
+    <filters>
+        <field>DepartmentAndDivision__c</field>
+        <operation>equals</operation>
+        <value>05_神奈川支社</value>
+    </filters>
+    <filters>
+        <field>SBU__c</field>
+        <operation>equals</operation>
+        <value>有料道路</value>
+    </filters>
+    <label>14.神奈川支社の納入サイト（有料道路）</label>
+</ListView>

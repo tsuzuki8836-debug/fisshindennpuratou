@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>MachineUnitAmount_RollUp__c</fullName>
+    <externalId>false</externalId>
+    <label>機器単体費(見積対象分のみ)</label>
+    <summarizedField>ConstructionZone__c.MachineUnitAmount_OnlyTarget__c</summarizedField>
+    <summaryForeignKey>ConstructionZone__c.Quote__c</summaryForeignKey>
+    <summaryOperation>sum</summaryOperation>
+    <trackHistory>false</trackHistory>
+    <trackTrending>false</trackTrending>
+    <type>Summary</type>
+</CustomField>

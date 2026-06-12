@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ValidationRule xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>WCCheck</fullName>
+    <active>true</active>
+    <description>「辞退」/「単価見積」以外は価格案_WCは必須</description>
+    <errorConditionFormula>AND(
+    AND(
+        QuoteBiddingInquiry__r.Refusal__c = false,
+        QuoteBiddingInquiry__r.UnitPriceEstimation__c = false
+    ),
+    QuoteBiddingInquiry__r.Creating__c = false,
+    QuoteBiddingInquiry__r.RecordType.DeveloperName != &quot;SH&quot;,
+    ISBLANK(WC__c )
+)</errorConditionFormula>
+    <errorDisplayField>WC__c</errorDisplayField>
+    <errorMessage>価格案_WCは必須です</errorMessage>
+</ValidationRule>

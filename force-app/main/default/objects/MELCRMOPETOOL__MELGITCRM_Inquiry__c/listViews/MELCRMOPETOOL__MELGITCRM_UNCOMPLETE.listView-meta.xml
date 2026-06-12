@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ListView xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>MELCRMOPETOOL__MELGITCRM_UNCOMPLETE</fullName>
+    <columns>NAME</columns>
+    <columns>MELCRMOPETOOL__Title__c</columns>
+    <columns>MELCRMOPETOOL__Content__c</columns>
+    <columns>MELCRMOPETOOL__Status__c</columns>
+    <columns>OWNER.ALIAS</columns>
+    <columns>MELCRMOPETOOL__Priority__c</columns>
+    <columns>CREATED_DATE</columns>
+    <columns>LAST_UPDATE</columns>
+    <filterScope>Everything</filterScope>
+    <filters>
+        <field>MELCRMOPETOOL__Status__c</field>
+        <operation>equals</operation>
+        <value>Status1,Status2,Status3,Status4,Status5,Status6,Status7</value>
+    </filters>
+    <label>C-3.共通（未完了リスト）</label>
+</ListView>

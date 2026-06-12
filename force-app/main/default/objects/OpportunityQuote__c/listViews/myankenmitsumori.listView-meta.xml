@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ListView xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>myankenmitsumori</fullName>
+    <columns>NAME</columns>
+    <columns>Opportunity__c</columns>
+    <columns>AccountId__c</columns>
+    <columns>QuoteFor1__c</columns>
+    <columns>Version1__c</columns>
+    <columns>EstimatedPrice__c</columns>
+    <columns>NET1__c</columns>
+    <columns>WC__c</columns>
+    <columns>OWNER.ALIAS</columns>
+    <filterScope>Mine</filterScope>
+    <label>私の案件見積</label>
+</ListView>

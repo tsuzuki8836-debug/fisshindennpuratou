@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Sansan_CI__DispPrefixContact__c</fullName>
+    <deprecated>false</deprecated>
+    <externalId>false</externalId>
+    <label>画面表示接頭語_取引先責任者</label>
+    <length>5</length>
+    <required>false</required>
+    <trackTrending>false</trackTrending>
+    <type>Text</type>
+    <unique>false</unique>
+</CustomField>

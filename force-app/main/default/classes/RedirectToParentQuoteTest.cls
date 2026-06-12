@@ -7,6 +7,7 @@ public class RedirectToParentQuoteTest {
         Opportunity opp = new Opportunity(
             Name = 'TestOpportunity1'
             ,StageName = '基本計画'
+            ,ConstructionDistinction__c = '更新（自社既設）'
             ,EstablishedCompany__c = '三菱'
             ,CloseDate = dt
         );
@@ -45,6 +46,7 @@ public class RedirectToParentQuoteTest {
         Opportunity opp = new Opportunity(
             Name = 'TestOpportunity1'
             ,StageName = '基本計画'
+            ,ConstructionDistinction__c = '更新（自社既設）'
             ,EstablishedCompany__c = '三菱'
             ,CloseDate = dt
         );

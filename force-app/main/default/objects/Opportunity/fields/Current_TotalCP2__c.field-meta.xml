@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Current_TotalCP2__c</fullName>
+    <externalId>false</externalId>
+    <formula>IF( ISNULL(Result_TotalCP__c), IF( ISNULL(Latest_Forecast_TotalCP__c), IF( ISNULL(Order_Forecast_TotalCP__c), TotalCP__c, Order_Forecast_TotalCP__c), Latest_Forecast_TotalCP__c), Result_TotalCP__c)</formula>
+    <label>CP(実績&gt;最終予想最新&gt;最終予想受注時&gt;商談)</label>
+    <precision>18</precision>
+    <required>false</required>
+    <scale>0</scale>
+    <trackHistory>false</trackHistory>
+    <type>Currency</type>
+</CustomField>

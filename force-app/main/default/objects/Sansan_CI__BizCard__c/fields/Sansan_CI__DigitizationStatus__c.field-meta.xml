@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Sansan_CI__DigitizationStatus__c</fullName>
+    <deprecated>false</deprecated>
+    <externalId>false</externalId>
+    <label>データ化状況</label>
+    <required>false</required>
+    <trackHistory>false</trackHistory>
+    <trackTrending>false</trackTrending>
+    <type>Picklist</type>
+    <valueSet>
+        <valueSetDefinition>
+            <sorted>false</sorted>
+            <value>
+                <fullName>processing</fullName>
+                <default>false</default>
+                <label>processing</label>
+            </value>
+            <value>
+                <fullName>completed</fullName>
+                <default>false</default>
+                <label>completed</label>
+            </value>
+            <value>
+                <fullName>unreadable</fullName>
+                <default>false</default>
+                <label>unreadable</label>
+            </value>
+        </valueSetDefinition>
+    </valueSet>
+</CustomField>

@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>PriceProposal2MinTC__c</fullName>
+    <externalId>false</externalId>
+    <label>価格案(MIN)_TC(伺い数値明細)</label>
+    <summarizedField>DetailByInquiryFactory__c.TCMin__c</summarizedField>
+    <summaryFilterItems>
+        <field>DetailByInquiryFactory__c.CPMin__c</field>
+        <operation>notEqual</operation>
+        <value></value>
+    </summaryFilterItems>
+    <summaryForeignKey>DetailByInquiryFactory__c.QuoteBiddingInquiry__c</summaryForeignKey>
+    <summaryOperation>sum</summaryOperation>
+    <trackHistory>false</trackHistory>
+    <trackTrending>false</trackTrending>
+    <type>Summary</type>
+</CustomField>

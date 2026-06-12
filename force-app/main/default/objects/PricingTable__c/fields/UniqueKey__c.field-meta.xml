@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>UniqueKey__c</fullName>
+    <externalId>false</externalId>
+    <formula>RecordTypeName__c 
+&amp; TEXT(BU__c)
+&amp; MajorClassificationName__c
+&amp; MinorClassificationName__c
+&amp; CategoryName__c
+&amp; Name1__c 
+&amp; Name2__c 
+&amp; Name3__c 
+&amp; Name4__c 
+&amp; Name5__c
+&amp; Name6__c
+&amp; Name7__c
+&amp; Name8__c
+&amp; Name9__c
+&amp; Name10__c</formula>
+    <label>ユニークキー</label>
+    <required>false</required>
+    <trackTrending>false</trackTrending>
+    <type>Text</type>
+    <unique>false</unique>
+</CustomField>

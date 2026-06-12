@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>MelcoCodeFK__c</fullName>
+    <caseSensitive>false</caseSensitive>
+    <description>親取引先設定の為の外部ID項目</description>
+    <externalId>true</externalId>
+    <label>統一企業コード（企業情報）</label>
+    <length>255</length>
+    <required>false</required>
+    <trackFeedHistory>false</trackFeedHistory>
+    <trackHistory>true</trackHistory>
+    <type>Text</type>
+    <unique>true</unique>
+</CustomField>

@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ValidationRule xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>NoteCheck_2</fullName>
+    <active>true</active>
+    <description>大分類が材料の場合、手入力金額設定根拠の入力を必須とする</description>
+    <errorConditionFormula>AND (OR ( AND(ISPICKVAL(MajorClassification__c, &quot;技派・予備品等、他社&quot;) ,  OR(NOT(ISBLANK(CreditQuoteAmount__c)) ,NOT(ISBLANK( CreditWC__c ))) ) , ISPICKVAL(MajorClassification__c, &quot;材料&quot;) ),  ISBLANK( Note__c ) )</errorConditionFormula>
+    <errorDisplayField>Note__c</errorDisplayField>
+    <errorMessage>大分類が「材料」の場合は、金額情報を手入力し、その金額の設定根拠を手入力金額設定根拠へ必ず入力してください。</errorMessage>
+</ValidationRule>

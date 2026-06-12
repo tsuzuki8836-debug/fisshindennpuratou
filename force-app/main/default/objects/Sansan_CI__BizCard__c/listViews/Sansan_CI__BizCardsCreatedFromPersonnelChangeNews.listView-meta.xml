@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ListView xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Sansan_CI__BizCardsCreatedFromPersonnelChangeNews</fullName>
+    <columns>Sansan_CI__BizCardId__c</columns>
+    <columns>NAME</columns>
+    <columns>Sansan_CI__Contact__c</columns>
+    <columns>Sansan_CI__Lead__c</columns>
+    <columns>Sansan_CI__IsNotDistribution__c</columns>
+    <columns>Sansan_CI__CompanyName__c</columns>
+    <columns>Sansan_CI__FullName__c</columns>
+    <columns>Sansan_CI__Department__c</columns>
+    <columns>Sansan_CI__Title__c</columns>
+    <columns>OWNER.LAST_NAME</columns>
+    <columns>Sansan_CI__ExchangeDate__c</columns>
+    <columns>Sansan_CI__PersonnelChangeIssuedDate__c</columns>
+    <columns>Sansan_CI__CI_PublishedTime__c</columns>
+    <columns>Sansan_CI__Sansan_BizCardInfo__c</columns>
+    <filterScope>Everything</filterScope>
+    <filters>
+        <field>Sansan_CI__Lead__c</field>
+        <operation>equals</operation>
+    </filters>
+    <filters>
+        <field>Sansan_CI__Contact__c</field>
+        <operation>equals</operation>
+    </filters>
+    <filters>
+        <field>Sansan_CI__PersonnelChangeIssuedDate__c</field>
+        <operation>notEqual</operation>
+    </filters>
+    <label>08 人事異動ニュースから作成された名刺</label>
+</ListView>

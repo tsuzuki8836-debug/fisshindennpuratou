@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>FormulaProfitability__c</fullName>
+    <externalId>false</externalId>
+    <formula>IF( 
+OR( NOT( ISPICKVAL(BU__c, &quot;水環境&quot;)), ISNULL(TotalCP__c), ISNULL(TC__c), ISNULL(WCPercent__c)), &quot;&quot;
+, IF(TotalCP__c &gt;= (TC__c + NULLVALUE (Margin__c, 0)), &quot;TC確保&quot;
+, IF( WCPercent__c*100 &gt;= 95, &quot;特別不採算&quot;, &quot;不採算&quot;
+)))</formula>
+    <inlineHelpText>場所別保存時に自動で設定されます。TC確保（CP≧TC＋販売手数料）／不採算(TC以下)／特別不採算(WC率95％以上)</inlineHelpText>
+    <label>採算性</label>
+    <required>false</required>
+    <trackHistory>false</trackHistory>
+    <type>Text</type>
+    <unique>false</unique>
+</CustomField>

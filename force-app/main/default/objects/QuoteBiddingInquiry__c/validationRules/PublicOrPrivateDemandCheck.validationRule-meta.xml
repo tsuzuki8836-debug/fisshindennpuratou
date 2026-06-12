@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ValidationRule xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>PublicOrPrivateDemandCheck</fullName>
+    <active>true</active>
+    <description>官需・民需は価格表の場合任意</description>
+    <errorConditionFormula>AND(
+    RecordType.DeveloperName != &apos;FeeInquiry&apos;,
+    PriceList__c = false,
+    ISBLANK(TEXT(PublicOrPrivateDemand__c)),
+    NOT(Creating__c)
+)</errorConditionFormula>
+    <errorDisplayField>PublicOrPrivateDemand__c</errorDisplayField>
+    <errorMessage>官需・民需は必須です</errorMessage>
+</ValidationRule>

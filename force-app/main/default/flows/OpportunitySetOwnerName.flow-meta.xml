@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Flow xmlns="http://soap.sforce.com/2006/04/metadata">
+    <apiVersion>65.0</apiVersion>
+    <description>ワークフロールール「【商談】作成または編集されたとき」から移行</description>
+    <environments>Default</environments>
+    <formulas>
+        <name>InsertNewOpportunityOwnerFormula</name>
+        <dataType>String</dataType>
+        <expression>$Record.Owner.LastName +  $Record.Owner.FirstName</expression>
+    </formulas>
+    <interviewLabel>【案件】売上予定日入力時点の案件 所有者名を設定する {!$Flow.CurrentDateTime}</interviewLabel>
+    <label>【案件】案件 所有者（テキスト項目）を設定</label>
+    <migratedFromWorkflowRuleName>【商談】作成または編集されたとき</migratedFromWorkflowRuleName>
+    <processMetadataValues>
+        <name>BuilderType</name>
+        <value>
+            <stringValue>LightningFlowBuilder</stringValue>
+        </value>
+    </processMetadataValues>
+    <processMetadataValues>
+        <name>CanvasMode</name>
+        <value>
+            <stringValue>AUTO_LAYOUT_CANVAS</stringValue>
+        </value>
+    </processMetadataValues>
+    <processType>AutoLaunchedFlow</processType>
+    <recordUpdates>
+        <name>updateOwner</name>
+        <label>案件所有者更新</label>
+        <locationX>0</locationX>
+        <locationY>0</locationY>
+        <inputAssignments>
+            <field>OpportunityOwner__c</field>
+            <value>
+                <elementReference>InsertNewOpportunityOwnerFormula</elementReference>
+            </value>
+        </inputAssignments>
+        <inputReference>$Record</inputReference>
+    </recordUpdates>
+    <start>
+        <locationX>0</locationX>
+        <locationY>0</locationY>
+        <connector>
+            <targetReference>updateOwner</targetReference>
+        </connector>
+        <filterLogic>and</filterLogic>
+        <filters>
+            <field>ScheduledSalesDate__c</field>
+            <operator>IsNull</operator>
+            <value>
+                <booleanValue>false</booleanValue>
+            </value>
+        </filters>
+        <object>Opportunity</object>
+        <recordTriggerType>CreateAndUpdate</recordTriggerType>
+        <triggerType>RecordBeforeSave</triggerType>
+    </start>
+    <status>Active</status>
+</Flow>

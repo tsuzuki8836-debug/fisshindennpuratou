@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>MELCRMOPETOOL__FirstRespnseTimeForAnalytics__c</fullName>
+    <deprecated>false</deprecated>
+    <externalId>false</externalId>
+    <formula>( MELCRMOPETOOL__TimeStampStatus4__c - MELCRMOPETOOL__TimeStampStatus3__c ) * 24</formula>
+    <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
+    <label>初回回答時間_集計用</label>
+    <precision>18</precision>
+    <required>false</required>
+    <scale>1</scale>
+    <trackHistory>false</trackHistory>
+    <trackTrending>false</trackTrending>
+    <type>Number</type>
+    <unique>false</unique>
+</CustomField>

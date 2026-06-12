@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Agency2_OrderContributionRate__c</fullName>
+    <externalId>false</externalId>
+    <formula>IF(
+    NOT( ISBLANK(TEXT( Agency2TradingStyle__c )) ) ,
+    ROUND(
+        IF(
+            Agency2_EvaluationPointSum__c  / 
+            ( Agency1_EvaluationPointSum__c + Agency2_EvaluationPointSum__c + Agency3_EvaluationPointSum__c ) &lt;&gt; 0,
+            Agency2_EvaluationPointSum__c  / 
+             ( Agency1_EvaluationPointSum__c + Agency2_EvaluationPointSum__c + Agency3_EvaluationPointSum__c ),
+            0
+        ),
+        3
+    ),
+    0
+)</formula>
+    <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
+    <label>代理店2_受注貢献比率</label>
+    <precision>18</precision>
+    <required>false</required>
+    <scale>1</scale>
+    <trackHistory>false</trackHistory>
+    <trackTrending>false</trackTrending>
+    <type>Percent</type>
+</CustomField>

@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Quote__c</fullName>
+    <deleteConstraint>SetNull</deleteConstraint>
+    <externalId>false</externalId>
+    <inlineHelpText>自動計算で入る項目になります。</inlineHelpText>
+    <label>見積</label>
+    <referenceTo>Quote__c</referenceTo>
+    <relationshipLabel>種別</relationshipLabel>
+    <relationshipName>MiddleQuote</relationshipName>
+    <required>false</required>
+    <trackTrending>false</trackTrending>
+    <type>Lookup</type>
+</CustomField>

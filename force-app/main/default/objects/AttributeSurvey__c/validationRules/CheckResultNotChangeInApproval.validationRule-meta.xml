@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ValidationRule xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>CheckResultNotChangeInApproval</fullName>
+    <active>true</active>
+    <errorConditionFormula>AND( 
+    AND(
+         NOT(ISPICKVAL( ApprovalStatus__c , &quot;未申請&quot;)),
+         NOT(ISPICKVAL( ApprovalStatus__c , &quot;所属課長&quot;)),
+         NOT(ISPICKVAL( ApprovalStatus__c , &quot;所属部長&quot;)),
+         NOT(ISPICKVAL( ApprovalStatus__c , &quot;承認済&quot;))) , 
+         ISCHANGED(  CheckResultJudgment__c ) 
+)</errorConditionFormula>
+    <errorDisplayField>CheckResultJudgment__c</errorDisplayField>
+    <errorMessage>申請中は編集できません</errorMessage>
+</ValidationRule>

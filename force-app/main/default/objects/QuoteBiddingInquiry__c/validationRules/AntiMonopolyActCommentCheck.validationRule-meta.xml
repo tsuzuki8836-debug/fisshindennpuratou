@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ValidationRule xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>AntiMonopolyActCommentCheck</fullName>
+    <active>true</active>
+    <description>独禁法遵守チェック項目のうち1つでも「はい」がある場合、独禁法遵守チェック結果コメント必須</description>
+    <errorConditionFormula>AND(
+	OR(
+	    ISPICKVAL( AntitrustComplianceQ1__c, &quot;はい&quot; ),
+	    ISPICKVAL( AntitrustComplianceQ2__c, &quot;はい&quot; ),
+	    ISPICKVAL( AntitrustComplianceQ3__c, &quot;はい&quot; ),
+	    ISPICKVAL( AntitrustComplianceQ4__c, &quot;はい&quot; ),
+	    ISPICKVAL( AntitrustComplianceQ5__c, &quot;はい&quot; ),
+	    ISPICKVAL( AntitrustComplianceQ6__c, &quot;はい&quot; ),
+	    ISPICKVAL( AntitrustComplianceQ7__c, &quot;はい&quot; ),
+	    ISPICKVAL( AntitrustComplianceQ8__c, &quot;はい&quot; ),
+            ISPICKVAL( AntitrustComplianceQ11__c, &quot;いいえ&quot;) 
+	),
+	ISBLANK(AntitrustComplianceCheckResultComment__c)
+)</errorConditionFormula>
+    <errorDisplayField>AntitrustComplianceCheckResultComment__c</errorDisplayField>
+    <errorMessage>独禁法遵守チェック項目1～８のうち1つでも「はい」がある場合及び、紙入札で同業他社との接触伺い提出が「いいえ」の場合、独禁法遵守チェック結果コメントは必須です</errorMessage>
+</ValidationRule>

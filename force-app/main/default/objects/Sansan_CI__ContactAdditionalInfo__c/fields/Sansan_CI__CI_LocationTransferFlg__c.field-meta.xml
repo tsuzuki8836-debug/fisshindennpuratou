@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Sansan_CI__CI_LocationTransferFlg__c</fullName>
+    <deprecated>false</deprecated>
+    <externalId>false</externalId>
+    <formula>(ISNULL(Sansan_CI__CI_LocationTransferNextProcessingDate__c) || Sansan_CI__CI_LocationTransferNextProcessingDate__c &lt; NOW()) &amp;&amp; Sansan_CI__CI_SLC_Difference__c</formula>
+    <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
+    <label>拠点移動_処理対象</label>
+    <trackTrending>false</trackTrending>
+    <type>Checkbox</type>
+</CustomField>

@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Quote__c</fullName>
+    <externalId>false</externalId>
+    <inlineHelpText>明細の変圧器、コンデンサ、発電機は周波数により価格が異なるので、周波数の異なるエリアの見積にコピーする場合は注意してください</inlineHelpText>
+    <label>見積</label>
+    <referenceTo>Quote__c</referenceTo>
+    <relationshipLabel>見積項目</relationshipLabel>
+    <relationshipName>Devices</relationshipName>
+    <relationshipOrder>0</relationshipOrder>
+    <reparentableMasterDetail>false</reparentableMasterDetail>
+    <trackTrending>false</trackTrending>
+    <type>MasterDetail</type>
+    <writeRequiresMasterRead>false</writeRequiresMasterRead>
+</CustomField>

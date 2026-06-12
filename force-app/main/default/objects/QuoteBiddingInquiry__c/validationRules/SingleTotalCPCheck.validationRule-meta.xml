@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ValidationRule xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>SingleTotalCPCheck</fullName>
+    <active>true</active>
+    <description>「受注見込_単計(損予)時点」が2,3の場合、単計(損予)織込_CPは必須です</description>
+    <errorConditionFormula>AND(
+    PriceList__c = false,
+	OR(
+		ISPICKVAL(ExpectedOrderSingleCount__c, &apos;2&apos;),
+		ISPICKVAL(ExpectedOrderSingleCount__c, &apos;3&apos;)
+	),
+	OR(
+            ISBLANK(SingleTotalCP__c),
+            SingleTotalCP__c = 0
+        ),
+    NOT(Creating__c)
+)</errorConditionFormula>
+    <errorDisplayField>SingleTotalCP__c</errorDisplayField>
+    <errorMessage>単計(損予)織込_CPは必須です</errorMessage>
+</ValidationRule>

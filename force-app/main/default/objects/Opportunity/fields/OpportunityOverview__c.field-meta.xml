@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>OpportunityOverview__c</fullName>
+    <externalId>false</externalId>
+    <inlineHelpText>文字数上限1000字。案件概要に記載した内容がCRMで見積・応札伺いを作成する際に転記される予定です。</inlineHelpText>
+    <label>案件概要</label>
+    <length>1000</length>
+    <trackFeedHistory>false</trackFeedHistory>
+    <trackHistory>false</trackHistory>
+    <type>LongTextArea</type>
+    <visibleLines>3</visibleLines>
+</CustomField>

@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<WebLink xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>CreateBidManagementButton</fullName>
+    <availability>online</availability>
+    <displayType>massActionButton</displayType>
+    <encodingKey>UTF-8</encodingKey>
+    <height>600</height>
+    <linkType>url</linkType>
+    <masterLabel>入札新規作成</masterLabel>
+    <openType>sidebar</openType>
+    <protected>false</protected>
+    <requireRowSelection>false</requireRowSelection>
+    <url>/lightning/o/BidManagement__c/new?defaultFieldValues=
+Name={!Opportunity.Name},
+Property__c={!Opportunity.PropertyId__c},
+Opportunity__c={!Opportunity.Id},
+SBU__c={!Opportunity.SBU__c},
+Region__c={!Opportunity.RegionId__c},
+DemanDepartment__c={!Opportunity.DemanDepartment__c},
+Consul__c={!Opportunity.ArchitectOfficeId__c},
+PumpStation__c={!Opportunity.PumpStationId__c},
+ConstructionDistinction__c={!Opportunity.ConstructionDistinction__c},
+OrderExpectation__c={!Opportunity.OrderExpectation__c},
+EstablishedCompany__c={!Opportunity.EstablishedCompany__c},
+EstablishedCompanyRemarks__c={!Opportunity.EstablishedCompanyRemarks__c},
+LastCustomer__c={!Opportunity.ClientId__c}
+&amp;backgroundContext=%2Flightning%2Fr%2FOpportunity%2F{!Opportunity.Id}%2Fview</url>
+</WebLink>

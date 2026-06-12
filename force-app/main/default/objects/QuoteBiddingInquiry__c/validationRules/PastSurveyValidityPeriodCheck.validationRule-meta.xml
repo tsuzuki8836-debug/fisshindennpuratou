@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ValidationRule xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>PastSurveyValidityPeriodCheck</fullName>
+    <active>true</active>
+    <description>属性調査要否が「要(過去調査済)」の場合、(過去調査済の場合)有効期限は必須です</description>
+    <errorConditionFormula>AND(
+    PriceList__c = false,
+    ISPICKVAL(AttributeSurveyRequirement__c,&apos;要(過去調査済)&apos;),
+    ISBLANK(PastSurveyValidityPeriod__c),
+    NOT(Creating__c)
+)</errorConditionFormula>
+    <errorDisplayField>PastSurveyValidityPeriod__c</errorDisplayField>
+    <errorMessage>(過去調査済の場合)有効期限は必須です</errorMessage>
+</ValidationRule>

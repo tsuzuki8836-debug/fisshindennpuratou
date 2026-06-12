@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>PresenceDate__c</fullName>
+    <externalId>false</externalId>
+    <inlineHelpText>工場立会が「有」の場合のみ入力してください。</inlineHelpText>
+    <label>立会時期</label>
+    <required>false</required>
+    <trackHistory>false</trackHistory>
+    <trackTrending>false</trackTrending>
+    <type>Date</type>
+</CustomField>

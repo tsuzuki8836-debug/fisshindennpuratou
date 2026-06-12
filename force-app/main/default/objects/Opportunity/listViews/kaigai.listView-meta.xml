@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ListView xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>kaigai</fullName>
+    <columns>OwnerOppDivision__c</columns>
+    <columns>OPPORTUNITY.NAME</columns>
+    <columns>ACCOUNT.NAME</columns>
+    <columns>OPPORTUNITY.STAGE_NAME</columns>
+    <columns>OPPORTUNITY.CLOSE_DATE</columns>
+    <columns>OPPORTUNITY.AMOUNT</columns>
+    <columns>CORE.USERS.ALIAS</columns>
+    <columns>CurrencyOption__c</columns>
+    <columns>ForeignCurrencyCP__c</columns>
+    <columns>CountryName__c</columns>
+    <columns>InternalRateNum__c</columns>
+    <filterScope>Everything</filterScope>
+    <filters>
+        <field>OwnerOppDivision__c</field>
+        <operation>contains</operation>
+        <value>海Ｆシ</value>
+    </filters>
+    <label>10-15.本社　海Fシの案件</label>
+</ListView>

@@ -43,3 +43,8 @@ $RECYCLE.BIN/
 **/__pycache__/
 **/.venv/
 **/venv/
+
+# Document Generator Outputs & Temporaries
+scripts/doc_generator/temp_flow.mmd
+scripts/doc_generator/temp_flow.png
+scripts/doc_generator/*.xlsx

@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>SymbolAndNumber__c</fullName>
+    <externalId>false</externalId>
+    <formula>IF ( AND( ISBLANK(CharacterSymbol__c) , ISBLANK(EquipmentNumber__c) ) ,
+ &apos;&apos;,
+ CharacterSymbol__c +&apos;@&apos;+ EquipmentNumber__c
+)</formula>
+    <label>文字記号_器具番号</label>
+    <required>false</required>
+    <trackTrending>false</trackTrending>
+    <type>Text</type>
+    <unique>false</unique>
+</CustomField>

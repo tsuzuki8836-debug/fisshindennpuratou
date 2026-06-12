@@ -1,0 +1,5 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Description</fullName>
+    <inlineHelpText>信頼対策の実施方法を説明します。簡潔にします。完全な文章にするよりも明確さを優先してください。250 文字しか使用できません。</inlineHelpText>
+</CustomField>

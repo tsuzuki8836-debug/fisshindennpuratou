@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>LastCustomerCategory__c</fullName>
+    <externalId>false</externalId>
+    <inlineHelpText>「新規顧客」「継続顧客・新規部門」は、工事区分が新設、更新（他社既設）時のみ選択できます。</inlineHelpText>
+    <label>①最終顧客の新規性</label>
+    <required>false</required>
+    <trackFeedHistory>false</trackFeedHistory>
+    <trackHistory>false</trackHistory>
+    <trackTrending>false</trackTrending>
+    <type>Picklist</type>
+    <valueSet>
+        <restricted>true</restricted>
+        <valueSetDefinition>
+            <sorted>false</sorted>
+            <value>
+                <fullName>継続顧客・継続部門</fullName>
+                <default>false</default>
+                <label>継続顧客・継続部門</label>
+            </value>
+            <value>
+                <fullName>継続顧客・新規部門</fullName>
+                <default>false</default>
+                <label>継続顧客・新規部門</label>
+            </value>
+            <value>
+                <fullName>新規顧客</fullName>
+                <default>false</default>
+                <label>新規顧客</label>
+            </value>
+        </valueSetDefinition>
+    </valueSet>
+</CustomField>

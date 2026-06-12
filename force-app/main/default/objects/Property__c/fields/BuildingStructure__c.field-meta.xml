@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>BuildingStructure__c</fullName>
+    <externalId>false</externalId>
+    <label>建築構造</label>
+    <required>false</required>
+    <trackFeedHistory>false</trackFeedHistory>
+    <trackHistory>false</trackHistory>
+    <trackTrending>false</trackTrending>
+    <type>Picklist</type>
+    <valueSet>
+        <restricted>true</restricted>
+        <valueSetDefinition>
+            <sorted>false</sorted>
+            <value>
+                <fullName>RC造（鉄筋コンクリ－ト造）</fullName>
+                <default>false</default>
+                <label>RC造（鉄筋コンクリ－ト造）</label>
+            </value>
+            <value>
+                <fullName>SRC造（鉄骨鉄筋コンクリ－ト造）</fullName>
+                <default>false</default>
+                <label>SRC造（鉄骨鉄筋コンクリ－ト造）</label>
+            </value>
+            <value>
+                <fullName>S造（鉄骨造）</fullName>
+                <default>false</default>
+                <label>S造（鉄骨造）</label>
+            </value>
+        </valueSetDefinition>
+    </valueSet>
+</CustomField>

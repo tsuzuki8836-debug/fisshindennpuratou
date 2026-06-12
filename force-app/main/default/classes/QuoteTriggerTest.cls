@@ -38,21 +38,21 @@ private class QuoteTriggerTest {
             SectionExistence__c='あり'
         );
         qtList.add(quote4);
-        
+
         insert qtList;
 
         List<ConstructionZone__c> conList = new List<ConstructionZone__c>();
         ConstructionZone__c con = new ConstructionZone__c(
-            Name = 'テスト工事区分',    
+            Name = 'テスト工事区分',
             Quote__c = quote4.Id,
-            ConstructionZoneNo__c = 1    
+            ConstructionZoneNo__c = 1
         );
         conList.add(con);
 
         insert conList;
 
         Device_LargeCategory__c largeCategory = new Device_LargeCategory__c(
-            Quote__c = quote4.Id,    
+            Quote__c = quote4.Id,
             ConstructionZone__c = con.Id,
             Name = '◯◯工事_工種',
             Device_LargeCategoryNo__c = '1'
@@ -60,7 +60,7 @@ private class QuoteTriggerTest {
         insert largeCategory;
 
         Device_MiddleCategory__c middleCategory = new Device_MiddleCategory__c(
-            Quote__c = quote4.Id,    
+            Quote__c = quote4.Id,
             Device_LargeCategory__c = largeCategory.Id,
             Name = '◯◯工事_種別',
             Device_MiddleCategoryNo__c = '1'
@@ -68,7 +68,7 @@ private class QuoteTriggerTest {
         insert middleCategory;
 
         Device_SmallCategory__c smallCategory = new Device_SmallCategory__c(
-            Quote__c = quote4.Id,    
+            Quote__c = quote4.Id,
             Device_MiddleCategory__c = middleCategory.Id,
             Name = '◯◯工事_細別',
             Device_SmallCategoryNo__c = '1'
@@ -123,7 +123,7 @@ private class QuoteTriggerTest {
         Device__c dv5 = new Device__c(
             QuoteSpecificationNumber__c = '005',
             Name = '品名',
-            MajorClassification__c = '大型映像装置',
+            MajorClassification__c = '変圧器',
             NETCalculateCategory__c = '映像',
             Quote__c = quote2.Id,
             PriceCoefficient__c=1,
@@ -219,7 +219,7 @@ private class QuoteTriggerTest {
         }
 
         insert cloneQtList;
-        
+
         Test.stopTest();
 
     }
@@ -240,7 +240,7 @@ private class QuoteTriggerTest {
         }
 
         update updateQtList;
-        
+
         Test.stopTest();
 
     }
@@ -252,7 +252,7 @@ private class QuoteTriggerTest {
         //テスト実行
         Test.startTest();
         quotedataCreation();
-        
+
         Quote__c updateQt = [SELECT Id FROM Quote__c WHERE RecordTypeId = :recTypeOfficialDemandId LIMIT 1];
 
         Device__c dvEX = new Device__c(
@@ -271,7 +271,7 @@ private class QuoteTriggerTest {
             Note__c ='テスト'
         );
         insert dvEX;
-        
+
         Test.stopTest();
 
         Quote__c AssertQt = [SELECT Id,MachineUnitAmount__c,EquipManageCost__c,EquipManageCostRate__c,SystemIntegrationFee__c FROM Quote__c WHERE RecordTypeId = :recTypeOfficialDemandId LIMIT 1];
@@ -290,7 +290,7 @@ private class QuoteTriggerTest {
         //テスト実行
         Test.startTest();
         quotedataCreation();
-        
+
         Quote__c updateQt = [SELECT Id FROM Quote__c WHERE RecordTypeId = :recTypeOfficialDemandId LIMIT 1];
 
         Device__c dvEX = new Device__c(
@@ -309,7 +309,7 @@ private class QuoteTriggerTest {
             QuoteTarget__c='見積対象'
         );
         insert dvEX;
-        
+
         Test.stopTest();
 
         Quote__c AssertQt = [SELECT Id,MachineUnitAmount__c,EquipManageCost__c,EquipManageCostRate__c,SystemIntegrationFee__c FROM Quote__c WHERE RecordTypeId = :recTypeOfficialDemandId LIMIT 1];
@@ -328,7 +328,7 @@ private class QuoteTriggerTest {
         //テスト実行
         Test.startTest();
         quotedataCreation();
-        
+
         Quote__c updateQt = [SELECT Id FROM Quote__c WHERE RecordTypeId = :recTypeOfficialDemandId LIMIT 1];
 
         Device__c dvEX = new Device__c(
@@ -347,7 +347,7 @@ private class QuoteTriggerTest {
             QuoteTarget__c='見積対象'
         );
         insert dvEX;
-        
+
         Test.stopTest();
 
         Quote__c AssertQt = [SELECT Id,MachineUnitAmount__c,EquipManageCost__c,EquipManageCostRate__c,SystemIntegrationFee__c FROM Quote__c WHERE RecordTypeId = :recTypeOfficialDemandId LIMIT 1];
@@ -366,7 +366,7 @@ private class QuoteTriggerTest {
         //テスト実行
         Test.startTest();
         quotedataCreation();
-        
+
         Quote__c updateQt = [SELECT Id FROM Quote__c WHERE RecordTypeId = :recTypeOfficialDemandId LIMIT 1];
 
         List<Device__c> deList = new List<Device__c>();
@@ -437,7 +437,7 @@ private class QuoteTriggerTest {
         );
         deList.add(dvEX4);
         insert deList;
-        
+
         Test.stopTest();
 
         Quote__c AssertQt = [SELECT Id,MachineUnitAmount__c,EquipManageCost__c,EquipManageCostRate__c,SystemIntegrationFee__c FROM Quote__c WHERE RecordTypeId = :recTypeOfficialDemandId LIMIT 1];
@@ -456,7 +456,7 @@ private class QuoteTriggerTest {
         //テスト実行
         Test.startTest();
         quotedataCreation();
-        
+
         Quote__c updateQt = [SELECT Id FROM Quote__c WHERE RecordTypeId = :recTypeOfficialDemandId LIMIT 1];
 
         List<Device__c> deList = new List<Device__c>();
@@ -495,7 +495,7 @@ private class QuoteTriggerTest {
         deList.add(dvEX2);
 
         insert deList;
-        
+
         Test.stopTest();
 
         Quote__c AssertQt = [SELECT Id,MachineUnitAmount__c,EquipManageCost__c,EquipManageCostRate__c,SystemIntegrationFee__c FROM Quote__c WHERE RecordTypeId = :recTypeOfficialDemandId LIMIT 1];
@@ -514,11 +514,11 @@ private class QuoteTriggerTest {
         //テスト実行
         Test.startTest();
         quotedataCreation();
-        
+
         Quote__c updateQt = [SELECT Id FROM Quote__c WHERE RecordTypeId = :recTypeOfficialDemandId LIMIT 1];
 
         update updateQt;
-        
+
         Test.stopTest();
 
         Quote__c AssertQt = [SELECT Id,MachineUnitAmount__c,EquipManageCost__c,EquipManageCostRate__c,SystemIntegrationFee__c FROM Quote__c WHERE RecordTypeId = :recTypeOfficialDemandId LIMIT 1];

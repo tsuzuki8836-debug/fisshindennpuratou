@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ValidationRule xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Factor_PriceExponentialMinCheck</fullName>
+    <active>true</active>
+    <description>受注(見込)CP【MIN】が入っている場合必須</description>
+    <errorConditionFormula>AND(
+    RecordType.DeveloperName= &apos;FeeInquiry&apos;,
+    NOT(ISBLANK(ContractAmountMin__c)),
+    ISBLANK(TEXT(Factor_PriceExponentialMin__c)),
+    NOT(Creating__c)
+)</errorConditionFormula>
+    <errorDisplayField>Factor_PriceExponentialMin__c</errorDisplayField>
+    <errorMessage>損益区分（MIN）は必須です</errorMessage>
+</ValidationRule>

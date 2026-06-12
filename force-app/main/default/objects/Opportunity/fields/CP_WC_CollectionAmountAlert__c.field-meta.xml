@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>CP_WC_CollectionAmountAlert__c</fullName>
+    <externalId>false</externalId>
+    <formula>IF ( TotalCPForReporting__c = False, &apos;★「CP×係数」と「発行CP×係数」①～③の合計値が不一致です&apos; &amp;  BR() ,&apos;&apos;
+     )     &amp; 
+ IF (  TotalWCForReporting__c  = False, &apos;★「WC×係数」と「発行WC×係数」①～③の合計値が不一致です&apos; &amp;  BR()  ,&apos;&apos;
+     )     &amp; 
+ IF (   TotalScheduledCollectionAmount__c   = False, &apos;★「回収予定金額（税込）×係数」と「回収予定金額×係数」①～③の合計値が不一致です&apos; &amp;  BR()  ,&apos;&apos;
+     )     &amp; 
+ IF (  OR(TotalCP__c  = 0,  ISBLANK(TotalCP__c) ) , &apos;★場所明細が登録されていない、または、場所明細のCP合計が0円です。この状態では経営情報システムにデータ連携しないため、連携が必要な場合は場所明細の登録をお願いします。なお、失注登録または案件削除したい場合は、案件のフェーズをメンテナンス下さい。&apos;, &apos;&apos;)</formula>
+    <label>金額/場所明細アラート</label>
+    <required>false</required>
+    <trackHistory>false</trackHistory>
+    <type>Text</type>
+    <unique>false</unique>
+</CustomField>

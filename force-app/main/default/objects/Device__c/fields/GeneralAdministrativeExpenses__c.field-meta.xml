@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>GeneralAdministrativeExpenses__c</fullName>
+    <externalId>false</externalId>
+    <formula>IF( GeneralAdminExpensesExistence__c ,PriceSum__c *  GeneralAdministrativeExpensesCopy__c, 0)</formula>
+    <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
+    <label>一般管理費</label>
+    <precision>18</precision>
+    <required>false</required>
+    <scale>0</scale>
+    <trackTrending>false</trackTrending>
+    <type>Currency</type>
+</CustomField>

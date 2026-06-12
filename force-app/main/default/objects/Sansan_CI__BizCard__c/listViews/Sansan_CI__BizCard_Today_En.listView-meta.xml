@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ListView xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Sansan_CI__BizCard_Today_En</fullName>
+    <columns>NAME</columns>
+    <columns>Sansan_CI__Contact__c</columns>
+    <columns>Sansan_CI__Lead__c</columns>
+    <columns>Sansan_CI__IsNotDistribution__c</columns>
+    <columns>Sansan_CI__CompanyName__c</columns>
+    <columns>Sansan_CI__FullName__c</columns>
+    <columns>Sansan_CI__Department__c</columns>
+    <columns>Sansan_CI__Title__c</columns>
+    <columns>OWNER.ALIAS</columns>
+    <columns>Sansan_CI__ExchangeDate__c</columns>
+    <columns>Sansan_CI__CI_PublishedTime__c</columns>
+    <columns>Sansan_CI__Sansan_BizCardInfo__c</columns>
+    <filterScope>Everything</filterScope>
+    <filters>
+        <field>CREATED_DATE</field>
+        <operation>equals</operation>
+        <value>TODAY</value>
+    </filters>
+    <label>01 Today&apos;s cards</label>
+</ListView>

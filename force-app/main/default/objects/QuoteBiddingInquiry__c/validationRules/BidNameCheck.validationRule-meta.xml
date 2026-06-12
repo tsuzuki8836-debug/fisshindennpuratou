@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ValidationRule xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>BidNameCheck</fullName>
+    <active>true</active>
+    <description>下記の場合、入札名は必須
+レコードタイプが応札伺いまたはJV締結伺いの時に
+・官需・民需が「官需」かつ元請/下請が「元請」
+・応札体制が「協業」</description>
+    <errorConditionFormula>AND(
+    PriceList__c = false,
+    OR(RecordType.DeveloperName= &apos;O&apos;,RecordType.DeveloperName= &apos;JV&apos;),
+    OR(
+        AND(
+            ISPICKVAL(PublicOrPrivateDemand__c ,  &apos;官需&apos;),
+            ISPICKVAL( PrimeSubContractor__c ,  &apos;元請&apos;)
+        ),
+        AND(
+            ISPICKVAL(PublicOrPrivateDemand__c ,  &apos;官需&apos;),
+            ISPICKVAL(BidForm__c ,  &apos;協業&apos;)
+        )
+    ),
+    ISBLANK(BidName__c),
+    NOT(Creating__c)
+)</errorConditionFormula>
+    <errorDisplayField>BidName__c</errorDisplayField>
+    <errorMessage>入札名は必須です</errorMessage>
+</ValidationRule>

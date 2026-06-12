@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>ConstructionZoneDisplay__c</fullName>
+    <externalId>false</externalId>
+    <inlineHelpText>「なし」を選択すると帳票出力時に集計表(客先提出用)の工事区分を非表示にします</inlineHelpText>
+    <label>帳票の工事区分表示有無</label>
+    <required>false</required>
+    <trackFeedHistory>false</trackFeedHistory>
+    <trackHistory>false</trackHistory>
+    <trackTrending>false</trackTrending>
+    <type>Picklist</type>
+    <valueSet>
+        <valueSetDefinition>
+            <sorted>false</sorted>
+            <value>
+                <fullName>あり</fullName>
+                <default>true</default>
+                <label>表示あり</label>
+            </value>
+            <value>
+                <fullName>なし</fullName>
+                <default>false</default>
+                <label>表示なし</label>
+            </value>
+        </valueSetDefinition>
+    </valueSet>
+</CustomField>

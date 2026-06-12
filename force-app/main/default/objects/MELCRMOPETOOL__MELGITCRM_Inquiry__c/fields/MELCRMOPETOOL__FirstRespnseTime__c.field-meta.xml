@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>MELCRMOPETOOL__FirstRespnseTime__c</fullName>
+    <deprecated>false</deprecated>
+    <description>日付/時間値間の経過時間を確認する
+https://help.salesforce.com/articleView?id=formula_examples_dates.htm&amp;type=5</description>
+    <externalId>false</externalId>
+    <formula>IF(
+MELCRMOPETOOL__TimeStampStatus4__c - MELCRMOPETOOL__TimeStampStatus3__c &gt; 0 ,
+TEXT( FLOOR( MELCRMOPETOOL__TimeStampStatus4__c - MELCRMOPETOOL__TimeStampStatus3__c ) ) &amp; &quot; days &quot;
+&amp; TEXT( ROUND( MOD( (MELCRMOPETOOL__TimeStampStatus4__c - MELCRMOPETOOL__TimeStampStatus3__c ) * 24, 24 ), 0 ) ) &amp; &quot; hours &quot;,
+&quot;&quot;
+)</formula>
+    <label>初回回答時間</label>
+    <required>false</required>
+    <trackHistory>false</trackHistory>
+    <trackTrending>false</trackTrending>
+    <type>Text</type>
+    <unique>false</unique>
+</CustomField>

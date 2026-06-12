@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>FeeStandardAmount__c</fullName>
+    <externalId>false</externalId>
+    <formula>IF(
+  OR(
+    ISPICKVAL(Handling__c, &apos;委嘱&apos;),
+    ISPICKVAL(Handling__c, &apos;協力&apos;)
+  ),
+  FeeRate1__c + FeeRate2__c + FeeRate3__c + FeeRate4__c + FeeRate5__c + FeeRate6__c + FeeRate7__c,
+  0
+)</formula>
+    <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
+    <label>１．手数料基準額</label>
+    <precision>18</precision>
+    <required>false</required>
+    <scale>0</scale>
+    <trackHistory>false</trackHistory>
+    <type>Currency</type>
+</CustomField>

@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>ClientAnswerAmount__c</fullName>
+    <externalId>false</externalId>
+    <formula>IF( ISBLANK(ClientAnswerAmount_free__c) ,IF( SalesCostSum__c &lt; 1000 , SalesCostSum__c 
+,CEILING(
+    TRUNC(
+        (SalesCostSum__c/CASE(LEN(TEXT(CEILING(SalesCostSum__c))),
+                5, 10,
+                6, 100,
+                7, 1000,
+                8, 10000,
+                9, 100000,
+                10, 1000000,
+                11, 10000000,
+                12, 100000000,
+                13, 1000000000,
+                14, 10000000000,
+                15, 100000000000,
+                16, 1000000000000,
+                17, 10000000000000,
+                18, 100000000000000,
+                19, 1000000000000000,1))
+        ,0)
+    /10)
+    *
+    CASE(LEN(TEXT(CEILING(SalesCostSum__c))), 
+        4, 10, 
+        5, 100,
+        6, 1000,
+        7, 10000,
+        8, 100000,
+        9, 1000000,
+       10, 10000000,
+       11, 100000000,
+       12, 1000000000,
+       13, 10000000000,
+       14, 100000000000,
+       15, 1000000000000,
+       16, 10000000000000,
+       17, 100000000000000,
+       18, 1000000000000000,1))
+, ClientAnswerAmount_free__c
+)</formula>
+    <label>客先回答金額</label>
+    <precision>18</precision>
+    <required>false</required>
+    <scale>0</scale>
+    <trackTrending>false</trackTrending>
+    <type>Currency</type>
+</CustomField>

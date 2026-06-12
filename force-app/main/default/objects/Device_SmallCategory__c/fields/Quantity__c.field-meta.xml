@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Quantity__c</fullName>
+    <externalId>false</externalId>
+    <inlineHelpText>見積項目が複数ある場合は入力してください(空欄の場合は「1」として扱われます)</inlineHelpText>
+    <label>数量</label>
+    <precision>18</precision>
+    <required>false</required>
+    <scale>0</scale>
+    <trackTrending>false</trackTrending>
+    <type>Number</type>
+    <unique>false</unique>
+</CustomField>

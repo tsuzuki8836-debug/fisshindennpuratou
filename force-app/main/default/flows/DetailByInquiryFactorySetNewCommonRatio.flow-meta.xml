@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Flow xmlns="http://soap.sforce.com/2006/04/metadata">
+    <apiVersion>66.0</apiVersion>
+    <description>古い共通比率音のレコードからコピー作成された場合に、最新の共通費率に自動で更新する</description>
+    <environments>Default</environments>
+    <formulas>
+        <description>過去の共通費率を最新の共通費率に変換</description>
+        <name>Formula_CommonRatio</name>
+        <dataType>String</dataType>
+        <expression>IF(ISPICKVAL({!$Record.BU__c}, &apos;水環境&apos;),
+    CASE(TEXT({!$Record.CommonRatio__c})
+    , &apos;31% ： 製作所&apos;, &apos;33% ： 製作所&apos;
+    , &apos;22% ： プラ統&apos;, &apos;21% ： プラ統&apos;
+    ,TEXT({!$Record.CommonRatio__c}))
+,IF(ISPICKVAL({!$Record.BU__c}, &apos;施設&apos;),
+    CASE(TEXT({!$Record.CommonRatio__c})
+    , &apos;21% ： 製作所&apos;, &apos;23% ： 製作所&apos;
+    , &apos;10% ： 製作所移牒他社品調達（機種コード：XO）&apos;, &apos;9% ： 製作所移牒他社品調達（機種コード：XO）&apos;
+    , &apos;12% ： 神電移牒TMEIC製品（機種コード：YO）&apos;, &apos;11% ： 神電移牒TMEIC製品（機種コード：YO）&apos;
+    , &apos;13% ： 他社品&apos;, &apos;12% ： 他社品&apos;
+    ,TEXT({!$Record.CommonRatio__c}))
+,IF(ISPICKVAL({!$Record.BU__c}, &apos;官需&apos;),
+    CASE(TEXT({!$Record.CommonRatio__c})
+    , &apos;29% ： 製作所&apos;, &apos;31% ： 製作所&apos;
+    ,TEXT({!$Record.CommonRatio__c}))
+,TEXT({!$Record.CommonRatio__c}))))</expression>
+    </formulas>
+    <interviewLabel>伺い場所別明細_共通費率最新化 {!$Flow.CurrentDateTime}</interviewLabel>
+    <label>【伺い場所別数値明細】共通費率最新化</label>
+    <processMetadataValues>
+        <name>BuilderType</name>
+        <value>
+            <stringValue>LightningFlowBuilder</stringValue>
+        </value>
+    </processMetadataValues>
+    <processMetadataValues>
+        <name>CanvasMode</name>
+        <value>
+            <stringValue>AUTO_LAYOUT_CANVAS</stringValue>
+        </value>
+    </processMetadataValues>
+    <processMetadataValues>
+        <name>OriginBuilderType</name>
+        <value>
+            <stringValue>LightningFlowBuilder</stringValue>
+        </value>
+    </processMetadataValues>
+    <processType>AutoLaunchedFlow</processType>
+    <recordUpdates>
+        <name>SetNewCommnRatio</name>
+        <label>共通費率の変換</label>
+        <locationX>0</locationX>
+        <locationY>0</locationY>
+        <filterLogic>and</filterLogic>
+        <filters>
+            <field>CommonRatio__c</field>
+            <operator>IsNull</operator>
+            <value>
+                <booleanValue>false</booleanValue>
+            </value>
+        </filters>
+        <inputAssignments>
+            <field>CommonRatio__c</field>
+            <value>
+                <elementReference>Formula_CommonRatio</elementReference>
+            </value>
+        </inputAssignments>
+        <inputReference>$Record</inputReference>
+    </recordUpdates>
+    <start>
+        <locationX>0</locationX>
+        <locationY>0</locationY>
+        <connector>
+            <targetReference>SetNewCommnRatio</targetReference>
+        </connector>
+        <object>DetailByInquiryFactory__c</object>
+        <recordTriggerType>Create</recordTriggerType>
+        <triggerType>RecordBeforeSave</triggerType>
+    </start>
+    <status>Active</status>
+</Flow>

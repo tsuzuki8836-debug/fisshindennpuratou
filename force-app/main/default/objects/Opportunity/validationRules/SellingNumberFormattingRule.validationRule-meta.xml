@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ValidationRule xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>SellingNumberFormattingRule</fullName>
+    <active>false</active>
+    <description>売報番号のフォーマットを以下の形式にする。
+A0000-X000-0</description>
+    <errorConditionFormula>NOT(
+ OR(
+  LEN (SellingNumber__c) =  0,
+  REGEX(SellingNumber__c, &quot;[A][0-9]{4}-[A-Z][0-9]{3}-[0-9]{1}&quot;)
+ )
+)</errorConditionFormula>
+    <errorMessage>売報番号はA0000-X000-0というフォーマットで入力してください。
+英字は半角大文字、数字は半角で登録してください。
+ハイフンを忘れないようにしてください。</errorMessage>
+</ValidationRule>

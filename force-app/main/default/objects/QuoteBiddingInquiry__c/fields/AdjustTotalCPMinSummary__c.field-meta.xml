@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>AdjustTotalCPMinSummary__c</fullName>
+    <externalId>false</externalId>
+    <label>今回合計CP(MIN)</label>
+    <summarizedField>DetailByInquiryFactory__c.AdjustCPMin__c</summarizedField>
+    <summaryForeignKey>DetailByInquiryFactory__c.QuoteBiddingInquiry__c</summaryForeignKey>
+    <summaryOperation>sum</summaryOperation>
+    <trackHistory>false</trackHistory>
+    <trackTrending>false</trackTrending>
+    <type>Summary</type>
+</CustomField>

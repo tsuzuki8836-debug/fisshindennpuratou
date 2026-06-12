@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ValidationRule xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>ExportManagementProvisionQ11Check</fullName>
+    <active>true</active>
+    <description>Eが「はい」の場合、(Eが「はい」の場合)輸管B承認済整理番号は必須です</description>
+    <errorConditionFormula>AND(
+    PriceList__c = false,
+	ISPICKVAL(ExportManagementProvisionQ10__c, &apos;はい&apos;),
+	ISBLANK(ExportManagementProvisionQ11__c),
+    NOT(Creating__c)
+)</errorConditionFormula>
+    <errorDisplayField>ExportManagementProvisionQ11__c</errorDisplayField>
+    <errorMessage>(Eが「はい」の場合)輸管B承認済整理番号は必須です</errorMessage>
+</ValidationRule>

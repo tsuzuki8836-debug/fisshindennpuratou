@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Agency3TradingStyle__c</fullName>
+    <externalId>false</externalId>
+    <label>代理店3_取引形態(手数料伺い)</label>
+    <required>false</required>
+    <trackFeedHistory>false</trackFeedHistory>
+    <trackHistory>false</trackHistory>
+    <trackTrending>false</trackTrending>
+    <type>Picklist</type>
+    <valueSet>
+        <restricted>true</restricted>
+        <valueSetDefinition>
+            <sorted>false</sorted>
+            <value>
+                <fullName>委嘱</fullName>
+                <default>false</default>
+                <label>委嘱</label>
+            </value>
+            <value>
+                <fullName>協力</fullName>
+                <default>false</default>
+                <label>協力</label>
+            </value>
+        </valueSetDefinition>
+    </valueSet>
+</CustomField>

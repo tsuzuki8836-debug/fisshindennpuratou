@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Current_FinalWC1__c</fullName>
+    <externalId>false</externalId>
+    <formula>IF( ISNULL(Result_TotalWC__c), IF( ISNULL(Latest_TotalWC__c), IF( ISNULL(Order_TotalWC__c), TotalWC__c, Order_TotalWC__c), Latest_TotalWC__c), Result_FinalWC__c)</formula>
+    <label>WC(最終&gt;SR最新&gt;SR受注時&gt;商談)</label>
+    <precision>18</precision>
+    <required>false</required>
+    <scale>0</scale>
+    <trackHistory>false</trackHistory>
+    <type>Currency</type>
+</CustomField>

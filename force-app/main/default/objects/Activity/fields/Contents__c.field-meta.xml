@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Contents__c</fullName>
+    <externalId>false</externalId>
+    <inlineHelpText>文字数上限255字</inlineHelpText>
+    <label>活動結果（詳細）</label>
+    <required>false</required>
+    <type>TextArea</type>
+</CustomField>

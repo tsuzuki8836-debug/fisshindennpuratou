@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<WebLink xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>CreateSystemIntegrationButton</fullName>
+    <availability>online</availability>
+    <displayType>button</displayType>
+    <encodingKey>UTF-8</encodingKey>
+    <height>600</height>
+    <linkType>url</linkType>
+    <masterLabel>システムインテグレーション費登録</masterLabel>
+    <openType>sidebar</openType>
+    <protected>false</protected>
+    <url>/lightning/o/Device__c/new?recordTypeId={!Quote__c.RecordTypeIDOfDevice__c}&amp;defaultFieldValues=
+Quote__c={!Quote__c.Id},
+RecordTypeOfQuote__c={!Quote__c.RecordType},
+ConstructionZone__c={!ConstructionZone__c.Id},
+GeneralAdministrativeExpensesCopy__c={!Quote__c.GeneralAdministrativeExpensesPercent__c},
+MajorClassification__c=システムインテグレーション費,
+EquipManageCostTarget__c=,
+&amp;backgroundContext=%2Flightning%2Fr%2FConstructionZone__c%2F{!ConstructionZone__c.Id}%2Fview</url>
+</WebLink>

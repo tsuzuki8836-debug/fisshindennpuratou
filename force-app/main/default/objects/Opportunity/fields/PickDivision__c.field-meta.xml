@@ -1,0 +1,439 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>PickDivision__c</fullName>
+    <defaultValue>$User.Division</defaultValue>
+    <externalId>false</externalId>
+    <label>部門</label>
+    <required>false</required>
+    <trackFeedHistory>false</trackFeedHistory>
+    <trackHistory>true</trackHistory>
+    <type>Picklist</type>
+    <valueSet>
+        <restricted>true</restricted>
+        <valueSetDefinition>
+            <sorted>false</sorted>
+            <value>
+                <fullName>本社　通シ</fullName>
+                <default>false</default>
+                <label>本社　通シ</label>
+            </value>
+            <value>
+                <fullName>本社　通シ・管理</fullName>
+                <default>false</default>
+                <label>本社　通シ・管理</label>
+            </value>
+            <value>
+                <fullName>本社　通シ・通シ一</fullName>
+                <default>false</default>
+                <label>本社　通シ・通シ一</label>
+            </value>
+            <value>
+                <fullName>本社　通シ・通シ二</fullName>
+                <default>false</default>
+                <label>本社　通シ・通シ二</label>
+            </value>
+            <value>
+                <fullName>本社　施設</fullName>
+                <default>false</default>
+                <label>本社　施設</label>
+            </value>
+            <value>
+                <fullName>本社　施設・一</fullName>
+                <default>false</default>
+                <label>本社　施設・一</label>
+            </value>
+            <value>
+                <fullName>本社　施設・二</fullName>
+                <default>false</default>
+                <label>本社　施設・二</label>
+            </value>
+            <value>
+                <fullName>本社　施設・三</fullName>
+                <default>false</default>
+                <label>本社　施設・三</label>
+            </value>
+            <value>
+                <fullName>本社　施設・DC</fullName>
+                <default>false</default>
+                <label>本社　施設・DC</label>
+            </value>
+            <value>
+                <fullName>本社　施設・販企</fullName>
+                <default>false</default>
+                <label>本社　施設・販企</label>
+            </value>
+            <value>
+                <fullName>本社　社シ一</fullName>
+                <default>false</default>
+                <label>本社　社シ一</label>
+            </value>
+            <value>
+                <fullName>本社　社シ一・P推</fullName>
+                <default>false</default>
+                <label>本社　社シ一・P推</label>
+            </value>
+            <value>
+                <fullName>本社　社シ一・一</fullName>
+                <default>false</default>
+                <label>本社　社シ一・一</label>
+            </value>
+            <value>
+                <fullName>本社　社シ一・二</fullName>
+                <default>false</default>
+                <label>本社　社シ一・二</label>
+            </value>
+            <value>
+                <fullName>本社　社シ一・三</fullName>
+                <default>false</default>
+                <label>本社　社シ一・三</label>
+            </value>
+            <value>
+                <fullName>本社　社シ二</fullName>
+                <default>false</default>
+                <label>本社　社シ二</label>
+            </value>
+            <value>
+                <fullName>本社　社シ二・企政</fullName>
+                <default>false</default>
+                <label>本社　社シ二・企政</label>
+            </value>
+            <value>
+                <fullName>本社　社シ二・建防</fullName>
+                <default>false</default>
+                <label>本社　社シ二・建防</label>
+            </value>
+            <value>
+                <fullName>本社　社シ二・道路</fullName>
+                <default>false</default>
+                <label>本社　社シ二・道路</label>
+            </value>
+            <value>
+                <fullName>本社　社シ二・S監</fullName>
+                <default>false</default>
+                <label>本社　社シ二・S監</label>
+            </value>
+            <value>
+                <fullName>本社　官公</fullName>
+                <default>false</default>
+                <label>本社　官公</label>
+            </value>
+            <value>
+                <fullName>本社　官公・一</fullName>
+                <default>false</default>
+                <label>本社　官公・一</label>
+            </value>
+            <value>
+                <fullName>本社　官公・二</fullName>
+                <default>false</default>
+                <label>本社　官公・二</label>
+            </value>
+            <value>
+                <fullName>本社　海Ｆシ</fullName>
+                <default>false</default>
+                <label>本社　海Ｆシ</label>
+            </value>
+            <value>
+                <fullName>本社　海Ｆシ・１</fullName>
+                <default>false</default>
+                <label>本社　海Ｆシ・１</label>
+            </value>
+            <value>
+                <fullName>本社　海Ｆシ・２</fullName>
+                <default>false</default>
+                <label>本社　海Ｆシ・２</label>
+            </value>
+            <value>
+                <fullName>本社　社環計</fullName>
+                <default>false</default>
+                <label>本社　社環計</label>
+            </value>
+            <value>
+                <fullName>本社　社環計・企画</fullName>
+                <default>false</default>
+                <label>本社　社環計・企画</label>
+            </value>
+            <value>
+                <fullName>本社　社環計・業務</fullName>
+                <default>false</default>
+                <label>本社　社環計・業務</label>
+            </value>
+            <value>
+                <fullName>本社　社環計・品証</fullName>
+                <default>false</default>
+                <label>本社　社環計・品証</label>
+            </value>
+            <value>
+                <fullName>本社　社環計・輸管</fullName>
+                <default>false</default>
+                <label>本社　社環計・輸管</label>
+            </value>
+            <value>
+                <fullName>本社　事管推</fullName>
+                <default>false</default>
+                <label>本社　事管推</label>
+            </value>
+            <value>
+                <fullName>本社　事管推・水施設</fullName>
+                <default>false</default>
+                <label>本社　事管推・水施設</label>
+            </value>
+            <value>
+                <fullName>本社　事管推・官需官公</fullName>
+                <default>false</default>
+                <label>本社　事管推・官需官公</label>
+            </value>
+            <value>
+                <fullName>北支　社会シ</fullName>
+                <default>false</default>
+                <label>北支　社会シ</label>
+            </value>
+            <value>
+                <fullName>北支　社会シ一</fullName>
+                <default>false</default>
+                <label>北支　社会シ一</label>
+            </value>
+            <value>
+                <fullName>北支　社会シ二</fullName>
+                <default>false</default>
+                <label>北支　社会シ二</label>
+            </value>
+            <value>
+                <fullName>東北支　社会シ部</fullName>
+                <default>false</default>
+                <label>東北支　社会シ部</label>
+            </value>
+            <value>
+                <fullName>東北支　社会シ部・社シ一</fullName>
+                <default>false</default>
+                <label>東北支　社会シ部・社シ一</label>
+            </value>
+            <value>
+                <fullName>東北支　社会シ部・社シ二</fullName>
+                <default>false</default>
+                <label>東北支　社会シ部・社シ二</label>
+            </value>
+            <value>
+                <fullName>東北支　社会シ部・施設</fullName>
+                <default>false</default>
+                <label>東北支　社会シ部・施設</label>
+            </value>
+            <value>
+                <fullName>関越支　社会シ</fullName>
+                <default>false</default>
+                <label>関越支　社会シ</label>
+            </value>
+            <value>
+                <fullName>関越支　社会シ一</fullName>
+                <default>false</default>
+                <label>関越支　社会シ一</label>
+            </value>
+            <value>
+                <fullName>関越支　社会シ二</fullName>
+                <default>false</default>
+                <label>関越支　社会シ二</label>
+            </value>
+            <value>
+                <fullName>関越支　社会シ三</fullName>
+                <default>false</default>
+                <label>関越支　社会シ三</label>
+            </value>
+            <value>
+                <fullName>神奈支　社会シ</fullName>
+                <default>false</default>
+                <label>神奈支　社会シ</label>
+            </value>
+            <value>
+                <fullName>神奈支　社シ一</fullName>
+                <default>false</default>
+                <label>神奈支　社シ一</label>
+            </value>
+            <value>
+                <fullName>神奈支　社シ二</fullName>
+                <default>false</default>
+                <label>神奈支　社シ二</label>
+            </value>
+            <value>
+                <fullName>陸支　社シ</fullName>
+                <default>false</default>
+                <label>陸支　社シ</label>
+            </value>
+            <value>
+                <fullName>陸支　社シ一</fullName>
+                <default>false</default>
+                <label>陸支　社シ一</label>
+            </value>
+            <value>
+                <fullName>陸支　社シ二</fullName>
+                <default>false</default>
+                <label>陸支　社シ二</label>
+            </value>
+            <value>
+                <fullName>中部支　社会シ</fullName>
+                <default>false</default>
+                <label>中部支　社会シ</label>
+            </value>
+            <value>
+                <fullName>中部支　社シ企</fullName>
+                <default>false</default>
+                <label>中部支　社シ企</label>
+            </value>
+            <value>
+                <fullName>中部支　社シ一</fullName>
+                <default>false</default>
+                <label>中部支　社シ一</label>
+            </value>
+            <value>
+                <fullName>中部支　社シ二</fullName>
+                <default>false</default>
+                <label>中部支　社シ二</label>
+            </value>
+            <value>
+                <fullName>中部支　社シ三</fullName>
+                <default>false</default>
+                <label>中部支　社シ三</label>
+            </value>
+            <value>
+                <fullName>中部支　社シ四</fullName>
+                <default>false</default>
+                <label>中部支　社シ四</label>
+            </value>
+            <value>
+                <fullName>西支　社シ</fullName>
+                <default>false</default>
+                <label>西支　社シ</label>
+            </value>
+            <value>
+                <fullName>西支　社シ一</fullName>
+                <default>false</default>
+                <label>西支　社シ一</label>
+            </value>
+            <value>
+                <fullName>西支　社シ二</fullName>
+                <default>false</default>
+                <label>西支　社シ二</label>
+            </value>
+            <value>
+                <fullName>西支　社シ三</fullName>
+                <default>false</default>
+                <label>西支　社シ三</label>
+            </value>
+            <value>
+                <fullName>西支　社シ四</fullName>
+                <default>false</default>
+                <label>西支　社シ四</label>
+            </value>
+            <value>
+                <fullName>西支　京社シ</fullName>
+                <default>false</default>
+                <label>西支　京社シ</label>
+            </value>
+            <value>
+                <fullName>西支　兵社シ</fullName>
+                <default>false</default>
+                <label>西支　兵社シ</label>
+            </value>
+            <value>
+                <fullName>中国支　社会</fullName>
+                <default>false</default>
+                <label>中国支　社会</label>
+            </value>
+            <value>
+                <fullName>中国支　社一</fullName>
+                <default>false</default>
+                <label>中国支　社一</label>
+            </value>
+            <value>
+                <fullName>中国支　社二</fullName>
+                <default>false</default>
+                <label>中国支　社二</label>
+            </value>
+            <value>
+                <fullName>中国支　岡山社三</fullName>
+                <default>false</default>
+                <label>中国支　岡山社三</label>
+            </value>
+            <value>
+                <fullName>四支　社会部</fullName>
+                <default>false</default>
+                <label>四支　社会部</label>
+            </value>
+            <value>
+                <fullName>四支　社一課</fullName>
+                <default>false</default>
+                <label>四支　社一課</label>
+            </value>
+            <value>
+                <fullName>四支　社二課</fullName>
+                <default>false</default>
+                <label>四支　社二課</label>
+            </value>
+            <value>
+                <fullName>九支　社シ</fullName>
+                <default>false</default>
+                <label>九支　社シ</label>
+            </value>
+            <value>
+                <fullName>九支　社シ・社会１</fullName>
+                <default>false</default>
+                <label>九支　社シ・社会１</label>
+            </value>
+            <value>
+                <fullName>九支　社シ・社会２</fullName>
+                <default>false</default>
+                <label>九支　社シ・社会２</label>
+            </value>
+            <value>
+                <fullName>九支　社シ・施設</fullName>
+                <default>false</default>
+                <label>九支　社シ・施設</label>
+            </value>
+            <value>
+                <fullName>九支　社シ・沖社シ</fullName>
+                <default>false</default>
+                <label>九支　社シ・沖社シ</label>
+            </value>
+            <value>
+                <fullName>中国支　山口社四</fullName>
+                <default>false</default>
+                <isActive>false</isActive>
+                <label>中国支　山口社四</label>
+            </value>
+            <value>
+                <fullName>中国支　鳥営</fullName>
+                <default>false</default>
+                <isActive>false</isActive>
+                <label>中国支　鳥営</label>
+            </value>
+            <value>
+                <fullName>九支　社シ・社会３</fullName>
+                <default>false</default>
+                <isActive>false</isActive>
+                <label>九支　社シ・社会３</label>
+            </value>
+            <value>
+                <fullName>九支　社シ・社会４</fullName>
+                <default>false</default>
+                <isActive>false</isActive>
+                <label>九支　社シ・社会４</label>
+            </value>
+            <value>
+                <fullName>四支　企画G</fullName>
+                <default>false</default>
+                <isActive>false</isActive>
+                <label>四支　企画G</label>
+            </value>
+            <value>
+                <fullName>本社　施設・DCG</fullName>
+                <default>false</default>
+                <isActive>false</isActive>
+                <label>本社　施設・DCG</label>
+            </value>
+            <value>
+                <fullName>本社　施設・施設統</fullName>
+                <default>false</default>
+                <isActive>false</isActive>
+                <label>本社　施設・施設統</label>
+            </value>
+        </valueSetDefinition>
+    </valueSet>
+</CustomField>

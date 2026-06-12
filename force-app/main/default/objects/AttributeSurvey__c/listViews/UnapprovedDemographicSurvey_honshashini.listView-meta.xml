@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ListView xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>UnapprovedDemographicSurvey_honshashini</fullName>
+    <columns>NAME</columns>
+    <columns>Account__c</columns>
+    <columns>ApprovalStatus__c</columns>
+    <columns>CheckResultJudgment__c</columns>
+    <columns>ValidFormula__c</columns>
+    <columns>LastApprovalDate__c</columns>
+    <columns>CREATEDBY_USER</columns>
+    <filterScope>Everything</filterScope>
+    <filters>
+        <field>ApprovalStatus__c</field>
+        <operation>notEqual</operation>
+        <value>承認済</value>
+    </filters>
+    <filters>
+        <field>BranchOffice__c</field>
+        <operation>contains</operation>
+        <value>01_本社</value>
+    </filters>
+    <filters>
+        <field>Department__c</field>
+        <operation>contains</operation>
+        <value>社会システム第二部</value>
+    </filters>
+    <label>01.未承認の属性調査一覧を表示（本社・社シ二）</label>
+</ListView>

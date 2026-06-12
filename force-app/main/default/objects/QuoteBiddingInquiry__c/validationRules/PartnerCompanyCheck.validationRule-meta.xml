@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ValidationRule xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>PartnerCompanyCheck</fullName>
+    <active>true</active>
+    <description>「応札体制」が協業の場合、「協業社」が必須</description>
+    <errorConditionFormula>AND(
+ ISPICKVAL(BidForm__c, &apos;協業&apos;),
+ ISPICKVAL(PartnerCompany__c,&apos;&apos;),
+    NOT(Creating__c)
+)</errorConditionFormula>
+    <errorDisplayField>PartnerCompany__c</errorDisplayField>
+    <errorMessage>協業社は必須です</errorMessage>
+</ValidationRule>

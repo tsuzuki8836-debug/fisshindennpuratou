@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>CommercialDistribution1OrderedCheck__c</fullName>
+    <externalId>false</externalId>
+    <formula>IF(INCLUDES(CommercialDistributionOfOrderedVendor__c , &quot;商流1&quot;),true,false )</formula>
+    <label>商流1受注済</label>
+    <trackTrending>false</trackTrending>
+    <type>Checkbox</type>
+</CustomField>

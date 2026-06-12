@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>SuccessfulBidderInfo__c</fullName>
+    <description>落札者が”その他”の場合は、落札者（手入力）を表示する。
+落札金額はカンマ編集する。※小数点以下は切り捨て。</description>
+    <externalId>false</externalId>
+    <formula>IF ( SuccessfulBidder__r.Name = &quot;その他&quot;, SuccessfulBidderManual__c, SuccessfulBidder__r.Name) &amp; &quot;／&quot; &amp; 
+ IF(
+    ROUND(BidAmount__c,0) &lt; 1,
+    TEXT(BidAmount__c), 
+    MID( 
+        TEXT(FLOOR(BidAmount__c)), 
+        1, 
+        IF( 
+            MOD(
+                LEN(TEXT(ROUND(BidAmount__c,0))),3)=0, 
+                3, 
+                LEN(TEXT(ROUND(BidAmount__c,0)))-(ROUND((LEN(TEXT(ROUND(BidAmount__c,0)))-1)/3,0)*3) 
+            ) 
+        ) &amp; 
+        IF( 
+        LEN(TEXT(ROUND(BidAmount__c,0)))&gt;3,
+        &quot;,&quot; &amp;
+        MID(
+            TEXT(FLOOR(BidAmount__c)),
+            IF(
+                MOD(LEN(TEXT(ROUND(BidAmount__c,0))),3)=0,
+                4,
+                LEN(TEXT(ROUND(BidAmount__c,0)))-(ROUND((LEN(TEXT(ROUND(BidAmount__c,0)))-1)/3,0)*3-1)
+            ),
+            3
+        ),
+        &quot;&quot;
+    ) &amp;
+    IF(
+        LEN(TEXT(ROUND(BidAmount__c,0)))&gt;6,
+        &quot;,&quot; &amp;
+        MID(
+            TEXT(FLOOR(BidAmount__c)),
+            IF(
+                MOD(LEN(TEXT(ROUND(BidAmount__c,0))),3)=0,
+                7,
+                LEN(TEXT(ROUND(BidAmount__c,0)))-(ROUND((LEN(TEXT(ROUND(BidAmount__c,0)))-1)/3,0)*3-4)
+            ),
+            3
+        ),
+        &quot;&quot;
+    ) &amp;
+    IF(
+        LEN(TEXT(ROUND(BidAmount__c,0)))&gt;9,
+        &quot;,&quot; &amp;
+        MID(
+            TEXT(FLOOR(BidAmount__c)),
+            IF(
+                MOD(LEN(TEXT(ROUND(BidAmount__c,0))),3)=0,
+                10,
+                LEN(TEXT(ROUND(BidAmount__c,0)))-(ROUND((LEN(TEXT(ROUND(BidAmount__c,0)))-1)/3,0)*3-7)
+            ),
+            3
+        ),
+        &quot;&quot;
+    )
+ )</formula>
+    <label>落札者／落札金額</label>
+    <required>false</required>
+    <trackHistory>false</trackHistory>
+    <trackTrending>false</trackTrending>
+    <type>Text</type>
+    <unique>false</unique>
+</CustomField>

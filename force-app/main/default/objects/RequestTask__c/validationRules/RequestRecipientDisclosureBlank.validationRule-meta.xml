@@ -4,12 +4,12 @@
     <active>true</active>
     <description>「依頼先以外への開示」が開示不可　かつ「開示場所1～3」のいずれかに値が入っている際にエラーを表示する。</description>
     <errorConditionFormula>AND( ISPICKVAL( DiscloseExceptRequestDestination__c , &quot;開示不可&quot;) ,
-OR(
-NOT(ISPICKVAL( RequestDestinationCc__c , &quot;&quot;) ) ,
-NOT(ISPICKVAL( RequestDestinationCc2__c ,&quot;&quot;) ),
-NOT(ISPICKVAL( RequestDestinationCc3__c,&quot;&quot; ) )
-)
+       OR(
+           NOT(ISPICKVAL( RequestDestinationCc__c , &quot;&quot;) ) ,
+           NOT(ISPICKVAL( RequestDestinationCc2__c ,&quot;&quot;) ),
+           NOT(ISPICKVAL( RequestDestinationCc3__c,&quot;&quot; ) ) 
+       )
 )</errorConditionFormula>
     <errorDisplayField>DiscloseExceptRequestDestination__c</errorDisplayField>
-    <errorMessage>依頼先以外への開示が不可の場合、「開示場所1～3」は選択できません。</errorMessage>
+    <errorMessage>開示不可の場合、開示場所1～3は「なし」を選択してください。</errorMessage>
 </ValidationRule>

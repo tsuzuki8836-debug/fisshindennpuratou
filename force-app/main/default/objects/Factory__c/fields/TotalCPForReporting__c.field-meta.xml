@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>TotalCPForReporting__c</fullName>
+    <externalId>false</externalId>
+    <formula>Opp1__r.TotalCPForReporting__c</formula>
+    <label>案件 発行CP一致フラグ</label>
+    <trackHistory>false</trackHistory>
+    <trackTrending>false</trackTrending>
+    <type>Checkbox</type>
+</CustomField>

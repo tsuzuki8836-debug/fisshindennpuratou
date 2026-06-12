@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ValidationRule xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>LastCustomerCheck</fullName>
+    <active>true</active>
+    <description>価格表の場合、任意</description>
+    <errorConditionFormula>AND(
+PriceList__c = false,
+ISBLANK(LastCustomer__c),
+    NOT(Creating__c)
+)</errorConditionFormula>
+    <errorDisplayField>LastCustomer__c</errorDisplayField>
+    <errorMessage>最終顧客は必須です</errorMessage>
+</ValidationRule>

@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>MoldName__c</fullName>
+    <externalId>false</externalId>
+    <label>形名</label>
+    <required>false</required>
+    <trackFeedHistory>false</trackFeedHistory>
+    <trackHistory>false</trackHistory>
+    <trackTrending>false</trackTrending>
+    <type>Picklist</type>
+    <valueSet>
+        <restricted>true</restricted>
+        <valueSetDefinition>
+            <sorted>false</sorted>
+            <value>
+                <fullName>EVP-SS60B3-M7</fullName>
+                <default>false</default>
+                <label>EVP-SS60B3-M7</label>
+            </value>
+            <value>
+                <fullName>EVP-SS60B3-Y7</fullName>
+                <default>false</default>
+                <label>EVP-SS60B3-Y7</label>
+            </value>
+            <value>
+                <fullName>EVP-SS60B3-Y7W</fullName>
+                <default>false</default>
+                <label>EVP-SS60B3-Y7W</label>
+            </value>
+            <value>
+                <fullName>EVP-SS60B3-M7-R</fullName>
+                <default>false</default>
+                <label>EVP-SS60B3-M7-R</label>
+            </value>
+        </valueSetDefinition>
+    </valueSet>
+</CustomField>

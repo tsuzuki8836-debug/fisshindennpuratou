@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ValidationRule xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>ExportManagementProvisionQ4Check</fullName>
+    <active>true</active>
+    <description>「①一次顧客の顧客調査票(様式K1)の起票」が起票不要の場合、①で起票不要を選択した場合は理由は必須です</description>
+    <errorConditionFormula>AND(
+    PriceList__c = false,
+    ISPICKVAL(ExportManagementProvisionQ3__c, &apos;起票不要&apos;),
+    ISBLANK(TEXT(ExportManagementProvisionQ4__c)),
+    NOT(Creating__c)
+)</errorConditionFormula>
+    <errorDisplayField>ExportManagementProvisionQ4__c</errorDisplayField>
+    <errorMessage>①で起票不要を選択した場合は理由は必須です</errorMessage>
+</ValidationRule>

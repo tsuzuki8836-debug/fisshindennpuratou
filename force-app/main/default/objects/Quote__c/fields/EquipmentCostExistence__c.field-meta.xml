@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>EquipmentCostExistence__c</fullName>
+    <externalId>false</externalId>
+    <inlineHelpText>機器管理費有無で「あり」を選択した場合は工区有無も選択してください。</inlineHelpText>
+    <label>国土交通省機器管理費有無</label>
+    <required>false</required>
+    <trackFeedHistory>false</trackFeedHistory>
+    <trackHistory>false</trackHistory>
+    <trackTrending>false</trackTrending>
+    <type>Picklist</type>
+    <valueSet>
+        <restricted>true</restricted>
+        <valueSetDefinition>
+            <sorted>false</sorted>
+            <value>
+                <fullName>なし</fullName>
+                <default>true</default>
+                <label>機器管理費なし</label>
+            </value>
+            <value>
+                <fullName>あり</fullName>
+                <default>false</default>
+                <label>機器管理費あり</label>
+            </value>
+        </valueSetDefinition>
+    </valueSet>
+</CustomField>

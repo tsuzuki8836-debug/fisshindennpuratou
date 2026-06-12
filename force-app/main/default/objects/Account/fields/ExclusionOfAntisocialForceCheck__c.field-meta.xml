@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>ExclusionOfAntisocialForceCheck__c</fullName>
+    <externalId>false</externalId>
+    <label>暴排条項締結有無</label>
+    <required>false</required>
+    <trackFeedHistory>false</trackFeedHistory>
+    <trackHistory>true</trackHistory>
+    <type>Picklist</type>
+    <valueSet>
+        <restricted>true</restricted>
+        <valueSetDefinition>
+            <sorted>false</sorted>
+            <value>
+                <fullName>有（双務）</fullName>
+                <default>false</default>
+                <label>有（双務）</label>
+            </value>
+            <value>
+                <fullName>有（片務）</fullName>
+                <default>false</default>
+                <label>有（片務）</label>
+            </value>
+            <value>
+                <fullName>無</fullName>
+                <default>false</default>
+                <label>無</label>
+            </value>
+        </valueSetDefinition>
+    </valueSet>
+</CustomField>

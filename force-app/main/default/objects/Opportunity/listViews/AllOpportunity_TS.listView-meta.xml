@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ListView xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>AllOpportunity_TS</fullName>
+    <columns>OPPORTUNITY.NAME</columns>
+    <columns>OppNumber__c</columns>
+    <columns>OpportunityNumber__c</columns>
+    <columns>SBU__c</columns>
+    <columns>Property__c</columns>
+    <columns>ACCOUNT.NAME</columns>
+    <columns>OrderExpectation__c</columns>
+    <columns>OPPORTUNITY.STAGE_NAME</columns>
+    <columns>OPPORTUNITY.CLOSE_DATE</columns>
+    <columns>ScheduledSalesDate__c</columns>
+    <columns>EstimatedTotalCP__c</columns>
+    <columns>EstimatedTotalWC1__c</columns>
+    <columns>CORE.USERS.FULL_NAME</columns>
+    <columns>OPPORTUNITY.CREATED_DATE</columns>
+    <columns>OPPORTUNITY.LAST_UPDATE</columns>
+    <filterScope>Everything</filterScope>
+    <filters>
+        <field>OPPORTUNITY.RECORDTYPE</field>
+        <operation>equals</operation>
+        <value>Opportunity.OpportunityRecordType1</value>
+    </filters>
+    <label>すべての案件（システム管理グループ確認用）</label>
+    <sharedTo>
+        <group>SystemAdminGroup</group>
+    </sharedTo>
+</ListView>

@@ -5,11 +5,9 @@ trigger QuoteTrigger on Quote__c (before insert, before update, after insert, af
 
     if(Trigger.isBefore){
         if (Trigger.isInsert) {
-            handler.onBeforeInsert(Trigger.new,Trigger.oldMap);
-            handler.onBeforeInsertUpdate(Trigger.new);
+            handler.onBeforeInsert(Trigger.new);
         } else if (Trigger.isUpdate) {
             handler.onBeforeUpdate(Trigger.new,Trigger.oldMap);
-            handler.onBeforeInsertUpdate(Trigger.new);
         }
     }
 

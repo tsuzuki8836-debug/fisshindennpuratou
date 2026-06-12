@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Flow xmlns="http://soap.sforce.com/2006/04/metadata">
+    <apiVersion>65.0</apiVersion>
+    <description>プロセスビルダー「オーダー情報施主自動設定」から移行</description>
+    <environments>Default</environments>
+    <interviewLabel>【オーダー情報】施主を設定 {!$Flow.CurrentDateTime}</interviewLabel>
+    <label>【オーダー情報】施主を設定</label>
+    <processMetadataValues>
+        <name>BuilderType</name>
+        <value>
+            <stringValue>LightningFlowBuilder</stringValue>
+        </value>
+    </processMetadataValues>
+    <processMetadataValues>
+        <name>CanvasMode</name>
+        <value>
+            <stringValue>AUTO_LAYOUT_CANVAS</stringValue>
+        </value>
+    </processMetadataValues>
+    <processType>AutoLaunchedFlow</processType>
+    <recordUpdates>
+        <name>updatePropOwner</name>
+        <label>施主自動設定</label>
+        <locationX>0</locationX>
+        <locationY>0</locationY>
+        <inputAssignments>
+            <field>PropOwner__c</field>
+            <value>
+                <elementReference>$Record.Oppt__r.Client__c</elementReference>
+            </value>
+        </inputAssignments>
+        <inputReference>$Record</inputReference>
+    </recordUpdates>
+    <start>
+        <locationX>0</locationX>
+        <locationY>0</locationY>
+        <connector>
+            <targetReference>updatePropOwner</targetReference>
+        </connector>
+        <filterFormula>AND(
+{!$Record.Oppt__c}    != null,
+{!$Record.PropOwner__c} = null,
+{!$Record.Oppt__r.Client__c} != null
+)</filterFormula>
+        <object>OrderInfomation__c</object>
+        <recordTriggerType>CreateAndUpdate</recordTriggerType>
+        <triggerType>RecordBeforeSave</triggerType>
+    </start>
+    <status>Active</status>
+</Flow>

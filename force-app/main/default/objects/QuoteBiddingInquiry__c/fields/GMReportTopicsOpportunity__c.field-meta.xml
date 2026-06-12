@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>GMReportTopicsOpportunity__c</fullName>
+    <externalId>false</externalId>
+    <inlineHelpText>損益面、新規性など報告が必要な場合は選択すると報告用のセクションが表示されます</inlineHelpText>
+    <label>GM報告トピックス案件</label>
+    <required>false</required>
+    <trackFeedHistory>false</trackFeedHistory>
+    <trackHistory>false</trackHistory>
+    <trackTrending>false</trackTrending>
+    <type>Picklist</type>
+    <valueSet>
+        <restricted>true</restricted>
+        <valueSetDefinition>
+            <sorted>false</sorted>
+            <value>
+                <fullName>受注</fullName>
+                <default>false</default>
+                <label>受注</label>
+            </value>
+            <value>
+                <fullName>失注</fullName>
+                <default>false</default>
+                <label>失注</label>
+            </value>
+        </valueSetDefinition>
+    </valueSet>
+</CustomField>

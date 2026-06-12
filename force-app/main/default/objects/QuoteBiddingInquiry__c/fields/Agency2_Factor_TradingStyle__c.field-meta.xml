@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Agency2_Factor_TradingStyle__c</fullName>
+    <externalId>false</externalId>
+    <formula>CASE(TEXT(Agency2TradingStyle__c),
+    &quot;委嘱&quot;,1.2,
+    &quot;協力&quot;,1.0,
+    0.0
+)</formula>
+    <label>代理店2_係数_取引形態</label>
+    <precision>18</precision>
+    <required>false</required>
+    <scale>1</scale>
+    <trackHistory>false</trackHistory>
+    <trackTrending>false</trackTrending>
+    <type>Number</type>
+    <unique>false</unique>
+</CustomField>

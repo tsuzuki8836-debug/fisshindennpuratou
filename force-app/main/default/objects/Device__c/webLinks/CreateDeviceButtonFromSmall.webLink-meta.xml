@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<WebLink xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>CreateDeviceButtonFromSmall</fullName>
+    <availability>online</availability>
+    <description>細別から見積項目を作成するリストボタン</description>
+    <displayType>massActionButton</displayType>
+    <encodingKey>UTF-8</encodingKey>
+    <height>600</height>
+    <linkType>url</linkType>
+    <masterLabel>新規</masterLabel>
+    <openType>sidebar</openType>
+    <protected>false</protected>
+    <requireRowSelection>false</requireRowSelection>
+    <url>/lightning/o/Device__c/new?recordTypeId={!Device_SmallCategory__c.RecordTypeIDOfDevice__c}&amp;defaultFieldValues=
+Quote__c={!Device_SmallCategory__c.QuoteId__c},
+ConstructionZone__c={!Device_SmallCategory__c.ConstructionZoneId__c},
+Device_SmallCategory__c={!Device_SmallCategory__c.Id},
+GeneralAdministrativeExpensesCopy__c={!Device_SmallCategory__c.GeneralAdministrativeExpensesCopy__c},
+EquipmentCostExistence__c={!Device_SmallCategory__c.EquipmentCostExistence__c},
+SectionExistence__c={!Device_SmallCategory__c.SectionExistence__c}
+&amp;backgroundContext=%2Flightning%2Fr%2FDevice_SmallCategory__c%2F{!Device_SmallCategory__c.Id}%2Fview</url>
+</WebLink>

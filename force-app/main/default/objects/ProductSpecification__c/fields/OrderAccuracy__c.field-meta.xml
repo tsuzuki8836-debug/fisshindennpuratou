@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>OrderAccuracy__c</fullName>
+    <description>案件と紐づけた時に自動的に案件の受注予定受注確度が設定されます。</description>
+    <externalId>false</externalId>
+    <formula>Opp5__r.Probability</formula>
+    <label>受注確度</label>
+    <precision>18</precision>
+    <required>false</required>
+    <scale>0</scale>
+    <trackHistory>false</trackHistory>
+    <trackTrending>false</trackTrending>
+    <type>Percent</type>
+</CustomField>

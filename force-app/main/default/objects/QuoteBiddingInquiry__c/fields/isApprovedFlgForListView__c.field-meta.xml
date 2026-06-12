@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>isApprovedFlgForListView__c</fullName>
+    <externalId>false</externalId>
+    <formula>IF (
+       OR (
+               AND ( 
+                       OR (
+                               RecordType.DeveloperName = &apos;O&apos;,
+                              RecordType.DeveloperName = &apos;SH&apos;
+                       ),
+                       ISPICKVAL( ResultContactStatus__c , &apos;承認済&apos;) 
+              ),
+               AND ( 
+                       OR (
+                               RecordType.DeveloperName = &apos;M&apos;,
+                               RecordType.DeveloperName = &apos;JV&apos;,
+                               RecordType.DeveloperName = &apos;FeeInquiry&apos;
+                       ),
+                       ISPICKVAL(  InquiryApprovalStatus__c , &apos;承認済&apos;) 
+              )
+         ) ,
+         true,
+         false
+)</formula>
+    <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
+    <label>承認済フラグ(リストビュー用)</label>
+    <trackHistory>false</trackHistory>
+    <trackTrending>false</trackTrending>
+    <type>Checkbox</type>
+</CustomField>

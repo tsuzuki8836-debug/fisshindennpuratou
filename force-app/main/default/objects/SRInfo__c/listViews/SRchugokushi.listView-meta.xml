@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ListView xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>SRchugokushi</fullName>
+    <columns>NAME</columns>
+    <columns>AffiliationName__c</columns>
+    <columns>ContactPersonName__c</columns>
+    <columns>Result_SRWC__c</columns>
+    <columns>Result_WCRate__c</columns>
+    <columns>SR_Number__c</columns>
+    <columns>Subject__c</columns>
+    <columns>LocationName__c</columns>
+    <columns>OrderMonth__c</columns>
+    <columns>SalesMonth__c</columns>
+    <columns>Opportunity__c</columns>
+    <columns>OrderingSource__c</columns>
+    <columns>Warning__c</columns>
+    <columns>Order_Forecast_SRCP__c</columns>
+    <filterScope>Everything</filterScope>
+    <filters>
+        <field>EntryDate__c</field>
+        <operation>greaterOrEqual</operation>
+        <value>10/1/2021</value>
+    </filters>
+    <filters>
+        <field>SR_Number__c</field>
+        <operation>startsWith</operation>
+        <value>A53</value>
+    </filters>
+    <label>中国支のSR情報</label>
+    <sharedTo>
+        <role>M07_chugokushisha</role>
+    </sharedTo>
+</ListView>

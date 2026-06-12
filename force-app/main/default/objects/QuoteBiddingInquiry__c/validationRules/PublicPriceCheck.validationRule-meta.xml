@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ValidationRule xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>PublicPriceCheck</fullName>
+    <active>true</active>
+    <description>応札伺いで、「予定価格　公表有無」が「公表有（事前）」の場合、予定価格　公表価格は必須です</description>
+    <errorConditionFormula>AND(
+        RecordType.DeveloperName= &apos;O&apos;,
+        PriceList__c = false,
+	ISPICKVAL(PlannedPriceExistence__c,  &apos;公表有（事前）&apos;),
+	ISBLANK(PublicPrice__c),
+        NOT(Creating__c)
+)</errorConditionFormula>
+    <errorDisplayField>PublicPrice__c</errorDisplayField>
+    <errorMessage>予定価格　公表価格は必須です</errorMessage>
+</ValidationRule>

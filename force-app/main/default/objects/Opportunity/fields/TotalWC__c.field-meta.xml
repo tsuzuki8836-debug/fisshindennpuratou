@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>TotalWC__c</fullName>
+    <externalId>false</externalId>
+    <inlineHelpText>場所別を作成すると、場所別数値の集計値が自動挿入されます。</inlineHelpText>
+    <label>１．商談WC</label>
+    <precision>16</precision>
+    <required>false</required>
+    <scale>0</scale>
+    <trackFeedHistory>false</trackFeedHistory>
+    <trackHistory>true</trackHistory>
+    <trackTrending>true</trackTrending>
+    <type>Currency</type>
+</CustomField>

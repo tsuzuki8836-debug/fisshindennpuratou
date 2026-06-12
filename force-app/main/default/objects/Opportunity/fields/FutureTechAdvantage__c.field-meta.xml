@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>FutureTechAdvantage__c</fullName>
+    <externalId>false</externalId>
+    <label>次回以降の工事での技術優位性構築</label>
+    <required>false</required>
+    <trackFeedHistory>false</trackFeedHistory>
+    <trackHistory>false</trackHistory>
+    <type>Picklist</type>
+    <valueSet>
+        <restricted>true</restricted>
+        <valueSetDefinition>
+            <sorted>false</sorted>
+            <value>
+                <fullName>可</fullName>
+                <default>false</default>
+                <label>可</label>
+            </value>
+            <value>
+                <fullName>不可</fullName>
+                <default>false</default>
+                <label>不可</label>
+            </value>
+        </valueSetDefinition>
+    </valueSet>
+</CustomField>

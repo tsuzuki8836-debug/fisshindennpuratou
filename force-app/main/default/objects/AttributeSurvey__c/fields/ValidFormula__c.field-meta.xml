@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>ValidFormula__c</fullName>
+    <externalId>false</externalId>
+    <formula>IF(AND(TODAY() &lt;= DateOfExpiry__c,ValidFlag__c = True)
+,True
+,False
+)</formula>
+    <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
+    <inlineHelpText>有効期限は最終承認日から最長で2年間。または同一企業・団体において、この伺書よりも後に提出・承認されたものがあれば、そちらの有効期限に従っても可。</inlineHelpText>
+    <label>有効</label>
+    <trackHistory>false</trackHistory>
+    <trackTrending>false</trackTrending>
+    <type>Checkbox</type>
+</CustomField>

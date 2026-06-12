@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ValidationRule xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>ProjectScaleCheck</fullName>
+    <active>true</active>
+    <description>・応札かつ辞退の場合は必須
+・設計変更かつ辞退の場合は必須</description>
+    <errorConditionFormula>OR(
+	AND(
+		RecordType.DeveloperName= &apos;O&apos;,
+		Refusal__c = true,
+		ISPICKVAL(OpportunityScale__c,&apos;&apos;),
+    	NOT(Creating__c)
+	),
+	AND(
+		RecordType.DeveloperName= &apos;SH&apos;,
+		Refusal__c,
+		ISPICKVAL(OpportunityScale__c,&apos;&apos;),
+    	NOT(Creating__c)
+	)
+)</errorConditionFormula>
+    <errorDisplayField>OpportunityScale__c</errorDisplayField>
+    <errorMessage>案件規模(1億円以上/未満）は必須です</errorMessage>
+</ValidationRule>

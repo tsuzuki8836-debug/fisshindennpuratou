@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>OrderingMethod__c</fullName>
+    <externalId>false</externalId>
+    <label>発注方式</label>
+    <required>false</required>
+    <trackFeedHistory>false</trackFeedHistory>
+    <trackHistory>false</trackHistory>
+    <trackTrending>false</trackTrending>
+    <type>Picklist</type>
+    <valueSet>
+        <restricted>true</restricted>
+        <valueSetDefinition>
+            <sorted>false</sorted>
+            <value>
+                <fullName>総合評価方式</fullName>
+                <default>false</default>
+                <label>総合評価方式</label>
+            </value>
+            <value>
+                <fullName>価格のみ</fullName>
+                <default>false</default>
+                <label>価格のみ</label>
+            </value>
+        </valueSetDefinition>
+    </valueSet>
+</CustomField>

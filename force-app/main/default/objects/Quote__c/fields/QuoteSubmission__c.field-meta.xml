@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>QuoteSubmission__c</fullName>
+    <externalId>false</externalId>
+    <inlineHelpText>提出先が複数の場合は改行して複数入力してください。</inlineHelpText>
+    <label>見積提出先</label>
+    <required>false</required>
+    <trackFeedHistory>false</trackFeedHistory>
+    <trackHistory>false</trackHistory>
+    <trackTrending>false</trackTrending>
+    <type>TextArea</type>
+</CustomField>

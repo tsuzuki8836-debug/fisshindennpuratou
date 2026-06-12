@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ListView xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>X28_SBU</fullName>
+    <columns>OPPORTUNITY.NAME</columns>
+    <columns>SBU__c</columns>
+    <columns>ACCOUNT.NAME</columns>
+    <columns>OrderExpectation__c</columns>
+    <columns>OPPORTUNITY.STAGE_NAME</columns>
+    <columns>OPPORTUNITY.CLOSE_DATE</columns>
+    <columns>ScheduledSalesDate__c</columns>
+    <columns>EstimatedTotalCP__c</columns>
+    <columns>EstimatedTotalWC1__c</columns>
+    <columns>CORE.USERS.ALIAS</columns>
+    <filterScope>Everything</filterScope>
+    <filters>
+        <field>SBU__c</field>
+        <operation>equals</operation>
+        <value>上水</value>
+    </filters>
+    <filters>
+        <field>OPPORTUNITY.RECORDTYPE</field>
+        <operation>equals</operation>
+        <value>Opportunity.OpportunityRecordType1</value>
+    </filters>
+    <label>28.SBUが上水の案件</label>
+</ListView>

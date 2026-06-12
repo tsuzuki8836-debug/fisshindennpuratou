@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Device_LargeCategory__c</fullName>
+    <externalId>false</externalId>
+    <label>工種</label>
+    <lookupFilter>
+        <active>true</active>
+        <errorMessage>対象の見積に属さない工種を選択しています。
+選択し直してください。</errorMessage>
+        <filterItems>
+            <field>$Source.Quote__c</field>
+            <operation>equals</operation>
+            <valueField>Device_LargeCategory__c.Quote__r.Id</valueField>
+        </filterItems>
+        <isOptional>false</isOptional>
+    </lookupFilter>
+    <referenceTo>Device_LargeCategory__c</referenceTo>
+    <relationshipLabel>種別</relationshipLabel>
+    <relationshipName>Device_MiddleCategorys</relationshipName>
+    <relationshipOrder>0</relationshipOrder>
+    <reparentableMasterDetail>true</reparentableMasterDetail>
+    <trackTrending>false</trackTrending>
+    <type>MasterDetail</type>
+    <writeRequiresMasterRead>false</writeRequiresMasterRead>
+</CustomField>

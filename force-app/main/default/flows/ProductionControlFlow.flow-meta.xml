@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Flow xmlns="http://soap.sforce.com/2006/04/metadata">
+    <apiVersion>61.0</apiVersion>
+    <environments>Default</environments>
+    <interviewLabel>生産管理更新 {!$Flow.CurrentDateTime}</interviewLabel>
+    <label>生産管理更新</label>
+    <processMetadataValues>
+        <name>BuilderType</name>
+        <value>
+            <stringValue>LightningFlowBuilder</stringValue>
+        </value>
+    </processMetadataValues>
+    <processMetadataValues>
+        <name>CanvasMode</name>
+        <value>
+            <stringValue>AUTO_LAYOUT_CANVAS</stringValue>
+        </value>
+    </processMetadataValues>
+    <processMetadataValues>
+        <name>OriginBuilderType</name>
+        <value>
+            <stringValue>LightningFlowBuilder</stringValue>
+        </value>
+    </processMetadataValues>
+    <processType>AutoLaunchedFlow</processType>
+    <recordUpdates>
+        <description>場所別の案件IDを生産管理の案件IDに設定、場所別のBUを場所別BUに設定</description>
+        <name>SetOpportunityIdAndBU</name>
+        <label>案件ID・場所別BUを設定</label>
+        <locationX>176</locationX>
+        <locationY>287</locationY>
+        <inputAssignments>
+            <field>FactoryBU__c</field>
+            <value>
+                <elementReference>$Record.Factory__r.BU__c</elementReference>
+            </value>
+        </inputAssignments>
+        <inputAssignments>
+            <field>Opportunity__c</field>
+            <value>
+                <elementReference>$Record.Factory__r.Opp1__c</elementReference>
+            </value>
+        </inputAssignments>
+        <inputReference>$Record</inputReference>
+    </recordUpdates>
+    <start>
+        <locationX>50</locationX>
+        <locationY>0</locationY>
+        <connector>
+            <targetReference>SetOpportunityIdAndBU</targetReference>
+        </connector>
+        <filterFormula>OR(
+{!$Record.Factory__r.Opp1__c} != {!$Record.Opportunity__c} 
+, TEXT({!$Record.Factory__r.BU__c}) != TEXT({!$Record.FactoryBU__c} )
+)</filterFormula>
+        <object>ProductionControl__c</object>
+        <recordTriggerType>CreateAndUpdate</recordTriggerType>
+        <triggerType>RecordBeforeSave</triggerType>
+    </start>
+    <status>Active</status>
+</Flow>

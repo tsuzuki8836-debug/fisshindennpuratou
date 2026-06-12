@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Sansan_CI__AutoAccountMatchSetAccount__c</fullName>
+    <deprecated>false</deprecated>
+    <externalId>false</externalId>
+    <label>自動関連づけ_取引先一致_取引先設定</label>
+    <required>false</required>
+    <trackTrending>false</trackTrending>
+    <type>Picklist</type>
+    <valueSet>
+        <controllingField>Sansan_CI__AutoAccountMatchSetContact__c</controllingField>
+        <restricted>true</restricted>
+        <valueSetDefinition>
+            <sorted>false</sorted>
+            <value>
+                <fullName>Update</fullName>
+                <default>true</default>
+                <label>既存レコードを更新</label>
+            </value>
+            <value>
+                <fullName>Nothing</fullName>
+                <default>false</default>
+                <label>何もしない</label>
+            </value>
+        </valueSetDefinition>
+        <valueSettings>
+            <controllingFieldValue>Insert</controllingFieldValue>
+            <valueName>Update</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Insert</controllingFieldValue>
+            <controllingFieldValue>Nothing</controllingFieldValue>
+            <valueName>Nothing</valueName>
+        </valueSettings>
+    </valueSet>
+</CustomField>

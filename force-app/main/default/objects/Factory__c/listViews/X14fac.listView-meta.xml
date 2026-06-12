@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ListView xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>X14fac</fullName>
+    <columns>NAME</columns>
+    <columns>Opp1__c</columns>
+    <columns>SBU__c</columns>
+    <columns>CarryingDay__c</columns>
+    <columns>SR_CP__c</columns>
+    <columns>EstimatedTotalCP__c</columns>
+    <columns>TC__c</columns>
+    <columns>TCPercent__c</columns>
+    <columns>SRWC__c</columns>
+    <columns>EstimatedTotalWC1__c</columns>
+    <columns>WCRate__c</columns>
+    <columns>CommonRatio1__c</columns>
+    <columns>OWNER.ALIAS</columns>
+    <filterScope>Everything</filterScope>
+    <filters>
+        <field>FactoryOwnersDivision__c</field>
+        <operation>equals</operation>
+        <value>05_中部支社</value>
+    </filters>
+    <label>14.中部支社の場所別</label>
+</ListView>

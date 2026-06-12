@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Sansan_CI__Auto_IsIncludeOnlyAutoLinkedBizcard__c</fullName>
+    <defaultValue>false</defaultValue>
+    <deprecated>false</deprecated>
+    <externalId>false</externalId>
+    <label>自動関連づけ_既存名刺検索処理で自動関連づけ名刺のみを対象とする</label>
+    <trackTrending>false</trackTrending>
+    <type>Checkbox</type>
+</CustomField>

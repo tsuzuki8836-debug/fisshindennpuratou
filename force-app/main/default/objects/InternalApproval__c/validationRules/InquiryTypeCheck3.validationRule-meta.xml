@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ValidationRule xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>InquiryTypeCheck3</fullName>
+    <active>true</active>
+    <errorConditionFormula>AND(
+    NOT(
+        OR(
+            AND(
+                NOT(ISBLANK(TEXT( InquiryType3__c ))),
+                NOT(ISBLANK( Date3__c )),
+                LEN ( URL3__c ) &gt; 0
+            ),
+            AND(
+                ISBLANK(TEXT( InquiryType3__c )),
+                ISBLANK( Date3__c  ),
+                LEN ( URL3__c ) = 0
+            )
+        )
+    ),
+    NOT(
+        OR(
+            $Profile.Name = &apos;システム管理者&apos;,
+            $Profile.Name = &apos;データ移行管理者&apos;
+        )
+    )
+)</errorConditionFormula>
+    <errorMessage>「伺い種別3」「伺い完了日3」「SharePointURL3」はすべて揃えた上で入力してください。</errorMessage>
+</ValidationRule>

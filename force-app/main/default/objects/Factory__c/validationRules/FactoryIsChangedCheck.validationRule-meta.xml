@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ValidationRule xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>FactoryIsChangedCheck</fullName>
+    <active>true</active>
+    <description>J項番号が設定されている場合、製作所を変えると、保存ボタンを押下した場合にエラーとする</description>
+    <errorConditionFormula>AND( 
+    NOT( ISBLANK(J_FieldNmber__c ) )   ,  
+    ISCHANGED( Factory__c )  ,
+    NOT($Profile.Name = &apos;データ移行管理者&apos;) 
+)</errorConditionFormula>
+    <errorMessage>J項番号が入力されているため、製作所の変更はできません。</errorMessage>
+</ValidationRule>

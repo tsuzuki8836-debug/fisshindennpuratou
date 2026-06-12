@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>SolarPowerPanelMaker__c</fullName>
+    <externalId>false</externalId>
+    <label>太陽電池パネルメーカー</label>
+    <required>false</required>
+    <trackFeedHistory>false</trackFeedHistory>
+    <trackHistory>false</trackHistory>
+    <trackTrending>false</trackTrending>
+    <type>Picklist</type>
+    <valueSet>
+        <valueSetDefinition>
+            <sorted>false</sorted>
+            <value>
+                <fullName>シャープ京セラパナソニックジンコソーラーカナディアンソーラーJAソーラーその他フリー項目</fullName>
+                <default>false</default>
+                <label>シャープ京セラパナソニックジンコソーラーカナディアンソーラーJAソーラーその他フリー項目</label>
+            </value>
+        </valueSetDefinition>
+    </valueSet>
+</CustomField>

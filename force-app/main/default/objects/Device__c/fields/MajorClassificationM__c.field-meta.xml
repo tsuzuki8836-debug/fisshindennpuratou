@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>MajorClassificationM__c</fullName>
+    <externalId>false</externalId>
+    <formula>IF (  ( Quote__r.RecordType.Name = &apos;水環境&apos; &amp;&amp;  TEXT(MajorClassification__c)  = &apos;特高&apos; ), &apos;01&apos;
+, IF ( (Quote__r.RecordType.Name = &apos;水環境&apos; &amp;&amp;  TEXT(MajorClassification__c)  = &apos;高圧受配電盤&apos; ), &apos;02&apos;
+, IF ( (Quote__r.RecordType.Name = &apos;水環境&apos; &amp;&amp;  TEXT(MajorClassification__c)  = &apos;変圧器&apos; ), &apos;03&apos;
+, IF ( (Quote__r.RecordType.Name = &apos;水環境&apos; &amp;&amp;  TEXT(MajorClassification__c)  =&apos;高圧コンビ&apos;), &apos;04&apos;
+, IF ( (Quote__r.RecordType.Name = &apos;水環境&apos; &amp;&amp;  TEXT(MajorClassification__c)  = &apos;低圧・現場・ﾘﾚｰ・ACB盤&apos; ), &apos;05&apos;
+, IF ( (Quote__r.RecordType.Name = &apos;水環境&apos; &amp;&amp;  TEXT(MajorClassification__c)  = &apos;コントロールセンタ（C/C)&apos; ), &apos;06&apos;
+, IF ( (Quote__r.RecordType.Name = &apos;水環境&apos; &amp;&amp;  TEXT(MajorClassification__c)  = &apos;中継端子・接地端子盤&apos; ), &apos;07&apos;
+, IF ( (Quote__r.RecordType.Name = &apos;水環境&apos; &amp;&amp;  TEXT(MajorClassification__c)  = &apos;回転数制御装置(VVVF)&apos; ), &apos;08&apos;
+, IF ( (Quote__r.RecordType.Name = &apos;水環境&apos; &amp;&amp;  TEXT(MajorClassification__c)  = &apos;MACTUS&apos; ), &apos;09&apos;
+, IF ( (Quote__r.RecordType.Name = &apos;水環境&apos; &amp;&amp;  TEXT(MajorClassification__c)  = &apos;計装機器&apos; ), &apos;10&apos;
+, IF ( (Quote__r.RecordType.Name = &apos;水環境&apos; &amp;&amp;  TEXT(MajorClassification__c)  = &apos;中央監視&apos; ), &apos;11&apos;
+, IF ( (Quote__r.RecordType.Name = &apos;水環境&apos; &amp;&amp;  TEXT(MajorClassification__c)  = &apos;発電機&apos; ), &apos;12&apos;
+, IF ( (Quote__r.RecordType.Name = &apos;水環境&apos; &amp;&amp;  TEXT(MajorClassification__c)  = &apos;UPS(GS)&apos; ), &apos;13&apos;
+, IF ( (Quote__r.RecordType.Name = &apos;水環境&apos; &amp;&amp;  TEXT(MajorClassification__c)  = &apos;共通機器&apos; ), &apos;51&apos;
+, IF ( (Quote__r.RecordType.Name = &apos;水環境&apos; &amp;&amp;  TEXT(MajorClassification__c)  = &apos;技派・予備品等、他社&apos; ), &apos;61&apos;
+, IF ( (Quote__r.RecordType.Name = &apos;水環境&apos; &amp;&amp;  TEXT(MajorClassification__c)  = &apos;本支社専用&apos; ), &apos;62&apos;
+, IF ( (Quote__r.RecordType.Name = &apos;水環境&apos; &amp;&amp;  TEXT(MajorClassification__c)  = &apos;材料&apos; ), &apos;71&apos;
+, &apos; &apos;) ) ) ) ) ) ) ) ) ) ) ) ) ) ) ) )</formula>
+    <label>大分類コード（水環境）</label>
+    <required>false</required>
+    <trackTrending>false</trackTrending>
+    <type>Text</type>
+    <unique>false</unique>
+</CustomField>

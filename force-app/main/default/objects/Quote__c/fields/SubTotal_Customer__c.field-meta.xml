@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>SubTotal_Customer__c</fullName>
+    <externalId>false</externalId>
+    <formula>IF( ISPICKVAL( SectionExistence__c , &quot;あり&quot;) ,
+MachineUnitAmount_RollUp__c + EquipManageCost_Rollup__c + SystemIntegrationFee_Rollup__c +  MachineUnitAmount_ExceptSum_Rollup__c ,
+MachineUnitAmount_OnlyTarget__c +  EquipManageCost_formula__c +  SystemIntegrationFee_formula__c +  MachineUnitAmount_ExceptSum__c)</formula>
+    <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
+    <inlineHelpText>機器単体費(見積対象分のみ)＋機器管理費＋システムインテグレーション費合計＋機器管理費対象外の見積金額</inlineHelpText>
+    <label>小計(客先提出用)</label>
+    <precision>18</precision>
+    <required>false</required>
+    <scale>0</scale>
+    <trackHistory>false</trackHistory>
+    <trackTrending>false</trackTrending>
+    <type>Currency</type>
+</CustomField>

@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>WCSummary__c</fullName>
+    <externalId>false</externalId>
+    <label>ＷＣ概要</label>
+    <required>false</required>
+    <trackFeedHistory>false</trackFeedHistory>
+    <trackHistory>false</trackHistory>
+    <trackTrending>false</trackTrending>
+    <type>Picklist</type>
+    <valueSet>
+        <restricted>true</restricted>
+        <valueSetDefinition>
+            <sorted>false</sorted>
+            <value>
+                <fullName>確定（手配先と原低交渉後WC）</fullName>
+                <default>false</default>
+                <label>確定（手配先と原低交渉後WC）</label>
+            </value>
+            <value>
+                <fullName>標準（手配先の1次回答WC）</fullName>
+                <default>false</default>
+                <label>標準（手配先の1次回答WC）</label>
+            </value>
+            <value>
+                <fullName>概算（事管推整備の標準WC等）</fullName>
+                <default>false</default>
+                <label>概算（事管推整備の標準WC等）</label>
+            </value>
+        </valueSetDefinition>
+    </valueSet>
+</CustomField>

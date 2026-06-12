@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ValidationRule xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>DistributionChannelsPatternRule</fullName>
+    <active>false</active>
+    <errorConditionFormula>AND(
+  OR(
+    AND(ISPICKVAL(  DistributionChannelsPattern__c , &quot;施主→当社&quot;),
+       AND(ISBLANK(  Client__c ) , ISBLANK(   ClientRemarks__c ) ) 
+     ),
+    AND(ISPICKVAL(  DistributionChannelsPattern__c , &quot;施主→代理店→当社&quot;),
+       OR(AND(ISBLANK(  Client__c ) , ISBLANK(   ClientRemarks__c ) ) ,
+            AND(ISBLANK(   Agency__c ) , ISBLANK(    Agency_Remarks__c  ) ) 
+       )
+    ),
+    AND(ISPICKVAL( DistributionChannelsPattern__c , &quot;施主→GC→SC→当社&quot;),
+        OR( AND(ISBLANK(  Client__c ) , ISBLANK(   ClientRemarks__c ) )  ,  
+              AND(ISBLANK(  GC__c ) , ISBLANK(   GC_Remarks__c ) ) , 
+              AND(ISBLANK(  SC__c ) , ISBLANK(   SC_Remarks__c ) ) 
+        )
+    ) ,
+   AND(ISPICKVAL(  DistributionChannelsPattern__c , &quot;施主→GC→SC→代理店→当社&quot;),
+      OR(AND(ISBLANK(  Client__c ) , ISBLANK(   ClientRemarks__c ) ) ,
+            AND(ISBLANK(  GC__c ) , ISBLANK(   GC_Remarks__c ) ) , 
+            AND(ISBLANK(  SC__c ) , ISBLANK(   SC_Remarks__c ) ) , 
+             AND(ISBLANK(   Agency__c ) , ISBLANK(    Agency_Remarks__c  ) ) 
+      ) 
+   ),
+   AND(ISPICKVAL(  DistributionChannelsPattern__c , &quot;施主→GC→当社&quot;),
+      OR(AND(ISBLANK(  Client__c ) , ISBLANK(   ClientRemarks__c ) ) ,
+            AND(ISBLANK(  GC__c ) , ISBLANK(   GC_Remarks__c ) ) 
+      )
+   ),
+   AND(ISPICKVAL(  DistributionChannelsPattern__c , &quot;施主→GC→代理店→当社&quot;),
+      OR(AND(ISBLANK(  Client__c ) , ISBLANK(   ClientRemarks__c ) ) ,
+            AND(ISBLANK(  GC__c ) , ISBLANK(   GC_Remarks__c ) ) , 
+             AND(ISBLANK(   Agency__c ) , ISBLANK(    Agency_Remarks__c  ) ) 
+      ) 
+   ),
+   AND(ISPICKVAL(  DistributionChannelsPattern__c , &quot;施主→SC→当社&quot;),
+      OR(AND(ISBLANK(  Client__c ) , ISBLANK(   ClientRemarks__c ) ) ,
+            AND(ISBLANK(  SC__c ) , ISBLANK(   SC_Remarks__c ) ) 
+      ) 
+   ),
+   AND(ISPICKVAL(  DistributionChannelsPattern__c , &quot;施主→SC→代理店→当社&quot;),
+      OR(AND(ISBLANK(  Client__c ) , ISBLANK(   ClientRemarks__c ) ) ,
+            AND(ISBLANK(  SC__c ) , ISBLANK(   SC_Remarks__c ) ) , 
+             AND(ISBLANK(   Agency__c ) , ISBLANK(    Agency_Remarks__c  ) ) 
+      ) 
+   )
+   ),
+   NOT($Profile.Name = &apos;データ移行管理者&apos;)
+)</errorConditionFormula>
+    <errorMessage>商流パターンに該当する項目に入力してください。</errorMessage>
+</ValidationRule>

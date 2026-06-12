@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>AgencyProvisionPriceSum__c</fullName>
+    <externalId>false</externalId>
+    <label>代理店提供価格合計(積み上げ)</label>
+    <summarizedField>Detail__c.ProvisionPrice__c</summarizedField>
+    <summaryForeignKey>Detail__c.Device__c</summaryForeignKey>
+    <summaryOperation>sum</summaryOperation>
+    <trackTrending>false</trackTrending>
+    <type>Summary</type>
+</CustomField>

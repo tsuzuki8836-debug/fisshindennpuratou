@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>SewerExtraHighDelivery1__c</fullName>
+    <deleteConstraint>SetNull</deleteConstraint>
+    <description>下水の特高受配1</description>
+    <externalId>false</externalId>
+    <label>下水特高受配1</label>
+    <lookupFilter>
+        <active>true</active>
+        <filterItems>
+            <field>Account.RecordTypeId</field>
+            <operation>equals</operation>
+            <value>事業所</value>
+        </filterItems>
+        <isOptional>true</isOptional>
+    </lookupFilter>
+    <referenceTo>Account</referenceTo>
+    <relationshipLabel>機場 (特高受配1)</relationshipLabel>
+    <relationshipName>PumpStaSewerExtraHighDelivery1List</relationshipName>
+    <required>false</required>
+    <trackFeedHistory>false</trackFeedHistory>
+    <trackHistory>false</trackHistory>
+    <trackTrending>false</trackTrending>
+    <type>Lookup</type>
+</CustomField>

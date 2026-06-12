@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>FeeRate3__c</fullName>
+    <externalId>false</externalId>
+    <formula>IF(
+  TotalCP__c &lt;= 6000000,
+  0,
+  IF(
+    AND(
+      TotalCP__c &gt; 6000000,
+      TotalCP__c &lt;= 10000000
+    ),
+    (TotalCP__c - 6000000) * 0.04,
+    (10000000 - 6000000) * 0.04
+  )
+)</formula>
+    <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
+    <label>手数料率（~10000）</label>
+    <precision>18</precision>
+    <required>false</required>
+    <scale>0</scale>
+    <trackHistory>false</trackHistory>
+    <type>Number</type>
+    <unique>false</unique>
+</CustomField>

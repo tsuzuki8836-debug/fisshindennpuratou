@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>MajorClassificationK__c</fullName>
+    <externalId>false</externalId>
+    <formula>IF ( (Quote__r.RecordType.Name = &apos;官需&apos; &amp;&amp;  TEXT(MajorClassification__c)  = &apos;テレメータ装置&apos; ), &apos;41&apos;
+, IF ( (Quote__r.RecordType.Name = &apos;官需&apos; &amp;&amp;  TEXT(MajorClassification__c)  = &apos;無線装置（テレメータ･テレコントロール用）&apos; ), &apos;42&apos;
+, IF ( (Quote__r.RecordType.Name = &apos;官需&apos; &amp;&amp;  TEXT(MajorClassification__c)  = &apos;放流警報装置&apos; ), &apos;43&apos;
+, IF ( (Quote__r.RecordType.Name = &apos;官需&apos; &amp;&amp;  TEXT(MajorClassification__c)  = &apos;テレメータ装置（自律型）&apos; ), &apos;44&apos;
+, IF ( (Quote__r.RecordType.Name = &apos;官需&apos; &amp;&amp;  TEXT(MajorClassification__c)  = &apos;ＩＰ映像装置&apos; ), &apos;45&apos;
+, IF ( (Quote__r.RecordType.Name = &apos;官需&apos; &amp;&amp;  TEXT(MajorClassification__c)  = &apos;ＩＰ伝送装置&apos; ), &apos;46&apos;
+, IF ( (Quote__r.RecordType.Name = &apos;官需&apos; &amp;&amp;  TEXT(MajorClassification__c)  = &apos;CCTVカメラ設備&apos; ), &apos;47&apos;
+, IF ( (Quote__r.RecordType.Name = &apos;官需&apos; &amp;&amp;  TEXT(MajorClassification__c)  = &apos;MELFLEX&apos; ), &apos;48&apos;
+, IF ( (Quote__r.RecordType.Name = &apos;官需&apos; &amp;&amp;  TEXT(MajorClassification__c)  = &apos;共通機器&apos; ), &apos;51&apos;
+, IF ( (Quote__r.RecordType.Name = &apos;官需&apos; &amp;&amp;  TEXT(MajorClassification__c)  = &apos;技派・予備品等、他社&apos; ), &apos;61&apos;
+, IF ( (Quote__r.RecordType.Name = &apos;官需&apos; &amp;&amp;  TEXT(MajorClassification__c)  = &apos;本支社専用&apos; ), &apos;62&apos;
+, IF ( (Quote__r.RecordType.Name = &apos;官需&apos; &amp;&amp;  TEXT(MajorClassification__c)  = &apos;材料&apos; ), &apos;71&apos;
+, &apos; &apos;) ) ) ) ) ) ) ) ) ) ) )</formula>
+    <label>大分類コード（官需）</label>
+    <required>false</required>
+    <trackTrending>false</trackTrending>
+    <type>Text</type>
+    <unique>false</unique>
+</CustomField>

@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ValidationRule xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>EstimatedResult</fullName>
+    <active>true</active>
+    <description>「選定結果」は本社 社シ一・一のメンバーのみ変更可能です。</description>
+    <errorConditionFormula>AND(
+    NOT($User.Division = &apos;本社　社シ一・一&apos;)
+    , ISCHANGED(Result__c) 
+)</errorConditionFormula>
+    <errorDisplayField>Result__c</errorDisplayField>
+    <errorMessage>「選定結果」は本社 社シ一・一のメンバーのみ変更可能です。元の選択項目に戻してください。</errorMessage>
+</ValidationRule>

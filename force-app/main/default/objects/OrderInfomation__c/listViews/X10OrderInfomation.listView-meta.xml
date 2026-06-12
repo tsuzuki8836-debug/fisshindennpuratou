@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ListView xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>X10OrderInfomation</fullName>
+    <columns>NAME</columns>
+    <columns>SBU__c</columns>
+    <columns>InstallDate__c</columns>
+    <columns>UsageEndDate__c</columns>
+    <columns>MachineRenewalDate__c</columns>
+    <columns>OrderLostKbn__c</columns>
+    <columns>OrderInfoOwnerDivision__c</columns>
+    <columns>OWNER.ALIAS</columns>
+    <filterScope>Everything</filterScope>
+    <filters>
+        <field>DepartmentAndDivision__c</field>
+        <operation>equals</operation>
+        <value>01_本社</value>
+    </filters>
+    <label>10.本社のオーダー情報</label>
+</ListView>

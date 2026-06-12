@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ValidationRule xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>DivisionCheck</fullName>
+    <active>true</active>
+    <description>案件.部門とユーザ.ディビジョンをチェックし、異なっていた場合、エラーを表示する</description>
+    <errorConditionFormula>NOT( 
+BEGINS( TEXT(Opportunity__r.PickDivision__c) 
+, LEFT(  $User.Division  , FIND(&quot;　&quot;,  $User.Division ) -1 ) 
+)
+)</errorConditionFormula>
+    <errorDisplayField>Opportunity__c</errorDisplayField>
+    <errorMessage>他支社の案件へ紐づけはできません。
+自支社の案件へ紐づけてください。</errorMessage>
+</ValidationRule>

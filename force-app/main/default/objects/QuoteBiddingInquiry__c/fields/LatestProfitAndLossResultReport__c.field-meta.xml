@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>LatestProfitAndLossResultReport__c</fullName>
+    <deleteConstraint>SetNull</deleteConstraint>
+    <externalId>false</externalId>
+    <label>最新損益参照先_設計変更応札伺い(結果報告)</label>
+    <lookupFilter>
+        <active>true</active>
+        <filterItems>
+            <field>QuoteBiddingInquiry__c.RecordTypeId</field>
+            <operation>equals</operation>
+            <value>設計変更応札伺い</value>
+        </filterItems>
+        <filterItems>
+            <field>QuoteBiddingInquiry__c.Opportunity__c</field>
+            <operation>equals</operation>
+            <valueField>$Source.Opportunity__c</valueField>
+        </filterItems>
+        <filterItems>
+            <field>QuoteBiddingInquiry__c.ResultContactStatus__c</field>
+            <operation>equals</operation>
+            <value>承認済</value>
+        </filterItems>
+        <isOptional>true</isOptional>
+    </lookupFilter>
+    <referenceTo>QuoteBiddingInquiry__c</referenceTo>
+    <relationshipName>LatestProfitAndLossResultReports</relationshipName>
+    <required>false</required>
+    <trackFeedHistory>false</trackFeedHistory>
+    <trackHistory>false</trackHistory>
+    <trackTrending>false</trackTrending>
+    <type>Lookup</type>
+</CustomField>

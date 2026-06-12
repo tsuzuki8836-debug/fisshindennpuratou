@@ -5,7 +5,7 @@ public class QuoteBiddingInquiryHandlerTest {
     private static User testManager;
     private static User testManager2;
     private static User testUser;
-    
+
     // テスト用のQuoteBiddingInquiry__cレコードを作成するヘルパーメソッド
     private static QuoteBiddingInquiry__c createTestQuoteBiddingInquiry() {
 
@@ -26,12 +26,12 @@ public class QuoteBiddingInquiryHandlerTest {
         qbi.Agency1TradingStyle__c = '委嘱';
         qbi.Agency1Qualification__c = '特約店';
         qbi.Factor_PriceExponential__c = 'TC以上';
-        
+
         qbi.Agency2_BaseFunction_EvPoint__c = 30;
         qbi.Agency2_PlatformFunction_EvPoint__c = 20;
         qbi.Agency2TradingStyle__c = '協力';
         qbi.Agency2Qualification__c = '特約店';
-        
+
         qbi.Agency3_BaseFunction_EvPoint__c = 30;
         qbi.Agency3_PlatformFunction_EvPoint__c = 20;
         qbi.Agency3TradingStyle__c = '協力';
@@ -73,12 +73,12 @@ public class QuoteBiddingInquiryHandlerTest {
         qbi.Agency1TradingStyle__c = '委嘱';
         qbi.Agency1Qualification__c = '特約店';
         qbi.Factor_PriceExponential__c = 'TC以上';
-        
+
         qbi.Agency2_BaseFunction_EvPoint__c = 30;
         qbi.Agency2_PlatformFunction_EvPoint__c = 20;
         qbi.Agency2TradingStyle__c = '協力';
         qbi.Agency2Qualification__c = '特約店';
-        
+
         qbi.Agency3_BaseFunction_EvPoint__c = 30;
         qbi.Agency3_PlatformFunction_EvPoint__c = 20;
         qbi.Agency3TradingStyle__c = '協力';
@@ -90,6 +90,53 @@ public class QuoteBiddingInquiryHandlerTest {
         qbi.LastCustomerCategory__c = '継続顧客・継続部門';
         qbi.BusinessCategory__c = '新規・拡販事業';
         return qbi;
+    }
+
+    private static QuoteBiddingInquiry__c createTestQuoteBiddingInquiry3() {
+
+        // レコードタイプを取得
+        Schema.SObjectType qbiType = QuoteBiddingInquiry__c.sObjectType;
+        Schema.DescribeSObjectResult qbiDescribe = qbiType.getDescribe();
+        Map<String, Schema.RecordTypeInfo> qbiRecordTypes = qbiDescribe.getRecordTypeInfosByName();
+        Id qbiRecordTypeId = qbiRecordTypes.get('設計変更応札伺い').getRecordTypeId();
+        // Id qbiRecordTypeId2 = qbiRecordTypes.get('応札伺い').getRecordTypeId();
+
+        QuoteBiddingInquiry__c qbi = new QuoteBiddingInquiry__c();
+        qbi.Creating__c = true;
+        qbi.NewChanged__c = '新規';
+        qbi.ContractAmountMax__c = 6000000;
+        qbi.ContractAmountMin__c = 2000000;
+        qbi.Agency1_BaseFunction_EvPoint__c = 30;
+        qbi.Agency1_PlatformFunction_EvPoint__c = 20;
+        qbi.Agency1TradingStyle__c = '委嘱';
+        qbi.Agency1Qualification__c = '特約店';
+        qbi.Factor_PriceExponential__c = 'TC以上';
+
+        qbi.Agency2_BaseFunction_EvPoint__c = 30;
+        qbi.Agency2_PlatformFunction_EvPoint__c = 20;
+        qbi.Agency2TradingStyle__c = '協力';
+        qbi.Agency2Qualification__c = '特約店';
+
+        qbi.Agency3_BaseFunction_EvPoint__c = 30;
+        qbi.Agency3_PlatformFunction_EvPoint__c = 20;
+        qbi.Agency3TradingStyle__c = '協力';
+        qbi.Agency3Qualification__c = '代理店';
+        qbi.RecordTypeId = qbiRecordTypeId;
+        qbi.ICPReviewTarget__c = true;
+        qbi.IcpExaminationGrConfirmation__c = true;
+
+        qbi.LastCustomerCategory__c = '継続顧客・継続部門';
+        qbi.BusinessCategory__c = '新規・拡販事業';
+        return qbi;
+
+        // QuoteBiddingInquiry__c qbi2 = new QuoteBiddingInquiry__c();
+        // qbi2.Creating__c = true;
+        // qbi2.NewChanged__c = '新規';
+        // qbi2.RecordTypeId = qbiRecordTypeId2;
+        // qbi2.ICPReviewTarget__c = true;
+        // qbi2.IcpExaminationGrConfirmation__c = true;
+        // qbi2.DependentFeeInquiry__c = qbi.id;
+        // return qbi2;
     }
 
     @IsTest
@@ -131,7 +178,7 @@ public class QuoteBiddingInquiryHandlerTest {
             PumpStation__c = ps.Id,
             CloseDate = Date.Today()
         );
-        insert opp; 
+        insert opp;
 
         // 更新前のレコードマップを取得
         Map<Id, QuoteBiddingInquiry__c> oldMap = new Map<Id, QuoteBiddingInquiry__c>{qbiOld.Id => qbiOld};
@@ -140,28 +187,33 @@ public class QuoteBiddingInquiryHandlerTest {
         QuoteBiddingInquiry__c qbiNew = [SELECT Id, InquiryApprovalStatus__c, ResultContactStatus__c FROM QuoteBiddingInquiry__c WHERE Id = :qbiOld.Id];
         qbiNew.InquiryApprovalStatus__c = 'TL'; // 状態を変更
         qbiOld.IcpExaminationGrConfirmation__c = false;
-        
+
+        // 販事ユーザを作成
+        createUsers();
+        // ガバナ回避のためトランザクションを分ける
+        System.runAs(testUser){
+
+            update qbiNew;
+
+            qbiNew = createTestQuoteBiddingInquiry2();
+            qbiNew.ContractAmountMax__c = 2000000;
+            qbiNew.ContractAmountMin__c = 2000000;
+            qbiNew.BusinessCategory__c = '既存事業';
+            qbiNew.Opportunity__c = opp.Id;
+            insert qbiNew;
+
+            opp.ConstructionDistinction__c = '更新（他社既設）';
+            update opp;
+
+            qbiNew = createTestQuoteBiddingInquiry2();
+            qbiNew.ContractAmountMax__c = 6000000;
+            qbiNew.ContractAmountMin__c = 6000000;
+            qbiNew.BusinessCategory__c = '既存事業';
+            qbiNew.Opportunity__c = opp.Id;
+            insert qbiNew;
+        }
+
         Test.startTest();
-
-        update qbiNew;
-
-        qbiNew = createTestQuoteBiddingInquiry2();
-        qbiNew.ContractAmountMax__c = 2000000;
-        qbiNew.ContractAmountMin__c = 2000000;
-        qbiNew.BusinessCategory__c = '既存事業';
-        qbiNew.Opportunity__c = opp.Id;
-        insert qbiNew;
-
-        opp.ConstructionDistinction__c = '更新（他社既設）';
-        update opp;
-
-        qbiNew = createTestQuoteBiddingInquiry2();
-        qbiNew.ContractAmountMax__c = 6000000;
-        qbiNew.ContractAmountMin__c = 6000000;
-        qbiNew.BusinessCategory__c = '既存事業';
-        qbiNew.Opportunity__c = opp.Id;
-        insert qbiNew;
-
         qbiNew = createTestQuoteBiddingInquiry2();
         opp.ConstructionDistinction__c = '更新（自社既設）';
         update opp;
@@ -181,16 +233,20 @@ public class QuoteBiddingInquiryHandlerTest {
         insert qbiNew;
 
         qbiNew = createTestQuoteBiddingInquiry2();
+        opp.ConstructionDistinction__c = '更新（他社既設）';
+        update opp;
+        qbiNew.ConstructionClassification__c = '更新（他社既設）';
         qbiNew.LastCustomerCategory__c = '新規顧客';
         qbiNew.Opportunity__c = opp.Id;
         qbiNew.BusinessCategory__c = '新規・拡販事業';
         qbiNew.ContractAmountMin__c = 20000000;
         qbiNew.ContractAmountMax__c = 20000000;
         insert qbiNew;
-        
+
         qbiNew = createTestQuoteBiddingInquiry2();
         opp.ConstructionDistinction__c = '更新（他社既設）';
         update opp;
+        qbiNew.ConstructionClassification__c = '更新（他社既設）';
         qbiNew.Opportunity__c = opp.Id;
         qbiNew.LastCustomerCategory__c = '新規顧客';
         qbiNew.Opportunity__c = opp.Id;
@@ -203,11 +259,12 @@ public class QuoteBiddingInquiryHandlerTest {
         qbiNew.ContractAmountMax__c = 100000000;
         qbiNew.ContractAmountMin__c = 100000000;
         insert qbiNew;
-        
+
         qbiNew = createTestQuoteBiddingInquiry2();
         qbiNew.ContractAmountMax__c = 100000001;
         qbiNew.ContractAmountMin__c = 100000001;
         insert qbiNew;
+        Test.stopTest(); // ガバナ回避のためここでトランザクションを区切る
 
         qbiNew = createTestQuoteBiddingInquiry2();
         qbiNew.InquiryApprovalStatus__c = '事管推部長';
@@ -217,14 +274,149 @@ public class QuoteBiddingInquiryHandlerTest {
         qbiNew.IcpExaminationGrConfirmation__c = false;
         qbiNew.InquiryApprovalStatus__c = 'GM';
         update qbiNew;
-
-        Test.stopTest();
     }
 
+    // @IsTest
+    // static void testUpdateFormulaFields2() {
+    //     // テスト用のQuoteBiddingInquiry__cレコードを作成
+    //     QuoteBiddingInquiry__c qbiOld = createTestQuoteBiddingInquiry();
+    //     qbiOld.InquiryApprovalStatus__c = '未申請'; // 初期状態
+    //     qbiOld.IcpExaminationGrConfirmation__c = true;
+    //     insert qbiOld;
+
+    //     // レコードタイプを取得
+    //     Schema.SObjectType qbiType = Account.sObjectType;
+    //     Schema.DescribeSObjectResult qbiDescribe = qbiType.getDescribe();
+    //     Map<String, Schema.RecordTypeInfo> qbiRecordTypes = qbiDescribe.getRecordTypeInfosByName();
+    //     Id qbiRecordTypeId = qbiRecordTypes.get('事業所').getRecordTypeId();
+
+    //     // 取引先を作成
+    //     Account acc = new Account(
+    //         Name = 'テスト取引先',
+    //         RecordTypeId = qbiRecordTypeId
+    //     );
+    //     insert acc;
+
+    //     PumpStation__c ps = new PumpStation__c(
+    //         Name = 'ポンプ場'
+    //     );
+    //     insert ps;
+
+    //     // 商談を作成
+    //     Opportunity opp = new Opportunity(
+    //         Name = '受付未承認',
+    //         AccountId = acc.Id,
+    //         StageName = '基本計画',
+    //         ConstructionDistinction__c = '更新（自社既設）',
+    //         BU__c = '水環境',
+    //         SBU__c = '上水',
+    //         EstablishedCompany__c = '三菱',
+    //         Probability1__c = 100,
+    //         PumpStation__c = ps.Id,
+    //         CloseDate = Date.Today()
+    //     );
+    //     insert opp;
+
+    //     // 更新前のレコードマップを取得
+    //     Map<Id, QuoteBiddingInquiry__c> oldMap = new Map<Id, QuoteBiddingInquiry__c>{qbiOld.Id => qbiOld};
+
+    //     // 新しい状態をシミュレートするためのレコードを作成
+    //     QuoteBiddingInquiry__c qbiNew = [SELECT Id, InquiryApprovalStatus__c, ResultContactStatus__c FROM QuoteBiddingInquiry__c WHERE Id = :qbiOld.Id];
+    //     qbiNew.InquiryApprovalStatus__c = 'TL'; // 状態を変更
+    //     qbiOld.IcpExaminationGrConfirmation__c = false;
+
+    //     update qbiNew;
+
+    //     qbiNew = createTestQuoteBiddingInquiry2();
+    //     qbiNew.ContractAmountMax__c = 2000000;
+    //     qbiNew.ContractAmountMin__c = 2000000;
+    //     qbiNew.BusinessCategory__c = '既存事業';
+    //     qbiNew.Opportunity__c = opp.Id;
+    //     insert qbiNew;
+
+    //     opp.ConstructionDistinction__c = '更新（他社既設）';
+    //     update opp;
+
+    //     // 販事ユーザを作成
+    //     createUsers();
+
+    //     Test.startTest();
+    //     qbiNew = createTestQuoteBiddingInquiry2();
+    //     qbiNew.ContractAmountMax__c = 6000000;
+    //     qbiNew.ContractAmountMin__c = 6000000;
+    //     qbiNew.BusinessCategory__c = '既存事業';
+    //     qbiNew.Opportunity__c = opp.Id;
+    //     insert qbiNew;
+
+    //     qbiNew = createTestQuoteBiddingInquiry2();
+    //     opp.ConstructionDistinction__c = '更新（自社既設）';
+    //     update opp;
+    //     qbiNew.BusinessCategory__c  = '既存事業';
+    //     qbiNew.ContractAmountMin__c = 6000000;
+    //     qbiNew.ContractAmountMax__c = 6000000;
+    //     qbiNew.Opportunity__c = opp.Id;
+    //     qbiNew.BidResult__c = '受注';
+    //     insert qbiNew;
+
+    //     qbiNew = createTestQuoteBiddingInquiry2();
+    //     opp.ConstructionDistinction__c = '更新（他社既設）';
+    //     update opp;
+    //     qbiNew.Opportunity__c = opp.Id;
+    //     qbiNew.BusinessCategory__c  = '既存事業';
+    //     qbiNew.ContractAmountMin__c = 10000000;
+    //     qbiNew.ContractAmountMax__c = 10000000;
+    //     qbiNew.BidResult__c = '失注';
+    //     insert qbiNew;
+
+    //     qbiNew = createTestQuoteBiddingInquiry2();
+    //     qbiNew.LastCustomerCategory__c = '新規顧客';
+    //     qbiNew.Opportunity__c = opp.Id;
+    //     qbiNew.BusinessCategory__c = '新規・拡販事業';
+    //     qbiNew.ContractAmountMin__c = 20000000;
+    //     qbiNew.ContractAmountMax__c = 20000000;
+    //     insert qbiNew;
+
+    //     qbiNew = createTestQuoteBiddingInquiry2();
+    //     opp.ConstructionDistinction__c = '更新（他社既設）';
+    //     update opp;
+    //     qbiNew.Opportunity__c = opp.Id;
+    //     qbiNew.LastCustomerCategory__c = '新規顧客';
+    //     qbiNew.BusinessCategory__c = '既存事業';
+    //     qbiNew.ContractAmountMin__c = 40000000;
+    //     qbiNew.ContractAmountMax__c = 40000000;
+    //     insert qbiNew;
+
+    //     qbiNew = createTestQuoteBiddingInquiry2();
+    //     qbiNew.Opportunity__c = opp.Id;
+    //     qbiNew.ContractAmountMax__c = 100000000;
+    //     qbiNew.ContractAmountMin__c = 100000000;
+    //     insert qbiNew;
+
+    //     Test.stopTest();
+    //     // ガバナ回避のためトランザクションを分ける
+    //     System.runAs(testUser){
+
+    //         qbiNew = createTestQuoteBiddingInquiry2();
+    //         qbiNew.ContractAmountMax__c = 100000001;
+    //         qbiNew.ContractAmountMin__c = 100000001;
+    //         insert qbiNew;
+
+    //         qbiNew = createTestQuoteBiddingInquiry2();
+    //         qbiNew.InquiryApprovalStatus__c = '事管推部長';
+    //         insert qbiNew;
+
+    //         qbiNew.ICPReviewTarget__c = true;
+    //         qbiNew.IcpExaminationGrConfirmation__c = false;
+    //         qbiNew.InquiryApprovalStatus__c = 'GM';
+    //         update qbiNew;
+    //     }
+    // }
+
+    // No43 >>
     @IsTest
-    static void testUpdateFormulaFields2() {
+    static void testCopyRecord() {
         // テスト用のQuoteBiddingInquiry__cレコードを作成
-        QuoteBiddingInquiry__c qbiOld = createTestQuoteBiddingInquiry();
+        QuoteBiddingInquiry__c qbiOld = createTestQuoteBiddingInquiry3();
         qbiOld.InquiryApprovalStatus__c = '未申請'; // 初期状態
         qbiOld.IcpExaminationGrConfirmation__c = true;
         insert qbiOld;
@@ -260,97 +452,109 @@ public class QuoteBiddingInquiryHandlerTest {
             PumpStation__c = ps.Id,
             CloseDate = Date.Today()
         );
-        insert opp; 
+        insert opp;
+
+        // 伺い場所別数値明細を作成
+        DetailByInquiryFactory__c dbif = new DetailByInquiryFactory__c(
+            QuoteBiddingInquiry__c = qbiOld.Id,
+            isFromOpportunity__c = true
+        );
+        // insert dbif;
 
         // 更新前のレコードマップを取得
-        Map<Id, QuoteBiddingInquiry__c> oldMap = new Map<Id, QuoteBiddingInquiry__c>{qbiOld.Id => qbiOld};
+        // Map<Id, QuoteBiddingInquiry__c> oldMap = new Map<Id, QuoteBiddingInquiry__c>{qbiOld.Id => qbiOld};
 
         // 新しい状態をシミュレートするためのレコードを作成
-        QuoteBiddingInquiry__c qbiNew = [SELECT Id, InquiryApprovalStatus__c, ResultContactStatus__c FROM QuoteBiddingInquiry__c WHERE Id = :qbiOld.Id];
-        qbiNew.InquiryApprovalStatus__c = 'TL'; // 状態を変更
-        qbiOld.IcpExaminationGrConfirmation__c = false;
-        
+        // QuoteBiddingInquiry__c qbiNew = [SELECT Id, InquiryApprovalStatus__c, ResultContactStatus__c FROM QuoteBiddingInquiry__c WHERE Id = :qbiOld.Id];
+        // qbiNew.InquiryApprovalStatus__c = 'TL'; // 状態を変更
+        // qbiOld.IcpExaminationGrConfirmation__c = false;
+
+        // QuoteBiddingInquiry__c copiedInquiry = qbiOld.clone(false, true);
+
         Test.startTest();
 
-        update qbiNew;
+        insert dbif;
 
-        qbiNew = createTestQuoteBiddingInquiry2();
-        qbiNew.ContractAmountMax__c = 2000000;
-        qbiNew.ContractAmountMin__c = 2000000;
-        qbiNew.BusinessCategory__c = '既存事業';
-        qbiNew.Opportunity__c = opp.Id;
-        insert qbiNew;
+        // qbiNew = createTestQuoteBiddingInquiry2();
+        // qbiNew.ContractAmountMax__c = 2000000;
+        // qbiNew.ContractAmountMin__c = 2000000;
+        // qbiNew.BusinessCategory__c = '既存事業';
+        // qbiNew.Opportunity__c = opp.Id;
+        // insert qbiNew;
 
-        opp.ConstructionDistinction__c = '更新（他社既設）';
-        update opp;
+        // opp.ConstructionDistinction__c = '更新（他社既設）';
+        // update opp;
 
-        qbiNew = createTestQuoteBiddingInquiry2();
-        qbiNew.ContractAmountMax__c = 6000000;
-        qbiNew.ContractAmountMin__c = 6000000;
-        qbiNew.BusinessCategory__c = '既存事業';
-        qbiNew.Opportunity__c = opp.Id;
-        insert qbiNew;
+        // qbiNew = createTestQuoteBiddingInquiry2();
+        // qbiNew.ContractAmountMax__c = 6000000;
+        // qbiNew.ContractAmountMin__c = 6000000;
+        // qbiNew.BusinessCategory__c = '既存事業';
+        // qbiNew.Opportunity__c = opp.Id;
+        // insert qbiNew;
 
-        qbiNew = createTestQuoteBiddingInquiry2();
-        opp.ConstructionDistinction__c = '更新（自社既設）';
-        update opp;
-        qbiNew.BusinessCategory__c  = '既存事業';
-        qbiNew.ContractAmountMin__c = 6000000;
-        qbiNew.ContractAmountMax__c = 6000000;
-        qbiNew.Opportunity__c = opp.Id;
-        qbiNew.BidResult__c = '受注';
-        insert qbiNew;
+        // qbiNew = createTestQuoteBiddingInquiry2();
+        // opp.ConstructionDistinction__c = '更新（自社既設）';
+        // update opp;
+        // qbiNew.BusinessCategory__c  = '既存事業';
+        // qbiNew.ContractAmountMin__c = 6000000;
+        // qbiNew.ContractAmountMax__c = 6000000;
+        // qbiNew.Opportunity__c = opp.Id;
+        // insert qbiNew;
 
-        qbiNew = createTestQuoteBiddingInquiry2();
-        opp.ConstructionDistinction__c = '更新（他社既設）';
-        update opp;
-        qbiNew.Opportunity__c = opp.Id;
-        qbiNew.BusinessCategory__c  = '既存事業';
-        qbiNew.ContractAmountMin__c = 10000000;
-        qbiNew.ContractAmountMax__c = 10000000;
-        qbiNew.BidResult__c = '失注';
-        insert qbiNew;
+        // qbiNew = createTestQuoteBiddingInquiry2();
+        // opp.ConstructionDistinction__c = '更新（他社既設）';
+        // update opp;
+        // qbiNew.Opportunity__c = opp.Id;
+        // qbiNew.BusinessCategory__c  = '既存事業';
+        // qbiNew.ContractAmountMin__c = 10000000;
+        // qbiNew.ContractAmountMax__c = 10000000;
+        // insert qbiNew;
 
-        qbiNew = createTestQuoteBiddingInquiry2();
-        qbiNew.LastCustomerCategory__c = '新規顧客';
-        qbiNew.Opportunity__c = opp.Id;
-        qbiNew.BusinessCategory__c = '新規・拡販事業';
-        qbiNew.ContractAmountMin__c = 20000000;
-        qbiNew.ContractAmountMax__c = 20000000;
-        insert qbiNew;
-        
-        qbiNew = createTestQuoteBiddingInquiry2();
-        opp.ConstructionDistinction__c = '更新（他社既設）';
-        update opp;
-        qbiNew.Opportunity__c = opp.Id;
-        qbiNew.LastCustomerCategory__c = '新規顧客';
-        qbiNew.Opportunity__c = opp.Id;
-        qbiNew.BusinessCategory__c = '既存事業';
-        qbiNew.ContractAmountMin__c = 40000000;
-        qbiNew.ContractAmountMax__c = 40000000;
-        insert qbiNew;
+        // qbiNew = createTestQuoteBiddingInquiry2();
+        // qbiNew.LastCustomerCategory__c = '新規顧客';
+        // qbiNew.Opportunity__c = opp.Id;
+        // qbiNew.BusinessCategory__c = '新規・拡販事業';
+        // qbiNew.ContractAmountMin__c = 20000000;
+        // qbiNew.ContractAmountMax__c = 20000000;
+        // insert qbiNew;
 
-        qbiNew = createTestQuoteBiddingInquiry2();
-        qbiNew.ContractAmountMax__c = 100000000;
-        qbiNew.ContractAmountMin__c = 100000000;
-        insert qbiNew;
-        
-        qbiNew = createTestQuoteBiddingInquiry2();
-        qbiNew.ContractAmountMax__c = 100000001;
-        qbiNew.ContractAmountMin__c = 100000001;
-        insert qbiNew;
+        // qbiNew = createTestQuoteBiddingInquiry2();
+        // opp.ConstructionDistinction__c = '更新（他社既設）';
+        // update opp;
+        // qbiNew.Opportunity__c = opp.Id;
+        // qbiNew.LastCustomerCategory__c = '新規顧客';
+        // qbiNew.Opportunity__c = opp.Id;
+        // qbiNew.BusinessCategory__c = '既存事業';
+        // qbiNew.ContractAmountMin__c = 40000000;
+        // qbiNew.ContractAmountMax__c = 40000000;
+        // insert qbiNew;
 
-        qbiNew = createTestQuoteBiddingInquiry2();
-        qbiNew.InquiryApprovalStatus__c = '事管推部長';
-        insert qbiNew;
+        // qbiNew = createTestQuoteBiddingInquiry2();
+        // qbiNew.ContractAmountMax__c = 100000000;
+        // qbiNew.ContractAmountMin__c = 100000000;
+        // insert qbiNew;
 
-        qbiNew.ICPReviewTarget__c = true;
-        qbiNew.IcpExaminationGrConfirmation__c = false;
-        qbiNew.InquiryApprovalStatus__c = 'GM';
-        update qbiNew;
+        // qbiNew = createTestQuoteBiddingInquiry2();
+        // qbiNew.ContractAmountMax__c = 100000001;
+        // qbiNew.ContractAmountMin__c = 100000001;
+        // insert qbiNew;
+
+        // qbiNew = createTestQuoteBiddingInquiry2();
+        // qbiNew.InquiryApprovalStatus__c = '事管推部長';
+        // insert qbiNew;
+
+        // qbiNew.ICPReviewTarget__c = true;
+        // qbiNew.IcpExaminationGrConfirmation__c = false;
+        // qbiNew.InquiryApprovalStatus__c = 'GM';
+        // update qbiNew;
 
         Test.stopTest();
+
+        DetailByInquiryFactory__c newDbif = [SELECT Id, isFromOpportunity__c FROM DetailByInquiryFactory__c WHERE Id = :dbif.Id];
+        System.assertEquals(false, newDbif.isFromOpportunity__c);
+
     }
+    // No43 <<
 
     @IsTest
     static void onAfterErrorCheck() {
@@ -370,7 +574,7 @@ public class QuoteBiddingInquiryHandlerTest {
 
          List<QuoteBiddingInquiry__c> newList = new List<QuoteBiddingInquiry__c>();
          newList.add(qbinew);
-         
+
          QuoteBiddingInquiryHandler handler = new QuoteBiddingInquiryHandler();
          handler.onAfterErrorCheck(newList, new Map<Id,QuoteBiddingInquiry__c>{qbiOld.Id => qbiOld});
     }
@@ -404,15 +608,15 @@ public class QuoteBiddingInquiryHandlerTest {
          qbinew.IcpExaminationGrConfirmation__c = false;
          qbinew.SpecialFeeTotal_MIN__c = 10000000;
          qbinew.SpecialFeeTotal_MAX__c = 10000000;
-         qbinew.Agency1StoreName__c = acc.Id; 
-         qbinew.Agency2Name__c = acc.Id; 
+         qbinew.Agency1StoreName__c = acc.Id;
+         qbinew.Agency2Name__c = acc.Id;
          qbinew.Agency3Name__c = acc.Id;
          qbinew.Creating__c = false;
          qbinew.InquiryApprovalStatus__c = 'GM';
 
          List<QuoteBiddingInquiry__c> newList = new List<QuoteBiddingInquiry__c>();
          newList.add(qbinew);
-         
+
          QuoteBiddingInquiryHandler handler = new QuoteBiddingInquiryHandler();
          handler.onAfterErrorCheck(newList, new Map<Id,QuoteBiddingInquiry__c>{qbiOld.Id => qbiOld});
     }
@@ -457,26 +661,26 @@ public class QuoteBiddingInquiryHandlerTest {
 
             Holiday holiday1 = new Holiday(Name = 'Test Holiday 1', ActivityDate = System.today().addDays(1));
             Holiday holiday2 = new Holiday(Name = 'Test Holiday 2', ActivityDate = System.today().addDays(2));
-            
+
             insert new List<Holiday>{holiday1, holiday2};
-            
+
             // 承認プロセスを開始する
             Approval.ProcessSubmitRequest req = new Approval.ProcessSubmitRequest();
             req.setObjectId(qbiOld.Id);
             req.setSubmitterId(testUser.Id); // 現在のユーザをSubmitterに設定
             req.setComments('テストの承認プロセスを開始します');
-            req.setProcessDefinitionNameOrId('ApplicationDepartmentBLastApproval_V2_1');
+            req.setProcessDefinitionNameOrId('ApplicationDepartmentBLastApproval_V5');
             req.setSkipEntryCriteria(true);
             Approval.ProcessResult result = Approval.process(req);
             newWorkItemIds = result.getNewWorkitemIds();
-            
+
             // 承認プロセスが正常に開始されたことを確認
             System.assert(result.isSuccess(), '承認プロセスの開始に成功しました');
 
             // ProcessInstanceの取得と確認
             pi = [SELECT Id, Status FROM ProcessInstance WHERE TargetObjectId = :qbiOld.Id LIMIT 1];
             System.assertEquals('Pending', pi.Status, '承認プロセスが「Pending」状態であることを確認');
-            
+
             // 承認プロセスの進行状況をシミュレートするために、ステップを取得
             step = [SELECT Id, StepStatus FROM ProcessInstanceStep WHERE ProcessInstanceId = :pi.Id LIMIT 1];
             System.assertEquals('Started', step.StepStatus, '承認ステップが「Pending」状態であることを確認');
@@ -490,7 +694,7 @@ public class QuoteBiddingInquiryHandlerTest {
             approvalReq.setWorkitemId(newWorkItemIds.get(0));
 
             Approval.ProcessResult approvalResult = Approval.process(approvalReq);
-            
+
             // 承認プロセスが正常に承認されたことを確認
             System.assert(approvalResult.isSuccess(), '承認プロセスの承認に成功しました');
 
@@ -503,7 +707,7 @@ public class QuoteBiddingInquiryHandlerTest {
 
             // 新しい状態をシミュレートするためのレコードを作成
             QuoteBiddingInquiry__c qbiNew = qbiOld.clone();
-            qbiNew.Id = qbiOld.Id;  
+            qbiNew.Id = qbiOld.Id;
             qbiNew.InquiryApprovalStatus__c = '事管推担当'; // 状態を変更
             qbiNew.ApprovalAssignmentDateTime__c = null;
             qbiNew.TargetForUnapprovedRemindLimitSet__c = true;
@@ -571,26 +775,26 @@ public class QuoteBiddingInquiryHandlerTest {
 
             Holiday holiday1 = new Holiday(Name = 'Test Holiday 1', ActivityDate = System.today().addDays(1));
             Holiday holiday2 = new Holiday(Name = 'Test Holiday 2', ActivityDate = System.today().addDays(2));
-            
+
             insert new List<Holiday>{holiday1, holiday2};
-            
+
             // 承認プロセスを開始する
             Approval.ProcessSubmitRequest req = new Approval.ProcessSubmitRequest();
             req.setObjectId(qbiOld.Id);
             req.setSubmitterId(testUser.Id); // 現在のユーザをSubmitterに設定
             req.setComments('テストの承認プロセスを開始します');
-            req.setProcessDefinitionNameOrId('ApplicationDepartmentBLastApproval_V2_1');
+            req.setProcessDefinitionNameOrId('ApplicationDepartmentBLastApproval_V5');
             req.setSkipEntryCriteria(true);
             Approval.ProcessResult result = Approval.process(req);
             newWorkItemIds = result.getNewWorkitemIds();
-            
+
             // 承認プロセスが正常に開始されたことを確認
             System.assert(result.isSuccess(), '承認プロセスの開始に成功しました');
 
             // ProcessInstanceの取得と確認
             pi = [SELECT Id, Status FROM ProcessInstance WHERE TargetObjectId = :qbiOld.Id LIMIT 1];
             System.assertEquals('Pending', pi.Status, '承認プロセスが「Pending」状態であることを確認');
-            
+
             // 承認プロセスの進行状況をシミュレートするために、ステップを取得
             step = [SELECT Id, StepStatus FROM ProcessInstanceStep WHERE ProcessInstanceId = :pi.Id LIMIT 1];
             System.assertEquals('Started', step.StepStatus, '承認ステップが「Pending」状態であることを確認');
@@ -604,7 +808,7 @@ public class QuoteBiddingInquiryHandlerTest {
             approvalReq.setWorkitemId(newWorkItemIds.get(0));
 
             Approval.ProcessResult approvalResult = Approval.process(approvalReq);
-            
+
             // 承認プロセスが正常に承認されたことを確認
             System.assert(approvalResult.isSuccess(), '承認プロセスの承認に成功しました');
 
@@ -617,7 +821,7 @@ public class QuoteBiddingInquiryHandlerTest {
 
             // 新しい状態をシミュレートするためのレコードを作成
             QuoteBiddingInquiry__c qbiNew = qbiOld.clone();
-            qbiNew.Id = qbiOld.Id;  
+            qbiNew.Id = qbiOld.Id;
             qbiNew.InquiryApprovalStatus__c = '事管推担当'; // 状態を変更
             qbiNew.ApprovalAssignmentDateTime__c = null;
             qbiNew.TargetForUnapprovedRemindLimitSet__c = true;
@@ -643,7 +847,7 @@ public class QuoteBiddingInquiryHandlerTest {
 
     @IsTest
     static void testProcessInstanceApprovalFlowRejected() {
-        
+
         QuoteBiddingInquiry__c qbiOld = createTestQuoteBiddingInquiry();
         List<Id> newWorkItemIds = new List<Id>();
         ProcessInstanceStep step = new ProcessInstanceStep();
@@ -653,7 +857,7 @@ public class QuoteBiddingInquiryHandlerTest {
         createUsers();
 
         System.runAs(testUser){
-            
+
             // レコードタイプを取得
             Schema.SObjectType qbiType = QuoteBiddingInquiry__c.sObjectType;
             Schema.DescribeSObjectResult qbiDescribe = qbiType.getDescribe();
@@ -681,22 +885,27 @@ public class QuoteBiddingInquiryHandlerTest {
             req.setObjectId(qbiOld.Id);
             req.setSubmitterId(testUser.Id); // 現在のユーザをSubmitterに設定
             req.setComments('テストの承認プロセスを開始します');
-            req.setProcessDefinitionNameOrId('ApplicationDepartmentBLastApproval_V2_1');
+            req.setProcessDefinitionNameOrId('ApplicationDepartmentBLastApproval_V5');
             req.setSkipEntryCriteria(true);
             Approval.ProcessResult result = Approval.process(req);
             newWorkItemIds = result.getNewWorkitemIds();
-            
+
             // 承認プロセスが正常に開始されたことを確認
             System.assert(result.isSuccess(), '承認プロセスの開始に失敗しました');
 
             // ProcessInstanceの取得と確認
             pi = [SELECT Id, Status FROM ProcessInstance WHERE TargetObjectId = :qbiOld.Id LIMIT 1];
             System.assertEquals('Pending', pi.Status, '承認プロセスが「Pending」状態であることを確認');
-            
+
             // 承認プロセスの進行状況をシミュレートするために、ステップを取得
             step = [SELECT Id, StepStatus FROM ProcessInstanceStep WHERE ProcessInstanceId = :pi.Id LIMIT 1];
             System.assertEquals('Started', step.StepStatus, '承認ステップが「Pending」状態であることを確認');
-            
+
+            // PUS_CRM-615 No24 >>
+            // ICP審査対象のチェックが自動で入ることを確認
+            System.assertEquals(true, qbiOld.ICPReviewTarget__c);
+            // PUS_CRM-615 No24 <<
+
             // 承認プロセスの承認を行う
             Approval.ProcessWorkitemRequest approvalReq = new Approval.ProcessWorkitemRequest();
             approvalReq.setWorkItemId(step.Id);
@@ -706,10 +915,11 @@ public class QuoteBiddingInquiryHandlerTest {
             approvalReq.setWorkitemId(newWorkItemIds.get(0));
 
             Approval.ProcessResult approvalResult = Approval.process(approvalReq);
-            
+
             // 承認プロセスが正常に承認されたことを確認
             System.assert(approvalResult.isSuccess(), '承認プロセスの承認に失敗しました');
 
+            Test.startTest();
             // 承認後のProcessInstanceを再取得し、完了ステータスを確認
             pi = [SELECT Id, Status FROM ProcessInstance WHERE Id = :pi.Id];
             System.assertEquals('Pending', pi.Status, '承認プロセスが「Pending」状態であることを確認');
@@ -727,24 +937,23 @@ public class QuoteBiddingInquiryHandlerTest {
 
             // 新しい状態をシミュレートするためのレコードを作成
             QuoteBiddingInquiry__c qbiNew = qbiOld.clone();
-            qbiNew.Id = qbiOld.Id;  
+            qbiNew.Id = qbiOld.Id;
             qbiNew.InquiryApprovalStatus__c = 'TL'; // 状態を変更
             qbiNew.ApprovalAssignmentDateTime__c = null;
             qbiNew.TargetForUnapprovedRemindLimitSet__c = true;
 
             List<QuoteBiddingInquiry__c> newList = new List<QuoteBiddingInquiry__c>();
             newList.add(qbiNew);
-            
-             // 非同期処理を実行
-             QuoteBiddingInquiryHandler handler = new QuoteBiddingInquiryHandler();
 
-             QuoteBiddingInquiryHandler.QueueableUpdateApprovalInfo job = new QuoteBiddingInquiryHandler.QueueableUpdateApprovalInfo(newList, new Map<Id, QuoteBiddingInquiry__c>{qbiNew.Id => qbiNew}, oldMap);
- 
-             // 非同期処理をテストするために、テストのトランザクションを開始
-             Test.startTest();
-             System.enqueueJob(job);
-             // 非同期処理を強制的に実行させる
-             Test.stopTest();
+            // 非同期処理を実行
+            QuoteBiddingInquiryHandler handler = new QuoteBiddingInquiryHandler();
+
+            QuoteBiddingInquiryHandler.QueueableUpdateApprovalInfo job = new QuoteBiddingInquiryHandler.QueueableUpdateApprovalInfo(newList, new Map<Id, QuoteBiddingInquiry__c>{qbiNew.Id => qbiNew}, oldMap);
+
+            // 非同期処理をテストするために、テストのトランザクションを開始
+            System.enqueueJob(job);
+            // 非同期処理を強制的に実行させる
+            Test.stopTest();
         }
     }
 
@@ -819,6 +1028,71 @@ public class QuoteBiddingInquiryHandlerTest {
         System.assertEquals(null, qbi4.IcpExaminationGrConfirmationTimestamp__c);
     }
 
+    // ADD PUS_CRM-615 No88 START
+    @IsTest
+    static void testFactorCopy() {
+        // レコードタイプを取得
+        Schema.SObjectType AccType = Account.sObjectType;
+        Schema.DescribeSObjectResult AccDescribe = AccType.getDescribe();
+        Map<String, Schema.RecordTypeInfo> AccRecordTypes = AccDescribe.getRecordTypeInfosByName();
+        Id AccRecordTypeId = AccRecordTypes.get('事業所').getRecordTypeId();
+
+        // 取引先を作成
+        Account acc = new Account(
+            Name = 'テスト取引先',
+            RecordTypeId = AccRecordTypeId
+        );
+        insert acc;
+
+        PumpStation__c ps = new PumpStation__c(
+            Name = 'ポンプ場'
+        );
+        insert ps;
+
+        // 案件を作成
+        Opportunity opp = new Opportunity(
+            Name = 'テスト案件',
+            AccountId = acc.Id,
+            StageName = '基本計画',
+            ConstructionDistinction__c = '更新（自社既設）',
+            BU__c = '水環境',
+            SBU__c = '上水',
+            EstablishedCompany__c = '三菱',
+            Probability1__c = 100,
+            PumpStation__c = ps.Id,
+            CloseDate = Date.Today()
+        );
+        insert opp;
+
+        // レコードタイプを取得
+        Schema.SObjectType qbiType = QuoteBiddingInquiry__c.sObjectType;
+        Schema.DescribeSObjectResult qbiDescribe = qbiType.getDescribe();
+        Map<String, Schema.RecordTypeInfo> qbiRecordTypes = qbiDescribe.getRecordTypeInfosByName();
+        Id qbiRecordTypeId = qbiRecordTypes.get('応札伺い').getRecordTypeId();
+
+        // 伺いの失注レコード作成
+        QuoteBiddingInquiry__c qbi3 = new QuoteBiddingInquiry__c();
+        qbi3.Creating__c = true;
+        qbi3.NewChanged__c = '新規';
+        qbi3.RecordTypeId = qbiRecordTypeId;
+        qbi3.BidResult__c = '失注';
+        qbi3.LossFactor__c = '総合評価';
+        qbi3.Opportunity__c = opp.Id;
+        insert qbi3;
+
+        // 案件の案件失注要因が空の時に伺いの失注要因が転記されていることを確認
+        Opportunity ResultOpp = [SELECT LostReason__c FROM Opportunity WHERE Id = :qbi3.Opportunity__c];
+        System.assertEquals('総合評価', ResultOpp.LostReason__c);
+
+        qbi3.LossFactor__c = '技術優位性';
+        update qbi3;
+
+        // 案件の案件失注要因が空でない時に伺いの失注要因が転記されないことを確認
+        ResultOpp = [SELECT LostReason__c FROM Opportunity WHERE Id = :qbi3.Opportunity__c];
+        System.assertEquals('総合評価', ResultOpp.LostReason__c);
+    }
+    // ADD PUS_CRM-615 No88 END
+
     /**
      * ユーザの作成
      * @param profileName プロファイル名
@@ -878,6 +1152,4 @@ public class QuoteBiddingInquiryHandlerTest {
         );
         insert testUser;
     }
-
-
 }

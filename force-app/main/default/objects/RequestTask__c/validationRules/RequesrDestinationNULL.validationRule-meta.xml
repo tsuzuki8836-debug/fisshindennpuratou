@@ -5,7 +5,7 @@
     <errorConditionFormula>AND(
     ISPICKVAL(ApprovalPattern__c , &apos;承認者自動設定&apos;) , 
     OR(ISPICKVAL(RequestDestination__c, &apos;神電&apos;),
-        ISPICKVAL(RequestDestination__c, &apos;長電&apos;),
+        ISPICKVAL(RequestDestination__c, &apos;伊電長崎&apos;),
         ISPICKVAL(RequestDestination__c, &apos;プラ建&apos;),
         ISPICKVAL(RequestDestination__c, &apos;配電&apos;)
     ),

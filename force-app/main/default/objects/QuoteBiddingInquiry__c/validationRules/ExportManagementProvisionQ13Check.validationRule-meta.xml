@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ValidationRule xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>ExportManagementProvisionQ13Check</fullName>
+    <active>true</active>
+    <description>案件.輸出区分が「0 国内」以外の場合、(輸出の場合)直接・間接輸出チェックシートによるチェック結果は必須です</description>
+    <errorConditionFormula>AND(
+    PriceList__c = false,
+    OR(RecordType.DeveloperName= &apos;M&apos;,RecordType.DeveloperName= &apos;O&apos;,RecordType.DeveloperName= &apos;SH&apos;),
+    NOT(ISPICKVAL(Opportunity__r.ExportCategory__c, &apos;0 国内&apos;)),
+    ISBLANK(TEXT(ExportManagementProvisionQ13__c)),
+    NOT(Creating__c)
+)</errorConditionFormula>
+    <errorDisplayField>ExportManagementProvisionQ13__c</errorDisplayField>
+    <errorMessage>(輸出の場合)直接・間接輸出チェックシートによるチェック結果は必須です</errorMessage>
+</ValidationRule>

@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ValidationRule xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>SurveyResultIfRequiredCheck</fullName>
+    <active>true</active>
+    <description>属性調査要否「要(新規)」または(「要(過去調査済)」かつ(過去調査済の場合)有効期限が今日より前)の場合、属性調査要の場合、調査結果は必須です</description>
+    <errorConditionFormula>AND(
+    PriceList__c = false,
+    OR(
+        ISPICKVAL(AttributeSurveyRequirement__c,&apos;要(新規)&apos;) ,
+        AND(
+            ISPICKVAL(AttributeSurveyRequirement__c,&apos;要(過去調査済)&apos;),
+            PastSurveyValidityPeriod__c&lt;ToDay()
+        ) 
+    ),
+    ISBLANK(TEXT(SurveyResultIfRequired__c)),
+    NOT(Creating__c)
+)</errorConditionFormula>
+    <errorDisplayField>SurveyResultIfRequired__c</errorDisplayField>
+    <errorMessage>属性調査要の場合、調査結果は必須です</errorMessage>
+</ValidationRule>

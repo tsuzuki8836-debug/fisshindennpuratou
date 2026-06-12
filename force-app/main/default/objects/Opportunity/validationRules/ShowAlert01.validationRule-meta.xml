@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ValidationRule xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>ShowAlert01</fullName>
+    <active>false</active>
+    <description>見積書提出伺いとアラート解除のチェックがないときに、エラーメッセージを表示させる</description>
+    <errorConditionFormula>AND( ISBLANK(CheckDate01__c) , NOT(NoAlert1__c),   OR(ISPICKVAL( StageName , &quot;受注&quot;) , ISPICKVAL( StageName , &quot;オーダー管理&quot;), ISPICKVAL( StageName , &quot;クローズ&quot;)  ) )</errorConditionFormula>
+    <errorDisplayField>CheckDate01__c</errorDisplayField>
+    <errorMessage>見積書提出伺いが未入力です。</errorMessage>
+</ValidationRule>

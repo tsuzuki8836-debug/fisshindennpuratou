@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<WebLink xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Sansan_CI__BizCard_NotDistribution_LEX</fullName>
+    <availability>online</availability>
+    <description>関連リスト用ボタン(Classic、LEX共通)</description>
+    <displayType>massActionButton</displayType>
+    <height>600</height>
+    <linkType>page</linkType>
+    <masterLabel>関連づけしない</masterLabel>
+    <openType>sidebar</openType>
+    <page>Sansan_CI__BizCard_NotDistribution_Button</page>
+    <protected>false</protected>
+    <requireRowSelection>true</requireRowSelection>
+</WebLink>

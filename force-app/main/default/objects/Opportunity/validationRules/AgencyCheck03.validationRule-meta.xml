@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ValidationRule xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>AgencyCheck03</fullName>
+    <active>true</active>
+    <description>「扱方：委嘱・協力」のときは「商談手数料」入力必須とする</description>
+    <errorConditionFormula>AND(
+  OR(
+    ISPICKVAL( Handling__c , &quot;委嘱&quot;),
+    ISPICKVAL( Handling__c , &quot;協力&quot; )
+  ) ,
+  ISBLANK( Margin__c ) ,
+  NOT($Profile.Name = &apos;データ移行管理者&apos;)
+)</errorConditionFormula>
+    <errorMessage>「扱方：委嘱・協力」の場合、「商談手数料」は入力必須です。</errorMessage>
+</ValidationRule>

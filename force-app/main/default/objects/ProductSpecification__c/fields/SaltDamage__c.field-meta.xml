@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>SaltDamage__c</fullName>
+    <externalId>false</externalId>
+    <label>塩害対策</label>
+    <required>false</required>
+    <trackFeedHistory>false</trackFeedHistory>
+    <trackHistory>false</trackHistory>
+    <trackTrending>false</trackTrending>
+    <type>Picklist</type>
+    <valueSet>
+        <restricted>true</restricted>
+        <valueSetDefinition>
+            <sorted>false</sorted>
+            <value>
+                <fullName>重塩害</fullName>
+                <default>false</default>
+                <label>重塩害</label>
+            </value>
+            <value>
+                <fullName>塩害</fullName>
+                <default>false</default>
+                <label>塩害</label>
+            </value>
+            <value>
+                <fullName>不要</fullName>
+                <default>false</default>
+                <label>不要</label>
+            </value>
+        </valueSetDefinition>
+    </valueSet>
+</CustomField>

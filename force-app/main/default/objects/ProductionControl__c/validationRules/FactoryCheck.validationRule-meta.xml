@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ValidationRule xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>FactoryCheck</fullName>
+    <active>true</active>
+    <description>場所別の製作所と異なる製作所を選択していた場合、エラーにする</description>
+    <errorConditionFormula>TEXT(Factory1__c) !=  TEXT(Factory__r.Factory__c)</errorConditionFormula>
+    <errorDisplayField>Factory1__c</errorDisplayField>
+    <errorMessage>場所別と同一の製作所を設定してください。</errorMessage>
+</ValidationRule>

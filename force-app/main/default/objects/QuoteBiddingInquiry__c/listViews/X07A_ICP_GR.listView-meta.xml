@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ListView xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>X07A_ICP_GR</fullName>
+    <booleanFilter>1 AND 4 AND 5 AND (2 OR 3)</booleanFilter>
+    <columns>HeadOfficeResponceDeadline__c</columns>
+    <columns>RequestClassification__c</columns>
+    <columns>RECORDTYPE</columns>
+    <columns>FinalApprover__c</columns>
+    <columns>InquiryApprovalStatus__c</columns>
+    <columns>ResultContactStatus__c</columns>
+    <columns>ManagementNumber__c</columns>
+    <columns>NAME</columns>
+    <columns>PickDivision__c</columns>
+    <columns>OWNER.ALIAS</columns>
+    <columns>BU__c</columns>
+    <columns>SBU__c</columns>
+    <columns>PriceProposal1CP__c</columns>
+    <columns>IcpExaminationGrConfirmation__c</columns>
+    <columns>LAST_UPDATE</columns>
+    <filterScope>Everything</filterScope>
+    <filters>
+        <field>ICPReviewTarget__c</field>
+        <operation>equals</operation>
+        <value>1</value>
+    </filters>
+    <filters>
+        <field>InquiryApprovalStatus__c</field>
+        <operation>equals</operation>
+        <value>事管推部長</value>
+    </filters>
+    <filters>
+        <field>InquiryApprovalStatus__c</field>
+        <operation>equals</operation>
+        <value>BU推進部長</value>
+    </filters>
+    <filters>
+        <field>IcpExaminationGrConfirmation__c</field>
+        <operation>equals</operation>
+        <value>0</value>
+    </filters>
+    <filters>
+        <field>IcpExaminationRepConfirmation__c</field>
+        <operation>equals</operation>
+        <value>1</value>
+    </filters>
+    <label>07A. ICP・審査GR承認待ち伺い</label>
+    <sharedTo>
+        <role>M013_jigyoukanrisuishinbu</role>
+        <role>M01811_ICPGroup_Member</role>
+        <role>M0181_ICPGroup_GR</role>
+    </sharedTo>
+</ListView>

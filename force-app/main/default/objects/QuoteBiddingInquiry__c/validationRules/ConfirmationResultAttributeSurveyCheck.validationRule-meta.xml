@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ValidationRule xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>ConfirmationResultAttributeSurveyCheck</fullName>
+    <active>true</active>
+    <description>商流数が2以上の場合、各ルートの属性調査実施対象の確認結果必須</description>
+    <errorConditionFormula>AND( 
+    CommercialDistributionNumber__c &gt;= 2 , 
+    OR( ISBLANK( ConfirmationResultTargetAttributeSurvey__c  ),
+     ISBLANK(PrimaryCustomerConfirmationResult__c ) ) ,
+    Creating__c == false
+)</errorConditionFormula>
+    <errorMessage>商流が２つ以上ある場合、属性チェックと輸管チェックの各「備考」欄が入力必須です</errorMessage>
+</ValidationRule>

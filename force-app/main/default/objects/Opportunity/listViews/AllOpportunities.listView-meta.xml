@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ListView xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>AllOpportunities</fullName>
+    <columns>OPPORTUNITY.NAME</columns>
+    <columns>PickDivision__c</columns>
+    <columns>CORE.USERS.FULL_NAME</columns>
+    <columns>SBU__c</columns>
+    <columns>OrderExpectation__c</columns>
+    <columns>OPPORTUNITY.STAGE_NAME</columns>
+    <columns>OPPORTUNITY.CLOSE_DATE</columns>
+    <columns>ScheduledSalesDate__c</columns>
+    <columns>TotalCP__c</columns>
+    <columns>TotalWC__c</columns>
+    <columns>Client__c</columns>
+    <columns>ArchitectOffice__c</columns>
+    <columns>GC__c</columns>
+    <columns>SC__c</columns>
+    <filterScope>Everything</filterScope>
+    <filters>
+        <field>OPPORTUNITY.RECORDTYPE</field>
+        <operation>equals</operation>
+        <value>Opportunity.OpportunityRecordType1</value>
+    </filters>
+    <label>すべての案件</label>
+</ListView>

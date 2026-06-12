@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>SectionExistence__c</fullName>
+    <externalId>false</externalId>
+    <label>工区有無</label>
+    <required>false</required>
+    <trackTrending>false</trackTrending>
+    <type>Picklist</type>
+    <valueSet>
+        <valueSetDefinition>
+            <sorted>false</sorted>
+            <value>
+                <fullName>なし</fullName>
+                <default>false</default>
+                <label>なし</label>
+            </value>
+            <value>
+                <fullName>あり</fullName>
+                <default>false</default>
+                <label>あり</label>
+            </value>
+        </valueSetDefinition>
+    </valueSet>
+</CustomField>

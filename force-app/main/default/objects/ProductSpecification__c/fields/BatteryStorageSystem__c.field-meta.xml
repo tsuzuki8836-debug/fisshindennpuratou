@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>BatteryStorageSystem__c</fullName>
+    <externalId>false</externalId>
+    <label>蓄電池収納方式</label>
+    <required>false</required>
+    <trackFeedHistory>false</trackFeedHistory>
+    <trackHistory>false</trackHistory>
+    <trackTrending>false</trackTrending>
+    <type>Picklist</type>
+    <valueSet>
+        <restricted>true</restricted>
+        <valueSetDefinition>
+            <sorted>false</sorted>
+            <value>
+                <fullName>キュービクル収納式</fullName>
+                <default>false</default>
+                <label>キュービクル収納式</label>
+            </value>
+            <value>
+                <fullName>架台収納式</fullName>
+                <default>false</default>
+                <label>架台収納式</label>
+            </value>
+        </valueSetDefinition>
+    </valueSet>
+</CustomField>

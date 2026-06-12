@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>ExportManagementProvisionQ10__c</fullName>
+    <defaultValue>&quot;いいえ&quot;</defaultValue>
+    <externalId>false</externalId>
+    <label>E.貿管Bが特に取引を認めた社内包括承認取引である</label>
+    <required>false</required>
+    <trackFeedHistory>false</trackFeedHistory>
+    <trackHistory>false</trackHistory>
+    <trackTrending>false</trackTrending>
+    <type>Picklist</type>
+    <valueSet>
+        <restricted>true</restricted>
+        <valueSetDefinition>
+            <sorted>false</sorted>
+            <value>
+                <fullName>はい</fullName>
+                <default>false</default>
+                <label>はい</label>
+            </value>
+            <value>
+                <fullName>いいえ</fullName>
+                <default>true</default>
+                <label>いいえ</label>
+            </value>
+        </valueSetDefinition>
+    </valueSet>
+</CustomField>

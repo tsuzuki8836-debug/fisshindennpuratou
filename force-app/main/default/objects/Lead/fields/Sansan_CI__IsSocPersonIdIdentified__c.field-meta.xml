@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Sansan_CI__IsSocPersonIdIdentified__c</fullName>
+    <deprecated>false</deprecated>
+    <externalId>false</externalId>
+    <formula>IF (
+     AND(
+         Sansan_CI__CI_SOC_FK__c != &quot;&quot;,
+         Sansan_CI__CI_PersonId_FK__c != &quot;&quot;
+         ),
+     true,
+     false
+     )</formula>
+    <label>(Sansan)SOC/CI人物ID識別済み</label>
+    <type>Checkbox</type>
+</CustomField>

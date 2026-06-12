@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<WebLink xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>CreateQuoteButton</fullName>
+    <availability>online</availability>
+    <displayType>massActionButton</displayType>
+    <encodingKey>UTF-8</encodingKey>
+    <height>600</height>
+    <linkType>url</linkType>
+    <masterLabel>新規</masterLabel>
+    <openType>sidebar</openType>
+    <protected>false</protected>
+    <requireRowSelection>false</requireRowSelection>
+    <url>/lightning/o/Quote__c/new?recordTypeId={!Opportunity.RecordTypeIDOfQuote__c}&amp;defaultFieldValues=
+Opportunity__c={!Opportunity.Id},QuoteSubmission__c={!Opportunity.Account},Subject__c={!Opportunity.Name},QuoteContents__c={!Opportunity.ConstructionContent__c},Account__c={!Opportunity.AccountId},
+&amp;backgroundContext=%2Flightning%2Fr%2FOpportunity%2F{!Opportunity.Id}%2Fview</url>
+</WebLink>

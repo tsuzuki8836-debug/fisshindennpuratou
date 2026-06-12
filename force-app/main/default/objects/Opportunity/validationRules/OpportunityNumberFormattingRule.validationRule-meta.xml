@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ValidationRule xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>OpportunityNumberFormattingRule</fullName>
+    <active>true</active>
+    <description>商談番号のフォーマットを以下の形式にする。
+F0000-X000-0</description>
+    <errorConditionFormula>NOT(
+ OR(
+  LEN (OpportunityNumber__c ) =  0,
+  REGEX(OpportunityNumber__c , &quot;[F][0-9]{4}-[A-Z][0-9]{3}-[0-9]{1}&quot;),
+		$Profile.Name = &apos;データ移行管理者&apos;
+ )
+)</errorConditionFormula>
+    <errorMessage>商談番号はF0000-X000-0というフォーマットで入力してください。
+英字は半角大文字、数字は半角で登録してください。
+ハイフンを忘れないようにしてください。</errorMessage>
+</ValidationRule>

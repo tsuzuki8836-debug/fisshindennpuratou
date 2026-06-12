@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ListView xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>X20</fullName>
+    <columns>NAME</columns>
+    <columns>Opp__c</columns>
+    <columns>Account__c</columns>
+    <columns>Prod__c</columns>
+    <columns>OccurredPlace__c</columns>
+    <columns>AccrualDateTime__c</columns>
+    <columns>Status__c</columns>
+    <columns>HandlingLevel__c</columns>
+    <columns>DeliveryDate__c</columns>
+    <filterScope>Everything</filterScope>
+    <filters>
+        <field>HandlingLevel__c</field>
+        <operation>equals</operation>
+        <value>重大不具合</value>
+    </filters>
+    <label>20.製作所の不具合取扱いレベルが重大不具合のもの</label>
+</ListView>

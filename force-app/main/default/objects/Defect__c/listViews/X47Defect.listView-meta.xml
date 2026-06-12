@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ListView xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>X47Defect</fullName>
+    <columns>NAME</columns>
+    <columns>Opp__c</columns>
+    <columns>Account__c</columns>
+    <columns>Prod__c</columns>
+    <columns>OccurredPlace__c</columns>
+    <columns>AccrualDateTime__c</columns>
+    <columns>Status__c</columns>
+    <columns>HandlingLevel__c</columns>
+    <columns>DeliveryDate__c</columns>
+    <columns>OWNER.ALIAS</columns>
+    <filterScope>Everything</filterScope>
+    <filters>
+        <field>DefectOwnersDivision__c</field>
+        <operation>equals</operation>
+        <value>08_四国支社</value>
+    </filters>
+    <label>47.四国支社の不具合</label>
+</ListView>

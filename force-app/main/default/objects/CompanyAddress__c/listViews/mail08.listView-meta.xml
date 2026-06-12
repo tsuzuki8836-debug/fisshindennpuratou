@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ListView xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>mail08</fullName>
+    <columns>CompanyName__c</columns>
+    <columns>ShortAffiliation__c</columns>
+    <columns>Name__c</columns>
+    <columns>NAME</columns>
+    <columns>CREATED_DATE</columns>
+    <filterScope>Everything</filterScope>
+    <filters>
+        <field>ShortAffiliation__c</field>
+        <operation>contains</operation>
+        <value>神電・社情通三</value>
+    </filters>
+    <filters>
+        <field>CompanyName__c</field>
+        <operation>equals</operation>
+        <value>三菱電機</value>
+    </filters>
+    <label>神電・社情通三のメール送信先</label>
+</ListView>

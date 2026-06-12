@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>TC__c</fullName>
+    <description>WC＋（WC＊共通比率）</description>
+    <externalId>false</externalId>
+    <formula>SRWC__c  +  ( SRWC__c  *  (VALUE(TEXT( CommonRatio01__c ))))</formula>
+    <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
+    <label>１．商談TC</label>
+    <precision>18</precision>
+    <required>false</required>
+    <scale>0</scale>
+    <trackHistory>false</trackHistory>
+    <trackTrending>false</trackTrending>
+    <type>Currency</type>
+</CustomField>

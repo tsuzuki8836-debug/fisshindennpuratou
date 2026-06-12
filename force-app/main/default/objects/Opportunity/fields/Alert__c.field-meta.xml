@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Alert__c</fullName>
+    <externalId>false</externalId>
+    <formula>IF (
+   OR(
+   ISPICKVAL(StageName, &apos;基本計画&apos;) , 
+   ISPICKVAL(StageName, &apos;基本設計&apos;) , 
+   ISPICKVAL(StageName, &apos;実施設計&apos;) ,  
+   ISPICKVAL(StageName, &apos;価格交渉 入札準備・入札&apos;) ,  
+   ISPICKVAL(StageName, &apos;受注&apos;) ,
+   ISPICKVAL(StageName, &apos;オーダー管理&apos;) 
+   ),
+   IF (
+    ISNULL(CheckDate01__c), &apos;★見積書提出伺いが完了していません&apos;   &amp;  BR()  ,&apos;&apos;
+   )  &amp; 
+   IF (
+    ISNULL(CheckDate02__c), &apos;★応札伺いが完了していません&apos;  &amp;  BR()  ,&apos;&apos;
+   ), &apos;&apos;
+)</formula>
+    <label>承認アラート</label>
+    <required>false</required>
+    <trackHistory>false</trackHistory>
+    <type>Text</type>
+    <unique>false</unique>
+</CustomField>

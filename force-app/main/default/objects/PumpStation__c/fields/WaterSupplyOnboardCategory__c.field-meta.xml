@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>WaterSupplyOnboardCategory__c</fullName>
+    <description>水環境BU管理項目の機場カテゴリ</description>
+    <externalId>false</externalId>
+    <inlineHelpText>水環境BU機場カテゴリの定義
+・カテゴリA：中央監視設備と中央監視設備以外の設備を一つ以上納入している機場
+・カテゴリB：中央監視設備のみ、又は中央監視設備以外の設備を一つ以上納入している機場
+・カテゴリC：新設・他社機場</inlineHelpText>
+    <label>機場カテゴリ</label>
+    <required>false</required>
+    <trackFeedHistory>true</trackFeedHistory>
+    <trackHistory>true</trackHistory>
+    <trackTrending>false</trackTrending>
+    <type>Picklist</type>
+    <valueSet>
+        <restricted>true</restricted>
+        <valueSetDefinition>
+            <sorted>false</sorted>
+            <value>
+                <fullName>A</fullName>
+                <default>false</default>
+                <label>A（既設機場）</label>
+            </value>
+            <value>
+                <fullName>B</fullName>
+                <default>false</default>
+                <label>B（混合機場）</label>
+            </value>
+            <value>
+                <fullName>C</fullName>
+                <default>false</default>
+                <label>C（他社機場）</label>
+            </value>
+        </valueSetDefinition>
+    </valueSet>
+</CustomField>

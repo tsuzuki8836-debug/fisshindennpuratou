@@ -1,0 +1,186 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<RecordType xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Chassis</fullName>
+    <active>true</active>
+    <label>筐体</label>
+    <picklistValues>
+        <picklist>BU__c</picklist>
+        <values>
+            <fullName>K</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>M</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>S</fullName>
+            <default>false</default>
+        </values>
+    </picklistValues>
+    <picklistValues>
+        <picklist>Frequency__c</picklist>
+        <values>
+            <fullName>00Hz</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>50Hz</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>60Hz</fullName>
+            <default>false</default>
+        </values>
+    </picklistValues>
+    <picklistValues>
+        <picklist>SpecialCalculationTitle__c</picklist>
+        <values>
+            <fullName>22kV C-GIS%28HS-X%EF%BC%89</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>22kV C-GIS%28ブロックキュ-ビクル%28HS-A%EF%BC%89</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>66kV C-GIS</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>ACB盤</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>バスダクト</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>低圧盤 筐体価格%28屋内%29</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>低圧盤 筐体価格%28屋内%29%E2%80%BBW900mm以下</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>低圧盤 筐体価格%28屋内%2C屋外%EF%BC%89%E2%80%BBW900mm以下</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>低圧盤 筐体価格%28屋外%29</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>低圧盤 筐体価格%28屋外%29%E2%80%BBW900mm以下</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>変圧器収納盤及びその他</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>屋内 %E3%83%BBモールド%EF%BD%A5Ｈ種乾式  ケース無し  %EF%BC%88３%EF%BC%8F３%EF%BC%89変圧器収納盤%EF%BC%9A高圧</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>屋外%E3%83%BB油入自冷%EF%BC%88１%EF%BC%8F２%EF%BC%89</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>屋外%E3%83%BB油入自冷%EF%BC%88２%EF%BC%8F２%EF%BC%89</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>特高%E3%83%BB高圧トランス 750kVA以上 ガス</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>特高TR モールド</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>特高TR 植物油入</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>特高TR 油入</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>盤価格%28筐体のみ%29</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>積上積算方式%E3%80%80変圧器収納盤%EF%BC%9A高圧</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>積上積算方式%E3%80%80筐体%28高圧受配電盤%E3%80%80筐体%29</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>積上積算方式%E3%80%80筐体%28高圧受配電盤%E3%80%80筐体%29%29</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>高%EF%BD%A5低圧トランス%E3%80%80屋内 %E3%83%BBモールド  ケース無し%EF%BC%88１%EF%BC%8F３%EF%BC%89</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>高%EF%BD%A5低圧トランス%E3%80%80屋内 %E3%83%BBモールド%E3%83%BBＨ種乾式  ケース無し%EF%BC%88２%EF%BC%8F３%EF%BC%89</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>高圧TR 屋内 モールド H種乾式 ケース無し 機器 標%281%2F3%29</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>高圧TR 屋内 モールド H種乾式 ケース無し 機器 標%282%2F3%29%29</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>高圧盤</fullName>
+            <default>false</default>
+        </values>
+    </picklistValues>
+    <picklistValues>
+        <picklist>UseClassification__c</picklist>
+        <values>
+            <fullName>ACB盤</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>コントロールセンタ%28C%2FC%29</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>リレー盤</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>低圧盤</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>機器事業部 変圧器</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>現場盤</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>高圧コンビ</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>高圧受配電盤</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>高圧変圧器</fullName>
+            <default>false</default>
+        </values>
+    </picklistValues>
+</RecordType>

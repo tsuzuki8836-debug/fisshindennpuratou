@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>StandardPrice__c</fullName>
+    <externalId>false</externalId>
+    <label>基準価格設定有無</label>
+    <required>false</required>
+    <trackFeedHistory>false</trackFeedHistory>
+    <trackHistory>false</trackHistory>
+    <type>MultiselectPicklist</type>
+    <valueSet>
+        <restricted>true</restricted>
+        <valueSetDefinition>
+            <sorted>false</sorted>
+            <value>
+                <fullName>調査基準価格あり</fullName>
+                <default>false</default>
+                <label>調査基準価格あり</label>
+            </value>
+            <value>
+                <fullName>特別重点調査価格あり</fullName>
+                <default>false</default>
+                <label>特別重点調査価格あり</label>
+            </value>
+            <value>
+                <fullName>最低制限価格(失格基準価格)あり</fullName>
+                <default>false</default>
+                <label>最低制限価格(失格基準価格)あり</label>
+            </value>
+        </valueSetDefinition>
+    </valueSet>
+    <visibleLines>4</visibleLines>
+</CustomField>

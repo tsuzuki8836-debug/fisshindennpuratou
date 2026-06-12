@@ -4,7 +4,7 @@ public class amountDetailGetTableControllerTest {
     // 伺い数値明細画面 テスト
     @IsTest
     static void TestGetAmountDetailGetTable1() {
-        
+
         amountDetailGetTableController.getAmountDetailGetTable(null);
 
         QuoteBiddingInquiry__c qbi = createTestQuoteBiddingInquiry('応札伺い');
@@ -34,14 +34,14 @@ public class amountDetailGetTableControllerTest {
     // 伺い数値明細画面 テスト
     @IsTest
     static void TestGetAmountDetailGetTable3() {
-        
+
         amountDetailGetTableController.getAmountDetailGetTable(null);
 
         QuoteBiddingInquiry__c qbi = createTestQuoteBiddingInquiry('応札伺い');
         insert qbi;
 
         amountDetailGetTableController.getAmountDetailGetTable(qbi.Id );
-        
+
         // レコードタイプを取得
         Schema.SObjectType qbiType = Account.sObjectType;
         Schema.DescribeSObjectResult qbiDescribe = qbiType.getDescribe();
@@ -65,7 +65,7 @@ public class amountDetailGetTableControllerTest {
             Name = '受付未承認',
             AccountId = acc.Id,
             StageName = '基本計画',
-            ConstructionDistinction__c = '更新（他社既設）',
+            ConstructionDistinction__c = '更新（自社既設）',
             BU__c = '水環境',
             SBU__c = '上水',
             EstablishedCompany__c = '三菱',
@@ -73,7 +73,7 @@ public class amountDetailGetTableControllerTest {
             PumpStation__c = ps.Id,
             CloseDate = Date.Today()
         );
-        insert opp; 
+        insert opp;
 
         QuoteBiddingInquiry__c qbi2 = createTestQuoteBiddingInquiry('見積伺い');
         qbi2.Opportunity__c = opp.Id;
@@ -125,7 +125,7 @@ public class amountDetailGetTableControllerTest {
         insert qbi;
 
         amountDetailGetTableController.getAmountDetailGetTable(qbi.Id );
-        
+
         qbi = createTestQuoteBiddingInquiry('設計変更応札伺い');
         // qbi.OriginalContractSalesCommission__c = 123;
         insert qbi;
@@ -135,7 +135,7 @@ public class amountDetailGetTableControllerTest {
 
     @IsTest
     static void TestGetAmountDetailGetTable5() {
-        
+
         // レコードタイプを取得
         Schema.SObjectType qbiType = Account.sObjectType;
         Schema.DescribeSObjectResult qbiDescribe = qbiType.getDescribe();
@@ -159,7 +159,7 @@ public class amountDetailGetTableControllerTest {
             Name = '受付未承認',
             AccountId = acc.Id,
             StageName = '基本計画',
-            ConstructionDistinction__c = '更新（他社既設）',
+            ConstructionDistinction__c = '更新（自社既設）',
             BU__c = '水環境',
             SBU__c = '上水',
             EstablishedCompany__c = '三菱',
@@ -167,7 +167,7 @@ public class amountDetailGetTableControllerTest {
             PumpStation__c = ps.Id,
             CloseDate = Date.Today()
         );
-        insert opp; 
+        insert opp;
 
         QuoteBiddingInquiry__c qbi2 = createTestQuoteBiddingInquiry('設計変更応札伺い');
         qbi2.Opportunity__c = opp.Id;
@@ -210,7 +210,7 @@ public class amountDetailGetTableControllerTest {
 
     @IsTest
     static void TestGetAmountDetailGetTable6() {
-        
+
         // レコードタイプを取得
         Schema.SObjectType qbiType = Account.sObjectType;
         Schema.DescribeSObjectResult qbiDescribe = qbiType.getDescribe();
@@ -234,7 +234,7 @@ public class amountDetailGetTableControllerTest {
             Name = '受付未承認',
             AccountId = acc.Id,
             StageName = '基本計画',
-            ConstructionDistinction__c = '更新（他社既設）',
+            ConstructionDistinction__c = '更新（自社既設）',
             BU__c = '水環境',
             SBU__c = '上水',
             EstablishedCompany__c = '三菱',
@@ -242,7 +242,7 @@ public class amountDetailGetTableControllerTest {
             PumpStation__c = ps.Id,
             CloseDate = Date.Today()
         );
-        insert opp; 
+        insert opp;
 
         QuoteBiddingInquiry__c qbi2 = createTestQuoteBiddingInquiry('設計変更応札伺い');
         qbi2.Opportunity__c = opp.Id;

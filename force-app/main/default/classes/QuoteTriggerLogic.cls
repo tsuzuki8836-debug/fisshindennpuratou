@@ -8,10 +8,10 @@ public class QuoteTriggerLogic {
     @testvisible private static final Integer PRICE_B = 200000*1000;
     // 項目取得Utilクラスをインスタンス化
     GetAllFieldsUtil util = new GetAllFieldsUtil();
-       
+
     public void cloneQuoteAndRelatedRecords(List<Quote__c> newQuotes){
         //マスタ見積レコード <マスタ見積のId, 新規見積のId>
-    	Map<Id, Id> cloneQuoteIdMap = this.getCloneQuoteIds(newQuotes);
+        Map<Id, Id> cloneQuoteIdMap = this.getCloneQuoteIds(newQuotes);
         //関連機器
         Map<Id, Device__c> devicesToInsertDetailMap = new Map<Id, Device__c>();
         //工事区分がある見積をコピーしたか否か
@@ -22,7 +22,7 @@ public class QuoteTriggerLogic {
         Map<Id, ConstructionZone__c> insertConstructionZoneMap = new Map<Id, ConstructionZone__c>();
         //Insertする関連細別（見積項目作成時にも利用するため、copyConstructionZoneのif文の外で作成）
         Map<Id, Device_SmallCategory__c> insertDeviceSmallCategoryMap = new Map<Id, Device_SmallCategory__c>();
-        
+
         if(cloneQuoteIdMap.size() > 0){
             //関連機器を取得する
             Map<Id, Quote__c> relatedDevicesMap = this.getDeviceRelatedRecords(cloneQuoteIdMap.keySet());
@@ -38,7 +38,7 @@ public class QuoteTriggerLogic {
                 Map<Id, Quote__c> relatedConstructionZoneMap = this.getConstructionZoneRelatedRecords(cloneQuoteIdMap.keySet());
                 //関連工事区分を確認する
                 for(Quote__c qRelate : relatedConstructionZoneMap.values()){
-                    for(ConstructionZone__c c : qRelate.ConstructionZones__r){        
+                    for(ConstructionZone__c c : qRelate.ConstructionZones__r){
                         //各関連工事区分をコピー
                         ConstructionZone__c con = c.clone();
                         //各関連工事区分の見積Idを設定する
@@ -56,7 +56,7 @@ public class QuoteTriggerLogic {
                 Map<Id, ConstructionZone__c> relatedDeviceLargeCategoryMap = this.getDeviceLargeCategoryRelatedRecords(insertConstructionZoneMap.keySet());
                 //関連工種を確認する
                 for(ConstructionZone__c conRelate : relatedDeviceLargeCategoryMap.values()){
-                    for(Device_LargeCategory__c dlc : conRelate.Device_LargeCategorys__r){        
+                    for(Device_LargeCategory__c dlc : conRelate.Device_LargeCategorys__r){
                         //各関連工種をコピー
                         Device_LargeCategory__c deviceLC = dlc.clone();
                         //各関連工種の工事区分Idを設定する
@@ -74,7 +74,7 @@ public class QuoteTriggerLogic {
                 Map<Id, Device_LargeCategory__c> relatedDeviceMiddleCategoryMap = this.getDeviceMiddleCategoryRelatedRecords(insertDeviceLargeCategoryMap.keySet());
                 //関連種別を確認する
                 for(Device_LargeCategory__c dlcRelate : relatedDeviceMiddleCategoryMap.values()){
-                    for(Device_MiddleCategory__c dmc : dlcRelate.Device_MiddleCategorys__r){        
+                    for(Device_MiddleCategory__c dmc : dlcRelate.Device_MiddleCategorys__r){
                         //各関連種別をコピー
                         Device_MiddleCategory__c deviceMC = dmc.clone();
                         //各関連種別の工種Idを設定する
@@ -90,7 +90,7 @@ public class QuoteTriggerLogic {
                 Map<Id, Device_MiddleCategory__c> relatedDeviceSmallCategoryMap = this.getDeviceSmallCategoryRelatedRecords(insertDeviceMiddleCategoryMap.keySet());
                 //関連細別を確認する
                 for(Device_MiddleCategory__c dmcRelate : relatedDeviceSmallCategoryMap.values()){
-                    for(Device_SmallCategory__c dsc : dmcRelate.Device_SmallCategorys__r){        
+                    for(Device_SmallCategory__c dsc : dmcRelate.Device_SmallCategorys__r){
                         //各関連細別をコピー
                         Device_SmallCategory__c deviceSC = dsc.clone();
                         //各関連細別の種別Idを設定する
@@ -108,7 +108,7 @@ public class QuoteTriggerLogic {
                 if(qRelate.Devices__r.size() > 200){
                     Trigger.new.get(0).addError('見積項目が200件を超えているためコピー機能は使用できません');
                 }
-                for(Device__c d : qRelate.Devices__r){        
+                for(Device__c d : qRelate.Devices__r){
                     //各関連見積項目をコピー
                     Device__c dv = d.clone();
                     //各関連見積項目の見積Idを設定する
@@ -133,25 +133,25 @@ public class QuoteTriggerLogic {
             insert devicesToInsertDetailMap.values();
         }
     }
-    
+
     /**
      * マスタ見積のIDを取得
      */
-    private Map<Id, Id> getCloneQuoteIds(List<Quote__c> newList){        
-    	Map<Id, Id> idMap = new Map<Id, Id>();        
+    private Map<Id, Id> getCloneQuoteIds(List<Quote__c> newList){
+        Map<Id, Id> idMap = new Map<Id, Id>();
         for (Quote__c q : newList) {
-        	if(q.isClone()){
-            	idMap.put(q.getCloneSourceId(), q.Id);
-        	}
-    	}
-        return idMap;        
+            if(q.isClone()){
+                idMap.put(q.getCloneSourceId(), q.Id);
+            }
+        }
+        return idMap;
     }
-    
+
     /**
      * 関連機器を取得
      */
     private Map<Id, Quote__c> getDeviceRelatedRecords(Set<Id> qIds){
-        
+
         return new Map<Id, Quote__c>((List<Quote__c>)Database.query('SELECT Id, (SELECT FIELDS(STANDARD) ' + util.getAllCustomFields('Device__c') + ' FROM Devices__r)' + 
                                                                     'FROM Quote__c WHERE Id IN: qIds'));
     }
@@ -160,7 +160,7 @@ public class QuoteTriggerLogic {
      * 関連工事区分を取得
      */
     private Map<Id, Quote__c> getConstructionZoneRelatedRecords(Set<Id> qIds){
-        
+
         return new Map<Id, Quote__c>((List<Quote__c>)Database.query('SELECT Id, (SELECT FIELDS(STANDARD) ' + util.getAllCustomFields('ConstructionZone__c') + ' FROM ConstructionZones__r)' + 
                                                                     'FROM Quote__c WHERE Id IN: qIds'));
     }
@@ -169,7 +169,7 @@ public class QuoteTriggerLogic {
      * 関連工種を取得
      */
     private Map<Id, ConstructionZone__c> getDeviceLargeCategoryRelatedRecords(Set<Id> conIds){
-        
+
         return new Map<Id, ConstructionZone__c>((List<ConstructionZone__c>)Database.query('SELECT Id, (SELECT FIELDS(STANDARD) ' + util.getAllCustomFields('Device_LargeCategory__c') + ' FROM Device_LargeCategorys__r)' + 
                                                                     'FROM ConstructionZone__c WHERE Id IN: conIds'));
     }
@@ -178,7 +178,7 @@ public class QuoteTriggerLogic {
      * 関連種別を取得
      */
     private Map<Id, Device_LargeCategory__c> getDeviceMiddleCategoryRelatedRecords(Set<Id> dlcIds){
-        
+
         return new Map<Id, Device_LargeCategory__c>((List<Device_LargeCategory__c>)Database.query('SELECT Id, (SELECT FIELDS(STANDARD) ' + util.getAllCustomFields('Device_MiddleCategory__c') + ' FROM Device_MiddleCategorys__r)' + 
                                                                     'FROM Device_LargeCategory__c WHERE Id IN: dlcIds'));
     }
@@ -187,7 +187,7 @@ public class QuoteTriggerLogic {
      * 関連細別を取得
      */
     private Map<Id, Device_MiddleCategory__c> getDeviceSmallCategoryRelatedRecords(Set<Id> dmcIds){
-        
+
         return new Map<Id, Device_MiddleCategory__c>((List<Device_MiddleCategory__c>)Database.query('SELECT Id, (SELECT FIELDS(STANDARD) ' + util.getAllCustomFields('Device_SmallCategory__c') + ' FROM Device_SmallCategorys__r)' + 
                                                                     'FROM Device_MiddleCategory__c WHERE Id IN: dmcIds'));
     }
@@ -211,12 +211,16 @@ public class QuoteTriggerLogic {
             system.debug('q.SelfTotal_NET_LastAcc__c'+q.SelfTotal_NET_LastAcc__c);
             // 手入力項目の有無で処理を分岐→入力有り：全体NET価格÷全体EP=全体&各NET率、入力無し：各NET価格÷各EP=各NET率
             // 最終顧客NET率
-            if(q.SelfTotal_NET_LastAcc__c != null && 
-            (!q.isClone() && q.SelfTotal_NET_LastAcc__c != oldQuotesMap.get(q.Id).SelfTotal_NET_LastAcc__c)
+            if(q.SelfTotal_NET_LastAcc__c != null &&
+            (!q.isClone() && (oldQuotesMap == null || q.SelfTotal_NET_LastAcc__c != oldQuotesMap.get(q.Id).SelfTotal_NET_LastAcc__c))
             || (q.isClone() && q.SelfTotal_NET_LastAcc__c != sourceQuote.SelfTotal_NET_LastAcc__c)){
                 // 全体NET率=手入力全体NET÷全体EP
-                q.Total_NETRate_LastAcc__c = q.SelfTotal_NET_LastAcc__c / q.QuotePriceSum__c * 100;
-                
+                if (q.QuotePriceSum__c != 0) {
+                    q.Total_NETRate_LastAcc__c = q.SelfTotal_NET_LastAcc__c / q.QuotePriceSum__c * 100;
+                } else {
+                    q.Total_NETRate_LastAcc__c = 0;
+                }
+
                 // 各NET率に算出した全体NET率を入れる（EPが0のSBUはNET率も0%）
                 if(q.Transforming_EP__c > 0){
                     q.Transforming_NETRate_LastAcc__c = q.Total_NETRate_LastAcc__c;
@@ -248,7 +252,7 @@ public class QuoteTriggerLogic {
                 }else{
                     q.Labor_NETRate_LastAcc__c = 0;
                 }
-                
+
                 // 各NET価格に各EP×各NET率を入れる
                 d = q.Transforming_EP__c * q.Transforming_NETRate_LastAcc__c / 100;
                 q.Transforming_NET_LastAcc__c = d.round(System.RoundingMode.HALF_UP);
@@ -272,11 +276,15 @@ public class QuoteTriggerLogic {
             }
 
             // ゼネコンNET率
-            if(q.SelfTotal_NET_General__c != null && 
-            (!q.isClone() && q.SelfTotal_NET_General__c != oldQuotesMap.get(q.Id).SelfTotal_NET_General__c)
+            if(q.SelfTotal_NET_General__c != null &&
+            (!q.isClone() && (oldQuotesMap == null || q.SelfTotal_NET_General__c != oldQuotesMap.get(q.Id).SelfTotal_NET_General__c))
             || (q.isClone() && q.SelfTotal_NET_General__c != sourceQuote.SelfTotal_NET_General__c)){
-                q.Total_NETRate_General__c = q.SelfTotal_NET_General__c / q.QuotePriceSum__c * 100;
-                
+                if (q.QuotePriceSum__c != 0) {
+                    q.Total_NETRate_General__c = q.SelfTotal_NET_General__c / q.QuotePriceSum__c * 100;
+                } else {
+                    q.Total_NETRate_General__c = 0;
+                }
+
                 // 各NET率に算出した全体NET率を入れる（EPが0のSBUはNET率も0%）
                 if(q.Transforming_EP__c > 0){
                     q.Transforming_NETRate_General__c = q.Total_NETRate_General__c;
@@ -332,11 +340,15 @@ public class QuoteTriggerLogic {
             }
 
             // サブコンNET率
-            if(q.SelfTotal_NET_Sub__c != null && 
-            (!q.isClone() && q.SelfTotal_NET_Sub__c != oldQuotesMap.get(q.Id).SelfTotal_NET_Sub__c)
+            if(q.SelfTotal_NET_Sub__c != null &&
+            (!q.isClone() && (oldQuotesMap == null || q.SelfTotal_NET_Sub__c != oldQuotesMap.get(q.Id).SelfTotal_NET_Sub__c))
             || (q.isClone() && q.SelfTotal_NET_Sub__c != sourceQuote.SelfTotal_NET_Sub__c)){
-                q.Total_NETRate_Sub__c = q.SelfTotal_NET_Sub__c / q.QuotePriceSum__c * 100;
-                
+                if (q.QuotePriceSum__c != 0) {
+                    q.Total_NETRate_Sub__c = q.SelfTotal_NET_Sub__c / q.QuotePriceSum__c * 100;
+                } else {
+                    q.Total_NETRate_Sub__c = 0;
+                }
+
                 // 各NET率に算出した全体NET率を入れる（EPが0のSBUはNET率も0%）
                 if(q.Transforming_EP__c > 0){
                     q.Transforming_NETRate_Sub__c = q.Total_NETRate_Sub__c;
@@ -565,7 +577,7 @@ public class QuoteTriggerLogic {
         if(quoteIds.isEmpty()) return;
 
         Map<Id,Quote__c> getQuoteMap  = getQuoteChildDevices(quoteIds);
-        
+
         for(Quote__c quote : quoteList){
             if(getQuoteMap.get(quote.Id).Devices__r.isEmpty()){
                 //機器単体費
@@ -581,7 +593,7 @@ public class QuoteTriggerLogic {
             }
         }
     }
-    
+
     private void setQuoteValues(Quote__c quote, List<Device__c> deviceList){
         //支給品・移設品・製作のみ有りフラグ
         Boolean suppliesFlag = false;
@@ -612,7 +624,7 @@ public class QuoteTriggerLogic {
         quote.MachineUnitAmount__c = sumPriceTarget;
         //システムインテグレーション費合計設定
         quote.SystemIntegrationFee__c = systemIntegrationTotalPrice;
-        
+
         //機器管理費設定
         if(suppliesFlag == true && sumPriceTarget > 0){
             equipManageCostRate = calculateEquipManageCostInSupplies(quote,deviceList,sumPriceTarget,equipManageCostRate);
@@ -622,7 +634,7 @@ public class QuoteTriggerLogic {
             quote.EquipManageCost__c = sumPriceTarget * (equipManageCostRate / 100);
         }
         System.debug('補正後equipManageCostRate =' + equipManageCostRate);
-        
+
         //機器管理費率設定
         quote.EquipManageCostRate__c = equipManageCostRate;
     }
@@ -649,7 +661,7 @@ public class QuoteTriggerLogic {
         //PRICE_A = 14,000千円  ,  PRICE_B = 200,000千円
         if(sumPriceTarget <= PRICE_A){
             //機器単体費が 14,000千円以下
-            equipManageCostRate = 18.22;            
+            equipManageCostRate = 18.22;
         }else if(sumPriceTarget>PRICE_A && sumPriceTarget<=PRICE_B){
             //EXPONENT = -0.4711
             equipManageCostRate = 42380.2 * (Math.pow(sumPriceTarget, EXPONENT));
@@ -669,7 +681,6 @@ public class QuoteTriggerLogic {
      * @param deviceList 見積に紐づく見積項目のリスト
      * @param sumPriceTarget 支給品や移設品、製作のみの価格も含めた金額（見積対象外も含む）
      * @param equipManageCostRate 補正前機器管理費率
-     * 
      */
     private Decimal calculateEquipManageCostInSupplies(Quote__c quote, List<Device__c> deviceList, Decimal sumPriceTarget, Decimal equipManageCostRate){
         //支給品や移設品、製作のみ(見積対象外も含む)の金額
@@ -725,20 +736,19 @@ public class QuoteTriggerLogic {
      * @param quote 見積レコード
      * @param deviceList 見積に紐づく見積項目のリスト
      * @param equipManageCostRate 機器管理費率
-     * 
      */
     private Double calculateEquipManageCostInNoTarget(Quote__c quote, List<Device__c> deviceList, Decimal equipManageCostRate){
         //見積対象の機器単体費
         Decimal quoteTargetPrice = 0.0;
         //再計算後の機器管理費
         Decimal correctionEquipManageCost = 0.0;
-        
+
         for(Device__c dv : deviceList){
             if(dv.QuoteTarget__c == '見積対象' && dv.MajorClassification__c != 'システムインテグレーション費' && dv.EquipManageCostTarget__c == true){
                 quoteTargetPrice += dv.ClientAnswerAmountTotal__c;
             }
         }
-        
+
         //機器管理費再計算
         correctionEquipManageCost = quoteTargetPrice * (equipManageCostRate / 100);
         //各種工事区分の値を設定
@@ -753,10 +763,10 @@ public class QuoteTriggerLogic {
                 WHERE Id IN : quoteIds AND RecordTypeId =: recTypeOfficialDemandId]);
         return getQuoteMap;
     }
- 
+
     // マスタ見積のレコード情報を取得
-    private Quote__c getCloneQuoteRecord(Quote__c newQuote){        
-    	String sourceId = newQuote.getCloneSourceId();
+    private Quote__c getCloneQuoteRecord(Quote__c newQuote){
+        String sourceId = newQuote.getCloneSourceId();
 
         Quote__c sourceQuote = [SELECT Id
                                     , SelfTotal_NET_LastAcc__c
@@ -765,75 +775,31 @@ public class QuoteTriggerLogic {
                                 FROM Quote__c
                                 WHERE Id = :sourceId
                                 LIMIT 1];
-        
+
         System.debug(sourceQuote);
-        
-        return sourceQuote;        
+
+        return sourceQuote;
     }
+
     /**
-     * 全角→半角変換
+     * 以下の文字列を変換する
+     * １．一般管理費率：数字を全角→半角変換
+     * ２．件名、出力帳票名：特定記号を半角→全角変換
      *
-     * @param value 変換元文字列
-     * @return 半角文字列
+     * @param quoteList 見積リスト
      */
-    public String convertFullToHalf(String value) {
-        ReplaceChar reChar = new ReplaceChar();
-        return reChar.convertFullToHalf(value);
-        // String result;
-        // // 変換内容がない場合
-        // if(String.isEmpty(value)) {
-        //     result = '';
-        // }else{
-        //     // 半角文字のみなら以降スキップ
-        //     if (Pattern.matches('[ -~]+', value)) {
-        //         result = value;
-        //     }else{
-        //         Map<String, String> fulltoHalfMap2 = new Map<String, String>();
-        //         fulltoHalfMap2.put( '０',  '0' );
-        //         fulltoHalfMap2.put( '１',  '1' );
-        //         fulltoHalfMap2.put( '２',  '2' );
-        //         fulltoHalfMap2.put( '３',  '3' );
-        //         fulltoHalfMap2.put( '４',  '4' );
-        //         fulltoHalfMap2.put( '５',  '5' );
-        //         fulltoHalfMap2.put( '６',  '6' );
-        //         fulltoHalfMap2.put( '７',  '7' );
-        //         fulltoHalfMap2.put( '８',  '8' );
-        //         fulltoHalfMap2.put( '９',  '9' );
-        //         // エスケープ必要文字
-        //         Set<String> escapeChars = new Set<String>();
-        //         escapeChars.add('\\');
-        //         escapeChars.add('*');
-        //         escapeChars.add('+');
-        //         escapeChars.add('.');
-        //         escapeChars.add('?');
-        //         escapeChars.add('{');
-        //         escapeChars.add('}');
-        //         escapeChars.add('(');
-        //         escapeChars.add(')');
-        //         escapeChars.add('[');
-        //         escapeChars.add(']');
-        //         escapeChars.add('^');
-        //         escapeChars.add('$');
-        //         escapeChars.add('|');
-        //         escapeChars.add('/');
-    
-        //         for (String key : fulltoHalfMap2.keySet()) {
-        //             if (value.contains(key)) {
-        //                 String tempKey = key;
-        //                 if (escapeChars.contains(tempKey)) {
-        //                     tempKey = '\\' + tempKey;
-        //                 }
-        //                 value = value.replaceAll(tempKey, fulltoHalfMap2.get(key));
-        //             }
-        //         }
-        //         String comma = '，';
-        //         if(value.contains(comma)){
-        //             value = value.replaceAll(comma, '');
-        //         }
-        //         result = value;
-        //     }
-        // }
-        // system.debug(result);
-        // return result;
+    public void convertStrings(List<Quote__c> quoteList){
+        for (Quote__c q : quoteList) {
+            // 一般管理費率
+            System.debug('件名（変換前）：' + q.Subject__c);
+            System.debug('一般管理費率（変換前）：' + q.GeneralAdministrativeExpenses__c);
+            System.debug('出力帳票名（変換前）：' + q.OutputSheetName__c);
+            q.Subject__c = ReplaceChar.convertHalfToFullForFileName(q.Subject__c);
+            q.GeneralAdministrativeExpenses__c = ReplaceChar.convertFullToHalf(q.GeneralAdministrativeExpenses__c);
+            q.OutputSheetName__c = ReplaceChar.convertHalfToFullForFileName(q.OutputSheetName__c);
+            System.debug('件名（変換前）：' + q.Subject__c);
+            System.debug('一般管理費率（変換後）：' + q.GeneralAdministrativeExpenses__c);
+            System.debug('出力帳票名（変換後）：' + q.OutputSheetName__c);
+        }
     }
 }

@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>BusinessCategory__c</fullName>
+    <externalId>false</externalId>
+    <inlineHelpText>BU・部門の経営施策にて「新規」「拡販」と位置付けているものを除き、「既存事業」を選択</inlineHelpText>
+    <label>③事業の新規性</label>
+    <required>false</required>
+    <trackFeedHistory>false</trackFeedHistory>
+    <trackHistory>false</trackHistory>
+    <trackTrending>false</trackTrending>
+    <type>Picklist</type>
+    <valueSet>
+        <restricted>true</restricted>
+        <valueSetDefinition>
+            <sorted>false</sorted>
+            <value>
+                <fullName>既存事業</fullName>
+                <default>false</default>
+                <label>既存事業</label>
+            </value>
+            <value>
+                <fullName>新規・拡販事業</fullName>
+                <default>false</default>
+                <label>新規・拡販事業</label>
+            </value>
+        </valueSetDefinition>
+    </valueSet>
+</CustomField>

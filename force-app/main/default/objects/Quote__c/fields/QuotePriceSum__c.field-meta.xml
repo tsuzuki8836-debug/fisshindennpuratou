@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>QuotePriceSum__c</fullName>
+    <externalId>false</externalId>
+    <label>客先回答価格総合計</label>
+    <summarizedField>Device__c.ClientAnswerAmountTotal__c</summarizedField>
+    <summaryForeignKey>Device__c.Quote__c</summaryForeignKey>
+    <summaryOperation>sum</summaryOperation>
+    <trackHistory>false</trackHistory>
+    <trackTrending>false</trackTrending>
+    <type>Summary</type>
+</CustomField>

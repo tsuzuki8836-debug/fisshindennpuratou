@@ -1,15 +1,55 @@
-# ① クラウドサーバー内に Node.js 環境を自動で準備する指示
-- name: Set up Node.js
-  uses: actions/setup-node@v3
+name: Automatic Architecture Document Generation
 
-# ② Node.jsのパッケージマネージャーを使って、Mermaid変換エンジンを自動インストールする指示
-- name: Install mermaid-cli
-  run: npm install -g @mermaid-js/mermaid-cli
+on:
+  push:
+    branches:
+      - main
+      - master
+    paths:
+      - 'scripts/doc_generator/**'  # スクリプトや定義が更新されたとき
 
-# ③ クラウドサーバー内に Python 環境を自動で準備する指示
-- name: Set up Python
-  uses: actions/setup-python@v4
+jobs:
+  build-docs:
+    # 解決策1: 安定性と実行速度が圧倒的に高い ubuntu (Linux) に変更
+    runs-on: ubuntu-latest  
+    
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v3
 
-# ④ Pythonのパッケージマネージャーを使って、Excel操作ライブラリ（openpyxl）と画像処理ライブラリ（pillow）を自動インストールする指示
-- name: Install Python dependencies
-  run: pip install openpyxl pillow
+      - name: Set up Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: '18'
+
+      # 解決策2: Linux環境に合わせたインラインPuppeteer設定を含めてmermaid-cliをインストール
+      - name: Install mermaid-cli & Configure Puppeteer
+        run: |
+          npm install -g @mermaid-js/mermaid-cli
+          # クラウド環境でのブラウザクラッシュを完全に防ぐための設定を注入
+          echo '{"args": ["--no-sandbox", "--disable-setuid-sandbox"]}' > puppeteerConfig.json
+
+      - name: Set up Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: '3.10'
+
+      - name: Install Python dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install openpyxl pillow
+
+      # 解決策3: パス不備を防ぐため、グローバル展開されたmmdcを明示して安全に実行
+      - name: Run Document Generator Pipeline
+        run: |
+          cd scripts/doc_generator
+          python generate_docs.py
+        env:
+          # 生成したPuppeteer設定ファイルを環境変数として引き渡すガードレール
+          PUPPETEER_CONFIG: ../../puppeteerConfig.json
+
+      - name: Upload Excel Artifacts
+        uses: actions/upload-artifact@v3
+        with:
+          name: Salesforce-Flow-Design-Specifications
+          path: scripts/doc_generator/*.xlsx

@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ValidationRule xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>CompetitorsCheck</fullName>
+    <active>true</active>
+    <description>技術提案メーカーが「その他フリー項目」の場合、「技術提案メーカー＿その他」を入力してください。</description>
+    <errorConditionFormula>AND(
+    INCLUDES(Competitors__c , &quot;その他フリー項目&quot;),
+    ISBLANK( CompetitorsOther__c ) ,
+    NOT($Profile.Name = &apos;データ移行管理者&apos;)
+)</errorConditionFormula>
+    <errorDisplayField>CompetitorsOther__c</errorDisplayField>
+    <errorMessage>技術提案メーカーが「その他フリー項目」の場合、「技術提案メーカー＿その他」を入力してください。</errorMessage>
+</ValidationRule>

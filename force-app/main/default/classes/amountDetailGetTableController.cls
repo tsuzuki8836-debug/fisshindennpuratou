@@ -13,7 +13,7 @@ public class amountDetailGetTableController {
     }
 
     /**
-     * 行の設定 
+     * 行の設定
      */
     public class BodyRow {
         public List<BodyCell> cellList {get;set;}
@@ -47,7 +47,8 @@ public class amountDetailGetTableController {
                             PriceProposal1MaxWCRate__c,// 価格案_WC率
                             PriceProposal1TC__c,    // 価格案_TC
                             PriceProposal1MaxTCRate__c,// 価格案_TC率
-                            PriceProposal1MaxSalesFee__c, // 価格案_手数料
+                            PriceProposal1MaxSalesFee__c, // 価格案(MAX)_手数料
+                            PriceProposalSalesFee__c,  // 価格案_手数料
                             PriceProposal1MaxGRossProfit__c, // 価格案_粗利
                             PriceProposal1MaxProfit__c, // 価格案_利益
                             PriceProposal2CP__c, // 価格案(MIN)_CP
@@ -55,7 +56,7 @@ public class amountDetailGetTableController {
                             PriceProposal2MinWCRate__c, // 価格案(MIN)_WC率
                             PriceProposal2TC__c, // 価格案(MIN)_TC
                             PriceProposal2MinTCRate__c, // 価格案(MIN)_TC率
-                            PriceProposal2MinSalesFee__c, // 価格案(MIN)_販売手数料
+                            PriceProposal2MinSalesFee__c, // 価格案(MIN)_手数料
                             PriceProposal2MinGrossProfit__c, // 価格案(MIN)_粗利
                             PriceProposal2MinProfit__c, // 価格案(MIN)_利益
 
@@ -66,8 +67,9 @@ public class amountDetailGetTableController {
                             OriginalContractWCRate__c, // 原契約_WC率
                             OriginalContractProfitFormula__c, // 原契約_利益
                             OriginalContractGrossProfitFormula__c, // 原契約_粗利
-                            Opportunity__c, // 案件
-                            Opportunity__r.Order_Margin__c, // 案件の２．SR手数料（受注時）
+                            OriginalContractFee__c, // 原契約_手数料（設計変更の場合のみ画面から入力あり）
+                            //Opportunity__c, // 案件
+                            //Opportunity__r.Order_Margin__c, // 案件の２．SR手数料（受注時）
 
                             DetailAfterDesignChangeCPSummary__c, // 設計変更後最新_CP
                             DetailAfterDesignTCSummary__c, // 設計変更後最新_TC
@@ -76,7 +78,8 @@ public class amountDetailGetTableController {
                             DetailAfterDesignWCRate__c, // 設計変更後最新_WC率
                             DetailAfterDesignProfitFormula__c, // 設計変更後最新_利益
                             DetailAfterDesignGrossProfitFormula__c, // 設計変更後最新_粗利
-                            Opportunity__r.Latest_Margin__c, // 案件の３．SR手数料（最新）
+                            DetailAfterDesignFee__c, // 設計変更後最新_手数料（設計変更の場合のみ画面から入力あり）
+                            //Opportunity__r.Latest_Margin__c, // 案件の３．SR手数料（最新）
 
                             AdjustTotalCPMaxSummary__c, // 今回合計CP(MAX)
                             AdjustTotalTCMaxSummary__c, // 今回合計TC(MAX)
@@ -84,7 +87,7 @@ public class amountDetailGetTableController {
                             AdjustTotalWCRateMax__c, // 今回合計WC率(MAX)
                             AdjustTotalTCRateMax__c, // 今回合計TC率(MAX)
                             AdjustMaxFee__c, // 今回増減手数料(MAX)
-                            
+
                             AdjustTotalCPMinSummary__c, // 今回合計CP(MIN)
                             AdjustTotalTCMinSummary__c, // 今回合計TC(MIN)
                             AdjustTotalWCRateMin__c, // 今回合計WC率(MIN)
@@ -126,7 +129,7 @@ public class amountDetailGetTableController {
         if(detail == null) {
             return JSON.serialize(info);
         }
-        
+
         // 見積伺いの場合
         List<BodyRow> bodyList = new List<BodyRow>();
         if (detail.RecordType.DeveloperName.equals(M_RECORD_TYPE)) {
@@ -165,7 +168,7 @@ public class amountDetailGetTableController {
                     && detail.PriceProposal1MaxWCManualInput__c != 0 && detail.PriceProposal1MaxWCManualInput__c != null) {
                     Decimal result = detail.PriceProposal1MaxWCManualInput__c / detail.PriceProposal1MaxCPManualInput__c * 100;
                     wcRate = result.setScale(1, RoundingMode.HALF_UP);
-                } 
+                }
                 cellList.add(setCell(wcRate,true,false));
                 cellList.add(setCell(detail.PriceProposal1MaxTCManualInput__c,false,false)); // TC
                 // TC率
@@ -176,15 +179,15 @@ public class amountDetailGetTableController {
                     tcRate = result.setScale(1, RoundingMode.HALF_UP);
                 }
                 cellList.add(setCell(tcRate,true,false));
-                cellList.add(setCell(detail.PriceProposal1MaxSalesFee__c,false,false)); // 手数料
+                cellList.add(setCell(detail.PriceProposalSalesFee__c,false,false)); // 手数料
                 Decimal priceProposal1MaxGRossProfit = (detail.PriceProposal1MaxCPManualInput__c == null?0:detail.PriceProposal1MaxCPManualInput__c) -
                                                      (detail.PriceProposal1MaxWCManualInput__c == null?0:detail.PriceProposal1MaxWCManualInput__c) - 
-                                                     (detail.PriceProposal1MaxSalesFee__c == null?0:detail.PriceProposal1MaxSalesFee__c);
+                                                     (detail.PriceProposalSalesFee__c == null?0:detail.PriceProposalSalesFee__c);
                 cellList.add(setCell(priceProposal1MaxGRossProfit,false,false)); // 粗利
 
                 Decimal priceProposal1MaxProfit = (detail.PriceProposal1MaxCPManualInput__c == null?0:detail.PriceProposal1MaxCPManualInput__c) -
                                                 (detail.PriceProposal1MaxTCManualInput__c == null?0:detail.PriceProposal1MaxTCManualInput__c) - 
-                                                (detail.PriceProposal1MaxSalesFee__c == null?0:detail.PriceProposal1MaxSalesFee__c);
+                                                (detail.PriceProposalSalesFee__c == null?0:detail.PriceProposalSalesFee__c);
                 cellList.add(setCell(priceProposal1MaxProfit,false,false)); // 利益
             }
 
@@ -249,7 +252,7 @@ public class amountDetailGetTableController {
                 expectProfitAndLossOnOrderWC = detail.ExpectProfitAndLossOnOrderWC__c;
             }
             cellList.add(setCell(expectProfitAndLossOnOrderWC,false,false)); // WC
-            
+
             wcRate = 0;
             // WC率
             if (expectProfitAndLossOnOrderCP != 0 && expectProfitAndLossOnOrderCP != null
@@ -258,7 +261,7 @@ public class amountDetailGetTableController {
                 wcRate = result.setScale(1, RoundingMode.HALF_UP);
             }
             cellList.add(setCell(wcRate,true,false));
-            
+
             // 受注時見込損益_TCある場合、受注時見込損益_TCを表示、ない場合は価格案_TC(伺い数値明細)を表示
             Decimal expectProfitAndLossOnOrderTC = 0;
             if(detail.ExpectProfitAndLossOnOrderTC__c == null) {
@@ -280,7 +283,7 @@ public class amountDetailGetTableController {
             // 手数料
             Decimal expectProfitAndLossOnOrderFee = detail.ExpectProfitAndLossOnOrderFee__c==null?0:detail.ExpectProfitAndLossOnOrderFee__c;
             cellList.add(setCell(expectProfitAndLossOnOrderFee,false,false));
-        
+
             // 粗利
             Decimal expectProfitAndLossOnOrderGRossProfit = (expectProfitAndLossOnOrderCP == null?0:expectProfitAndLossOnOrderCP) -
                                                             (expectProfitAndLossOnOrderWC == null?0:expectProfitAndLossOnOrderWC) - 
@@ -396,6 +399,17 @@ public class amountDetailGetTableController {
                 cellList.add(setCell('',false,true)); // 手数料
                 cellList.add(setCell('',false,true)); // 粗利
                 cellList.add(setCell('',false,true)); // 利益
+            // ADD PUS_CRM-615(No9) START
+            } else if(detail.PriceList__c){
+                cellList.add(setCell('価格表',false,true));
+                cellList.add(setCell('',false,true)); // WC
+                cellList.add(setCell('',false,true)); // WC率
+                cellList.add(setCell('',false,true)); // TC
+                cellList.add(setCell('',false,true)); // TC率
+                cellList.add(setCell('',false,true)); // 手数料
+                cellList.add(setCell('',false,true)); // 粗利
+                cellList.add(setCell('',false,true)); // 利益
+            // ADD PUS_CRM-615(No9) END
             } else {
                 cellList.add(setCell(detail.PriceProposal1CP__c,false,false));
                 cellList.add(setCell(detail.PriceProposal1WC__c,false,false));
@@ -512,7 +526,7 @@ public class amountDetailGetTableController {
 
             row.cellList = cellList;
             bodyList.add(row);
-            
+
         }
         // 設計変更伺い
         else if (detail.RecordType.DeveloperName.equals(SH_RECORD_TYPE)) {
@@ -547,8 +561,9 @@ public class amountDetailGetTableController {
                 originalContractTCRate = detail.OriginalContractTCRate__c;
             }
             // 手数料
-            if(detail.Opportunity__c != null && detail.Opportunity__r.Order_Margin__c != null) {
-                originalContractSalesCommission = detail.Opportunity__r.Order_Margin__c;
+            if(detail.OriginalContractFee__c != null) {
+                //originalContractSalesCommission = detail.Opportunity__r.Order_Margin__c;
+                originalContractSalesCommission = detail.OriginalContractFee__c;
             }
             // 粗利
             if(detail.OriginalContractGrossProfitFormula__c != null) {
@@ -571,7 +586,7 @@ public class amountDetailGetTableController {
             cellList.add(setCell(originalContractProfit,false,false));
             row.cellList = cellList;
             bodyList.add(row);
-            
+
             Decimal detailAfterDesignChangeCP = 0;
             Decimal detailAfterDesignChangeWC = 0;
             Decimal detailAfterDesignWCRate = 0;
@@ -589,7 +604,7 @@ public class amountDetailGetTableController {
             // WC
             if(detail.DetailAfterDesignChangeWCSummary__c != null) {
                 detailAfterDesignChangeWC = detail.DetailAfterDesignChangeWCSummary__c;
-            } 
+            }
 
             // WC率
             if(detail.DetailAfterDesignWCRate__c != null) {
@@ -599,27 +614,28 @@ public class amountDetailGetTableController {
             // TC
             if(detail.DetailAfterDesignTCSummary__c != null) {
                 detailAfterDesignTC = detail.DetailAfterDesignTCSummary__c;
-            } 
+            }
 
             // TC率
             if(detail.DetailAfterDesignRate__c != null) {
                 detailAfterDesignTCRate = detail.DetailAfterDesignRate__c;
-            } 
+            }
 
             // 手数料
-            if(detail.Opportunity__c != null && detail.Opportunity__r.Latest_Margin__c != null) {
-                detailAfterDesignSalesCommission = detail.Opportunity__r.Latest_Margin__c;
-            } 
+            if(detail.DetailAfterDesignFee__c != null) {
+                //detailAfterDesignSalesCommission = detail.Opportunity__r.Latest_Margin__c;
+                detailAfterDesignSalesCommission = detail.DetailAfterDesignFee__c;
+            }
 
             // 粗利
             if(detail.DetailAfterDesignGrossProfitFormula__c != null) {
                 detailAfterDesignGrossProfit = detail.DetailAfterDesignGrossProfitFormula__c;
-            } 
+            }
 
             // 利益
             if(detail.DetailAfterDesignProfitFormula__c != null) {
                 detailAfterDesignProfit = detail.DetailAfterDesignProfitFormula__c;
-            } 
+            }
 
             row = new BodyRow();
             cellList  = new List<BodyCell>();
@@ -697,7 +713,7 @@ public class amountDetailGetTableController {
             cellList.add(setCell(adjustMaxSalesCommission,false,false));
             cellList.add(setCell(adjustMaxGrossProfit,false,false));
             cellList.add(setCell(adjustMaxProfit,false,false));
-            
+
             row.cellList = cellList;
             bodyList.add(row);
 
@@ -714,14 +730,14 @@ public class amountDetailGetTableController {
             if(detail.AdjustTotalCPMinSummary__c != null) {
                 adjustMinCP = detail.AdjustTotalCPMinSummary__c;
             }
-            
-            
+
+
             row = new BodyRow();
             cellList  = new List<BodyCell>();
             cellList.add(setCell('今回増減額(MIN)',false,true));
 
             if(adjustMinCP != null && adjustMinCP != 0){
-                // WC   
+                // WC
                 if(detail.AdjustTotalWCSummary__c != null) {
                     adjustMinWC = detail.AdjustTotalWCSummary__c;
                 }
@@ -756,6 +772,7 @@ public class amountDetailGetTableController {
 
                 // 利益
                 adjustMinProfit = adjustMinCP - adjustMinTC - adjustMinSalesCommission;
+
                 cellList.add(setCell(adjustMinCP,false,false));
                 cellList.add(setCell(adjustMinWC,false,false));
                 cellList.add(setCell(adjustMinWCRate,true,false));
@@ -776,7 +793,7 @@ public class amountDetailGetTableController {
             }
             row.cellList = cellList;
             bodyList.add(row);
-            
+
             //　計算用引数
             Decimal sum1 = 0;
             Decimal sum2 = 0;
@@ -836,8 +853,8 @@ public class amountDetailGetTableController {
             if(adjustMaxTC != null && adjustMaxTC != 0){
                 sum2 = adjustMaxTC;
             }
-            Decimal adjustMaxTCTotal = sum1 + Sum2;
-            cellList.add(setCell(sum1 + Sum2,false,false));
+            Decimal adjustMaxTCTotal = sum1 + sum2;
+            cellList.add(setCell(sum1 + sum2,false,false));
 
             sum1 = 0;
             sum2 = 0;
@@ -856,12 +873,11 @@ public class amountDetailGetTableController {
             }else if(originalContractSalesCommission != null && originalContractSalesCommission != 0){
                 sum1 = originalContractSalesCommission;
             }
-
-            if(detail.AdjustMaxFee__c != null && detail.AdjustMaxFee__c != 0){
-                sum2 = detail.AdjustMaxFee__c;
+            if (adjustMaxSalesCommission != null && adjustMaxSalesCommission != 0) {
+                sum2 = adjustMaxSalesCommission;
             }
-            Decimal adjustMaxSalesCommissionTotal = sum1 + Sum2;
-            cellList.add(setCell(sum1 + Sum2,false,false));
+            Decimal adjustMaxSalesCommissionTotal = sum1 + sum2;
+            cellList.add(setCell(sum1 + sum2,false,false));
 
             // 今回合計(MAX) 粗利＝今回合計(MAX) CP-今回合計(MAX) WC-今回合計(MAX) 手数料
             Decimal adjustMaxGrossProfitTotal = adjustMaxCPTotal - adjustMaxWCTotal - adjustMaxSalesCommissionTotal;
@@ -873,7 +889,7 @@ public class amountDetailGetTableController {
             // 今回合計(MAX) 利益＝今回合計(MAX) CP-今回合計(MAX) TC-今回合計(MAX) 手数料
             Decimal adjustMaxProfitTotal = adjustMaxCPTotal - adjustMaxTCTotal - adjustMaxSalesCommissionTotal;
             cellList.add(setCell(adjustMaxProfitTotal,false,false));
-            
+
             row.cellList = cellList;
             bodyList.add(row);
 
@@ -955,10 +971,10 @@ public class amountDetailGetTableController {
                 }else if(originalContractSalesCommission != null && originalContractSalesCommission != 0){
                     sum1 = originalContractSalesCommission;
                 }
-
-                if(detail.AdjustMinFee__c != null && detail.AdjustMinFee__c != 0){
-                    sum2 = detail.AdjustMinFee__c;
+                if (adjustMinSalesCommission != null && adjustMinSalesCommission != 0) {
+                    sum2 = adjustMinSalesCommission;
                 }
+
                 Decimal adjustMinSalesCommissionTotal = sum1 + Sum2;
                 cellList.add(setCell(sum1 + Sum2,false,false));
 

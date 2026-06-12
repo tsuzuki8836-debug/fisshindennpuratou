@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ListView xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Sansan_CI__All</fullName>
+    <columns>Sansan_CI__IsSystemField__c</columns>
+    <columns>NAME</columns>
+    <columns>Sansan_CI__TransferObject__c</columns>
+    <columns>Sansan_CI__No__c</columns>
+    <columns>Sansan_CI__BizCardField__c</columns>
+    <columns>Sansan_CI__TransferField__c</columns>
+    <columns>Sansan_CI__IsActiveUpdate__c</columns>
+    <columns>Sansan_CI__IsActiveInsert__c</columns>
+    <columns>Sansan_CI__IsAddressSummary__c</columns>
+    <columns>Sansan_CI__IsDispAllField__c</columns>
+    <columns>CREATED_DATE</columns>
+    <columns>LAST_UPDATE</columns>
+    <columns>Sansan_CI__IsDispInsertOnly__c</columns>
+    <filterScope>Everything</filterScope>
+    <label>すべて選択</label>
+</ListView>

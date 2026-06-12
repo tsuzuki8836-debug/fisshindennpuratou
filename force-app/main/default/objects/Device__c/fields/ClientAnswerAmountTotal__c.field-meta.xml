@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>ClientAnswerAmountTotal__c</fullName>
+    <externalId>false</externalId>
+    <formula>ClientAnswerAmount__c * IF(ISNULL(  QuantityNumeric__c ), 0 ,   QuantityNumeric__c )</formula>
+    <label>客先回答金額合計</label>
+    <precision>18</precision>
+    <required>false</required>
+    <scale>0</scale>
+    <trackTrending>false</trackTrending>
+    <type>Currency</type>
+</CustomField>

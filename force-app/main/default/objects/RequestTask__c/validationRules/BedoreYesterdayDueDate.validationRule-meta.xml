@@ -1,9 +1,13 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <ValidationRule xmlns="http://soap.sforce.com/2006/04/metadata">
     <fullName>BedoreYesterdayDueDate</fullName>
-    <active>false</active>
-    <description>「希望回答期限」が昨日より前である際にエラーを表示する。</description>
-    <errorConditionFormula>DueDate__c &lt;  TODAY()</errorConditionFormula>
+    <active>true</active>
+    <description>「希望回答期限」が昨日より前である際にエラーを表示する。
+※依頼作成中、またはそれ以降に変更された場合のみチェック</description>
+    <errorConditionFormula>AND ( 
+ DueDate__c &lt;  TODAY()
+, OR( ISPICKVAL(Status__c, &quot;依頼作成&quot;), ISCHANGED(DueDate__c) )
+)</errorConditionFormula>
     <errorDisplayField>DueDate__c</errorDisplayField>
     <errorMessage>希望回答期限は本日以降の日を設定してください。</errorMessage>
 </ValidationRule>

@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ListView xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>X0_9</fullName>
+    <columns>NAME</columns>
+    <columns>Account__c</columns>
+    <columns>ApprovalStatus__c</columns>
+    <columns>CheckResultJudgment__c</columns>
+    <columns>ValidFormula__c</columns>
+    <columns>DateOfExpiry__c</columns>
+    <columns>LastApprovalDate__c</columns>
+    <columns>BranchOffice__c</columns>
+    <columns>OWNER.ALIAS</columns>
+    <columns>CREATEDBY_USER</columns>
+    <filterScope>Everything</filterScope>
+    <filters>
+        <field>ValidFormula__c</field>
+        <operation>equals</operation>
+        <value>1</value>
+    </filters>
+    <filters>
+        <field>BranchOffice__c</field>
+        <operation>contains</operation>
+        <value>08_</value>
+    </filters>
+    <label>0.9 現在有効な属性調査結果のみ表示（西支）※西支ユーザーのみ閲覧可能</label>
+    <sharedTo>
+        <roleAndSubordinatesInternal>M06_kansaishisha</roleAndSubordinatesInternal>
+    </sharedTo>
+</ListView>

@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ValidationRule xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>ExportManagementProvisionQ12Check</fullName>
+    <active>true</active>
+    <description>A～Dいずれか「はい」かつEが「いいえ」の場合、(A～Dいずれか「はい」かつEが「いいえ」の場合)様式A1および様式C3受審結果は必須です</description>
+    <errorConditionFormula>AND(
+    PriceList__c = false,
+    OR(
+        ISPICKVAL(ExportManagementProvisionQ6__c, &apos;はい&apos;),
+        ISPICKVAL(ExportManagementProvisionQ7__c , &apos;はい&apos;),
+        ISPICKVAL(ExportManagementProvisionQ8__c , &apos;はい&apos;),
+        ISPICKVAL(ExportManagementProvisionQ9__c , &apos;はい&apos;)
+    ),
+    ISPICKVAL(ExportManagementProvisionQ10__c, &apos;いいえ&apos;),
+    ISBLANK(TEXT(ExportManagementProvisionQ12__c)),
+    NOT(Creating__c)
+)</errorConditionFormula>
+    <errorDisplayField>ExportManagementProvisionQ12__c</errorDisplayField>
+    <errorMessage>(A～Dいずれか「はい」かつEが「いいえ」の場合)様式A1および様式C3受審結果は必須です</errorMessage>
+</ValidationRule>

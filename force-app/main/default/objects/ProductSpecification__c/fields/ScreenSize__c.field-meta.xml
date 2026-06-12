@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>ScreenSize__c</fullName>
+    <externalId>false</externalId>
+    <formula>if(
+AND(
+ScreenSizeVertical__c != null ,
+ScreenSizeSide__c != null
+),
+ Text(ScreenSizeVertical__c * ScreenSizeSide__c)&amp;&apos;㎡&apos; ,
+&apos;&apos;
+)</formula>
+    <inlineHelpText>画面サイズ＿縦(m(メートル））×画面サイズ＿横(m(メートル））の計算結果
+※画面サイズ＿縦と画面サイズ＿横の両方が入力されていない場合は計算されません</inlineHelpText>
+    <label>画面サイズ</label>
+    <required>false</required>
+    <trackHistory>false</trackHistory>
+    <trackTrending>false</trackTrending>
+    <type>Text</type>
+    <unique>false</unique>
+</CustomField>

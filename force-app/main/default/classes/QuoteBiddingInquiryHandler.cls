@@ -9,6 +9,44 @@ public without sharing class QuoteBiddingInquiryHandler {
     private static final String COMPANY_CODE_MITSUBISHI = System.Label.COMPANY_CODE_MITSUBISHI;
 
     /**
+     * 登録前処理
+     */
+    public void onBeforeInsert(List<QuoteBiddingInquiry__c> newList){
+        updateFormulaFields(newList, null);
+        updateAttributeSurveyFields(newList);
+    }
+
+    /**
+     * 更新前処理
+     */
+    public void onBeforeUpdate(List<QuoteBiddingInquiry__c> newList, Map<Id, QuoteBiddingInquiry__c> oldMap){
+        updateFormulaFields(newList, oldMap);
+        updateAttributeSurveyFields(newList);
+        // ADD PUS_CRM-615 No31 START
+        approvalPatternDefaultSet(newList, oldMap);
+        // ADD PUS_CRM-615 No31 END
+    }
+
+    /**
+     * 登録後処理
+     */
+    public void onAfterInsert(List<QuoteBiddingInquiry__c> newList,Map<Id,QuoteBiddingInquiry__c> newMap){
+        updateFormulaFieldsAfter(newList,newMap);
+        Set<Id> idList = new Set<Id>();
+        for (QuoteBiddingInquiry__c inquiry : newList) {
+            idList.add(inquiry.Id);
+        }
+        // 見積書提出伺いの場合、受注時見込_CP、受注時見込_TC、受注時見込_WCのデフォルト値を設定する
+        updateFieldsAsync(idList);
+        //  参照先の見積見積・応札・手数料伺いを設定する
+        updateOriginalQuoteBiddingInquiry(idList);
+        // 項目を案件に転記する
+        updateOpportunities(newList);
+        // JV締結認許伺いと手数料伺いを作成する時は関連レコードを全て削除する（JV締結認許伺い→JV締結認許伺いを作成する場合はJV構成員は残す）
+        deleteRelatedRecord(idList);
+    }
+
+    /**
      * 更新後処理
      */
     public void onAfterUpdate(List<QuoteBiddingInquiry__c> newList,
@@ -33,9 +71,29 @@ public without sharing class QuoteBiddingInquiryHandler {
     }
 
     /**
-     * 案件に決定価格、受注社を転記する
+     * 案件に決定価格、受注社、失注要因(PUS_CRM-615 No88で追加)を転記する
      */
     public void updateOpportunities(List<QuoteBiddingInquiry__c> newList){
+        // ADD PUS_CRM-615 No88 START
+        Set<Id> opportunityIds = new Set<Id>();
+        for(QuoteBiddingInquiry__c qbi : newList){
+            if(qbi.Opportunity__c != null && qbi.BidResult__c == '失注' && qbi.LossFactor__c != null){
+                opportunityIds.add(qbi.Opportunity__c);
+            }
+        }
+
+        // 既存のOpportunityのLostReason__cの値を取得
+        Map<Id, Opportunity> existingOppsMap = new Map<Id, Opportunity>();
+        if(!opportunityIds.isEmpty()){
+            existingOppsMap = new Map<Id, Opportunity>([
+                SELECT Id, LostReason__c
+                FROM Opportunity
+                WHERE Id IN :opportunityIds
+                AND LostReason__c = null
+            ]);
+        }
+        // ADD PUS_CRM-615 No88 END
+
         List<Opportunity> updateOpportunities = new List<Opportunity>();
         List<Account> mitsubishiAccount = [SELECT Id FROM Account WHERE MelcoCode__c = :COMPANY_CODE_MITSUBISHI];
 
@@ -53,12 +111,17 @@ public without sharing class QuoteBiddingInquiryHandler {
                 } else if(quoteBiddingInquiry.BidResult__c == '失注') {
                     // ②応札結果が「失注」の場合
                     // →「落札金額」を案件の「決定価格」に転記する
-                    // 　「落札者」を案件の「受注社」に転記する
-                    // 　「落札者(手入力)」を案件の「受注社(手入力)」に転記する
+                    // 　「受注社」を案件の「受注社」に転記する
+                    // 　「受注社備考」を案件の「受注社その他」に転記する
                     Opportunity opp = new Opportunity(Id = quoteBiddingInquiry.Opportunity__c);
                     opp.FinalPrice__c = quoteBiddingInquiry.WinningBidAmount__c;
-                    opp.Competitor__c = quoteBiddingInquiry.WinningBidder__c;
-                    opp.CompetitorOther__c = quoteBiddingInquiry.ManualWinningBidder__c;
+                    opp.Competitor__c = quoteBiddingInquiry.OrderCompany__c;
+                    opp.CompetitorOther__c = quoteBiddingInquiry.OrderCompanyRemarks__c;
+                    // ADD PUS_CRM-615 No88 START
+                    if(existingOppsMap.containsKey(opp.Id)){
+                        opp.LostReason__c = quoteBiddingInquiry.LossFactor__c;
+                    }
+                    // ADD PUS_CRM-615 No88 END
                     updateOpportunities.add(opp);
                 }
 
@@ -108,12 +171,16 @@ public without sharing class QuoteBiddingInquiryHandler {
         try {
             List<Id> targetIdList = new List<Id>();
             for(QuoteBiddingInquiry__c QuoteBiddingInquiry : newList){
-                // ①「伺い認許ステータス」が変更された、かつ 「伺い認許ステータス」が「TL」or「所属課長」の場合、レコードロック解除対象とする
-                // ②「結果報告ステータス」が変更された、かつ 「結果報告ステータス」が「所属課長」、レコードロック解除対象とする
-                if(QuoteBiddingInquiry.InquiryApprovalStatus__c != oldMap.get(QuoteBiddingInquiry.Id).InquiryApprovalStatus__c
-                    || QuoteBiddingInquiry.ResultContactStatus__c != oldMap.get(QuoteBiddingInquiry.Id).ResultContactStatus__c){
-                    targetIdList.add(QuoteBiddingInquiry.Id);
-                }
+                // // ①「伺い認許ステータス」が変更された、かつ 「伺い認許ステータス」が「TL」or「所属課長」の場合、レコードロック解除対象とする
+                // // ②「結果報告ステータス」が変更された、かつ 「結果報告ステータス」が「所属課長」、レコードロック解除対象とする
+                // if(QuoteBiddingInquiry.InquiryApprovalStatus__c != oldMap.get(QuoteBiddingInquiry.Id).InquiryApprovalStatus__c
+                //     || QuoteBiddingInquiry.ResultContactStatus__c != oldMap.get(QuoteBiddingInquiry.Id).ResultContactStatus__c){
+                //     targetIdList.add(QuoteBiddingInquiry.Id);
+                // }
+
+                // 全ての伺いをレコードロック解除対象とする
+                targetIdList.add(QuoteBiddingInquiry.Id);
+
             }
             if(targetIdList.size() > 0){
                 doUnlock(targetIdList);
@@ -127,39 +194,6 @@ public without sharing class QuoteBiddingInquiryHandler {
             newList[0].addError('エラーが発生したため再度承認申請を実行してください。エラーを繰り返す場合はシステム管理者に連絡してください。', false);
             System.debug('-----error-------' + e.getStackTraceString());
         }
-    }
-
-    /**
-     * 登録後処理
-     */
-    public void onAfterInsert(List<QuoteBiddingInquiry__c> newList,Map<Id,QuoteBiddingInquiry__c> newMap){
-        updateFormulaFieldsAfter(newList,newMap);
-        Set<Id> idList = new Set<Id>();
-        for (QuoteBiddingInquiry__c inquiry : newList) {
-            idList.add(inquiry.Id);
-        }
-        // 見積書提出伺いの場合、受注時見込_CP、受注時見込_TC、受注時見込_WCのデフォルト値を設定する
-        updateFieldsAsync(idList);
-        //  参照先の見積見積・応札・手数料伺いを設定する
-        updateOriginalQuoteBiddingInquiry(idList);
-        // 項目を案件に転記する
-        updateOpportunities(newList);
-        // JV締結認許伺いと手数料伺いを作成する時は関連レコードを全て削除する（JV締結認許伺い→JV締結認許伺いを作成する場合はJV構成員は残す）
-        deleteRelatedRecord(idList);
-    }
-
-    /**
-     * 登録前処理
-     */
-    public void onBeforeInsert(List<QuoteBiddingInquiry__c> newList){
-        updateFormulaFields(newList, null);
-    }
-
-    /**
-     * 更新前処理
-     */
-    public void onBeforeUpdate(List<QuoteBiddingInquiry__c> newList, Map<Id, QuoteBiddingInquiry__c> oldMap){
-        updateFormulaFields(newList, oldMap);
     }
 
     /**
@@ -502,6 +536,9 @@ public without sharing class QuoteBiddingInquiryHandler {
     public static void deleteRelatedRecord(Set<Id> recordIds) {
         Set<Id> deletedRelatedIds = new Set<Id>();
         Set<Id> deletedRelatedIdsForSH = new Set<Id>();
+        // PUS_CRM-615 No43 >>
+        Set<Id> updateRelatedIdsForSH = new Set<Id>();
+        // PUS_CRM-615 No43 <<
         Set<Id> deletedRelatedJVMemberIds = new Set<Id>();
         List<QuoteBiddingInquiry__c> inquiries = [SELECT Id,
                                                         OriginalSFID__c,  // SFID（コピー参照元用）
@@ -536,6 +573,10 @@ public without sharing class QuoteBiddingInquiryHandler {
                 deletedRelatedJVMemberIds.add(inquiry.id);
             } else if(inquiry.RecordType.DeveloperName == 'SH' && inquiry.IsCreatDetailFromSR__c){
                 deletedRelatedIdsForSH.add(inquiry.id);
+            // PUS_CRM-615 No43 >>
+            } else if (inquiry.RecordType.DeveloperName == 'SH') {
+                updateRelatedIdsForSH.add(inquiry.id);
+            // PUS_CRM-615 No43 <<
             } else {
                 deletedRelatedJVMemberIds.add(inquiry.id);
             }
@@ -558,12 +599,19 @@ public without sharing class QuoteBiddingInquiryHandler {
             delete [SELECT Id FROM JVMember__c WHERE QuoteBiddingInquiry__c IN :deletedRelatedJVMemberIds];
         }
 
-        //設計変更応札伺い流用先からの明細レコードを削除する
+        // 設計変更応札伺い流用先からの明細レコードを削除する
         if (deletedRelatedIdsForSH.size() > 0) {
-            // 伺い場所別数値明細
+            // 伺い場所別数値明細：案件から転記フラグがTRUEのレコードを削除
             List<DetailByInquiryFactory__c> deleteDetailListForSH = [SELECT Id FROM DetailByInquiryFactory__c WHERE QuoteBiddingInquiry__c IN :deletedRelatedIdsForSH and isFromOpportunity__c = false];
             delete deleteDetailListForSH;
-            List<DetailByInquiryFactory__c> updateDetailListForSH = [SELECT Id FROM DetailByInquiryFactory__c WHERE QuoteBiddingInquiry__c IN :deletedRelatedIdsForSH and isFromOpportunity__c = true];
+        // PUS_CRM-615 No43 >>
+        }
+        // 設計変更応札伺いの明細レコードの「案件から転記フラグ」を初期化する
+        updateRelatedIdsForSH.addAll(deletedRelatedIdsForSH);
+        if (updateRelatedIdsForSH.size() > 0) {
+            // List<DetailByInquiryFactory__c> updateDetailListForSH = [SELECT Id FROM DetailByInquiryFactory__c WHERE QuoteBiddingInquiry__c IN :deletedRelatedIdsForSH and isFromOpportunity__c = true];
+            List<DetailByInquiryFactory__c> updateDetailListForSH = [SELECT Id, isFromOpportunity__c FROM DetailByInquiryFactory__c WHERE QuoteBiddingInquiry__c IN :deletedRelatedIdsForSH and isFromOpportunity__c = true];
+        // PUS_CRM-615 No43 <<
             //フラグ復元
             if(updateDetailListForSH.size() > 0){
                 for (DetailByInquiryFactory__c d : updateDetailListForSH) {
@@ -571,7 +619,6 @@ public without sharing class QuoteBiddingInquiryHandler {
                 }
                 update updateDetailListForSH;
             }
-
         }
 
         List<QuoteBiddingInquiry__c> updateList = new List<QuoteBiddingInquiry__c>();
@@ -590,7 +637,7 @@ public without sharing class QuoteBiddingInquiryHandler {
      * フォーミュラ項目を計算する
      */
     public void updateFormulaFields(List<QuoteBiddingInquiry__c> newList, Map<Id, QuoteBiddingInquiry__c> oldMap){
-
+        List<Account> mitsubishiAccount = [SELECT Id FROM Account WHERE MelcoCode__c = :COMPANY_CODE_MITSUBISHI];
         for(QuoteBiddingInquiry__c QuoteBiddingInquiry : newList){
             // 理論手数料(MIN)_切り上げ前（TheoryFeeMin_BeforeRoundup__c）
             if(QuoteBiddingInquiry.ContractAmountMin__c == null){
@@ -653,11 +700,156 @@ public without sharing class QuoteBiddingInquiryHandler {
             }
 
             if(QuoteBiddingInquiry.BidResult__c == '受注'){
-                List<Account> mitsubishiAccount = [SELECT Id FROM Account WHERE MelcoCode__c = :COMPANY_CODE_MITSUBISHI];
                 QuoteBiddingInquiry.OrderCompany__c = mitsubishiAccount.size() > 0 ? mitsubishiAccount.get(0).Id : null;
+            }
+
+            // 伺い数値情報（編集用）セクション項目の自動設定
+            // 「受注見込_単計(損予)時点」が登録なしor4or5の場合、単計(損予)織込項目を0にする
+            if (QuoteBiddingInquiry.ExpectedOrderSingleCount__c == '登録なし'
+                || QuoteBiddingInquiry.ExpectedOrderSingleCount__c == '4C'
+                || QuoteBiddingInquiry.ExpectedOrderSingleCount__c == '4'
+                || QuoteBiddingInquiry.ExpectedOrderSingleCount__c == '5') {
+                QuoteBiddingInquiry.SingleTotalCP__c = 0;
+                QuoteBiddingInquiry.SingleTotalWC__c = 0;
+                QuoteBiddingInquiry.SingleTotalTC__c = 0;
+                QuoteBiddingInquiry.SingleTotalFee__c = 0;
             }
         }
     }
+
+    /**
+     * 属性調査関連項目の自動設定
+     */
+    public void updateAttributeSurveyFields(List<QuoteBiddingInquiry__c> newList){
+        Set<ID> accTargetIds = new Set<ID>();
+        Set<ID> oppTargetIds = new Set<ID>();
+        Set<ID> accTargetIdsPrimaryCustomer = new Set<ID>();
+        List<QuoteBiddingInquiry__c> targetList = new List<QuoteBiddingInquiry__c>();
+        for(QuoteBiddingInquiry__c QuoteBiddingInquiry : newList){
+            // 承認済みの場合は対象外
+            if (QuoteBiddingInquiry.InquiryApprovalStatus__c != '承認済') {
+                targetList.add(QuoteBiddingInquiry);
+                // 属性調査確認対象IDをMAPに格納
+                if (QuoteBiddingInquiry.AttributeSurveyTarget__c != null) {
+                    accTargetIds.add(QuoteBiddingInquiry.AttributeSurveyTarget__c);
+                }
+                // 様式K1有効期限の転記対象IDをMAPに格納
+                if (QuoteBiddingInquiry.PrimaryCustomer__c != null) {
+                    accTargetIdsPrimaryCustomer.add(QuoteBiddingInquiry.PrimaryCustomer__c);
+                }
+                // 案件IDをMAPに格納
+                if (QuoteBiddingInquiry.Opportunity__c != null) {
+                    oppTargetIds.add(QuoteBiddingInquiry.Opportunity__c);
+                }
+            }
+        }
+        // 更新対象が0件の場合は処理終了
+        if (targetList.size() == 0) {
+            return;
+        }
+
+        // 属性調査確認対象の取引先を取得
+        MAP<ID, Account> accMap = new MAP<ID, Account>();
+        if (accTargetIds.size() > 0) {
+            accMap = new MAP<ID, Account>([
+                SELECT ID
+                    , AttributeSurveyDateOfExpiry__c
+                FROM Account WHERE ID IN :accTargetIds]);
+        }
+
+        // 様式K1有効期限の転記対象の取引先を取得
+        MAP<ID, Account> accMapPrimaryCustomer = new MAP<ID, Account>();
+        if (accTargetIdsPrimaryCustomer.size() > 0) {
+            accMapPrimaryCustomer = new MAP<ID, Account>([
+                SELECT ID
+                    , FISExpirationDate__c
+                FROM Account WHERE ID IN :accTargetIdsPrimaryCustomer]);
+        }
+
+        // 関連案件取得
+        MAP<ID, Opportunity> oppMap = new MAP<ID, Opportunity>();
+        if (oppTargetIds.size() > 0) {
+            oppMap = new MAP<ID, Opportunity>([
+                SELECT ID
+                    , ExportCategory__c
+                FROM Opportunity WHERE ID IN :oppTargetIds]);
+        }
+
+        for(QuoteBiddingInquiry__c QuoteBiddingInquiry : targetList){
+            // 案件からの転記
+            if (oppMap.containsKey(QuoteBiddingInquiry.Opportunity__c)) {
+                // 輸出区分を転記
+                QuoteBiddingInquiry.ExportCategory__c = oppMap.get(QuoteBiddingInquiry.Opportunity__c).ExportCategory__c;
+
+            }
+            // 属性調査対象からの転記
+            if (accMap.containsKey(QuoteBiddingInquiry.AttributeSurveyTarget__c)) {
+                // 有効期限内なら属性調査有効期限を転記
+                if (QuoteBiddingInquiry.AttributeSurveyRequirement__c != '不要' // 属性調査要否が「不要」ではない
+                        && QuoteBiddingInquiry.PastSurveyValidityPeriod__c == null // 調査済の場合、有効期限が空
+                        && accMap.get(QuoteBiddingInquiry.AttributeSurveyTarget__c).AttributeSurveyDateOfExpiry__c > Date.Today() // 有効期限内
+                    ) {
+                        QuoteBiddingInquiry.PastSurveyValidityPeriod__c = accMap.get(QuoteBiddingInquiry.AttributeSurveyTarget__c).AttributeSurveyDateOfExpiry__c;
+                }
+            }
+            if (accMapPrimaryCustomer.containsKey(QuoteBiddingInquiry.PrimaryCustomer__c)){
+                // 一次顧客の顧客調査票(様式K1)を転記
+                if (QuoteBiddingInquiry.ExportManagementProvisionQ3__c != '起票不要' // 起票要否が「不要」ではない
+                        && QuoteBiddingInquiry.ExportManagementProvisionQ3__c != '開示不可' // 起票要否が「開示不可」ではない
+                        && QuoteBiddingInquiry.PastIssuedExpirationDate__c == null // (起票済の場合)有効期限が空
+                        && accMapPrimaryCustomer.get(QuoteBiddingInquiry.PrimaryCustomer__c).FISExpirationDate__c > Date.Today() // 有効期限内
+                    ) {
+                    // FIS顧客調査（様式K1）有効期限を転記
+                    QuoteBiddingInquiry.PastIssuedExpirationDate__c = accMapPrimaryCustomer.get(QuoteBiddingInquiry.PrimaryCustomer__c).FISExpirationDate__c;
+                }
+            }
+            // 有効期間内なら調査結果を「諾」に設定
+            if (QuoteBiddingInquiry.PastSurveyValidityPeriod__c != null // 調査済の場合、有効期限が空ではない
+                    && QuoteBiddingInquiry.PastSurveyValidityPeriod__c >= Date.Today() // 有効期限内
+                    && QuoteBiddingInquiry.AttributeSurveyRequirement__c != '不要' // 属性調査要否が「不要」ではない
+                    && QuoteBiddingInquiry.SurveyResultIfRequired__c == null // 調査要の場合、調査結果が空
+                ){
+                // 「諾」を設定
+                QuoteBiddingInquiry.SurveyResultIfRequired__c = '諾';
+            }
+            // 取引先調査状況(国内取引の場合)の自動更新
+            if (QuoteBiddingInquiry.ExportCategory__c == '0 国内'
+                && QuoteBiddingInquiry.ExportManagementProvisionQ5__c == '登録済'
+                && QuoteBiddingInquiry.ExportManagementProvisionQ6__c == 'いいえ'
+                && QuoteBiddingInquiry.ExportManagementProvisionQ7__c == 'いいえ'
+                && QuoteBiddingInquiry.ExportManagementProvisionQ8__c == 'いいえ'
+                && QuoteBiddingInquiry.ExportManagementProvisionQ9__c == 'いいえ'
+                && QuoteBiddingInquiry.ExportManagementProvisionQ10__c == 'いいえ'
+            ) {
+                QuoteBiddingInquiry.ExportManagementProvisionQ11__c = '―';
+                QuoteBiddingInquiry.ExportManagementProvisionQ12__c = '様式A1・C3対象外';
+                QuoteBiddingInquiry.ExportManagementProvisionQ13__c = '国内取引のため対象外';
+                QuoteBiddingInquiry.ExportManagementProvisionQ2__c = '諾';
+                QuoteBiddingInquiry.ExportManagementProvisionQ1__c = '諾';
+            }
+        }
+    }
+
+    // ADD PUS_CRM-615 No31 START
+    /**
+     * 結果報告時に承認パターンのデフォルトを自動設定にする
+     */
+    public void approvalPatternDefaultSet(List<QuoteBiddingInquiry__c> newList, Map<Id, QuoteBiddingInquiry__c> oldMap) {
+        if (oldMap == null) return;
+
+        for (QuoteBiddingInquiry__c qbi : newList) {
+            QuoteBiddingInquiry__c oldQbi = oldMap.get(qbi.Id);
+
+            // 「伺い認許ステータス」が「承認済」以外から「承認済」に変わった、かつ「結果報告ステータス」が「未申請」の場合
+            if (qbi.InquiryApprovalStatus__c == '承認済' && 
+                qbi.ResultContactStatus__c == '未申請' && 
+                oldQbi.InquiryApprovalStatus__c != '承認済') {
+                
+                qbi.ApprovalPattern__c = '自動設定';
+            }
+        }
+    }
+    // ADD PUS_CRM-615 No31 END
 
     /**
      * 非同期処理を実行する
@@ -695,16 +887,26 @@ public without sharing class QuoteBiddingInquiryHandler {
         public void UpdateApprovalInfo(List<QuoteBiddingInquiry__c> newList,
                                         Map <Id, QuoteBiddingInquiry__c> newMap,
                                         Map <Id, QuoteBiddingInquiry__c> oldMap){
+            System.debug('-----UpdateApprovalInfo Start-----');
             Savepoint sp = Database.setSavepoint();
             try{
+                // PUS_CRM-615 No64 >>
+                User currentUser = [SELECT Id, K_Flag__c
+                    FROM User
+                    WHERE Id = :UserInfo.getUserId()];
+                // PUS_CRM-615 No64 <<
+
                 Set<Id> QuoteBiddingInquiryIds = new Set<Id>();
                 for(QuoteBiddingInquiry__c QuoteBiddingInquiry : newList){
                     // 伺い認許ステータス、あるいは　結果報告ステータスを変更時、or、承認者手動設定かつ未承認アラート発信日時設定対象がfalse→trueになった時
                     if(QuoteBiddingInquiry.InquiryApprovalStatus__c != oldMap.get(QuoteBiddingInquiry.Id).InquiryApprovalStatus__c
                         || QuoteBiddingInquiry.ResultContactStatus__c != oldMap.get(QuoteBiddingInquiry.Id).ResultContactStatus__c
                         || (QuoteBiddingInquiry.ApprovalPattern__c == '手動設定'
-                        && ((QuoteBiddingInquiry.TargetForUnapprovedRemindLimitSet__c && !oldMap.get(QuoteBiddingInquiry.Id).TargetForUnapprovedRemindLimitSet__c)
-                        || (QuoteBiddingInquiry.ApprovalAssignmentDateTime__c == null && oldMap.get(QuoteBiddingInquiry.Id).ApprovalAssignmentDateTime__c != null)))){
+                            && ((QuoteBiddingInquiry.TargetForUnapprovedRemindLimitSet__c 
+                            && !oldMap.get(QuoteBiddingInquiry.Id).TargetForUnapprovedRemindLimitSet__c)
+                        || (QuoteBiddingInquiry.ApprovalAssignmentDateTime__c == null 
+                            && oldMap.get(QuoteBiddingInquiry.Id).ApprovalAssignmentDateTime__c != null)))){
+                        
                         QuoteBiddingInquiryIds.add(QuoteBiddingInquiry.Id);
                     }
                 }
@@ -765,8 +967,15 @@ public without sharing class QuoteBiddingInquiryHandler {
                                                                                     PrimeSubContractor__c, // 元請/下請
                                                                                     OrderTransactionDetailCount__c, // 受注済の商流明細数
                                                                                     FreeContract__c, // 随契
-                                                                                    PriceList__c // 価格表
+                                                                                    PriceList__c, // 価格表
                                                                                     // PUS_CRM-615 No24 <<
+                                                                                    Approver4__c,
+                                                                                    Approver5__c,
+                                                                                    Approver5__r.SectionManagerGeneralManagerConcurrent__c,
+                                                                                    Approver6__c,
+                                                                                    Approver7__c,
+                                                                                    ApprovalPattern__c,
+                                                                                    StatusForPath__c
                                                                                 FROM QuoteBiddingInquiry__c
                                                                             WHERE Id IN :QuoteBiddingInquiryIds];
 
@@ -854,7 +1063,7 @@ public without sharing class QuoteBiddingInquiryHandler {
                     ProcessInstanceWorkitem processInstanceWorkitem = processInstanceWorkitemMap.get(processInstance.Id);
 
                     // 却下、取り消し、最終承認の場合
-                    if(processInstanceStep.StepStatus == 'Rejected' || processInstanceStep.StepStatus == 'Removed' 
+                    if(processInstanceStep.StepStatus == 'Rejected' || processInstanceStep.StepStatus == 'Removed'
                         || processInstance.Status == 'Approved') {
                         // 現在の承認者
                         UpdateQuoteBiddingInquiry.CurrentApproverText__c = null;
@@ -895,6 +1104,30 @@ public without sharing class QuoteBiddingInquiryHandler {
                         // 申請者
                         UpdateQuoteBiddingInquiry.Applicant__c = processInstanceStepOld?.CreatedById;
 
+                        // PUS_CRM-615 No64 >>
+                        if(UpdateQuoteBiddingInquiry.ApprovallStepsName__c == '申請部門部長'
+                        ){
+                            // 伺い申請
+                            if(UpdateQuoteBiddingInquiry.InquiryApprovalStatus__c == '所属課長'
+                            ){
+                                UpdateQuoteBiddingInquiry.InquiryApprovalStatus__c = '所属部長';
+                                UpdateQuoteBiddingInquiry.StatusForPath__c = '所属部長';
+                            }
+                            // 結果報告
+                            if(UpdateQuoteBiddingInquiry.InquiryApprovalStatus__c == '承認済'
+                            ){
+                                UpdateQuoteBiddingInquiry.ResultContactStatus__c = '所属部長';
+                            }
+                        }
+
+                        // 申請者が課長かつ最終承認者が申請部門課長の場合のみ、例外として申請部門部長に申請を回す
+                        if(currentUser.K_Flag__c && UpdateQuoteBiddingInquiry.ApprovallStepsName__c == '申請部門課長' && UpdateQuoteBiddingInquiry.InquiryApprovalStatus__c == '所属課長'
+                        ){
+                            UpdateQuoteBiddingInquiry.InquiryApprovalStatus__c = '所属部長';
+                            UpdateQuoteBiddingInquiry.StatusForPath__c = '所属部長';
+                        }
+                        // PUS_CRM-615 No64 <<
+
                         if((UpdateQuoteBiddingInquiry.ApprovallStepsName__c == 'BU推進部長' || UpdateQuoteBiddingInquiry.ApprovallStepsName__c == '事管推部長')
                             && UpdateQuoteBiddingInquiry.InquiryApprovalStatus__c == '事管推課長'
                         ){
@@ -914,14 +1147,46 @@ public without sharing class QuoteBiddingInquiryHandler {
                             // PUS_CRM-615 No71 <<
                         }
                         // PUS_CRM-615 No24 >>
-                        if((UpdateQuoteBiddingInquiry.RecordType.DeveloperName == 'M' || UpdateQuoteBiddingInquiry.RecordType.DeveloperName == 'O')
-                            && ((UpdateQuoteBiddingInquiry.PublicOrPrivateDemand__c == '官需' && UpdateQuoteBiddingInquiry.PrimeSubContractor__c == '元請') 
-                                || (UpdateQuoteBiddingInquiry.PublicOrPrivateDemand__c == '官需' && UpdateQuoteBiddingInquiry.PrimeSubContractor__c == '下請' && UpdateQuoteBiddingInquiry.OrderTransactionDetailCount__c < 1))
-                            && (UpdateQuoteBiddingInquiry.FreeContract__c == true || UpdateQuoteBiddingInquiry.PriceList__c == true)
+                        if(
+                            (UpdateQuoteBiddingInquiry.RecordType.DeveloperName == 'M' || UpdateQuoteBiddingInquiry.RecordType.DeveloperName == 'O')
+                            && (((UpdateQuoteBiddingInquiry.PublicOrPrivateDemand__c == '官需' && UpdateQuoteBiddingInquiry.PrimeSubContractor__c == '元請') || (UpdateQuoteBiddingInquiry.PublicOrPrivateDemand__c == '官需' && UpdateQuoteBiddingInquiry.PrimeSubContractor__c == '下請' && UpdateQuoteBiddingInquiry.OrderTransactionDetailCount__c < 1)) && UpdateQuoteBiddingInquiry.FreeContract__c == false)
+
                         ){
                             UpdateQuoteBiddingInquiry.ICPReviewTarget__c = true;
                         }
                         // PUS_CRM-615 No24 <<
+                        
+                        // 伺いの承認申請中に、現在の承認者が「承認部門承認者1」の時に伺い認許ステータスと矢羽根を「事管推担当」にする
+                        if(UpdateQuoteBiddingInquiry.ApprovallStepsName__c == '承認部門承認者1'
+                            && UpdateQuoteBiddingInquiry.InquiryApprovalStatus__c == '所属課長'
+                            && UpdateQuoteBiddingInquiry.ApprovalPattern__c == '手動設定'){
+                            UpdateQuoteBiddingInquiry.InquiryApprovalStatus__c = '事管推担当';
+                            UpdateQuoteBiddingInquiry.StatusForPath__c = '事管推担当';
+                        }
+
+                        // 結果報告の承認申請中に、現在の承認者が「承認部門承認者1」の時に結果報告ステータスと矢羽根を「事管推担当」にする
+                        if(UpdateQuoteBiddingInquiry.ApprovallStepsName__c == '承認部門承認者1'
+                            && UpdateQuoteBiddingInquiry.ResultContactStatus__c == '所属課長'
+                            && UpdateQuoteBiddingInquiry.ApprovalPattern__c == '手動設定'){
+                            UpdateQuoteBiddingInquiry.ResultContactStatus__c = '事管推担当';
+                        }
+
+                        // 伺いの承認申請中に、現在の承認者が「承認部門承認者2」の時に伺い認許ステータスと矢羽根を「事管推部長」にする
+                        if(UpdateQuoteBiddingInquiry.ApprovallStepsName__c == '承認部門承認者2'
+                            && UpdateQuoteBiddingInquiry.InquiryApprovalStatus__c == '事管推課長'
+                            && UpdateQuoteBiddingInquiry.ApprovalPattern__c == '手動設定'
+                            && UpdateQuoteBiddingInquiry.Approver5__r.SectionManagerGeneralManagerConcurrent__c == true){
+                            UpdateQuoteBiddingInquiry.InquiryApprovalStatus__c = '事管推部長';
+                            UpdateQuoteBiddingInquiry.StatusForPath__c = '事管推部長';
+                        }
+
+                        // 結果報告の承認申請中に、現在の承認者が「承認部門承認者1」の時に結果報告ステータスと矢羽根を「事管推担当」にする
+                        if(UpdateQuoteBiddingInquiry.ApprovallStepsName__c == '承認部門承認者2'
+                            && UpdateQuoteBiddingInquiry.ResultContactStatus__c == '事管推課長'
+                            && UpdateQuoteBiddingInquiry.ApprovalPattern__c == '手動設定'
+                            && UpdateQuoteBiddingInquiry.Approver5__r.SectionManagerGeneralManagerConcurrent__c == true){
+                            UpdateQuoteBiddingInquiry.ResultContactStatus__c = '事管推部長';
+                        }
                     }
 
 

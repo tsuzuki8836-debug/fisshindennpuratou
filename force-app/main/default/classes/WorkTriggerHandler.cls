@@ -397,11 +397,13 @@ public class WorkTriggerHandler {
     private void upsertSRInfoByWork(List<work__c> workList) {
         // work反映先特定番号（売報番号＋J項番号）のSet作成 UpsertByWorkTargetIdNumber__c
         Set<String> upsertByWorkTargetIdNumberSet = new Set<String>();
+        Set<String> srNumberSet = new Set<String>();
         for (work__c work : workList) {
             upsertByWorkTargetIdNumberSet.add(work.SR_Number__c + work.J_Number__c);
+            srNumberSet.add(work.SR_Number__c);
         }
 
-        // SR情報のMap作成
+        // SR情報のMap作成(key：売報番号＋J項番号)
         List<SRInfo__c> matchedSRInfoList = new List<SRInfo__c>([
             SELECT
                 Id
@@ -411,6 +413,8 @@ public class WorkTriggerHandler {
                 , Result_SRWC__c
                 , Result_Difference__c
                 , Result_AdditionalCost__c
+                , Order_OrderDate__c
+                , Opportunity__c
             FROM
                 SRInfo__c
             WHERE
@@ -422,21 +426,56 @@ public class WorkTriggerHandler {
             sRInfoMap.put(matchedSRInfo.UpsertByWorkTargetIdNumber__c, matchedSRInfo);
         }
 
-        Date lastMonthEnd = Date.newInstance(Date.today().year(), Date.today().month(), 0);
+        // SR情報のMap作成(key：売報番号のみ)
+        List<SRInfo__c> existingSRInfoList = new List<SRInfo__c>([
+            SELECT
+                Id
+                , SR_Number__c
+            FROM
+                SRInfo__c
+            WHERE
+                SR_Number__c IN :srNumberSet
+        ]);
+
+        Map<String, SRInfo__c> existingSRInfoMap = new Map<String, SRInfo__c>();
+        for (SRInfo__c existingSRInfo : existingSRInfoList) {
+            existingSRInfoMap.put(existingSRInfo.SR_Number__c, existingSRInfo);
+        }
+
+        // PUS_CRM-512対応 前月の末日以前を取込対象としていたが、処理実施日以前に変更 2025/09/16 TS鈴木追加
+        Date today = Date.today();
 
         // for List でInsertとUpdate分離
         for (work__c work : workList) {
             // update
             if (sRInfoMap.get(work.SR_Number__c + work.J_Number__c) != null) {
                 SRInfo__c u_SRInfo = sRInfoMap.get(work.SR_Number__c + work.J_Number__c);
-                u_SRInfo.Subject__c = work.Subject__c;                                        // 件名　　　　　　　　 ← 件名 20250207追加
+                u_SRInfo.Subject__c = work.Subject__c;                                    // 件名　　　　　　　　 ← 件名 20250207追加
+                
+                if (u_SRInfo.Order_OrderDate__c == null) {
+                    // PUS_CRM-512対応 受注時情報が入っていない場合は更新時にも移送する 2025/09/16 TS鈴木追加
+                    u_SRInfo.Order_SRCP__c = work.SRCP__c;                                // SRCP（受注時）       ← SRCP
+                    u_SRInfo.Order_Forecast_SRCP__c = work.FinalForecastCP_ResultCP__c;   // 最終予想CP（受注時） ← 最終予想ＣＰ売上実績ＣＰ
+                    u_SRInfo.Order_SRWC__c = work.SRWC__c;                                // SRWC（受注時）       ← SRWC
+                    u_SRInfo.Order_Forecast_SRWC__c = work.PriorityWC_ResultWC__c;        // 最終予想WC（受注時） ← 優先ＷＣ売上実績ＷＣ
+                    u_SRInfo.Order_OrderDate__c = work.PlannedOrderDate__c;               // 受注年月日           ← 受注(予定)年月日
+                    u_SRInfo.Order_SalesDate__c = work.PlannedSalesDate__c;               // 売上年月日（受注時）  ← 売上(予定)年月日
+                }
+
+                if (u_SRInfo.Opportunity__c == null) {
+                    // PUS_CRM-604、PUS_CRM-661対応 案件が紐づいていない場合は更新時にも紐づけを実施する 2025/09/16 TS鈴木追加
+                    u_SRInfo.Opportunity__c = work.Opportunity__c;                        // 案件       ← 案件
+                    u_SRInfo.OP_Number__c = work.OpportunityNumber__c;                    // 商談番号   ← 商談番号
+                    u_SRInfo.Warning__c = work.Warning__c;                                // ワーニング ← ワーニング
+                }
+                
                 //  受注後最新
                 if (work.OpportunityType__c == '手持') {
                     // 「案件種別名称」が”手持”
                     u_SRInfo.Latest_Forecast_SRCP__c = work.FinalForecastCP_ResultCP__c;      // 最終予想CP（最新）   ← 最終予想ＣＰ売上実績ＣＰ
                     u_SRInfo.Latest_Forecast_SRWC__c = work.PriorityWC_ResultWC__c;           // 最終予想WC（最新）   ← 優先ＷＣ売上実績ＷＣ
-                    if (work.LatestRegistrationDate__c <= lastMonthEnd) {
-                        // 「最新登録年月日」が前月以前
+                    if (work.LatestRegistrationDate__c <= today) {
+                        // 「最新登録年月日」が当日以前
                         u_SRInfo.Latest_SRCP__c = work.SRCP__c;                               // SRCP（最新）        ← SRCP
                         u_SRInfo.Latest_SRWC__c = work.SRWC__c;                               // SRWC（最新）        ← SRWC
                         u_SRInfo.Latest_SRInfoUpdateDate__c = work.LatestRegistrationDate__c; // SR情報取得日（最新） ← 最新登録年月日
@@ -448,8 +487,8 @@ public class WorkTriggerHandler {
                 if (work.OpportunityType__c == '実績') {
                      // 「案件種別名称」が”実績”
                     if ((u_SRInfo.Result_SalesDate__c == null || u_SRInfo.Result_SalesDate__c == work.PlannedSalesDate__c)
-                    && work.PlannedSalesDate__c <= lastMonthEnd) {
-                        // CRMの売上年月日がnullまたは「売上（予定）年月日」と一致し、且つ「売上（予定）年月日」が前月以前
+                    && work.PlannedSalesDate__c <= today) {
+                        // CRMの売上年月日がnullまたは「売上（予定）年月日」と一致し、且つ「売上（予定）年月日」が当日以前
                         if (work.ReasonName__c != '締追') {
                             // 「事由名称」が”締追”ではない
                             u_SRInfo.Result_SRCP__c = work.FinalForecastCP_ResultCP__c;   // 売上実績CP ← 最終予想ＣＰ売上実績ＣＰ
@@ -532,15 +571,22 @@ public class WorkTriggerHandler {
                     , UpsertByWorkTargetIdNumber__c = work.SR_Number__c + work.J_Number__c  // work反映先特定番号（売報番号＋J項番号） ← 売報番号 + Ｊ項番号
                     , ModelCode__c = work.ModelCode__c                                      // 機種コード ← 機種コード 20250207追加
                 );
-                // 受注時（手持）
-                if (work.OpportunityType__c == '手持' && work.PlannedOrderDate__c <= lastMonthEnd) {
-                    // 「受注（予定）年月日」が前月以前の場合に移送する
-                    i_sRInfo.Order_SRCP__c = work.SRCP__c;                                // SRCP（受注時）       ← SRCP
-                    i_sRInfo.Order_Forecast_SRCP__c = work.FinalForecastCP_ResultCP__c;   // 最終予想CP（受注時） ← 最終予想ＣＰ売上実績ＣＰ
-                    i_sRInfo.Order_SRWC__c = work.SRWC__c;                                // SRWC（受注時）       ← SRWC
-                    i_sRInfo.Order_Forecast_SRWC__c = work.PriorityWC_ResultWC__c;        // 最終予想WC（受注時） ← 優先ＷＣ売上実績ＷＣ
-                    i_sRInfo.Order_OrderDate__c = work.PlannedOrderDate__c;               // 受注年月日           ← 受注(予定)年月日
-                    i_sRInfo.Order_SalesDate__c = work.PlannedSalesDate__c;               // 売上年月日（受注時）  ← 売上(予定)年月日 20250207追加
+                // 受注時（手持）、「受注（予定）年月日」が当日以前の場合に移送する
+                if (work.OpportunityType__c == '手持' && work.PlannedOrderDate__c <= today) {
+                    // PUS_CRM-642対応 売報番号単位で見てJ項が後から追加された場合は受注時金額は0にする 2025/09/16 TS鈴木追加
+                    if (existingSRInfoMap.get(work.SR_Number__c) == null) {
+                        i_sRInfo.Order_SRCP__c = work.SRCP__c;                                // SRCP（受注時）       ← SRCP
+                        i_sRInfo.Order_Forecast_SRCP__c = work.FinalForecastCP_ResultCP__c;   // 最終予想CP（受注時） ← 最終予想ＣＰ売上実績ＣＰ
+                        i_sRInfo.Order_SRWC__c = work.SRWC__c;                                // SRWC（受注時）       ← SRWC
+                        i_sRInfo.Order_Forecast_SRWC__c = work.PriorityWC_ResultWC__c;        // 最終予想WC（受注時） ← 優先ＷＣ売上実績ＷＣ
+                    } else {
+                        i_sRInfo.Order_SRCP__c = 0;                                           // SRCP（受注時）       ← 0
+                        i_sRInfo.Order_Forecast_SRCP__c = 0;                                  // 最終予想CP（受注時） ← 0
+                        i_sRInfo.Order_SRWC__c = 0;                                           // SRWC（受注時）       ← 0
+                        i_sRInfo.Order_Forecast_SRWC__c = 0;                                  // 最終予想WC（受注時） ← 0
+                    }
+                    i_sRInfo.Order_OrderDate__c = work.PlannedOrderDate__c;                   // 受注年月日           ← 受注(予定)年月日
+                    i_sRInfo.Order_SalesDate__c = work.PlannedSalesDate__c;                   // 売上年月日（受注時）  ← 売上(予定)年月日 20250207追加
 
                     // 初回は「受注時」の値を「受注後最新」にも移送する
                     i_sRInfo.Latest_SRCP__c = work.SRCP__c;                                 // SRCP（最新）        ← SRCP
@@ -550,13 +596,20 @@ public class WorkTriggerHandler {
                     i_sRInfo.Latest_SRInfoUpdateDate__c = work.LatestRegistrationDate__c;   // SR情報取得日（最新） ← 最新登録年月日
                     i_sRInfo.Latest_SalesDate__c = work.PlannedSalesDate__c;                // 売上年月日（最新）   ← 売上(予定)年月日 20250207追加
                 }
-                // 受注時（実績）
-                if (work.OpportunityType__c == '実績' && work.PlannedSalesDate__c <= lastMonthEnd) {
-                    // 「売上（予定）年月日」が前月以前の場合に移送する
-                    i_sRInfo.Order_SRCP__c = work.SRCP__c;                                  // SRCP（受注時）       ← SRCP
-                    i_sRInfo.Order_Forecast_SRCP__c = work.FinalForecastCP_ResultCP__c;     // 最終予想CP（受注時） ← 最終予想ＣＰ売上実績ＣＰ
-                    i_sRInfo.Order_SRWC__c = work.SRWC__c;                                  // SRWC（受注時）       ← SRWC
-                    i_sRInfo.Order_Forecast_SRWC__c = work.PriorityWC_ResultWC__c;          // 最終予想WC（受注時） ← 優先ＷＣ売上実績ＷＣ
+                // 受注時（実績）、「売上（予定）年月日」が当日以前の場合に移送する
+                if (work.OpportunityType__c == '実績' && work.PlannedSalesDate__c <= today) {
+                    // PUS_CRM-642対応 売報番号単位で見てJ項が後から追加された場合は受注時金額は0にする 2025/09/16 TS鈴木追加
+                    if (existingSRInfoMap.get(work.SR_Number__c) == null) {
+                        i_sRInfo.Order_SRCP__c = work.SRCP__c;                                // SRCP（受注時）       ← SRCP
+                        i_sRInfo.Order_Forecast_SRCP__c = work.FinalForecastCP_ResultCP__c;   // 最終予想CP（受注時） ← 最終予想ＣＰ売上実績ＣＰ
+                        i_sRInfo.Order_SRWC__c = work.SRWC__c;                                // SRWC（受注時）       ← SRWC
+                        i_sRInfo.Order_Forecast_SRWC__c = work.PriorityWC_ResultWC__c;        // 最終予想WC（受注時） ← 優先ＷＣ売上実績ＷＣ
+                    } else {
+                        i_sRInfo.Order_SRCP__c = 0;                                           // SRCP（受注時）       ← 0
+                        i_sRInfo.Order_Forecast_SRCP__c = 0;                                  // 最終予想CP（受注時） ← 0
+                        i_sRInfo.Order_SRWC__c = 0;                                           // SRWC（受注時）       ← 0
+                        i_sRInfo.Order_Forecast_SRWC__c = 0;                                  // 最終予想WC（受注時） ← 0
+                    }
                     i_sRInfo.Order_OrderDate__c = work.NewRegistrationDate__c;              // 受注年月日           ← 新規登録年月日
                     i_sRInfo.Order_SalesDate__c = work.PlannedSalesDate__c;                 // 売上年月日（受注時）  ← 売上(予定)年月日 20250207追加
 

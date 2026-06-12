@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>OpportunityResultAlert__c</fullName>
+    <externalId>false</externalId>
+    <formula>IF (AND( TEXT(StageName) = &quot;受注・オーダー管理&quot;, ISBLANK(FinalPrice__c)) , &apos;★決定金額が入力されていません&apos;,&apos;&apos;)</formula>
+    <label>商談結果アラート</label>
+    <required>false</required>
+    <trackHistory>false</trackHistory>
+    <type>Text</type>
+    <unique>false</unique>
+</CustomField>

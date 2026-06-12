@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ListView xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>gikahatsuorder</fullName>
+    <columns>NAME</columns>
+    <columns>SBU__c</columns>
+    <columns>Oppt__c</columns>
+    <columns>Product__c</columns>
+    <columns>InstallDate__c</columns>
+    <columns>UsageEndDate__c</columns>
+    <columns>MachineRenewalDate__c</columns>
+    <columns>MachineRenewalYear__c</columns>
+    <columns>OrderLostKbn__c</columns>
+    <columns>OWNER.LAST_NAME</columns>
+    <columns>OWNER.FIRST_NAME</columns>
+    <filterScope>Everything</filterScope>
+    <filters>
+        <field>SBU__c</field>
+        <operation>equals</operation>
+        <value>自家発</value>
+    </filters>
+    <label>C_自家発のオーダー情報</label>
+</ListView>

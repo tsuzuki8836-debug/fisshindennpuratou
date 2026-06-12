@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>NeedConstruction__c</fullName>
+    <externalId>false</externalId>
+    <label>工事有無</label>
+    <required>false</required>
+    <trackFeedHistory>false</trackFeedHistory>
+    <trackHistory>false</trackHistory>
+    <type>Picklist</type>
+    <valueSet>
+        <valueSetDefinition>
+            <sorted>false</sorted>
+            <value>
+                <fullName>無</fullName>
+                <default>false</default>
+                <label>無</label>
+            </value>
+            <value>
+                <fullName>有（技術者配置：要）</fullName>
+                <default>false</default>
+                <label>有（技術者配置：要）</label>
+            </value>
+            <value>
+                <fullName>有（技術者配置：不要）</fullName>
+                <default>false</default>
+                <label>有（技術者配置：不要）</label>
+            </value>
+        </valueSetDefinition>
+    </valueSet>
+</CustomField>

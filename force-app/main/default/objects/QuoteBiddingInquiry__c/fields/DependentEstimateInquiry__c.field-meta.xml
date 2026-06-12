@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>DependentEstimateInquiry__c</fullName>
+    <deleteConstraint>SetNull</deleteConstraint>
+    <externalId>false</externalId>
+    <label>参照先見積伺い</label>
+    <lookupFilter>
+        <active>true</active>
+        <filterItems>
+            <field>QuoteBiddingInquiry__c.RecordTypeId</field>
+            <operation>equals</operation>
+            <value>見積伺い</value>
+        </filterItems>
+        <filterItems>
+            <field>QuoteBiddingInquiry__c.Opportunity__c</field>
+            <operation>equals</operation>
+            <valueField>$Source.Opportunity__c</valueField>
+        </filterItems>
+        <isOptional>false</isOptional>
+    </lookupFilter>
+    <referenceTo>QuoteBiddingInquiry__c</referenceTo>
+    <relationshipLabel>見積・応札・手数料伺い (参照先見積伺い)</relationshipLabel>
+    <relationshipName>DependentEstimateInquiries</relationshipName>
+    <required>false</required>
+    <trackFeedHistory>false</trackFeedHistory>
+    <trackHistory>false</trackHistory>
+    <trackTrending>false</trackTrending>
+    <type>Lookup</type>
+</CustomField>

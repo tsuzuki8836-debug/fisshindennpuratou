@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ValidationRule xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>EvaluationCommentCheck</fullName>
+    <active>true</active>
+    <description>特別手数料、複数社へ支払う場合必須</description>
+    <errorConditionFormula>AND(
+	OR(
+		OR(
+			SpecialOrGeneral_MAX__c = &apos;特別&apos;,
+			SpecialOrGeneral_MIN__c = &apos;特別&apos;
+		),
+		OR(
+		    AND(
+			    NOT(ISBLANK(Agency1StoreName__c)), 
+			    NOT(ISBLANK(Agency2Name__c))
+		    ),
+		    AND(
+			    NOT(ISBLANK(Agency1StoreName__c)), 
+			    NOT(ISBLANK(Agency3Name__c))
+		    ),
+		    AND(
+			    NOT(ISBLANK(Agency2Name__c)), 
+			    NOT(ISBLANK(Agency3Name__c))
+		    )
+		)
+	),
+	ISBLANK(EvaluationComment__c),
+	NOT(Creating__c)
+)</errorConditionFormula>
+    <errorDisplayField>EvaluationComment__c</errorDisplayField>
+    <errorMessage>申請理由・評価コメントは必須です</errorMessage>
+</ValidationRule>

@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Video_EP__c</fullName>
+    <externalId>false</externalId>
+    <label>映像EP</label>
+    <summarizedField>Device__c.ClientAnswerAmountTotal__c</summarizedField>
+    <summaryFilterItems>
+        <field>Device__c.NETCalculateCategory__c</field>
+        <operation>equals</operation>
+        <value>映像</value>
+    </summaryFilterItems>
+    <summaryForeignKey>Device__c.Quote__c</summaryForeignKey>
+    <summaryOperation>sum</summaryOperation>
+    <trackHistory>false</trackHistory>
+    <trackTrending>false</trackTrending>
+    <type>Summary</type>
+</CustomField>

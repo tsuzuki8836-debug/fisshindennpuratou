@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ListView xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>All_format</fullName>
+    <columns>MasterLabel</columns>
+    <columns>DeveloperName</columns>
+    <columns>MajorClassificationCode__c</columns>
+    <columns>MinorClassificationCode__c</columns>
+    <columns>CategoryCode__c</columns>
+    <columns>KyoTai_Used__c</columns>
+    <columns>PrintOutFormat_KyoTai__c</columns>
+    <columns>MeiSai_Used__c</columns>
+    <columns>PrintOutFormat_MeiSai__c</columns>
+    <filterScope>Everything</filterScope>
+    <label>All format</label>
+    <language>en_US</language>
+</ListView>

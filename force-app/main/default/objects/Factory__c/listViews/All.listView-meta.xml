@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ListView xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>All</fullName>
+    <columns>NAME</columns>
+    <columns>Opp1__c</columns>
+    <columns>CarryingDay__c</columns>
+    <columns>SR_CP__c</columns>
+    <columns>SBU__c</columns>
+    <columns>CommonRatio1__c</columns>
+    <columns>OWNER.ALIAS</columns>
+    <columns>FactoryOwnersDivision__c</columns>
+    <columns>Factory__c</columns>
+    <filterScope>Everything</filterScope>
+    <filters>
+        <field>ProductionRequest__c</field>
+        <operation>equals</operation>
+        <value>1</value>
+    </filters>
+    <label>すべて選択</label>
+</ListView>

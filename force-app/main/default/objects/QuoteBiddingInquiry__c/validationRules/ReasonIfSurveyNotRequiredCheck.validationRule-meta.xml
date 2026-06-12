@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ValidationRule xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>ReasonIfSurveyNotRequiredCheck</fullName>
+    <active>true</active>
+    <description>属性調査要否「不要」の場合、(属性調査不要の場合)理由は必須です</description>
+    <errorConditionFormula>AND(
+    PriceList__c = false,
+    ISPICKVAL(AttributeSurveyRequirement__c,&apos;不要&apos;) ,
+    ISBLANK(TEXT(ReasonIfSurveyNotRequired__c)),
+    NOT(Creating__c) 
+)</errorConditionFormula>
+    <errorDisplayField>ReasonIfSurveyNotRequired__c</errorDisplayField>
+    <errorMessage>(属性調査不要の場合)理由は必須です</errorMessage>
+</ValidationRule>

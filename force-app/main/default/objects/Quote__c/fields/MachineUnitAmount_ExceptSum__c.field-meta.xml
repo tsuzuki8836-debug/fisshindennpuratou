@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>MachineUnitAmount_ExceptSum__c</fullName>
+    <externalId>false</externalId>
+    <label>機器単体費対象外合計</label>
+    <summarizedField>Device__c.ClientAnswerAmountTotal__c</summarizedField>
+    <summaryFilterItems>
+        <field>Device__c.MajorClassification__c</field>
+        <operation>notEqual</operation>
+        <value>材料, 工事, システムインテグレーション費</value>
+    </summaryFilterItems>
+    <summaryFilterItems>
+        <field>Device__c.EquipManageCostTarget__c</field>
+        <operation>equals</operation>
+        <value>False</value>
+    </summaryFilterItems>
+    <summaryFilterItems>
+        <field>Device__c.QuoteTarget__c</field>
+        <operation>notEqual</operation>
+        <value>見積対象外, 見積対象外(製作のみ), 支給品, 移設品</value>
+    </summaryFilterItems>
+    <summaryForeignKey>Device__c.Quote__c</summaryForeignKey>
+    <summaryOperation>sum</summaryOperation>
+    <trackHistory>false</trackHistory>
+    <trackTrending>false</trackTrending>
+    <type>Summary</type>
+</CustomField>

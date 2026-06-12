@@ -82,7 +82,7 @@
             <targetReference>loopProcessInstanceWorkItemListForCheckActor</targetReference>
         </connector>
     </start>
-    <status>Obsolete</status>
+    <status>Active</status>
     <variables>
         <name>getTargetProcessInstanceWorkItems</name>
         <dataType>SObject</dataType>

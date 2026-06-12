@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<WebLink xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>CreateDetailByInquiryFactoryButton</fullName>
+    <availability>online</availability>
+    <displayType>massActionButton</displayType>
+    <encodingKey>UTF-8</encodingKey>
+    <height>600</height>
+    <linkType>url</linkType>
+    <masterLabel>新規</masterLabel>
+    <openType>sidebar</openType>
+    <protected>false</protected>
+    <requireRowSelection>false</requireRowSelection>
+    <url>/lightning/o/DetailByInquiryFactory__c/new?defaultFieldValues=
+QuoteBiddingInquiry__c={!QuoteBiddingInquiry__c.Id},
+BU__c={!QuoteBiddingInquiry__c.BU__c}
+&amp;backgroundContext=%2Flightning%2Fr%2FQuoteBiddingInquiry__c%2F{!QuoteBiddingInquiry__c.Id}%2Fview</url>
+</WebLink>

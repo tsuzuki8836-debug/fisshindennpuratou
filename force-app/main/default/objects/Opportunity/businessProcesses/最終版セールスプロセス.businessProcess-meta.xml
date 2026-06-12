@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<BusinessProcess xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>最終版セールスプロセス</fullName>
+    <description>12/23作成</description>
+    <isActive>true</isActive>
+    <values>
+        <fullName>オーダー完了</fullName>
+        <default>false</default>
+    </values>
+    <values>
+        <fullName>価格交渉 入札準備%E3%83%BB入札</fullName>
+        <default>false</default>
+    </values>
+    <values>
+        <fullName>削除</fullName>
+        <default>false</default>
+    </values>
+    <values>
+        <fullName>受注%E3%83%BBオーダー管理</fullName>
+        <default>false</default>
+    </values>
+    <values>
+        <fullName>基本計画</fullName>
+        <default>false</default>
+    </values>
+    <values>
+        <fullName>基本設計</fullName>
+        <default>false</default>
+    </values>
+    <values>
+        <fullName>失注</fullName>
+        <default>false</default>
+    </values>
+    <values>
+        <fullName>実施設計</fullName>
+        <default>false</default>
+    </values>
+</BusinessProcess>

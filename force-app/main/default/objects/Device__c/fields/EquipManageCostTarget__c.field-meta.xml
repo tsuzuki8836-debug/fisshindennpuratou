@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>EquipManageCostTarget__c</fullName>
+    <defaultValue>true</defaultValue>
+    <externalId>false</externalId>
+    <label>国土交通省機器管理費対象</label>
+    <trackTrending>false</trackTrending>
+    <type>Checkbox</type>
+</CustomField>

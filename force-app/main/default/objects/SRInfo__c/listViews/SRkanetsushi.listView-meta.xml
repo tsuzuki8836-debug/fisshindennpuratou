@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ListView xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>SRkanetsushi</fullName>
+    <columns>NAME</columns>
+    <columns>AffiliationName__c</columns>
+    <columns>ContactPersonName__c</columns>
+    <columns>Result_SRWC__c</columns>
+    <columns>Result_WCRate__c</columns>
+    <columns>SR_Number__c</columns>
+    <columns>Subject__c</columns>
+    <columns>LocationName__c</columns>
+    <columns>OrderMonth__c</columns>
+    <columns>SalesMonth__c</columns>
+    <columns>Opportunity__c</columns>
+    <columns>OrderingSource__c</columns>
+    <columns>Warning__c</columns>
+    <columns>LAST_UPDATE</columns>
+    <filterScope>Everything</filterScope>
+    <filters>
+        <field>SalesMonth__c</field>
+        <operation>notEqual</operation>
+    </filters>
+    <filters>
+        <field>SR_Number__c</field>
+        <operation>startsWith</operation>
+        <value>A62</value>
+    </filters>
+    <label>関越支のSR情報</label>
+    <sharedTo>
+        <roleAndSubordinatesInternal>M16_kanetsushisha</roleAndSubordinatesInternal>
+    </sharedTo>
+</ListView>

@@ -31,7 +31,7 @@ public class DeviceTriggerLogic {
     //     }
     //     update quoteList;
     // }
-    
+
     // private void setQuoteValues(Quote__c quote, List<Device__c> deviceList){
     //     //支給品・移設品・製作のみ有りフラグ
     //     Boolean suppliesFlag = false;
@@ -51,7 +51,7 @@ public class DeviceTriggerLogic {
     //             noTargetFlag = true;
     //         }
     //     }
-        
+
     //     //機器管理費設定
     //     if(suppliesFlag == true){
     //         equipManageCostRate = calculateEquipManageCostInSupplies(quote,deviceList,sumPriceTarget,equipManageCostRate);
@@ -61,7 +61,7 @@ public class DeviceTriggerLogic {
     //         quote.EquipManageCost__c = sumPriceTarget * (equipManageCostRate / 100);
     //     }
     //     System.debug('補正後equipManageCostRate =' + equipManageCostRate);
-        
+
     //     //機器管理費率設定
     //     quote.EquipManageCostRate__c = equipManageCostRate;
     // }
@@ -74,7 +74,7 @@ public class DeviceTriggerLogic {
     //     //PRICE_A = 14,000千円  ,  PRICE_B = 200,000千円
     //     if(sumPriceTarget <= PRICE_A){
     //         //機器単体費が 14,000千円以下
-    //         equipManageCostRate = 18.22;            
+    //         equipManageCostRate = 18.22;
     //     }else if(sumPriceTarget>PRICE_A && sumPriceTarget<=PRICE_B){
     //         //EXPONENT = -0.4711
     //         equipManageCostRate = 42380.2 * (Math.pow(sumPriceTarget, EXPONENT));
@@ -94,7 +94,7 @@ public class DeviceTriggerLogic {
     //  * @param deviceList 見積に紐づく見積項目のリスト
     //  * @param sumPriceTarget 支給品や移設品、製作のみの価格も含めた金額（見積対象外も含む）
     //  * @param equipManageCostRate 補正前機器管理費率
-    //  * 
+    //  *
     //  */
     // private Decimal calculateEquipManageCostInSupplies(Quote__c quote, List<Device__c> deviceList, Decimal sumPriceTarget, Decimal equipManageCostRate){
     //     //支給品や移設品、製作のみ(見積対象外も含む)の金額
@@ -150,20 +150,20 @@ public class DeviceTriggerLogic {
     //  * @param quote 見積レコード
     //  * @param deviceList 見積に紐づく見積項目のリスト
     //  * @param equipManageCostRate 機器管理費率
-    //  * 
+    //  *
     //  */
     // private Double calculateEquipManageCostInNoTarget(Quote__c quote, List<Device__c> deviceList, Decimal equipManageCostRate){
     //     //見積対象の機器単体費
     //     Decimal quoteTargetPrice = 0.0;
     //     //再計算後の機器管理費
     //     Decimal correctionEquipManageCost = 0.0;
-        
+
     //     for(Device__c dv : deviceList){
     //         if(dv.QuoteTarget__c == '見積対象' && dv.MajorClassification__c != 'システムインテグレーション費' && dv.EquipManageCostTarget__c == true){
     //             quoteTargetPrice += dv.ClientAnswerAmountTotal__c;
     //         }
     //     }
-        
+
     //     //機器管理費再計算
     //     correctionEquipManageCost = quoteTargetPrice * (equipManageCostRate / 100);
     //     //各種工事区分の値を設定
@@ -177,14 +177,14 @@ public class DeviceTriggerLogic {
     //             FROM Quote__c
     //             WHERE Id IN : quoteIds AND RecordTypeId =: recTypeOfficialDemandId AND EquipmentCostExistence__c = 'あり' AND SectionExistence__c = 'なし'];
     // }
-    
+
 
     public void cloneDeviceAndRelatedRecords(List<Device__c> newDevices){
         //マスタ機器レコード <マスタ機器のId, 新規機器のId>
         Map<Id, Set<Id>> cloneDeviceIdMap = this.getCloneDeviceIds(newDevices);
         //コピーする内訳のリスト
         List<Detail__c> dtlCloneList = new List<Detail__c>();
-        
+
         if(cloneDeviceIdMap.size() > 0){
             //関連内訳を取得する
             Map<Id, Device__c> dvRelated = this.getDetailRelatedRecords(cloneDeviceIdMap.keySet());
@@ -192,7 +192,7 @@ public class DeviceTriggerLogic {
             //関連内訳を確認する
             for(Id dvId : dvRelated.keySet()){
                 //System.debug('明細数' + dvRelated.get(dvId).Details__r.size());
-                for(Detail__c dtl : dvRelated.get(dvId).Details__r){                    
+                for(Detail__c dtl : dvRelated.get(dvId).Details__r){
                     for(Id dId : cloneDeviceIdMap.get(dvId)){
                         //内訳がある場合はコピーする
                         Detail__c dtlClone = dtl.clone(false,true);
@@ -201,19 +201,19 @@ public class DeviceTriggerLogic {
                         //内訳を集める
                         dtlCloneList.add(dtlClone);
                     }
-                }              
+                }
             }
             if(dtlCloneList.isEmpty()) return;
             //内訳を登録する
             insert dtlCloneList;
         }
     }
-    
+
     /**
      * マスタ機器のIDを取得
      */
-    private Map<Id, Set<Id>> getCloneDeviceIds(List<Device__c> newList){        
-        Map<Id, Set<Id>> idMap = new Map<Id, Set<Id>>();        
+    private Map<Id, Set<Id>> getCloneDeviceIds(List<Device__c> newList){
+        Map<Id, Set<Id>> idMap = new Map<Id, Set<Id>>();
         for (Device__c d : newList) {
             if(d.isClone()){
                 // 同じ見積項目の複数回コピーに対応（2023/12/20 TS鈴木）Start
@@ -230,9 +230,9 @@ public class DeviceTriggerLogic {
                 //idMap.put(d.getCloneSourceId(), idMap.get(d.getCloneSourceId()).add(d.Id));
             }
         }
-        return idMap;        
+        return idMap;
     }
-    
+
     public void updateConstructionZone(List<Device__c> newDevices,List<Device__c> oldDevices){
         Set<Id> constructionZoneIds = new Set<id>();
         Set<Id> deviceIds = new Set<Id>();
@@ -244,7 +244,11 @@ public class DeviceTriggerLogic {
             // 変更前の工事区分のIDを入れておく
             constructionZoneIds.add(d.ConstructionZone__c);
         }
-        List<Device__c> deviceList = new List<Device__c>([SELECT Id,ConstructionZone__c,Device_SmallCategory__c,Device_SmallCategory__r.Device_MiddleCategory__r.Device_LargeCategory__r.ConstructionZone__r.Id FROM Device__c WHERE Id IN: deviceIds]);
+        List<Device__c> deviceList = new List<Device__c>([
+            SELECT Id, ConstructionZone__c, Device_SmallCategory__c
+                , Device_SmallCategory__r.Device_MiddleCategory__r.Device_LargeCategory__r.ConstructionZone__r.Id
+            FROM Device__c
+            WHERE Id IN: deviceIds]);
         for(Device__c getDevice : deviceList){
             //細別から辿った工事区分のIDを追加
             constructionZoneIds.add(getDevice.Device_SmallCategory__r.Device_MiddleCategory__r.Device_LargeCategory__r.ConstructionZone__r.Id);
@@ -261,8 +265,9 @@ public class DeviceTriggerLogic {
      * 関連内訳を取得
      */
     private Map<Id, Device__c> getDetailRelatedRecords(Set<Id> dvIds){
-        return new Map<Id, Device__c>((List<Device__c>)Database.query('SELECT Id, (SELECT FIELDS(STANDARD) ' + util.getAllCustomFields('Detail__c') + ' FROM Details__r)' + 
-                                                                   'FROM Device__c WHERE Id IN: dvIds ORDER BY QuoteSpecificationNumber__c'));
+        return new Map<Id, Device__c>((List<Device__c>)Database.query(
+            'SELECT Id, (SELECT FIELDS(STANDARD) ' + util.getAllCustomFields('Detail__c') + ' FROM Details__r)' +
+            'FROM Device__c WHERE Id IN: dvIds ORDER BY QuoteSpecificationNumber__c'));
     }
 
     /**
@@ -273,8 +278,7 @@ public class DeviceTriggerLogic {
      */
     public String convertFullToHalf(String value) {
 
-        ReplaceChar reChar = new ReplaceChar();
-        return reChar.convertFullToHalf(value);
+        return ReplaceChar.convertFullToHalf(value);
         // String result;
         // // 変換内容がない場合
         // if(String.isEmpty(value)) {

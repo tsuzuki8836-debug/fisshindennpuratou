@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ListView xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>mynyusatsu</fullName>
+    <columns>NAME</columns>
+    <columns>PickDivision__c</columns>
+    <columns>SBU__c</columns>
+    <columns>PumpStation__c</columns>
+    <columns>Opportunity__c</columns>
+    <columns>LastCustomer__c</columns>
+    <columns>SubmitDate__c</columns>
+    <columns>BidOpenDate__c</columns>
+    <columns>SuccessfulBidder__c</columns>
+    <columns>BidAmount__c</columns>
+    <columns>CompanyBidAmount__c</columns>
+    <columns>OWNER.ALIAS</columns>
+    <filterScope>Mine</filterScope>
+    <label>私の入札</label>
+</ListView>

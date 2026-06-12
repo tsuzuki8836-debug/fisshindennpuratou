@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>CentralRemoteMonitoring__c</fullName>
+    <externalId>false</externalId>
+    <inlineHelpText>場所別保存時に自動で設定されます。場所別で以下製品のいずれかが選択されていれば&quot;あり&quot;を自動選択。中央監視MACTUS300／その他中央監視制御装置／中央監視MACTUS500／テレメータ／中央監視MELFLEX／中央監視MACTUS700</inlineHelpText>
+    <label>中央監視・遠制</label>
+    <required>false</required>
+    <trackFeedHistory>false</trackFeedHistory>
+    <trackHistory>false</trackHistory>
+    <type>Picklist</type>
+    <valueSet>
+        <restricted>true</restricted>
+        <valueSetDefinition>
+            <sorted>false</sorted>
+            <value>
+                <fullName>あり</fullName>
+                <default>false</default>
+                <label>あり</label>
+            </value>
+            <value>
+                <fullName>なし</fullName>
+                <default>false</default>
+                <label>なし</label>
+            </value>
+        </valueSetDefinition>
+    </valueSet>
+</CustomField>

@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ListView xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>All</fullName>
+    <columns>NAME</columns>
+    <columns>Subject__c</columns>
+    <columns>Opportunity__c</columns>
+    <columns>Account__c</columns>
+    <columns>QuotePriceSum__c</columns>
+    <columns>GeneralAdministrativeExpenses__c</columns>
+    <columns>PowerFrequency__c</columns>
+    <columns>CREATEDBY_USER</columns>
+    <filterScope>Everything</filterScope>
+    <label>すべて選択</label>
+</ListView>

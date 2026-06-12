@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>TotalWCForReporting__c</fullName>
+    <externalId>false</externalId>
+    <formula>EstimatedTotalWC1__c  == (EstimatedIssuedWC_01__c +  EstimatedIssuedWC_02__c +  EstimatedIssuedWC_03__c)</formula>
+    <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
+    <label>発行WC一致フラグ</label>
+    <trackHistory>false</trackHistory>
+    <type>Checkbox</type>
+</CustomField>

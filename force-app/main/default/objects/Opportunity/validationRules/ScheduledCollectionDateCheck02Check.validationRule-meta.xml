@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ValidationRule xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>ScheduledCollectionDateCheck02Check</fullName>
+    <active>true</active>
+    <description>回収予定日①&lt;回収予定日②でないとエラー</description>
+    <errorConditionFormula>AND(
+    NOT( ISBLANK(ScheduledCollectionDate__c ) ) ,
+    NOT( ISBLANK(ScheduledCollectionDate2__c )) ,
+    ScheduledCollectionDate__c &gt;=  ScheduledCollectionDate2__c ,
+    NOT($Profile.Name = &apos;データ移行管理者&apos;)
+)</errorConditionFormula>
+    <errorMessage>回収予定日①は、回収予定日②より前の日付に設定してください。</errorMessage>
+</ValidationRule>

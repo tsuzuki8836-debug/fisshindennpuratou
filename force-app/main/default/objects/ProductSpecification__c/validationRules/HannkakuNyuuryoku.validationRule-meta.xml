@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ValidationRule xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>HannkakuNyuuryoku</fullName>
+    <active>true</active>
+    <description>半角英数字のみ入力させる</description>
+    <errorConditionFormula>AND(
+    NOT(REGEX(  Capacity__c  , &quot;[0-9a-zA-Z]*&quot;)), 
+    NOT(ISBLANK( Capacity__c  )),
+    NOT($Profile.Name = &apos;データ移行管理者&apos;)
+)</errorConditionFormula>
+    <errorDisplayField>Capacity__c</errorDisplayField>
+    <errorMessage>半角で入力してください。</errorMessage>
+</ValidationRule>

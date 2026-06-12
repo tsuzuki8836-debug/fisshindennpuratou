@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<WebLink xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Sansan_CI__Mobile</fullName>
+    <availability>online</availability>
+    <displayType>button</displayType>
+    <linkType>page</linkType>
+    <masterLabel>名刺関連づけ(モバイル)</masterLabel>
+    <openType>replace</openType>
+    <page>Sansan_CI__BizCard_LinkToView_Mobile</page>
+    <protected>false</protected>
+</WebLink>

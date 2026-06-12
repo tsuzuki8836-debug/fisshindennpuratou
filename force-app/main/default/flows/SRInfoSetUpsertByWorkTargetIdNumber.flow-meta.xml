@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Flow xmlns="http://soap.sforce.com/2006/04/metadata">
+    <apiVersion>65.0</apiVersion>
+    <description>ワークフロールール「work反映先特定番号（売報番号＋J項番号）設定」から移行</description>
+    <environments>Default</environments>
+    <formulas>
+        <name>SetUpsertByWorkTargetIdNumberFormula</name>
+        <dataType>String</dataType>
+        <expression>$Record.SR_Number__c  +  $Record.J_Number__c</expression>
+    </formulas>
+    <interviewLabel>【SR情報】work反映先特定番号（売報番号＋J項番号）設定 {!$Flow.CurrentDateTime}</interviewLabel>
+    <label>【SR情報】work反映先特定番号（売報番号＋J項番号）設定</label>
+    <processMetadataValues>
+        <name>BuilderType</name>
+        <value>
+            <stringValue>LightningFlowBuilder</stringValue>
+        </value>
+    </processMetadataValues>
+    <processMetadataValues>
+        <name>CanvasMode</name>
+        <value>
+            <stringValue>AUTO_LAYOUT_CANVAS</stringValue>
+        </value>
+    </processMetadataValues>
+    <processType>AutoLaunchedFlow</processType>
+    <recordUpdates>
+        <description>work反映先特定番号（売報番号＋J項番号）設定</description>
+        <name>updateUpsertByWorkTargetIdNumber</name>
+        <label>work反映先特定番号（売報番号＋J項番号）設定</label>
+        <locationX>0</locationX>
+        <locationY>0</locationY>
+        <inputAssignments>
+            <field>UpsertByWorkTargetIdNumber__c</field>
+            <value>
+                <elementReference>SetUpsertByWorkTargetIdNumberFormula</elementReference>
+            </value>
+        </inputAssignments>
+        <inputReference>$Record</inputReference>
+    </recordUpdates>
+    <start>
+        <locationX>0</locationX>
+        <locationY>0</locationY>
+        <connector>
+            <targetReference>updateUpsertByWorkTargetIdNumber</targetReference>
+        </connector>
+        <filterFormula>{!$Record.UpsertByWorkTargetIdNumber__c}  &lt;&gt;  {!$Record.SR_Number__c}  +  {!$Record.J_Number__c}</filterFormula>
+        <object>SRInfo__c</object>
+        <recordTriggerType>CreateAndUpdate</recordTriggerType>
+        <triggerType>RecordBeforeSave</triggerType>
+    </start>
+    <status>Active</status>
+</Flow>

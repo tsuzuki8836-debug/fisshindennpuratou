@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Flow xmlns="http://soap.sforce.com/2006/04/metadata">
+    <apiVersion>62.0</apiVersion>
+    <description>社内送信先名を自動設定する</description>
+    <environments>Default</environments>
+    <formulas>
+        <name>CompanyAddressName</name>
+        <dataType>String</dataType>
+        <expression>IF({!$Record.IsActive__c}, &quot;&quot;, &quot;【無効】&quot;)
++ IF( ISNULL({!$Record.ShortAffiliation__c}), &quot;&quot;,   {!$Record.ShortAffiliation__c} + &quot; &quot; )
++ {!$Record.Name__c} + &quot; &lt;&quot; + {!$Record.Mail__c} + &quot;&gt;&quot;</expression>
+    </formulas>
+    <interviewLabel>社内送信先名の設定 {!$Flow.CurrentDateTime}</interviewLabel>
+    <label>社内送信先名の設定</label>
+    <processMetadataValues>
+        <name>BuilderType</name>
+        <value>
+            <stringValue>LightningFlowBuilder</stringValue>
+        </value>
+    </processMetadataValues>
+    <processMetadataValues>
+        <name>CanvasMode</name>
+        <value>
+            <stringValue>AUTO_LAYOUT_CANVAS</stringValue>
+        </value>
+    </processMetadataValues>
+    <processMetadataValues>
+        <name>OriginBuilderType</name>
+        <value>
+            <stringValue>LightningFlowBuilder</stringValue>
+        </value>
+    </processMetadataValues>
+    <processType>AutoLaunchedFlow</processType>
+    <recordUpdates>
+        <name>SetName</name>
+        <label>社内送信先名の設定</label>
+        <locationX>176</locationX>
+        <locationY>287</locationY>
+        <inputAssignments>
+            <field>Name</field>
+            <value>
+                <elementReference>CompanyAddressName</elementReference>
+            </value>
+        </inputAssignments>
+        <inputReference>$Record</inputReference>
+    </recordUpdates>
+    <start>
+        <locationX>50</locationX>
+        <locationY>0</locationY>
+        <connector>
+            <targetReference>SetName</targetReference>
+        </connector>
+        <object>CompanyAddress__c</object>
+        <recordTriggerType>CreateAndUpdate</recordTriggerType>
+        <triggerType>RecordBeforeSave</triggerType>
+    </start>
+    <status>Active</status>
+</Flow>

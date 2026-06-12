@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Profitability__c</fullName>
+    <externalId>false</externalId>
+    <inlineHelpText>場所別保存時に自動で設定されます。TC確保（CP≧TC＋販売手数料）／不採算(TC以下)／特別不採算(WC率95％以上)</inlineHelpText>
+    <label>【未使用】採算性</label>
+    <required>false</required>
+    <trackFeedHistory>false</trackFeedHistory>
+    <trackHistory>false</trackHistory>
+    <type>Picklist</type>
+    <valueSet>
+        <restricted>true</restricted>
+        <valueSetDefinition>
+            <sorted>false</sorted>
+            <value>
+                <fullName>TC確保</fullName>
+                <default>false</default>
+                <label>TC確保</label>
+            </value>
+            <value>
+                <fullName>不採算</fullName>
+                <default>false</default>
+                <label>不採算</label>
+            </value>
+            <value>
+                <fullName>特別不採算</fullName>
+                <default>false</default>
+                <label>特別不採算</label>
+            </value>
+        </valueSetDefinition>
+    </valueSet>
+</CustomField>

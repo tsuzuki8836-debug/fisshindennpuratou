@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>OutpuySignal__c</fullName>
+    <externalId>false</externalId>
+    <label>出力信号ＩＦ</label>
+    <required>false</required>
+    <trackFeedHistory>false</trackFeedHistory>
+    <trackHistory>false</trackHistory>
+    <trackTrending>false</trackTrending>
+    <type>Picklist</type>
+    <valueSet>
+        <restricted>true</restricted>
+        <valueSetDefinition>
+            <sorted>false</sorted>
+            <value>
+                <fullName>MODBUS/TCP</fullName>
+                <default>false</default>
+                <label>MODBUS/TCP</label>
+            </value>
+            <value>
+                <fullName>RS-485</fullName>
+                <default>false</default>
+                <label>RS-485</label>
+            </value>
+            <value>
+                <fullName>Ethernet</fullName>
+                <default>false</default>
+                <label>Ethernet</label>
+            </value>
+        </valueSetDefinition>
+    </valueSet>
+</CustomField>

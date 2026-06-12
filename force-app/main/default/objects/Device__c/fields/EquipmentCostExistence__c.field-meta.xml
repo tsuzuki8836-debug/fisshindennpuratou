@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>EquipmentCostExistence__c</fullName>
+    <externalId>false</externalId>
+    <label>国土交通省機器管理費有無</label>
+    <required>false</required>
+    <trackTrending>false</trackTrending>
+    <type>Picklist</type>
+    <valueSet>
+        <valueSetDefinition>
+            <sorted>false</sorted>
+            <value>
+                <fullName>あり</fullName>
+                <default>false</default>
+                <label>あり</label>
+            </value>
+            <value>
+                <fullName>なし</fullName>
+                <default>false</default>
+                <label>なし</label>
+            </value>
+        </valueSetDefinition>
+    </valueSet>
+</CustomField>

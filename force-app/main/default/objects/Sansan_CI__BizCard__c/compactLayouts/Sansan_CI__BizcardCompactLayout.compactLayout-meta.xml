@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CompactLayout xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Sansan_CI__BizcardCompactLayout</fullName>
+    <fields>Name</fields>
+    <fields>Sansan_CI__PhoneticLastName__c</fields>
+    <fields>Sansan_CI__PhoneticFirstName__c</fields>
+    <fields>Sansan_CI__Email__c</fields>
+    <fields>Sansan_CI__Mobile__c</fields>
+    <fields>Sansan_CI__Phone__c</fields>
+    <fields>Sansan_CI__ExchangeDate__c</fields>
+    <fields>Sansan_CI__RegisteredTime__c</fields>
+    <label>名刺コンパクトレイアウト</label>
+</CompactLayout>

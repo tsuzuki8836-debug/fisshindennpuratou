@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ListView xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>X01</fullName>
+    <columns>OppNumber__c</columns>
+    <columns>SR_Number_Main__c</columns>
+    <columns>OPPORTUNITY.NAME</columns>
+    <columns>SBU__c</columns>
+    <columns>ACCOUNT.NAME</columns>
+    <columns>OrderExpectation__c</columns>
+    <columns>OPPORTUNITY.STAGE_NAME</columns>
+    <columns>OPPORTUNITY.CLOSE_DATE</columns>
+    <columns>ScheduledSalesDate__c</columns>
+    <columns>Order_TotalCP__c</columns>
+    <columns>Latest_TotalCP__c</columns>
+    <columns>Latest_SRInfoUpdateDate__c</columns>
+    <columns>PickDivision__c</columns>
+    <columns>OpportunityOwner__c</columns>
+    <filterScope>Everything</filterScope>
+    <filters>
+        <field>OPPORTUNITY.STAGE_NAME</field>
+        <operation>equals</operation>
+        <value>受注・オーダー管理</value>
+    </filters>
+    <filters>
+        <field>OPPORTUNITY.RECORDTYPE</field>
+        <operation>equals</operation>
+        <value>Opportunity.OpportunityRecordType1</value>
+    </filters>
+    <label>01.すべての受注・オーダー管理中の案件</label>
+</ListView>

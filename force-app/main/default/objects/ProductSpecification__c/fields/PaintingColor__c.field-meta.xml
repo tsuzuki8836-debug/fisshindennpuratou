@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>PaintingColor__c</fullName>
+    <externalId>false</externalId>
+    <label>指定塗装色</label>
+    <required>false</required>
+    <trackFeedHistory>false</trackFeedHistory>
+    <trackHistory>false</trackHistory>
+    <trackTrending>false</trackTrending>
+    <type>Picklist</type>
+    <valueSet>
+        <restricted>true</restricted>
+        <valueSetDefinition>
+            <sorted>false</sorted>
+            <value>
+                <fullName>標準（5Y7/1)</fullName>
+                <default>false</default>
+                <label>標準（5Y7/1)</label>
+            </value>
+            <value>
+                <fullName>非標準（ ）</fullName>
+                <default>false</default>
+                <label>非標準（ ）</label>
+            </value>
+        </valueSetDefinition>
+    </valueSet>
+</CustomField>

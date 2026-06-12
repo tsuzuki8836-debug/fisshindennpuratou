@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ValidationRule xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>RefusalSpecialInprofitPriceListCheck</fullName>
+    <active>true</active>
+    <description>辞退チェック時、特別不採算OR価格表にチェックNG</description>
+    <errorConditionFormula>AND (Refusal__c = true, 
+    OR(SpecialInprofitProject__c = true,  PriceList__c = true)
+)</errorConditionFormula>
+    <errorDisplayField>Refusal__c</errorDisplayField>
+    <errorMessage>辞退の場合、特別不採算もしくは価格表を選択することはできません</errorMessage>
+</ValidationRule>

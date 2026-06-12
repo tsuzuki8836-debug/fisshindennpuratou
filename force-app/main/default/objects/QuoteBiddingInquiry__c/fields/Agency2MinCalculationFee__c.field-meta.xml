@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Agency2MinCalculationFee__c</fullName>
+    <externalId>false</externalId>
+    <formula>CEILING(  TheoryFeeMin__c  * Agency2_Factor_TradingStyle__c  *  Agency2_Factor_FunctionEvaluation__c  *  CategoryCoefficient__c *  Agency2_Factor_Qualification__c  *  Factor_PriceExponential_CalculateMin__c  *  Agency2_OrderContributionRate__c  / 100)  * 100</formula>
+    <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
+    <label>代理店2_算出手数料(MIN)</label>
+    <precision>18</precision>
+    <required>false</required>
+    <scale>0</scale>
+    <trackHistory>false</trackHistory>
+    <trackTrending>false</trackTrending>
+    <type>Currency</type>
+</CustomField>

@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ValidationRule xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>PowerFailureCompensationTimeCheck</fullName>
+    <active>true</active>
+    <description>停電補償時間が、その他の場合、停電補償時間＿その他に入力がないとエラー</description>
+    <errorConditionFormula>AND(
+    ISPICKVAL( PowerFailureCompensationTime__c , &apos;その他&apos;),
+    PowerFailureCompensationTimeOther__c   = null,
+    NOT($Profile.Name = &apos;データ移行管理者&apos;)
+)</errorConditionFormula>
+    <errorDisplayField>PowerFailureCompensationTimeOther__c</errorDisplayField>
+    <errorMessage>停電補償時間が、その他の場合、停電補償時間＿その他に入力して下さい</errorMessage>
+</ValidationRule>

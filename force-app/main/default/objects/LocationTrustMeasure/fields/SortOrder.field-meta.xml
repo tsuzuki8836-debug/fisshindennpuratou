@@ -1,0 +1,5 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>SortOrder</fullName>
+    <inlineHelpText>この信頼対策がレイアウトのどこに配置されるかを示します。たとえば、バナーレイアウトでは、表示順序 1 でトラストカードが左に配置され、表示順序 2 でトラストカードが 1 の右に配置されます。</inlineHelpText>
+</CustomField>

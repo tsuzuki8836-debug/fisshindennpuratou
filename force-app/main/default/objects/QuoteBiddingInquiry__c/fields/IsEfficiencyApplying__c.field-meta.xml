@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>IsEfficiencyApplying__c</fullName>
+    <externalId>false</externalId>
+    <inlineHelpText>神電応札時原低業務効率化適用案件の場合は「あり」を選択</inlineHelpText>
+    <label>神電応札時原低業務効率化適用有無</label>
+    <required>false</required>
+    <trackFeedHistory>false</trackFeedHistory>
+    <trackHistory>false</trackHistory>
+    <trackTrending>false</trackTrending>
+    <type>Picklist</type>
+    <valueSet>
+        <restricted>true</restricted>
+        <valueSetDefinition>
+            <sorted>false</sorted>
+            <value>
+                <fullName>あり</fullName>
+                <default>false</default>
+                <label>あり</label>
+            </value>
+            <value>
+                <fullName>なし</fullName>
+                <default>true</default>
+                <label>なし</label>
+            </value>
+        </valueSetDefinition>
+    </valueSet>
+</CustomField>

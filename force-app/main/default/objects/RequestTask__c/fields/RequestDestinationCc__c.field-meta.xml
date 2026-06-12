@@ -18,9 +18,9 @@
                 <label>神電</label>
             </value>
             <value>
-                <fullName>伊電</fullName>
+                <fullName>伊電長崎</fullName>
                 <default>false</default>
-                <label>伊電</label>
+                <label>伊電長崎</label>
             </value>
             <value>
                 <fullName>配電</fullName>
@@ -31,6 +31,12 @@
                 <fullName>プラ建</fullName>
                 <default>false</default>
                 <label>プラ建</label>
+            </value>
+            <value>
+                <fullName>系電</fullName>
+                <default>false</default>
+                <isActive>false</isActive>
+                <label>系電</label>
             </value>
         </valueSetDefinition>
     </valueSet>

@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<WebLink xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>CreateLargeCategory</fullName>
+    <availability>online</availability>
+    <description>工事区分レコードの関連リストに表示するボタン</description>
+    <displayType>massActionButton</displayType>
+    <encodingKey>UTF-8</encodingKey>
+    <height>600</height>
+    <linkType>url</linkType>
+    <masterLabel>新規</masterLabel>
+    <openType>sidebar</openType>
+    <protected>false</protected>
+    <requireRowSelection>false</requireRowSelection>
+    <url>/lightning/o/Device_LargeCategory__c/new?defaultFieldValues=Quote__c={!ConstructionZone__c.QuoteId__c},
+ConstructionZone__c={!ConstructionZone__c.Id}
+&amp;backgroundContext=%2Flightning%2Fr%2FConstructionZone__c%2F{!ConstructionZone__c.Id}%2Fview</url>
+</WebLink>

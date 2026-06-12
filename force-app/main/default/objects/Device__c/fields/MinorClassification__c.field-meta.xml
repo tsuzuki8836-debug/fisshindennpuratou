@@ -1,0 +1,1331 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>MinorClassification__c</fullName>
+    <externalId>false</externalId>
+    <label>小分類名</label>
+    <required>false</required>
+    <trackTrending>false</trackTrending>
+    <type>Picklist</type>
+    <valueSet>
+        <controllingField>MajorClassification__c</controllingField>
+        <restricted>true</restricted>
+        <valueSetDefinition>
+            <sorted>false</sorted>
+            <value>
+                <fullName>66kV C-GIS</fullName>
+                <default>false</default>
+                <label>66kV C-GIS</label>
+            </value>
+            <value>
+                <fullName>22kV C-GIS</fullName>
+                <default>false</default>
+                <label>22kV C-GIS</label>
+            </value>
+            <value>
+                <fullName>ブロック(気中)キュービクル</fullName>
+                <default>false</default>
+                <label>ブロック(気中)キュービクル</label>
+            </value>
+            <value>
+                <fullName>特高監視盤</fullName>
+                <default>false</default>
+                <label>特高監視盤</label>
+            </value>
+            <value>
+                <fullName>特高変圧器</fullName>
+                <default>false</default>
+                <label>特高変圧器</label>
+            </value>
+            <value>
+                <fullName>高圧変圧器</fullName>
+                <default>false</default>
+                <label>高圧変圧器</label>
+            </value>
+            <value>
+                <fullName>変圧器収納盤</fullName>
+                <default>false</default>
+                <label>変圧器収納盤</label>
+            </value>
+            <value>
+                <fullName>バスダクト</fullName>
+                <default>false</default>
+                <label>バスダクト</label>
+            </value>
+            <value>
+                <fullName>高圧コンビ盤</fullName>
+                <default>false</default>
+                <label>高圧コンビ盤</label>
+            </value>
+            <value>
+                <fullName>高圧コンデンサ・リアクトル</fullName>
+                <default>false</default>
+                <label>高圧コンデンサ・リアクトル</label>
+            </value>
+            <value>
+                <fullName>低圧コンデンサ・リアクトル</fullName>
+                <default>false</default>
+                <label>低圧コンデンサ・リアクトル</label>
+            </value>
+            <value>
+                <fullName>低圧盤</fullName>
+                <default>false</default>
+                <label>低圧盤</label>
+            </value>
+            <value>
+                <fullName>現場盤</fullName>
+                <default>false</default>
+                <label>現場盤</label>
+            </value>
+            <value>
+                <fullName>リレー盤</fullName>
+                <default>false</default>
+                <label>リレー盤</label>
+            </value>
+            <value>
+                <fullName>ACB盤</fullName>
+                <default>false</default>
+                <label>ACB盤</label>
+            </value>
+            <value>
+                <fullName>200V</fullName>
+                <default>false</default>
+                <label>200V</label>
+            </value>
+            <value>
+                <fullName>400V</fullName>
+                <default>false</default>
+                <label>400V</label>
+            </value>
+            <value>
+                <fullName>共通</fullName>
+                <default>false</default>
+                <label>共通</label>
+            </value>
+            <value>
+                <fullName>3.0kV/3.3kV</fullName>
+                <default>false</default>
+                <label>3.0kV/3.3kV</label>
+            </value>
+            <value>
+                <fullName>6.0kV/6.6kV</fullName>
+                <default>false</default>
+                <label>6.0kV/6.6kV</label>
+            </value>
+            <value>
+                <fullName>CTR</fullName>
+                <default>false</default>
+                <label>CTR</label>
+            </value>
+            <value>
+                <fullName>OPS</fullName>
+                <default>false</default>
+                <label>OPS</label>
+            </value>
+            <value>
+                <fullName>計装盤</fullName>
+                <default>false</default>
+                <label>計装盤</label>
+            </value>
+            <value>
+                <fullName>記録計</fullName>
+                <default>false</default>
+                <label>記録計</label>
+            </value>
+            <value>
+                <fullName>ラック･パネル計器</fullName>
+                <default>false</default>
+                <label>ラック･パネル計器</label>
+            </value>
+            <value>
+                <fullName>流量計</fullName>
+                <default>false</default>
+                <label>流量計</label>
+            </value>
+            <value>
+                <fullName>水位計</fullName>
+                <default>false</default>
+                <label>水位計</label>
+            </value>
+            <value>
+                <fullName>濃度計</fullName>
+                <default>false</default>
+                <label>濃度計</label>
+            </value>
+            <value>
+                <fullName>その他</fullName>
+                <default>false</default>
+                <label>その他</label>
+            </value>
+            <value>
+                <fullName>ACG</fullName>
+                <default>false</default>
+                <label>ACG</label>
+            </value>
+            <value>
+                <fullName>エンジン(DG)</fullName>
+                <default>false</default>
+                <label>エンジン(DG)</label>
+            </value>
+            <value>
+                <fullName>エンジン(GTG)</fullName>
+                <default>false</default>
+                <label>エンジン(GTG)</label>
+            </value>
+            <value>
+                <fullName>発電機関連</fullName>
+                <default>false</default>
+                <label>発電機関連</label>
+            </value>
+            <value>
+                <fullName>補器関連・共通</fullName>
+                <default>false</default>
+                <label>補器関連・共通</label>
+            </value>
+            <value>
+                <fullName>補器関連・DG</fullName>
+                <default>false</default>
+                <label>補器関連・DG</label>
+            </value>
+            <value>
+                <fullName>盤関連･始動用直流電源</fullName>
+                <default>false</default>
+                <label>盤関連･始動用直流電源</label>
+            </value>
+            <value>
+                <fullName>盤関連･制御用直流電源</fullName>
+                <default>false</default>
+                <label>盤関連･制御用直流電源</label>
+            </value>
+            <value>
+                <fullName>自動始動発電機盤(高圧)</fullName>
+                <default>false</default>
+                <label>自動始動発電機盤(高圧)</label>
+            </value>
+            <value>
+                <fullName>自動始動発電機盤(低圧)</fullName>
+                <default>false</default>
+                <label>自動始動発電機盤(低圧)</label>
+            </value>
+            <value>
+                <fullName>盤関連･補機盤</fullName>
+                <default>false</default>
+                <label>盤関連･補機盤</label>
+            </value>
+            <value>
+                <fullName>盤関連･同期盤</fullName>
+                <default>false</default>
+                <label>盤関連･同期盤</label>
+            </value>
+            <value>
+                <fullName>盤関連･フィーダ盤</fullName>
+                <default>false</default>
+                <label>盤関連･フィーダ盤</label>
+            </value>
+            <value>
+                <fullName>9800E</fullName>
+                <default>false</default>
+                <label>9800E</label>
+            </value>
+            <value>
+                <fullName>9800M</fullName>
+                <default>false</default>
+                <label>9800M</label>
+            </value>
+            <value>
+                <fullName>9900S</fullName>
+                <default>false</default>
+                <label>9900S</label>
+            </value>
+            <value>
+                <fullName>DECO</fullName>
+                <default>false</default>
+                <label>DECO</label>
+            </value>
+            <value>
+                <fullName>9300A</fullName>
+                <default>false</default>
+                <label>9300A</label>
+            </value>
+            <value>
+                <fullName>9300B</fullName>
+                <default>false</default>
+                <label>9300B</label>
+            </value>
+            <value>
+                <fullName>9800G(3φ3W)</fullName>
+                <default>false</default>
+                <label>9800G(3φ3W)</label>
+            </value>
+            <value>
+                <fullName>9800G(3φ4W)</fullName>
+                <default>false</default>
+                <label>9800G(3φ4W)</label>
+            </value>
+            <value>
+                <fullName>高圧MPC-C</fullName>
+                <default>false</default>
+                <label>高圧MPC-C</label>
+            </value>
+            <value>
+                <fullName>低圧MPC E2 (200V系)</fullName>
+                <default>false</default>
+                <label>低圧MPC E2 (200V系)</label>
+            </value>
+            <value>
+                <fullName>低圧MPC E4 (400V系)</fullName>
+                <default>false</default>
+                <label>低圧MPC E4 (400V系)</label>
+            </value>
+            <value>
+                <fullName>2133L</fullName>
+                <default>false</default>
+                <label>2133L</label>
+            </value>
+            <value>
+                <fullName>2133S</fullName>
+                <default>false</default>
+                <label>2133S</label>
+            </value>
+            <value>
+                <fullName>2133C</fullName>
+                <default>false</default>
+                <label>2133C</label>
+            </value>
+            <value>
+                <fullName>2031C</fullName>
+                <default>false</default>
+                <label>2031C</label>
+            </value>
+            <value>
+                <fullName>2011D</fullName>
+                <default>false</default>
+                <label>2011D</label>
+            </value>
+            <value>
+                <fullName>蓄電池盤</fullName>
+                <default>false</default>
+                <label>蓄電池盤</label>
+            </value>
+            <value>
+                <fullName>更新用蓄電池</fullName>
+                <default>false</default>
+                <label>更新用蓄電池</label>
+            </value>
+            <value>
+                <fullName>屋内</fullName>
+                <default>false</default>
+                <label>屋内</label>
+            </value>
+            <value>
+                <fullName>屋外</fullName>
+                <default>false</default>
+                <label>屋外</label>
+            </value>
+            <value>
+                <fullName>監視装置(21号TM)</fullName>
+                <default>false</default>
+                <label>監視装置(21号TM)</label>
+            </value>
+            <value>
+                <fullName>2量型観測局装置</fullName>
+                <default>false</default>
+                <label>2量型観測局装置</label>
+            </value>
+            <value>
+                <fullName>10量型観測局装置</fullName>
+                <default>false</default>
+                <label>10量型観測局装置</label>
+            </value>
+            <value>
+                <fullName>V-V中継用中継局装置(21号TM)</fullName>
+                <default>false</default>
+                <label>V-V中継用中継局装置(21号TM)</label>
+            </value>
+            <value>
+                <fullName>μ-V中継用中継局装置(21号TM)</fullName>
+                <default>false</default>
+                <label>μ-V中継用中継局装置(21号TM)</label>
+            </value>
+            <value>
+                <fullName>70MHz帯無線装置(テレメータ･テレコントロール用)</fullName>
+                <default>false</default>
+                <label>70MHz帯無線装置(テレメータ･テレコントロール用)</label>
+            </value>
+            <value>
+                <fullName>400MHz帯無線装置(テレメータ･テレコントロール用)</fullName>
+                <default>false</default>
+                <label>400MHz帯無線装置(テレメータ･テレコントロール用)</label>
+            </value>
+            <value>
+                <fullName>制御監視装置(放流警報)</fullName>
+                <default>false</default>
+                <label>制御監視装置(放流警報)</label>
+            </value>
+            <value>
+                <fullName>サイレン警報局装置</fullName>
+                <default>false</default>
+                <label>サイレン警報局装置</label>
+            </value>
+            <value>
+                <fullName>スピーカ警報局警報装置</fullName>
+                <default>false</default>
+                <label>スピーカ警報局警報装置</label>
+            </value>
+            <value>
+                <fullName>V-V中継用中継局装置(放流警報)</fullName>
+                <default>false</default>
+                <label>V-V中継用中継局装置(放流警報)</label>
+            </value>
+            <value>
+                <fullName>μ-V中継用中継局装置(放流警報)</fullName>
+                <default>false</default>
+                <label>μ-V中継用中継局装置(放流警報)</label>
+            </value>
+            <value>
+                <fullName>監視装置(54号TM)</fullName>
+                <default>false</default>
+                <label>監視装置(54号TM)</label>
+            </value>
+            <value>
+                <fullName>観測局装置(小容量)電源部DC12V</fullName>
+                <default>false</default>
+                <label>観測局装置(小容量)電源部DC12V</label>
+            </value>
+            <value>
+                <fullName>観測局装置(多量)電源部DC12V</fullName>
+                <default>false</default>
+                <label>観測局装置(多量)電源部DC12V</label>
+            </value>
+            <value>
+                <fullName>観測局装置(小容量)電源部DC48V</fullName>
+                <default>false</default>
+                <label>観測局装置(小容量)電源部DC48V</label>
+            </value>
+            <value>
+                <fullName>観測局装置(多量)電源部DC48V</fullName>
+                <default>false</default>
+                <label>観測局装置(多量)電源部DC48V</label>
+            </value>
+            <value>
+                <fullName>V-V中継用中継局装置 電源部DC12V</fullName>
+                <default>false</default>
+                <label>V-V中継用中継局装置 電源部DC12V</label>
+            </value>
+            <value>
+                <fullName>V-μ中継用中継局装置 電源部DC12V</fullName>
+                <default>false</default>
+                <label>V-μ中継用中継局装置 電源部DC12V</label>
+            </value>
+            <value>
+                <fullName>V-I中継用中継局装置 電源部DC12V</fullName>
+                <default>false</default>
+                <label>V-I中継用中継局装置 電源部DC12V</label>
+            </value>
+            <value>
+                <fullName>V-V中継用中継局装置 電源部DC24V</fullName>
+                <default>false</default>
+                <label>V-V中継用中継局装置 電源部DC24V</label>
+            </value>
+            <value>
+                <fullName>V-μ中継用中継局装置 電源部DC24V</fullName>
+                <default>false</default>
+                <label>V-μ中継用中継局装置 電源部DC24V</label>
+            </value>
+            <value>
+                <fullName>V-I中継用中継局装置 電源部DC24V</fullName>
+                <default>false</default>
+                <label>V-I中継用中継局装置 電源部DC24V</label>
+            </value>
+            <value>
+                <fullName>V-V中継用中継局装置 電源部DC48V</fullName>
+                <default>false</default>
+                <label>V-V中継用中継局装置 電源部DC48V</label>
+            </value>
+            <value>
+                <fullName>V-μ中継用中継局装置 電源部DC48V</fullName>
+                <default>false</default>
+                <label>V-μ中継用中継局装置 電源部DC48V</label>
+            </value>
+            <value>
+                <fullName>V-I中継用中継局装置 電源部DC48V</fullName>
+                <default>false</default>
+                <label>V-I中継用中継局装置 電源部DC48V</label>
+            </value>
+            <value>
+                <fullName>L3-SWモジュール型(タイプA)</fullName>
+                <default>false</default>
+                <label>L3-SWモジュール型(タイプA)</label>
+            </value>
+            <value>
+                <fullName>L3-SWモジュール型(タイプB)</fullName>
+                <default>false</default>
+                <label>L3-SWモジュール型(タイプB)</label>
+            </value>
+            <value>
+                <fullName>L3-SW固定型</fullName>
+                <default>false</default>
+                <label>L3-SW固定型</label>
+            </value>
+            <value>
+                <fullName>L2-SW固定型</fullName>
+                <default>false</default>
+                <label>L2-SW固定型</label>
+            </value>
+            <value>
+                <fullName>サブスクリプションライセンス(オプション)</fullName>
+                <default>false</default>
+                <label>サブスクリプションライセンス(オプション)</label>
+            </value>
+            <value>
+                <fullName>HDIPカメラ装置</fullName>
+                <default>false</default>
+                <label>HDIPカメラ装置</label>
+            </value>
+            <value>
+                <fullName>HDIPカメラ装置(高感度)</fullName>
+                <default>false</default>
+                <label>HDIPカメラ装置(高感度)</label>
+            </value>
+            <value>
+                <fullName>HDIPカメラ装置(高倍率)</fullName>
+                <default>false</default>
+                <label>HDIPカメラ装置(高倍率)</label>
+            </value>
+            <value>
+                <fullName>HDIPカメラ装置(機側レス型､高感度)</fullName>
+                <default>false</default>
+                <label>HDIPカメラ装置(機側レス型､高感度)</label>
+            </value>
+            <value>
+                <fullName>HD簡易型IPカメラ装置</fullName>
+                <default>false</default>
+                <label>HD簡易型IPカメラ装置</label>
+            </value>
+            <value>
+                <fullName>HD簡易型IPカメラ装置(非旋回式)</fullName>
+                <default>false</default>
+                <label>HD簡易型IPカメラ装置(非旋回式)</label>
+            </value>
+            <value>
+                <fullName>カメラ周辺装置</fullName>
+                <default>false</default>
+                <label>カメラ周辺装置</label>
+            </value>
+            <value>
+                <fullName>水環境</fullName>
+                <default>false</default>
+                <label>水環境</label>
+            </value>
+            <value>
+                <fullName>施設</fullName>
+                <default>false</default>
+                <label>施設</label>
+            </value>
+            <value>
+                <fullName>官需（神電）</fullName>
+                <default>false</default>
+                <label>官需（神電）</label>
+            </value>
+            <value>
+                <fullName>官需（Ｃ電郡山）</fullName>
+                <default>false</default>
+                <label>官需（Ｃ電郡山）</label>
+            </value>
+            <value>
+                <fullName>-</fullName>
+                <default>false</default>
+                <label>-</label>
+            </value>
+            <value>
+                <fullName>110kV C-GIS屋内 定格遮断電流20/25kA、定格電流1200（1250）A</fullName>
+                <default>false</default>
+                <isActive>false</isActive>
+                <label>110kV C-GIS屋内 定格遮断電流20/25kA、定格電流1200（1250）A</label>
+            </value>
+            <value>
+                <fullName>110kV C-GIS屋内 定格遮断電流20/25ｋＡ、定格電流800A</fullName>
+                <default>false</default>
+                <isActive>false</isActive>
+                <label>110kV C-GIS屋内 定格遮断電流20/25ｋＡ、定格電流800A</label>
+            </value>
+            <value>
+                <fullName>110kV C-GIS屋内 定格遮断電流31.5kA、定格電流1200（1250）A</fullName>
+                <default>false</default>
+                <isActive>false</isActive>
+                <label>110kV C-GIS屋内 定格遮断電流31.5kA、定格電流1200（1250）A</label>
+            </value>
+            <value>
+                <fullName>110kV C-GIS屋内 定格遮断電流31.5kA、定格電流800A</fullName>
+                <default>false</default>
+                <isActive>false</isActive>
+                <label>110kV C-GIS屋内 定格遮断電流31.5kA、定格電流800A</label>
+            </value>
+            <value>
+                <fullName>110kV C-GIS屋外 定格遮断電流20/25kA、定格電流1200（1250）A</fullName>
+                <default>false</default>
+                <isActive>false</isActive>
+                <label>110kV C-GIS屋外 定格遮断電流20/25kA、定格電流1200（1250）A</label>
+            </value>
+            <value>
+                <fullName>110kV C-GIS屋外 定格遮断電流20/25ｋＡ、定格電流800A</fullName>
+                <default>false</default>
+                <isActive>false</isActive>
+                <label>110kV C-GIS屋外 定格遮断電流20/25ｋＡ、定格電流800A</label>
+            </value>
+            <value>
+                <fullName>110kV C-GIS屋外 定格遮断電流31.5kA、定格電流1200（1250）A</fullName>
+                <default>false</default>
+                <isActive>false</isActive>
+                <label>110kV C-GIS屋外 定格遮断電流31.5kA、定格電流1200（1250）A</label>
+            </value>
+            <value>
+                <fullName>110kV C-GIS屋外 定格遮断電流31.5kA、定格電流800A</fullName>
+                <default>false</default>
+                <isActive>false</isActive>
+                <label>110kV C-GIS屋外 定格遮断電流31.5kA、定格電流800A</label>
+            </value>
+            <value>
+                <fullName>2000シリーズオプション</fullName>
+                <default>false</default>
+                <isActive>false</isActive>
+                <label>2000シリーズオプション</label>
+            </value>
+            <value>
+                <fullName>22kV C-GIS(HS-A)屋内 定格電流1200(1250)A</fullName>
+                <default>false</default>
+                <isActive>false</isActive>
+                <label>22kV C-GIS(HS-A)屋内 定格電流1200(1250)A</label>
+            </value>
+            <value>
+                <fullName>22kV C-GIS(HS-A)屋内 定格電流800A</fullName>
+                <default>false</default>
+                <isActive>false</isActive>
+                <label>22kV C-GIS(HS-A)屋内 定格電流800A</label>
+            </value>
+            <value>
+                <fullName>22kV C-GIS(HS-A)屋外 定格電流1200(1250)A</fullName>
+                <default>false</default>
+                <isActive>false</isActive>
+                <label>22kV C-GIS(HS-A)屋外 定格電流1200(1250)A</label>
+            </value>
+            <value>
+                <fullName>22kV C-GIS(HS-A)屋外 定格電流800A</fullName>
+                <default>false</default>
+                <isActive>false</isActive>
+                <label>22kV C-GIS(HS-A)屋外 定格電流800A</label>
+            </value>
+            <value>
+                <fullName>22kV C-GIS(HS-X)屋内 定格電流1200（1250）A</fullName>
+                <default>false</default>
+                <isActive>false</isActive>
+                <label>22kV C-GIS(HS-X)屋内 定格電流1200（1250）A</label>
+            </value>
+            <value>
+                <fullName>22kV C-GIS(HS-X)屋内 定格電流800A</fullName>
+                <default>false</default>
+                <isActive>false</isActive>
+                <label>22kV C-GIS(HS-X)屋内 定格電流800A</label>
+            </value>
+            <value>
+                <fullName>22kV C-GIS(HS-X)屋外 定格電流1200（1250）A</fullName>
+                <default>false</default>
+                <isActive>false</isActive>
+                <label>22kV C-GIS(HS-X)屋外 定格電流1200（1250）A</label>
+            </value>
+            <value>
+                <fullName>22kV C-GIS(HS-X)屋外 定格電流800A</fullName>
+                <default>false</default>
+                <isActive>false</isActive>
+                <label>22kV C-GIS(HS-X)屋外 定格電流800A</label>
+            </value>
+            <value>
+                <fullName>33kV C-GIS(HS-A)屋内 定格電流1200(1250)A</fullName>
+                <default>false</default>
+                <isActive>false</isActive>
+                <label>33kV C-GIS(HS-A)屋内 定格電流1200(1250)A</label>
+            </value>
+            <value>
+                <fullName>33kV C-GIS(HS-A)屋内 定格電流800A</fullName>
+                <default>false</default>
+                <isActive>false</isActive>
+                <label>33kV C-GIS(HS-A)屋内 定格電流800A</label>
+            </value>
+            <value>
+                <fullName>33kV C-GIS(HS-A)屋外 定格電流1200(1250)A</fullName>
+                <default>false</default>
+                <isActive>false</isActive>
+                <label>33kV C-GIS(HS-A)屋外 定格電流1200(1250)A</label>
+            </value>
+            <value>
+                <fullName>33kV C-GIS(HS-A)屋外 定格電流800A</fullName>
+                <default>false</default>
+                <isActive>false</isActive>
+                <label>33kV C-GIS(HS-A)屋外 定格電流800A</label>
+            </value>
+            <value>
+                <fullName>33kV C-GIS(HS-X)屋内 定格電流1200（1250）A</fullName>
+                <default>false</default>
+                <isActive>false</isActive>
+                <label>33kV C-GIS(HS-X)屋内 定格電流1200（1250）A</label>
+            </value>
+            <value>
+                <fullName>33kV C-GIS(HS-X)屋内 定格電流800A</fullName>
+                <default>false</default>
+                <isActive>false</isActive>
+                <label>33kV C-GIS(HS-X)屋内 定格電流800A</label>
+            </value>
+            <value>
+                <fullName>33kV C-GIS(HS-X)屋外 定格電流1200（1250）A</fullName>
+                <default>false</default>
+                <isActive>false</isActive>
+                <label>33kV C-GIS(HS-X)屋外 定格電流1200（1250）A</label>
+            </value>
+            <value>
+                <fullName>33kV C-GIS(HS-X)屋外 定格電流800A</fullName>
+                <default>false</default>
+                <isActive>false</isActive>
+                <label>33kV C-GIS(HS-X)屋外 定格電流800A</label>
+            </value>
+            <value>
+                <fullName>66ｋＶ C-GIS屋内 定格遮断電流20/25kA、定格電流1200（1250）A</fullName>
+                <default>false</default>
+                <isActive>false</isActive>
+                <label>66ｋＶ C-GIS屋内 定格遮断電流20/25kA、定格電流1200（1250）A</label>
+            </value>
+            <value>
+                <fullName>66ｋＶ C-GIS屋内 定格遮断電流20/25ｋＡ、定格電流800A</fullName>
+                <default>false</default>
+                <isActive>false</isActive>
+                <label>66ｋＶ C-GIS屋内 定格遮断電流20/25ｋＡ、定格電流800A</label>
+            </value>
+            <value>
+                <fullName>66ｋＶ C-GIS屋内 定格遮断電流31.5kA、定格電流1200（1250）A</fullName>
+                <default>false</default>
+                <isActive>false</isActive>
+                <label>66ｋＶ C-GIS屋内 定格遮断電流31.5kA、定格電流1200（1250）A</label>
+            </value>
+            <value>
+                <fullName>66ｋＶ C-GIS屋内 定格遮断電流31.5kA、定格電流800A</fullName>
+                <default>false</default>
+                <isActive>false</isActive>
+                <label>66ｋＶ C-GIS屋内 定格遮断電流31.5kA、定格電流800A</label>
+            </value>
+            <value>
+                <fullName>66ｋＶ C-GIS屋外 定格遮断電流20/25kA、定格電流1200（1250）A</fullName>
+                <default>false</default>
+                <isActive>false</isActive>
+                <label>66ｋＶ C-GIS屋外 定格遮断電流20/25kA、定格電流1200（1250）A</label>
+            </value>
+            <value>
+                <fullName>66ｋＶ C-GIS屋外 定格遮断電流20/25ｋＡ、定格電流800A</fullName>
+                <default>false</default>
+                <isActive>false</isActive>
+                <label>66ｋＶ C-GIS屋外 定格遮断電流20/25ｋＡ、定格電流800A</label>
+            </value>
+            <value>
+                <fullName>66ｋＶ C-GIS屋外 定格遮断電流31.5kA、定格電流1200（1250）A</fullName>
+                <default>false</default>
+                <isActive>false</isActive>
+                <label>66ｋＶ C-GIS屋外 定格遮断電流31.5kA、定格電流1200（1250）A</label>
+            </value>
+            <value>
+                <fullName>66ｋＶ C-GIS屋外 定格遮断電流31.5kA、定格電流800A</fullName>
+                <default>false</default>
+                <isActive>false</isActive>
+                <label>66ｋＶ C-GIS屋外 定格遮断電流31.5kA、定格電流800A</label>
+            </value>
+            <value>
+                <fullName>77kV C-GIS屋内 定格遮断電流20/25kA、定格電流1200（1250）A</fullName>
+                <default>false</default>
+                <isActive>false</isActive>
+                <label>77kV C-GIS屋内 定格遮断電流20/25kA、定格電流1200（1250）A</label>
+            </value>
+            <value>
+                <fullName>77kV C-GIS屋内 定格遮断電流20/25ｋＡ、定格電流800A</fullName>
+                <default>false</default>
+                <isActive>false</isActive>
+                <label>77kV C-GIS屋内 定格遮断電流20/25ｋＡ、定格電流800A</label>
+            </value>
+            <value>
+                <fullName>77kV C-GIS屋内 定格遮断電流31.5kA、定格電流1200（1250）A</fullName>
+                <default>false</default>
+                <isActive>false</isActive>
+                <label>77kV C-GIS屋内 定格遮断電流31.5kA、定格電流1200（1250）A</label>
+            </value>
+            <value>
+                <fullName>77kV C-GIS屋内 定格遮断電流31.5kA、定格電流800A</fullName>
+                <default>false</default>
+                <isActive>false</isActive>
+                <label>77kV C-GIS屋内 定格遮断電流31.5kA、定格電流800A</label>
+            </value>
+            <value>
+                <fullName>77kV C-GIS屋外 定格遮断電流20/25kA、定格電流1200（1250）A</fullName>
+                <default>false</default>
+                <isActive>false</isActive>
+                <label>77kV C-GIS屋外 定格遮断電流20/25kA、定格電流1200（1250）A</label>
+            </value>
+            <value>
+                <fullName>77kV C-GIS屋外 定格遮断電流20/25ｋＡ、定格電流800A</fullName>
+                <default>false</default>
+                <isActive>false</isActive>
+                <label>77kV C-GIS屋外 定格遮断電流20/25ｋＡ、定格電流800A</label>
+            </value>
+            <value>
+                <fullName>77kV C-GIS屋外 定格遮断電流31.5kA、定格電流1200（1250）A</fullName>
+                <default>false</default>
+                <isActive>false</isActive>
+                <label>77kV C-GIS屋外 定格遮断電流31.5kA、定格電流1200（1250）A</label>
+            </value>
+            <value>
+                <fullName>77kV C-GIS屋外 定格遮断電流31.5kA、定格電流800A</fullName>
+                <default>false</default>
+                <isActive>false</isActive>
+                <label>77kV C-GIS屋外 定格遮断電流31.5kA、定格電流800A</label>
+            </value>
+            <value>
+                <fullName>9200Z</fullName>
+                <default>false</default>
+                <isActive>false</isActive>
+                <label>9200Z</label>
+            </value>
+            <value>
+                <fullName>9800D</fullName>
+                <default>false</default>
+                <isActive>false</isActive>
+                <label>9800D</label>
+            </value>
+            <value>
+                <fullName>メルホンエイトⅢ</fullName>
+                <default>false</default>
+                <isActive>false</isActive>
+                <label>メルホンエイトⅢ</label>
+            </value>
+            <value>
+                <fullName>中継端子･接地盤</fullName>
+                <default>false</default>
+                <isActive>false</isActive>
+                <label>中継端子･接地盤</label>
+            </value>
+            <value>
+                <fullName>低圧</fullName>
+                <default>false</default>
+                <isActive>false</isActive>
+                <label>低圧</label>
+            </value>
+            <value>
+                <fullName>制御用直流電源</fullName>
+                <default>false</default>
+                <isActive>false</isActive>
+                <label>制御用直流電源</label>
+            </value>
+            <value>
+                <fullName>受信計器</fullName>
+                <default>false</default>
+                <isActive>false</isActive>
+                <label>受信計器</label>
+            </value>
+            <value>
+                <fullName>始動用直流電源</fullName>
+                <default>false</default>
+                <isActive>false</isActive>
+                <label>始動用直流電源</label>
+            </value>
+            <value>
+                <fullName>機器事業部 低圧ACフィルター</fullName>
+                <default>false</default>
+                <isActive>false</isActive>
+                <label>機器事業部 低圧ACフィルター</label>
+            </value>
+            <value>
+                <fullName>機器事業部 低圧コンデンサ/リアクトル</fullName>
+                <default>false</default>
+                <isActive>false</isActive>
+                <label>機器事業部 低圧コンデンサ/リアクトル</label>
+            </value>
+            <value>
+                <fullName>機器事業部 低損失高圧コンデンサ・リアクトル内蔵</fullName>
+                <default>false</default>
+                <isActive>false</isActive>
+                <label>機器事業部 低損失高圧コンデンサ・リアクトル内蔵</label>
+            </value>
+            <value>
+                <fullName>機器事業部 変圧器</fullName>
+                <default>false</default>
+                <isActive>false</isActive>
+                <label>機器事業部 変圧器</label>
+            </value>
+            <value>
+                <fullName>機器事業部 高圧ACフィルター</fullName>
+                <default>false</default>
+                <isActive>false</isActive>
+                <label>機器事業部 高圧ACフィルター</label>
+            </value>
+            <value>
+                <fullName>機器事業部 高圧コンデンサ/リアクトル</fullName>
+                <default>false</default>
+                <isActive>false</isActive>
+                <label>機器事業部 高圧コンデンサ/リアクトル</label>
+            </value>
+            <value>
+                <fullName>機器事業部 高圧コンデンサ・リアクトル内蔵</fullName>
+                <default>false</default>
+                <isActive>false</isActive>
+                <label>機器事業部 高圧コンデンサ・リアクトル内蔵</label>
+            </value>
+            <value>
+                <fullName>高圧MPC (Cシリーズ)</fullName>
+                <default>false</default>
+                <isActive>false</isActive>
+                <label>高圧MPC (Cシリーズ)</label>
+            </value>
+            <value>
+                <fullName>高圧MPC (Mシリーズ)</fullName>
+                <default>false</default>
+                <isActive>false</isActive>
+                <label>高圧MPC (Mシリーズ)</label>
+            </value>
+            <value>
+                <fullName>高圧　乾式</fullName>
+                <default>false</default>
+                <isActive>false</isActive>
+                <label>高圧　乾式</label>
+            </value>
+            <value>
+                <fullName>高圧　油入</fullName>
+                <default>false</default>
+                <isActive>false</isActive>
+                <label>高圧　油入</label>
+            </value>
+            <value>
+                <fullName>３４０Ⅱ</fullName>
+                <default>false</default>
+                <isActive>false</isActive>
+                <label>３４０Ⅱ</label>
+            </value>
+            <value>
+                <fullName>ＰＧ</fullName>
+                <default>false</default>
+                <isActive>false</isActive>
+                <label>ＰＧ</label>
+            </value>
+        </valueSetDefinition>
+        <valueSettings>
+            <controllingFieldValue>本支社専用</controllingFieldValue>
+            <valueName>水環境</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>本支社専用</controllingFieldValue>
+            <valueName>施設</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>本支社専用</controllingFieldValue>
+            <valueName>官需（神電）</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>本支社専用</controllingFieldValue>
+            <valueName>官需（Ｃ電郡山）</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>MACTUS</controllingFieldValue>
+            <valueName>CTR</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>MACTUS</controllingFieldValue>
+            <valueName>OPS</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>計装機器</controllingFieldValue>
+            <valueName>計装盤</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>計装機器</controllingFieldValue>
+            <valueName>記録計</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>計装機器</controllingFieldValue>
+            <valueName>ラック･パネル計器</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>計装機器</controllingFieldValue>
+            <valueName>流量計</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>計装機器</controllingFieldValue>
+            <valueName>水位計</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>計装機器</controllingFieldValue>
+            <valueName>濃度計</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>計装機器</controllingFieldValue>
+            <valueName>その他</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>中央監視</controllingFieldValue>
+            <valueName>-</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>発電機</controllingFieldValue>
+            <valueName>ACG</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>発電機</controllingFieldValue>
+            <valueName>エンジン(DG)</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>発電機</controllingFieldValue>
+            <valueName>エンジン(GTG)</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>発電機</controllingFieldValue>
+            <valueName>発電機関連</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>発電機</controllingFieldValue>
+            <valueName>補器関連・共通</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>発電機</controllingFieldValue>
+            <valueName>補器関連・DG</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>発電機</controllingFieldValue>
+            <valueName>盤関連･始動用直流電源</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>発電機</controllingFieldValue>
+            <valueName>盤関連･制御用直流電源</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>発電機</controllingFieldValue>
+            <valueName>自動始動発電機盤(高圧)</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>発電機</controllingFieldValue>
+            <valueName>自動始動発電機盤(低圧)</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>発電機</controllingFieldValue>
+            <valueName>盤関連･補機盤</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>発電機</controllingFieldValue>
+            <valueName>盤関連･同期盤</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>発電機</controllingFieldValue>
+            <valueName>盤関連･フィーダ盤</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>UPS</controllingFieldValue>
+            <valueName>9800E</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>UPS</controllingFieldValue>
+            <valueName>9800M</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>UPS</controllingFieldValue>
+            <valueName>9900S</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>UPS</controllingFieldValue>
+            <valueName>DECO</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>UPS</controllingFieldValue>
+            <valueName>9300A</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>UPS</controllingFieldValue>
+            <valueName>9300B</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>UPS</controllingFieldValue>
+            <valueName>9800G(3φ3W)</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>UPS</controllingFieldValue>
+            <valueName>9800G(3φ4W)</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>UPS</controllingFieldValue>
+            <valueName>高圧MPC-C</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>UPS</controllingFieldValue>
+            <valueName>低圧MPC E2 (200V系)</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>UPS</controllingFieldValue>
+            <valueName>低圧MPC E4 (400V系)</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>UPS</controllingFieldValue>
+            <valueName>2133L</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>UPS</controllingFieldValue>
+            <valueName>2133S</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>UPS</controllingFieldValue>
+            <valueName>2133C</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>UPS</controllingFieldValue>
+            <valueName>2031C</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>UPS</controllingFieldValue>
+            <valueName>2011D</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>UPS</controllingFieldValue>
+            <valueName>蓄電池盤</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>UPS</controllingFieldValue>
+            <valueName>更新用蓄電池</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>テレメータ装置[国交省本省宛て提出機器単体費]</controllingFieldValue>
+            <valueName>監視装置(21号TM)</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>テレメータ装置[国交省本省宛て提出機器単体費]</controllingFieldValue>
+            <valueName>2量型観測局装置</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>テレメータ装置[国交省本省宛て提出機器単体費]</controllingFieldValue>
+            <valueName>10量型観測局装置</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>テレメータ装置[国交省本省宛て提出機器単体費]</controllingFieldValue>
+            <valueName>V-V中継用中継局装置(21号TM)</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>テレメータ装置[国交省本省宛て提出機器単体費]</controllingFieldValue>
+            <valueName>μ-V中継用中継局装置(21号TM)</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>無線装置(テレメータ･テレコントロール用)[国交省本省宛て提出機器単体費]</controllingFieldValue>
+            <valueName>70MHz帯無線装置(テレメータ･テレコントロール用)</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>無線装置(テレメータ･テレコントロール用)[国交省本省宛て提出機器単体費]</controllingFieldValue>
+            <valueName>400MHz帯無線装置(テレメータ･テレコントロール用)</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>放流警報装置[国交省本省宛て提出機器単体費]</controllingFieldValue>
+            <valueName>制御監視装置(放流警報)</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>放流警報装置[国交省本省宛て提出機器単体費]</controllingFieldValue>
+            <valueName>サイレン警報局装置</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>放流警報装置[国交省本省宛て提出機器単体費]</controllingFieldValue>
+            <valueName>スピーカ警報局警報装置</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>放流警報装置[国交省本省宛て提出機器単体費]</controllingFieldValue>
+            <valueName>V-V中継用中継局装置(放流警報)</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>放流警報装置[国交省本省宛て提出機器単体費]</controllingFieldValue>
+            <valueName>μ-V中継用中継局装置(放流警報)</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>大型映像装置</controllingFieldValue>
+            <valueName>屋内</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>大型映像装置</controllingFieldValue>
+            <valueName>屋外</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>特高</controllingFieldValue>
+            <valueName>66kV C-GIS</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>特高</controllingFieldValue>
+            <valueName>22kV C-GIS</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>特高</controllingFieldValue>
+            <valueName>ブロック(気中)キュービクル</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>特高</controllingFieldValue>
+            <valueName>特高監視盤</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>変圧器</controllingFieldValue>
+            <valueName>特高変圧器</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>変圧器</controllingFieldValue>
+            <valueName>高圧変圧器</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>変圧器</controllingFieldValue>
+            <valueName>変圧器収納盤</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>変圧器</controllingFieldValue>
+            <valueName>バスダクト</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>高圧コンビ</controllingFieldValue>
+            <valueName>高圧コンビ盤</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>高圧コンビ</controllingFieldValue>
+            <valueName>高圧コンデンサ・リアクトル</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>高圧コンビ</controllingFieldValue>
+            <valueName>低圧コンデンサ・リアクトル</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>低圧・現場・リレー・ACB盤</controllingFieldValue>
+            <valueName>低圧盤</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>低圧・現場・リレー・ACB盤</controllingFieldValue>
+            <valueName>現場盤</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>低圧・現場・リレー・ACB盤</controllingFieldValue>
+            <valueName>リレー盤</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>低圧・現場・リレー・ACB盤</controllingFieldValue>
+            <valueName>ACB盤</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>コントロールセンタ(C/C)</controllingFieldValue>
+            <controllingFieldValue>回転数制御装置(VVVF)</controllingFieldValue>
+            <valueName>200V</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>コントロールセンタ(C/C)</controllingFieldValue>
+            <controllingFieldValue>回転数制御装置(VVVF)</controllingFieldValue>
+            <valueName>400V</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>回転数制御装置(VVVF)</controllingFieldValue>
+            <valueName>3.0kV/3.3kV</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>回転数制御装置(VVVF)</controllingFieldValue>
+            <valueName>6.0kV/6.6kV</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>テレメータ装置(自律型)[国交省本省宛て提出機器単体費]</controllingFieldValue>
+            <valueName>監視装置(54号TM)</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>テレメータ装置(自律型)[国交省本省宛て提出機器単体費]</controllingFieldValue>
+            <valueName>観測局装置(小容量)電源部DC12V</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>テレメータ装置(自律型)[国交省本省宛て提出機器単体費]</controllingFieldValue>
+            <valueName>観測局装置(多量)電源部DC12V</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>テレメータ装置(自律型)[国交省本省宛て提出機器単体費]</controllingFieldValue>
+            <valueName>観測局装置(小容量)電源部DC48V</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>テレメータ装置(自律型)[国交省本省宛て提出機器単体費]</controllingFieldValue>
+            <valueName>観測局装置(多量)電源部DC48V</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>テレメータ装置(自律型)[国交省本省宛て提出機器単体費]</controllingFieldValue>
+            <valueName>V-V中継用中継局装置 電源部DC12V</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>テレメータ装置(自律型)[国交省本省宛て提出機器単体費]</controllingFieldValue>
+            <valueName>V-μ中継用中継局装置 電源部DC12V</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>テレメータ装置(自律型)[国交省本省宛て提出機器単体費]</controllingFieldValue>
+            <valueName>V-I中継用中継局装置 電源部DC12V</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>テレメータ装置(自律型)[国交省本省宛て提出機器単体費]</controllingFieldValue>
+            <valueName>V-V中継用中継局装置 電源部DC24V</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>テレメータ装置(自律型)[国交省本省宛て提出機器単体費]</controllingFieldValue>
+            <valueName>V-μ中継用中継局装置 電源部DC24V</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>テレメータ装置(自律型)[国交省本省宛て提出機器単体費]</controllingFieldValue>
+            <valueName>V-I中継用中継局装置 電源部DC24V</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>テレメータ装置(自律型)[国交省本省宛て提出機器単体費]</controllingFieldValue>
+            <valueName>V-V中継用中継局装置 電源部DC48V</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>テレメータ装置(自律型)[国交省本省宛て提出機器単体費]</controllingFieldValue>
+            <valueName>V-μ中継用中継局装置 電源部DC48V</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>テレメータ装置(自律型)[国交省本省宛て提出機器単体費]</controllingFieldValue>
+            <valueName>V-I中継用中継局装置 電源部DC48V</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>IP伝送装置[国交省本省宛て提出機器単体費]</controllingFieldValue>
+            <valueName>L3-SWモジュール型(タイプA)</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>IP伝送装置[国交省本省宛て提出機器単体費]</controllingFieldValue>
+            <valueName>L3-SWモジュール型(タイプB)</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>IP伝送装置[国交省本省宛て提出機器単体費]</controllingFieldValue>
+            <valueName>L3-SW固定型</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>IP伝送装置[国交省本省宛て提出機器単体費]</controllingFieldValue>
+            <valueName>L2-SW固定型</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>IP伝送装置[国交省本省宛て提出機器単体費]</controllingFieldValue>
+            <valueName>サブスクリプションライセンス(オプション)</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>CCTVカメラ設備[国交省本省宛て提出機器単体費等]</controllingFieldValue>
+            <valueName>HDIPカメラ装置</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>CCTVカメラ設備[国交省本省宛て提出機器単体費等]</controllingFieldValue>
+            <valueName>HDIPカメラ装置(高感度)</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>CCTVカメラ設備[国交省本省宛て提出機器単体費等]</controllingFieldValue>
+            <valueName>HDIPカメラ装置(高倍率)</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>CCTVカメラ設備[国交省本省宛て提出機器単体費等]</controllingFieldValue>
+            <valueName>HDIPカメラ装置(機側レス型､高感度)</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>CCTVカメラ設備[国交省本省宛て提出機器単体費等]</controllingFieldValue>
+            <valueName>HD簡易型IPカメラ装置</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>CCTVカメラ設備[国交省本省宛て提出機器単体費等]</controllingFieldValue>
+            <valueName>HD簡易型IPカメラ装置(非旋回式)</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>CCTVカメラ設備[国交省本省宛て提出機器単体費等]</controllingFieldValue>
+            <valueName>カメラ周辺装置</valueName>
+        </valueSettings>
+    </valueSet>
+</CustomField>

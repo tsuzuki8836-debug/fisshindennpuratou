@@ -41,6 +41,7 @@ public without sharing class CompetitorsResultTriggerHandlerTest {
             StageName = '価格交渉 伺い準備・伺い',
             ForecastCategoryName = 'Best Case',
             Name = 'テスト案件',
+            ConstructionDistinction__c = '更新（自社既設）',
             EstablishedCompany__c = '三菱',
             SupplySite__c = createSupplySite().id,
             CloseDate = closeDate
@@ -50,7 +51,7 @@ public without sharing class CompetitorsResultTriggerHandlerTest {
     }
 
     public static QuoteBiddingInquiry__c createQuoteBiddingInquiry(Account lastCustomer, Opportunity opps) {
-       
+
         // レコードタイプを取得
         Schema.SObjectType qbiType = QuoteBiddingInquiry__c.sObjectType;
         Schema.DescribeSObjectResult qbiDescribe = qbiType.getDescribe();
@@ -585,163 +586,4 @@ public without sharing class CompetitorsResultTriggerHandlerTest {
             System.assertEquals(accounts[1].Id, result[0].Account__c);
         }
     }
-
-    /**
-     * 2025/8/7 白石追加
-     * 
-     * Update: 落札者、落札金額が変わった際に、結果報告ステータスが「未申請」に戻る
-     *
-     * 引数:
-     * - 落札者=false での新規作成
-     * - 更新更新時に 落札者=true を一つだけ追加
-     *
-     * 条件:
-     * - 事前に案件/伺いが存在している
-     *
-     * 期待結果:
-     * - 更新時点で、結果報告ステータスが「未申請」に戻る
-     */
-    @isTest
-    public static void onUpdate_Success_ResultContactStatusChanged() {
-
-        Profile prof = [SELECT Id FROM Profile WHERE Name = 'システム管理者' LIMIT 1];
-        UserRole role = [SELECT Id FROM UserRole WHERE Name = '01_ファシリティインフラシステム事業部' LIMIT 1];
-        User user = createUser(prof.Id, role.Id, 'terrasky-melco-admin', '官需', '01_本社', '施設部', '第一課');
-        insert user;
-
-        System.runAs(user) {
-
-            // 条件
-            List<Account> accounts = createAccounts();
-            List<Property__c> properties = createProperties(accounts);
-            // 事前に案件/伺いが存在している
-            Date today = Date.today();
-            Opportunity opps = createOpportunity(today.addMonths(2));
-            QuoteBiddingInquiry__c qbi = createQuoteBiddingInquiry(accounts[0], opps);
-        
-            // 引数
-            List<CompetitorsResult__c> competitors = new List<CompetitorsResult__c> {
-                new CompetitorsResult__c(
-                    Account__c = accounts[1].Id,
-                    QuoteBiddingInquiry__c = qbi.Id,
-                    CompetitorManual__c = 'テスト株式会社1',
-                    IsWinBidder__c = false,
-                    FirstBidAmount__c = 8000000
-                ),
-                new CompetitorsResult__c(
-                    Account__c = accounts[2].Id,
-                    QuoteBiddingInquiry__c = qbi.Id,
-                    CompetitorManual__c = 'テスト株式会社2',
-                    IsWinBidder__c = true,
-                    FirstBidAmount__c = 8000000
-                ),
-                new CompetitorsResult__c(
-                    Account__c = accounts[3].Id,
-                    QuoteBiddingInquiry__c = qbi.Id,
-                    CompetitorManual__c = 'テスト株式会社3',
-                    IsWinBidder__c = false,
-                    FirstBidAmount__c = 7600000
-                )
-            };
-            insert competitors;
-
-            // 更新時に落札者現れる
-            competitors[0].IsWinBidder__c = true;
-            competitors[0].SecondBidAmount__c = 8500000;
-            competitors[1].IsWinBidder__c = false;
-            competitors[1].SecondBidAmount__c = 8200000;
-            competitors[2].IsDeclineSecondBid__c = true;
-
-            // 結果報告ステータスを「承認済」にしておく
-            qbi.ResultContactStatus__c = '承認済';
-            update qbi;
-
-            // 実行
-            Test.startTest();
-            update competitors;
-            Test.stopTest();
-
-            QuoteBiddingInquiry__c updQbi = [SELECT Id, ResultContactStatus__c FROM QuoteBiddingInquiry__c WHERE Id = :qbi.Id];
-            System.assertEquals('未申請', updQbi.ResultContactStatus__c);
-        }
-    }
-
-    /**
-     * 2025/8/7 白石追加
-     * 
-     * Update: 落札者、落札金額以外が変わった際に、結果報告ステータスが「未申請」に戻らない
-     *
-     * 引数:
-     * - 落札者=false での新規作成
-     * - 更新更新時に 落札者=true を一つだけ追加
-     *
-     * 条件:
-     * - 事前に案件/伺いが存在している
-     *
-     * 期待結果:
-     * - 更新時点で、結果報告ステータスが「未申請」に戻らない
-     */
-    @isTest
-    public static void onUpdate_Success_ResultContactStatusUnChanged() {
-
-        Profile prof = [SELECT Id FROM Profile WHERE Name = 'システム管理者' LIMIT 1];
-        UserRole role = [SELECT Id FROM UserRole WHERE Name = '01_ファシリティインフラシステム事業部' LIMIT 1];
-        User user = createUser(prof.Id, role.Id, 'terrasky-melco-admin', '官需', '01_本社', '施設部', '第一課');
-        insert user;
-
-        System.runAs(user) {
-
-            // 条件
-            List<Account> accounts = createAccounts();
-            List<Property__c> properties = createProperties(accounts);
-            // 事前に案件/伺いが存在している
-            Date today = Date.today();
-            Opportunity opps = createOpportunity(today.addMonths(2));
-            QuoteBiddingInquiry__c qbi = createQuoteBiddingInquiry(accounts[0], opps);
-        
-            // 引数
-            List<CompetitorsResult__c> competitors = new List<CompetitorsResult__c> {
-                new CompetitorsResult__c(
-                    Account__c = accounts[1].Id,
-                    QuoteBiddingInquiry__c = qbi.Id,
-                    CompetitorManual__c = 'テスト株式会社1',
-                    IsWinBidder__c = false,
-                    FirstBidAmount__c = 8000000
-                ),
-                new CompetitorsResult__c(
-                    Account__c = accounts[2].Id,
-                    QuoteBiddingInquiry__c = qbi.Id,
-                    CompetitorManual__c = 'テスト株式会社2',
-                    IsWinBidder__c = true,
-                    FirstBidAmount__c = 8000000
-                ),
-                new CompetitorsResult__c(
-                    Account__c = accounts[3].Id,
-                    QuoteBiddingInquiry__c = qbi.Id,
-                    CompetitorManual__c = 'テスト株式会社3',
-                    IsWinBidder__c = false,
-                    FirstBidAmount__c = 7600000
-                )
-            };
-            insert competitors;
-
-            // 公表価格を設定する
-            qbi.PublicPrice__c = 10000;
-            qbi.SurveyReferencePrice__c = 20000;
-            qbi.LowestLimitPrice__c = 30000;
-
-            // 結果報告ステータスを「承認済」にしておく
-            qbi.ResultContactStatus__c = '承認済';
-            update qbi;
-
-            // 実行
-            Test.startTest();
-            update competitors;
-            Test.stopTest();
-
-            QuoteBiddingInquiry__c updQbi = [SELECT Id, ResultContactStatus__c FROM QuoteBiddingInquiry__c WHERE Id = :qbi.Id];
-            System.assertEquals('承認済', updQbi.ResultContactStatus__c);
-        }
-    }
-
 }

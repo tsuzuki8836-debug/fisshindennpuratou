@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ValidationRule xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>NoteCheck_AnswerPrice</fullName>
+    <active>true</active>
+    <errorConditionFormula>AND (NOT( ISBLANK(ClientAnswerAmount_free__c ) ),  ISBLANK( Note__c ) )</errorConditionFormula>
+    <errorDisplayField>Note__c</errorDisplayField>
+    <errorMessage>客先回答金額を手入力した場合は備考を必ず入力してください。</errorMessage>
+</ValidationRule>

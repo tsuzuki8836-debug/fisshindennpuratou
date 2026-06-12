@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<WebLink xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Sansan_CI__BizCard_LinkToLead</fullName>
+    <availability>online</availability>
+    <description>Classic用</description>
+    <displayType>massActionButton</displayType>
+    <linkType>javascript</linkType>
+    <masterLabel>選択した名刺でリードを更新</masterLabel>
+    <openType>onClickJavaScript</openType>
+    <protected>false</protected>
+    <requireRowSelection>true</requireRowSelection>
+    <url>{!REQUIRESCRIPT(&quot;/soap/ajax/38.0/connection.js&quot;)} 
+{!REQUIRESCRIPT(&quot;/soap/ajax/38.0/apex.js&quot;)} 
+
+var records = {!GETRECORDIDS($ObjectType.Sansan_CI__BizCard__c)}; 
+
+if (records.length != 1 ) { 
+    alert(&apos;1つ選択してください。&apos;);
+} else { 
+	var ret = sforce.apex.execute(&apos;Sansan_CI.BizCard_WebService&apos;,&apos;linkToLead&apos;,{bId:records[0],lId:&quot;{!Lead.Id}&quot;}); 
+	if(ret != &apos;&apos;){
+	    location.href = ret;
+	}else{
+		alert(&apos;{!$Label.sansan_ci__MESSAGE_ERROR_UNAVAILABLECONTACTADMIN}&apos;);
+	}
+}</url>
+</WebLink>

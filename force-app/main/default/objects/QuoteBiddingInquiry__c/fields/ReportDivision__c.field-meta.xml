@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>ReportDivision__c</fullName>
+    <description>レポート用の部門名を表示。本社の場合は指定の略称を、支社は支社の略称をそのまま表示</description>
+    <externalId>false</externalId>
+    <formula>IF (LEFT(TEXT(PickDivision__c), FIND(&quot;　&quot;, TEXT(PickDivision__c)) - 1) = &quot;北支&quot;
+, &quot;02_北支&quot;
+, IF (LEFT(TEXT(PickDivision__c), FIND(&quot;　&quot;, TEXT(PickDivision__c)) - 1) = &quot;東北支&quot;
+, &quot;03_東北支&quot;
+, IF (LEFT(TEXT(PickDivision__c), FIND(&quot;　&quot;, TEXT(PickDivision__c)) - 1) = &quot;関越支&quot;
+, &quot;04_関越支&quot;
+, IF (LEFT(TEXT(PickDivision__c), FIND(&quot;　&quot;, TEXT(PickDivision__c)) - 1) = &quot;神奈支&quot;
+, &quot;05_神奈支&quot;
+, IF (LEFT(TEXT(PickDivision__c), FIND(&quot;　&quot;, TEXT(PickDivision__c)) - 1) = &quot;陸支&quot;
+, &quot;06_陸支&quot;
+, IF (LEFT(TEXT(PickDivision__c), FIND(&quot;　&quot;, TEXT(PickDivision__c)) - 1) = &quot;中部支&quot;
+, &quot;07_中部支&quot;
+, IF (LEFT(TEXT(PickDivision__c), FIND(&quot;　&quot;, TEXT(PickDivision__c)) - 1) = &quot;西支&quot;
+, &quot;08_西支&quot;
+, IF (LEFT(TEXT(PickDivision__c), FIND(&quot;　&quot;, TEXT(PickDivision__c)) - 1) = &quot;中国支&quot;
+, &quot;09_中国支&quot;
+, IF (LEFT(TEXT(PickDivision__c), FIND(&quot;　&quot;, TEXT(PickDivision__c)) - 1) = &quot;四支&quot;
+, &quot;10_四支&quot;
+, IF (LEFT(TEXT(PickDivision__c), FIND(&quot;　&quot;, TEXT(PickDivision__c)) - 1) = &quot;九支&quot;
+, &quot;11_九支&quot;
+, IF(OR( 
+  ISPICKVAL(PickDivision__c, &quot;本社　施設&quot;) ,
+  ISPICKVAL(PickDivision__c, &quot;本社　施設・一&quot;) ,
+  ISPICKVAL(PickDivision__c, &quot;本社　施設・二&quot;) ,
+  ISPICKVAL(PickDivision__c, &quot;本社　施設・三&quot;) ,
+  ISPICKVAL(PickDivision__c, &quot;本社　施設・販企&quot;) ,
+  ISPICKVAL(PickDivision__c, &quot;本社　施設・DC&quot;)
+), &quot;01-1_本施設&quot; , IF(OR(
+  ISPICKVAL(PickDivision__c, &quot;本社　社シ一&quot;) ,
+  ISPICKVAL(PickDivision__c, &quot;本社　社シ一・P推&quot;) ,
+  ISPICKVAL(PickDivision__c, &quot;本社　社シ一・一&quot;) ,
+  ISPICKVAL(PickDivision__c, &quot;本社　社シ一・二&quot;) ,
+  ISPICKVAL(PickDivision__c, &quot;本社　社シ一・三&quot;)
+), &quot;01-2_本社シ一&quot;, IF(OR(
+  ISPICKVAL(PickDivision__c, &quot;本社　社シ二&quot;) ,
+  ISPICKVAL(PickDivision__c, &quot;本社　社シ二・企政&quot;) ,
+  ISPICKVAL(PickDivision__c, &quot;本社　社シ二・建防&quot;) ,
+  ISPICKVAL(PickDivision__c, &quot;本社　社シ二・道路&quot;) ,
+  ISPICKVAL(PickDivision__c, &quot;本社　社シ二・S監&quot;)
+), &quot;01-3_本社シ二&quot;, IF(OR(
+  ISPICKVAL(PickDivision__c, &quot;本社　官公&quot;) ,
+  ISPICKVAL(PickDivision__c, &quot;本社　官公・一&quot;) ,
+  ISPICKVAL(PickDivision__c, &quot;本社　官公・二&quot;)
+), &quot;01-4_本官公&quot;, IF(OR( 
+  ISPICKVAL(PickDivision__c, &quot;本社　通シ&quot;) ,
+  ISPICKVAL(PickDivision__c, &quot;本社　通シ・管理&quot;) ,
+  ISPICKVAL(PickDivision__c, &quot;本社　通シ・通シ一&quot;) ,
+  ISPICKVAL(PickDivision__c, &quot;本社　通シ・通シ二&quot;)
+), &quot;01-5_通シ&quot;
+, &quot;&quot;)))))))))))))))</formula>
+    <label>部門(リスト用)</label>
+    <required>false</required>
+    <trackHistory>false</trackHistory>
+    <trackTrending>false</trackTrending>
+    <type>Text</type>
+    <unique>false</unique>
+</CustomField>

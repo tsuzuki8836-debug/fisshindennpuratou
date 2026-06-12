@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ValidationRule xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>OperatingConditionsCheck2</fullName>
+    <active>true</active>
+    <description>運転条件が、●回/年停止可の場合、運転停止可能数／年に入力がないとエラー</description>
+    <errorConditionFormula>AND(
+    ISPICKVAL( OperatingConditions__c   , &apos;●回/年停止可&apos;),
+    ISBLANK(StopCount__c),
+    NOT($Profile.Name = &apos;データ移行管理者&apos;)
+)</errorConditionFormula>
+    <errorDisplayField>StopCount__c</errorDisplayField>
+    <errorMessage>運転条件が、●回/年停止可の場合、運転停止可能数／年に入力して下さい</errorMessage>
+</ValidationRule>

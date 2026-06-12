@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ListView xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>X2021</fullName>
+    <columns>NAME</columns>
+    <columns>AffiliationName__c</columns>
+    <columns>ContactPersonName__c</columns>
+    <columns>Result_SRWC__c</columns>
+    <columns>Result_WCRate__c</columns>
+    <columns>SR_Number__c</columns>
+    <columns>Subject__c</columns>
+    <columns>LocationName__c</columns>
+    <columns>OrderMonth__c</columns>
+    <columns>SalesMonth__c</columns>
+    <columns>Opportunity__c</columns>
+    <columns>OrderingSource__c</columns>
+    <columns>Warning__c</columns>
+    <filterScope>Everything</filterScope>
+    <filters>
+        <field>SalesMonth__c</field>
+        <operation>greaterOrEqual</operation>
+        <value>2021/04</value>
+    </filters>
+    <filters>
+        <field>SalesMonth__c</field>
+        <operation>lessThan</operation>
+        <value>2022/04</value>
+    </filters>
+    <label>売上年月が2021年度のSR情報（売上済）</label>
+</ListView>

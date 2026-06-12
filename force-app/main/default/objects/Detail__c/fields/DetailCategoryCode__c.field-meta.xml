@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>DetailCategoryCode__c</fullName>
+    <externalId>false</externalId>
+    <formula>CASE( DetailCategory__c , 
+    &quot;仕様&quot; , &quot;1&quot;,
+    &quot;筐体&quot; , &quot;2&quot;,
+    &quot;明細&quot; , &quot;3&quot;,
+    &quot;手入力&quot; , &quot;4&quot;, &quot;9&quot;)</formula>
+    <label>明細種別コード</label>
+    <required>false</required>
+    <trackHistory>false</trackHistory>
+    <trackTrending>false</trackTrending>
+    <type>Text</type>
+    <unique>false</unique>
+</CustomField>

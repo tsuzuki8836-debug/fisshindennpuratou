@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Result_SalesGP__c</fullName>
+    <description>売上実績CP-（売上実績WC+売上実績手数料）</description>
+    <externalId>false</externalId>
+    <formula>Result_TotalCP__c - Result_TotalWC__c - Result_Margin__c</formula>
+    <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
+    <label>４．売上実績粗利</label>
+    <precision>18</precision>
+    <required>false</required>
+    <scale>0</scale>
+    <trackHistory>false</trackHistory>
+    <type>Currency</type>
+</CustomField>

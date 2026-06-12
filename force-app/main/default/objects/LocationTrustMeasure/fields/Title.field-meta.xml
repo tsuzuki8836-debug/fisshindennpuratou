@@ -1,0 +1,5 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Title</fullName>
+    <inlineHelpText>閲覧者に表示される信頼対策のヘッダー。短く簡潔にします。40 文字まで使用できますが、タイトルを 1 行に収めるには 20 文字が最適です。</inlineHelpText>
+</CustomField>

@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ValidationRule xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>RefusalReasonCheck</fullName>
+    <active>true</active>
+    <description>辞退の場合、辞退理由は必須です</description>
+    <errorConditionFormula>AND(
+    Refusal__c = true,
+    ISBLANK(TEXT(RefusalReason__c)),
+    NOT(Creating__c)
+)</errorConditionFormula>
+    <errorDisplayField>RefusalReason__c</errorDisplayField>
+    <errorMessage>辞退理由は必須です</errorMessage>
+</ValidationRule>

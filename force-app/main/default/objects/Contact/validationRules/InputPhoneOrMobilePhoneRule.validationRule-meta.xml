@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ValidationRule xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>InputPhoneOrMobilePhoneRule</fullName>
+    <active>true</active>
+    <description>電話か携帯電話を入力する規則</description>
+    <errorConditionFormula>AND( 
+    ISBLANK( MobilePhone ) , 
+    ISBLANK( Phone ) ,
+    NOT($Profile.Name = &apos;データ移行管理者&apos;)
+)</errorConditionFormula>
+    <errorMessage>携帯番号か電話番号のどちらかを入力してください。</errorMessage>
+</ValidationRule>

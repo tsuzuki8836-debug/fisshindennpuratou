@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ValidationRule xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>JVMemberSelectionReasonRule</fullName>
+    <active>false</active>
+    <errorConditionFormula>ISBLANK( JVMemberSelectionReason__c )</errorConditionFormula>
+    <errorDisplayField>JVMemberSelectionReason__c</errorDisplayField>
+    <errorMessage>選定理由は入力必須です。</errorMessage>
+</ValidationRule>

@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>ScheduledCollectionAmount__c</fullName>
+    <externalId>false</externalId>
+    <formula>EstimatedTotalCP__c  +  EstimatedTotalCP__c  *    
+(CASE(TEXT(SalesTax__c),&quot;免税&quot;, 0, &quot;8&quot;, 0.08, &quot;10&quot;, 0.1, 0.1))</formula>
+    <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
+    <label>回収予定金額（税込）×係数</label>
+    <precision>18</precision>
+    <required>false</required>
+    <scale>0</scale>
+    <trackHistory>false</trackHistory>
+    <type>Currency</type>
+</CustomField>

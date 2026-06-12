@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>KOJI_JOHO_NO__c</fullName>
+    <deleteConstraint>SetNull</deleteConstraint>
+    <description>依頼タスクに関連する工事情報への参照項目。案件-依頼タスク-工事情報のレポート作成を目的として追加。</description>
+    <externalId>false</externalId>
+    <label>【新規】工事情報番号</label>
+    <referenceTo>ConstructionInfo__c</referenceTo>
+    <relationshipLabel>依頼タスク</relationshipLabel>
+    <relationshipName>IraiTaskList</relationshipName>
+    <required>false</required>
+    <trackFeedHistory>false</trackFeedHistory>
+    <trackHistory>false</trackHistory>
+    <trackTrending>false</trackTrending>
+    <type>Lookup</type>
+</CustomField>

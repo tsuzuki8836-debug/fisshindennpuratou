@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ListView xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>X16_2_QuoteBiddingInquiry</fullName>
+    <columns>HeadOfficeResponceDeadline__c</columns>
+    <columns>RequestClassification__c</columns>
+    <columns>RECORDTYPE</columns>
+    <columns>FinalApprover__c</columns>
+    <columns>InquiryApprovalStatus__c</columns>
+    <columns>ResultContactStatus__c</columns>
+    <columns>ManagementNumber__c</columns>
+    <columns>NAME</columns>
+    <columns>PickDivision__c</columns>
+    <columns>OWNER.ALIAS</columns>
+    <columns>BU__c</columns>
+    <columns>SBU__c</columns>
+    <columns>PriceProposal1CP__c</columns>
+    <columns>SpecialInprofitProject__c</columns>
+    <columns>LAST_UPDATE</columns>
+    <filterScope>Everything</filterScope>
+    <filters>
+        <field>Division__c</field>
+        <operation>equals</operation>
+        <value>中部支　社シ二</value>
+    </filters>
+    <filters>
+        <field>isApprovedFlgForListView__c</field>
+        <operation>equals</operation>
+        <value>0</value>
+    </filters>
+    <label>16-2.中部支 社シ二の伺い</label>
+</ListView>

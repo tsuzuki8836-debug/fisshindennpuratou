@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Flow xmlns="http://soap.sforce.com/2006/04/metadata">
+    <apiVersion>55.0</apiVersion>
+    <environments>Default</environments>
+    <interviewLabel>事業部/支社をテキスト項目にコピー {!$Flow.CurrentDateTime}</interviewLabel>
+    <label>ユーザーの項目値をテキスト項目に転記する</label>
+    <processMetadataValues>
+        <name>BuilderType</name>
+        <value>
+            <stringValue>LightningFlowBuilder</stringValue>
+        </value>
+    </processMetadataValues>
+    <processMetadataValues>
+        <name>CanvasMode</name>
+        <value>
+            <stringValue>AUTO_LAYOUT_CANVAS</stringValue>
+        </value>
+    </processMetadataValues>
+    <processMetadataValues>
+        <name>OriginBuilderType</name>
+        <value>
+            <stringValue>LightningFlowBuilder</stringValue>
+        </value>
+    </processMetadataValues>
+    <processType>AutoLaunchedFlow</processType>
+    <recordUpdates>
+        <description>・事業部/支社の選択リスト値を、テキスト項目にコピーする（別オブジェクトの初期値設定に使うため）
+標準項目ディビジョンの値を、カスタムテキスト項目にコピーする（ルックアップ検索条件に利用可能とするため）</description>
+        <name>CopyDepartmentAndDivision</name>
+        <label>事業部/支社・ディビジョンをテキスト項目にコピー</label>
+        <locationX>176</locationX>
+        <locationY>287</locationY>
+        <inputAssignments>
+            <field>DepartmentAndDivisionCopy__c</field>
+            <value>
+                <elementReference>$Record.DepartmentAndDivision__c</elementReference>
+            </value>
+        </inputAssignments>
+        <inputAssignments>
+            <field>DivisionText__c</field>
+            <value>
+                <elementReference>$Record.Division</elementReference>
+            </value>
+        </inputAssignments>
+        <inputReference>$Record</inputReference>
+    </recordUpdates>
+    <start>
+        <locationX>50</locationX>
+        <locationY>0</locationY>
+        <connector>
+            <targetReference>CopyDepartmentAndDivision</targetReference>
+        </connector>
+        <filterFormula>OR(
+ISNEW()
+, ISCHANGED({!$Record.DepartmentAndDivision__c})
+, ISCHANGED({!$Record.Division})
+)</filterFormula>
+        <object>User</object>
+        <recordTriggerType>CreateAndUpdate</recordTriggerType>
+        <triggerType>RecordBeforeSave</triggerType>
+    </start>
+    <status>Active</status>
+</Flow>

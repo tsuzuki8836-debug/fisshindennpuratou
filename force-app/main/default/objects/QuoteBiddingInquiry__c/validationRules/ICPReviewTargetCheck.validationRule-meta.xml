@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ValidationRule xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>ICPReviewTargetCheck</fullName>
+    <active>true</active>
+    <description>ICP審査対象がTrueではない場合、ICP審査担当確認済とICP審査GR確認済のチェックができないようにする</description>
+    <errorConditionFormula>AND(
+ICPReviewTarget__c==false,
+OR(
+IcpExaminationGrConfirmation__c== true,
+IcpExaminationRepConfirmation__c== true
+)
+)</errorConditionFormula>
+    <errorDisplayField>ICPReviewTarget__c</errorDisplayField>
+    <errorMessage>ICP審査対象ではないため、ICP審査担当確認済とICP審査GR確認済はチェックできません。</errorMessage>
+</ValidationRule>

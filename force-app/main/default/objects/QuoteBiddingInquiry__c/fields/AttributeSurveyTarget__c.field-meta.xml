@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>AttributeSurveyTarget__c</fullName>
+    <deleteConstraint>Restrict</deleteConstraint>
+    <externalId>false</externalId>
+    <inlineHelpText>属性確認対象は、当社または当社関係会社・代理店の1つ前。</inlineHelpText>
+    <label>属性確認対象</label>
+    <referenceTo>Account</referenceTo>
+    <relationshipLabel>見積・応札・手数料伺い (属性調査実施対象)</relationshipLabel>
+    <relationshipName>AttributeSurveyTargetShip</relationshipName>
+    <required>false</required>
+    <trackFeedHistory>false</trackFeedHistory>
+    <trackHistory>false</trackHistory>
+    <trackTrending>false</trackTrending>
+    <type>Lookup</type>
+</CustomField>

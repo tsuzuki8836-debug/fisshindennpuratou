@@ -1,11 +1,33 @@
 /**
- * 全角→半角変換
- *
- * @param value 変換元文字列
- * @return 半角文字列
+ * 文字列変換クラス
  */
 public class ReplaceChar {
-    public String convertFullToHalf(String value) {
+    // エスケープ必要文字
+    private static Set<String> EscapeChars = new Set<String>{
+         '\\'
+        , '*'
+        , '+'
+        , '.'
+        , '?'
+        , '{'
+        , '}'
+        , '('
+        , ')'
+        , '['
+        , ']'
+        , '^'
+        , '$'
+        , '|'
+        , '/'
+    };
+
+    /**
+     * 全角→半角変換
+     *
+     * @param value 変換元文字列
+     * @return 半角文字列
+     */
+    public static String convertFullToHalf(String value) {
         String result;
         // 変換内容がない場合
         if(String.isEmpty(value)) {
@@ -26,28 +48,11 @@ public class ReplaceChar {
                 fulltoHalfMap2.put( '７',  '7' );
                 fulltoHalfMap2.put( '８',  '8' );
                 fulltoHalfMap2.put( '９',  '9' );
-                // エスケープ必要文字
-                Set<String> escapeChars = new Set<String>();
-                escapeChars.add('\\');
-                escapeChars.add('*');
-                escapeChars.add('+');
-                escapeChars.add('.');
-                escapeChars.add('?');
-                escapeChars.add('{');
-                escapeChars.add('}');
-                escapeChars.add('(');
-                escapeChars.add(')');
-                escapeChars.add('[');
-                escapeChars.add(']');
-                escapeChars.add('^');
-                escapeChars.add('$');
-                escapeChars.add('|');
-                escapeChars.add('/');
-    
+
                 for (String key : fulltoHalfMap2.keySet()) {
                     if (value.contains(key)) {
                         String tempKey = key;
-                        if (escapeChars.contains(tempKey)) {
+                        if (EscapeChars.contains(tempKey)) {
                             tempKey = '\\' + tempKey;
                         }
                         value = value.replaceAll(tempKey, fulltoHalfMap2.get(key));
@@ -58,6 +63,41 @@ public class ReplaceChar {
                     value = value.replaceAll(comma, '');
                 }
                 result = value;
+            }
+        }
+        system.debug(result);
+        return result;
+    }
+    /**
+     * 半角→全角変換
+     * ※Windowsファイル名使用不可文字の変換対応用
+     *
+     * @param value 変換元文字列
+     * @return 変換後文字列
+     */
+    public static String convertHalfToFullForFileName(String value) {
+        String result = value;
+        Map<String, String> convertMap = new Map<String, String> {
+             '\\' => '￥'
+            , '/' => '／'
+            , ':' => '：'
+            , '*' => '＊'
+            , '?' => '？'
+            , '"' => '”'
+            , '<' => '＜'
+            , '>' => '＞'
+            , '|' => '｜'
+        };
+        // 対象の記号を全角に置換
+        if(String.isNotEmpty(result)) {
+            for (String key : convertMap.keySet()) {
+                if (result.contains(key)) {
+                    String tempKey = key;
+                    if (EscapeChars.contains(tempKey)) {
+                        tempKey = '\\' + tempKey;
+                    }
+                    result = result.replaceAll(tempKey, convertMap.get(key));
+                }
             }
         }
         system.debug(result);

@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>AutoCalculateCheck__c</fullName>
+    <defaultValue>true</defaultValue>
+    <externalId>false</externalId>
+    <inlineHelpText>チェック有⇒場所明細の金額項目更新の都度、「発行CP」「発行WC」「回収予定金額」 の①②③ がリセットされ場所別数値の集計値が各項目の①に自動挿入されます。</inlineHelpText>
+    <label>発行・回収予定 自動計算</label>
+    <trackFeedHistory>false</trackFeedHistory>
+    <trackHistory>false</trackHistory>
+    <type>Checkbox</type>
+</CustomField>

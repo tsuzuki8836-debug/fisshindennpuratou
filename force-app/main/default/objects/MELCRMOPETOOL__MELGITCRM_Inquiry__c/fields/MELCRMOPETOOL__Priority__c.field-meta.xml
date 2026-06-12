@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>MELCRMOPETOOL__Priority__c</fullName>
+    <deprecated>false</deprecated>
+    <externalId>false</externalId>
+    <inlineHelpText>対応期限の目安。質問・意見の場合は[高]4時間、[中]1日、[低]期限無し。要望の場合は[高]30日、[中]60日、[低]期限無し。</inlineHelpText>
+    <label>優先度</label>
+    <required>false</required>
+    <trackFeedHistory>false</trackFeedHistory>
+    <trackHistory>false</trackHistory>
+    <trackTrending>false</trackTrending>
+    <type>Picklist</type>
+    <valueSet>
+        <restricted>true</restricted>
+        <valueSetDefinition>
+            <sorted>false</sorted>
+            <value>
+                <fullName>高</fullName>
+                <default>false</default>
+                <label>高</label>
+            </value>
+            <value>
+                <fullName>中</fullName>
+                <default>true</default>
+                <label>中</label>
+            </value>
+            <value>
+                <fullName>低</fullName>
+                <default>false</default>
+                <label>低</label>
+            </value>
+        </valueSetDefinition>
+    </valueSet>
+</CustomField>

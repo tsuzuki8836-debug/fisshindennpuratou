@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>HAITI_KBN_4__c</fullName>
+    <externalId>false</externalId>
+    <label>【削除予定】配置区分4</label>
+    <required>false</required>
+    <trackFeedHistory>false</trackFeedHistory>
+    <trackHistory>false</trackHistory>
+    <trackTrending>false</trackTrending>
+    <type>Picklist</type>
+    <valueSet>
+        <restricted>true</restricted>
+        <valueSetDefinition>
+            <sorted>false</sorted>
+            <value>
+                <fullName>監理技術者</fullName>
+                <default>false</default>
+                <label>監理技術者</label>
+            </value>
+            <value>
+                <fullName>主任技術者（専任）</fullName>
+                <default>false</default>
+                <label>主任技術者（専任）</label>
+            </value>
+            <value>
+                <fullName>主任技術者（非専任）</fullName>
+                <default>false</default>
+                <label>主任技術者（非専任）</label>
+            </value>
+            <value>
+                <fullName>担当技術者</fullName>
+                <default>false</default>
+                <label>担当技術者</label>
+            </value>
+        </valueSetDefinition>
+    </valueSet>
+</CustomField>

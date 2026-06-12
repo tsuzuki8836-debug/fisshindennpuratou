@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ListView xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>AllDetail</fullName>
+    <columns>NAME</columns>
+    <columns>RECNo__c</columns>
+    <columns>MasterCode__c</columns>
+    <columns>Name1__c</columns>
+    <columns>BU__c</columns>
+    <columns>MajorClassificationCode__c</columns>
+    <columns>MinorClassificationCode__c</columns>
+    <columns>Frequency__c</columns>
+    <columns>RECORDTYPE</columns>
+    <filterScope>Everything</filterScope>
+    <filters>
+        <field>RECORDTYPE</field>
+        <operation>equals</operation>
+        <value>PricingTable__c.Detail</value>
+    </filters>
+    <filters>
+        <field>MajorClassificationName__c</field>
+        <operation>equals</operation>
+        <value>共通機器</value>
+    </filters>
+    <filters>
+        <field>UseClassification__c</field>
+        <operation>includes</operation>
+        <value>コントロールセンタ(C/C)</value>
+    </filters>
+    <label>明細</label>
+</ListView>

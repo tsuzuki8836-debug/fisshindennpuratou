@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ListView xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>X007</fullName>
+    <columns>PRODUCT2.NAME</columns>
+    <columns>SBU__c</columns>
+    <columns>ProductNumber__c</columns>
+    <columns>ProductCode__c</columns>
+    <columns>UsageEndDateYear__c</columns>
+    <columns>PRODUCT2.ACTIVE</columns>
+    <filterScope>Everything</filterScope>
+    <filters>
+        <field>SBU__c</field>
+        <operation>contains</operation>
+        <value>運輸・中央</value>
+    </filters>
+    <label>07.運輸・中央</label>
+</ListView>

@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ValidationRule xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Agency2PlatformFunctionEvPoint</fullName>
+    <active>true</active>
+    <description>代理店2_基盤機能_評価点は50点満点</description>
+    <errorConditionFormula>Agency2_PlatformFunction_EvPoint__c &gt; 50</errorConditionFormula>
+    <errorDisplayField>Agency2_PlatformFunction_EvPoint__c</errorDisplayField>
+    <errorMessage>代理店2_基盤機能_評価点は50点満点です</errorMessage>
+</ValidationRule>

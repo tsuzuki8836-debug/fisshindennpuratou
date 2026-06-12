@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ValidationRule xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>EstimatedIssuedDate_2Check</fullName>
+    <active>true</active>
+    <description>発行予定日②・発行予定日③が入力された場合、発行予定日②は発行予定日③以前に設定する</description>
+    <errorConditionFormula>AND( 
+    NOT( ISBLANK( EstimatedIssuedDate_03__c )  ) ,
+    NOT( ISBLANK(  EstimatedIssuedDate_02__c  )  ) ,
+    EstimatedIssuedDate_02__c   &gt;=   EstimatedIssuedDate_03__c ,
+    NOT($Profile.Name = &apos;データ移行管理者&apos;)
+)</errorConditionFormula>
+    <errorMessage>発行予定日②は発行予定日③より前の日付に設定してください。</errorMessage>
+</ValidationRule>

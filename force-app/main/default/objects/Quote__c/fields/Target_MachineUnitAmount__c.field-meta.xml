@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Target_MachineUnitAmount__c</fullName>
+    <description>支給品や移設品の価格は含めない金額（見積対象外含まない）</description>
+    <externalId>false</externalId>
+    <inlineHelpText>支給品や移設品の価格は含めない金額（見積対象外含まない）</inlineHelpText>
+    <label>見積対象機器単体費(見積項目集計)</label>
+    <precision>18</precision>
+    <required>false</required>
+    <scale>0</scale>
+    <trackFeedHistory>false</trackFeedHistory>
+    <trackHistory>false</trackHistory>
+    <trackTrending>false</trackTrending>
+    <type>Currency</type>
+</CustomField>

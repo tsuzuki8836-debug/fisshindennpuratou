@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>DeliveryPlace__c</fullName>
+    <externalId>false</externalId>
+    <formula>IF(
+	Opportunity__c &lt;&gt; null,
+	IF(
+		ISPICKVAL(BU__c,  &apos;施設&apos;),
+		Opportunity__r.Property__r.Name,
+		IF(
+			ISPICKVAL(BU__c,  &apos;水環境&apos;),
+			Opportunity__r.PumpStation__r.Name,
+			IF(
+				ISPICKVAL(BU__c,  &apos;官需&apos;),
+				Opportunity__r.SupplySite__r.Name,
+				&apos;&apos;
+			)
+		)
+	),
+	&apos;&apos;
+)</formula>
+    <label>納入場所</label>
+    <required>false</required>
+    <trackHistory>false</trackHistory>
+    <trackTrending>false</trackTrending>
+    <type>Text</type>
+    <unique>false</unique>
+</CustomField>

@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ListView xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Listview07</fullName>
+    <columns>NAME</columns>
+    <columns>SBU__c</columns>
+    <columns>Account__c</columns>
+    <columns>State__c</columns>
+    <filterScope>Everything</filterScope>
+    <filters>
+        <field>DepartmentAndDivision__c</field>
+        <operation>equals</operation>
+        <value>03_東北支社</value>
+    </filters>
+    <filters>
+        <field>SBU__c</field>
+        <operation>equals</operation>
+        <value>建設防災</value>
+    </filters>
+    <label>07.東北支社の納入サイト（建設防災）</label>
+</ListView>

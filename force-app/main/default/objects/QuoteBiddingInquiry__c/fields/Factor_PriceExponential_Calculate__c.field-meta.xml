@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Factor_PriceExponential_Calculate__c</fullName>
+    <externalId>false</externalId>
+    <formula>IF(
+    ISPICKVAL(Factor_PriceExponential__c,&quot;TC以上&quot;),1.0,
+    IF(
+        ISPICKVAL(Factor_PriceExponential__c, &quot;WC以上TC未満&quot;),
+        IF(
+            ISBLANK(TEXT(Factor_PriceExponential_Manual2__c)),0.8,VALUE(TEXT(Factor_PriceExponential_Manual2__c))
+        ),
+        IF(
+            ISPICKVAL(Factor_PriceExponential__c, &quot;WC未満&quot;),
+            IF(
+                ISBLANK(TEXT(Factor_PriceExponential_Manual__c )),0.6,VALUE(TEXT(Factor_PriceExponential_Manual__c ))
+            ),0
+        )
+    )
+)</formula>
+    <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
+    <label>損益区分（係数）（MAX）</label>
+    <precision>18</precision>
+    <required>false</required>
+    <scale>2</scale>
+    <trackHistory>false</trackHistory>
+    <trackTrending>false</trackTrending>
+    <type>Number</type>
+    <unique>false</unique>
+</CustomField>

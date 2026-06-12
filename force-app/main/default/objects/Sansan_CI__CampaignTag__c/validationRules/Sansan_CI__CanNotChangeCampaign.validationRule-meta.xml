@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ValidationRule xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Sansan_CI__CanNotChangeCampaign</fullName>
+    <active>true</active>
+    <errorConditionFormula>ISCHANGED( Sansan_CI__Campaign__c )</errorConditionFormula>
+    <errorMessage>タグからキャンペーンは変更できません</errorMessage>
+</ValidationRule>

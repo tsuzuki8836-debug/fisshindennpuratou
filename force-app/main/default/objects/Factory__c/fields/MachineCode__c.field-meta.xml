@@ -1,0 +1,972 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>MachineCode__c</fullName>
+    <externalId>false</externalId>
+    <label>機種コード</label>
+    <required>false</required>
+    <trackFeedHistory>false</trackFeedHistory>
+    <trackHistory>true</trackHistory>
+    <trackTrending>false</trackTrending>
+    <type>Picklist</type>
+    <valueSet>
+        <restricted>true</restricted>
+        <valueSetDefinition>
+            <sorted>false</sorted>
+            <value>
+                <fullName>01 タービン発電機</fullName>
+                <default>false</default>
+                <label>01 タービン発電機</label>
+            </value>
+            <value>
+                <fullName>10 水車発電機</fullName>
+                <default>false</default>
+                <label>10 水車発電機</label>
+            </value>
+            <value>
+                <fullName>20 直流発電機</fullName>
+                <default>false</default>
+                <label>20 直流発電機</label>
+            </value>
+            <value>
+                <fullName>21 直流電動機</fullName>
+                <default>false</default>
+                <label>21 直流電動機</label>
+            </value>
+            <value>
+                <fullName>30 交流発電機</fullName>
+                <default>false</default>
+                <label>30 交流発電機</label>
+            </value>
+            <value>
+                <fullName>32 交流電動機</fullName>
+                <default>false</default>
+                <label>32 交流電動機</label>
+            </value>
+            <value>
+                <fullName>35 車両用電機品</fullName>
+                <default>false</default>
+                <label>35 車両用電機品</label>
+            </value>
+            <value>
+                <fullName>35A1 交流主電動機用部品</fullName>
+                <default>false</default>
+                <label>35A1 交流主電動機用部品</label>
+            </value>
+            <value>
+                <fullName>35A2 直流主電動機用部品</fullName>
+                <default>false</default>
+                <label>35A2 直流主電動機用部品</label>
+            </value>
+            <value>
+                <fullName>35A3 駆動装置用部品</fullName>
+                <default>false</default>
+                <label>35A3 駆動装置用部品</label>
+            </value>
+            <value>
+                <fullName>35A4 リニアモータ用部品</fullName>
+                <default>false</default>
+                <label>35A4 リニアモータ用部品</label>
+            </value>
+            <value>
+                <fullName>35B1 推進制御装置用部品</fullName>
+                <default>false</default>
+                <label>35B1 推進制御装置用部品</label>
+            </value>
+            <value>
+                <fullName>35B2 ＦＬ・誘導分流器部品</fullName>
+                <default>false</default>
+                <label>35B2 ＦＬ・誘導分流器部品</label>
+            </value>
+            <value>
+                <fullName>35B3 渦電流ブレーキ用部品</fullName>
+                <default>false</default>
+                <label>35B3 渦電流ブレーキ用部品</label>
+            </value>
+            <value>
+                <fullName>35C1 補助電源装置用部品</fullName>
+                <default>false</default>
+                <label>35C1 補助電源装置用部品</label>
+            </value>
+            <value>
+                <fullName>35D1 モニタ関系部品</fullName>
+                <default>false</default>
+                <label>35D1 モニタ関系部品</label>
+            </value>
+            <value>
+                <fullName>35E1  ＡＴＳ／Ｃ／Ｏ用部品</fullName>
+                <default>false</default>
+                <label>35E1  ＡＴＳ／Ｃ／Ｏ用部品</label>
+            </value>
+            <value>
+                <fullName>35G1  ＶＩＳ・車上ＩＴ部品</fullName>
+                <default>false</default>
+                <label>35G1  ＶＩＳ・車上ＩＴ部品</label>
+            </value>
+            <value>
+                <fullName>36 送風機</fullName>
+                <default>false</default>
+                <label>36 送風機</label>
+            </value>
+            <value>
+                <fullName>37 その他回転機</fullName>
+                <default>false</default>
+                <label>37 その他回転機</label>
+            </value>
+            <value>
+                <fullName>39 ホーム柵</fullName>
+                <default>false</default>
+                <label>39 ホーム柵</label>
+            </value>
+            <value>
+                <fullName>40 変圧器</fullName>
+                <default>false</default>
+                <label>40 変圧器</label>
+            </value>
+            <value>
+                <fullName>40A 変圧器（受変電用）</fullName>
+                <default>false</default>
+                <label>40A 変圧器（受変電用）</label>
+            </value>
+            <value>
+                <fullName>40B 変圧器（整流器用）</fullName>
+                <default>false</default>
+                <label>40B 変圧器（整流器用）</label>
+            </value>
+            <value>
+                <fullName>40C 変圧器（鉄鋼ライン用</fullName>
+                <default>false</default>
+                <label>40C 変圧器（鉄鋼ライン用</label>
+            </value>
+            <value>
+                <fullName>40D 変圧器（その他）</fullName>
+                <default>false</default>
+                <label>40D 変圧器（その他）</label>
+            </value>
+            <value>
+                <fullName>41 ＮＣ</fullName>
+                <default>false</default>
+                <label>41 ＮＣ</label>
+            </value>
+            <value>
+                <fullName>42 溶接機</fullName>
+                <default>false</default>
+                <label>42 溶接機</label>
+            </value>
+            <value>
+                <fullName>43 産業用ロボット</fullName>
+                <default>false</default>
+                <label>43 産業用ロボット</label>
+            </value>
+            <value>
+                <fullName>44 電気加工機</fullName>
+                <default>false</default>
+                <label>44 電気加工機</label>
+            </value>
+            <value>
+                <fullName>45 レーザ加工機</fullName>
+                <default>false</default>
+                <label>45 レーザ加工機</label>
+            </value>
+            <value>
+                <fullName>46 電子ビーム加工機</fullName>
+                <default>false</default>
+                <label>46 電子ビーム加工機</label>
+            </value>
+            <value>
+                <fullName>47 ＣＡＤ／ＣＡＭ</fullName>
+                <default>false</default>
+                <label>47 ＣＡＤ／ＣＡＭ</label>
+            </value>
+            <value>
+                <fullName>49 その他メカトロ機器</fullName>
+                <default>false</default>
+                <label>49 その他メカトロ機器</label>
+            </value>
+            <value>
+                <fullName>50 整流器</fullName>
+                <default>false</default>
+                <label>50 整流器</label>
+            </value>
+            <value>
+                <fullName>50A ＣＶＣＦ</fullName>
+                <default>false</default>
+                <label>50A ＣＶＣＦ</label>
+            </value>
+            <value>
+                <fullName>50B 整流器</fullName>
+                <default>false</default>
+                <label>50B 整流器</label>
+            </value>
+            <value>
+                <fullName>50C アクティブフィルター</fullName>
+                <default>false</default>
+                <label>50C アクティブフィルター</label>
+            </value>
+            <value>
+                <fullName>50D その他</fullName>
+                <default>false</default>
+                <label>50D その他</label>
+            </value>
+            <value>
+                <fullName>50E パワーコンディショナ</fullName>
+                <default>false</default>
+                <label>50E パワーコンディショナ</label>
+            </value>
+            <value>
+                <fullName>50E1 ＴＭＥＩＣパワコン</fullName>
+                <default>false</default>
+                <label>50E1 ＴＭＥＩＣパワコン</label>
+            </value>
+            <value>
+                <fullName>50E2 その他パワコン</fullName>
+                <default>false</default>
+                <label>50E2 その他パワコン</label>
+            </value>
+            <value>
+                <fullName>52 映像（画像）機器</fullName>
+                <default>false</default>
+                <label>52 映像（画像）機器</label>
+            </value>
+            <value>
+                <fullName>53 超音波応用機器</fullName>
+                <default>false</default>
+                <label>53 超音波応用機器</label>
+            </value>
+            <value>
+                <fullName>54 計測機器</fullName>
+                <default>false</default>
+                <label>54 計測機器</label>
+            </value>
+            <value>
+                <fullName>55 通信機器</fullName>
+                <default>false</default>
+                <label>55 通信機器</label>
+            </value>
+            <value>
+                <fullName>551 光伝送システム・端局</fullName>
+                <default>false</default>
+                <label>551 光伝送システム・端局</label>
+            </value>
+            <value>
+                <fullName>552 列車無線システム</fullName>
+                <default>false</default>
+                <label>552 列車無線システム</label>
+            </value>
+            <value>
+                <fullName>553 電力無線・無線ペ－ジ</fullName>
+                <default>false</default>
+                <label>553 電力無線・無線ペ－ジ</label>
+            </value>
+            <value>
+                <fullName>554 防災・多重システム</fullName>
+                <default>false</default>
+                <label>554 防災・多重システム</label>
+            </value>
+            <value>
+                <fullName>555 ＰＢＸ</fullName>
+                <default>false</default>
+                <label>555 ＰＢＸ</label>
+            </value>
+            <value>
+                <fullName>556 有線ページング装置</fullName>
+                <default>false</default>
+                <label>556 有線ページング装置</label>
+            </value>
+            <value>
+                <fullName>557 ＭＥＬＭＵＸデジ端局</fullName>
+                <default>false</default>
+                <label>557 ＭＥＬＭＵＸデジ端局</label>
+            </value>
+            <value>
+                <fullName>558 ＭＥＬＭＵＸ保守</fullName>
+                <default>false</default>
+                <label>558 ＭＥＬＭＵＸ保守</label>
+            </value>
+            <value>
+                <fullName>559 ＮＰＡ</fullName>
+                <default>false</default>
+                <label>559 ＮＰＡ</label>
+            </value>
+            <value>
+                <fullName>55A ＡＴＭノード系システ</fullName>
+                <default>false</default>
+                <label>55A ＡＴＭノード系システ</label>
+            </value>
+            <value>
+                <fullName>55B 光アクセスシステム</fullName>
+                <default>false</default>
+                <label>55B 光アクセスシステム</label>
+            </value>
+            <value>
+                <fullName>55C ＰＨＳ基地局</fullName>
+                <default>false</default>
+                <label>55C ＰＨＳ基地局</label>
+            </value>
+            <value>
+                <fullName>55D ラジ再、ラジオ、ＦＭ</fullName>
+                <default>false</default>
+                <label>55D ラジ再、ラジオ、ＦＭ</label>
+            </value>
+            <value>
+                <fullName>55X 通信機器（通電）</fullName>
+                <default>false</default>
+                <label>55X 通信機器（通電）</label>
+            </value>
+            <value>
+                <fullName>55X1 衛星通信装置</fullName>
+                <default>false</default>
+                <label>55X1 衛星通信装置</label>
+            </value>
+            <value>
+                <fullName>55X2 レーダ装置</fullName>
+                <default>false</default>
+                <label>55X2 レーダ装置</label>
+            </value>
+            <value>
+                <fullName>55X3 電波監視装置</fullName>
+                <default>false</default>
+                <label>55X3 電波監視装置</label>
+            </value>
+            <value>
+                <fullName>55X4 ミリ波通信</fullName>
+                <default>false</default>
+                <label>55X4 ミリ波通信</label>
+            </value>
+            <value>
+                <fullName>55X5 管制・望遠鏡</fullName>
+                <default>false</default>
+                <label>55X5 管制・望遠鏡</label>
+            </value>
+            <value>
+                <fullName>55X6 通信プラント（工事）</fullName>
+                <default>false</default>
+                <label>55X6 通信プラント（工事）</label>
+            </value>
+            <value>
+                <fullName>55X7 ペルセウス</fullName>
+                <default>false</default>
+                <label>55X7 ペルセウス</label>
+            </value>
+            <value>
+                <fullName>55X8 ＶＥＤ（社会本）</fullName>
+                <default>false</default>
+                <label>55X8 ＶＥＤ（社会本）</label>
+            </value>
+            <value>
+                <fullName>55X9 ＶＥＤ（電力本）</fullName>
+                <default>false</default>
+                <label>55X9 ＶＥＤ（電力本）</label>
+            </value>
+            <value>
+                <fullName>55XA 消防コーデック</fullName>
+                <default>false</default>
+                <label>55XA 消防コーデック</label>
+            </value>
+            <value>
+                <fullName>56 ＯＡ関連機器</fullName>
+                <default>false</default>
+                <label>56 ＯＡ関連機器</label>
+            </value>
+            <value>
+                <fullName>59 その他電子応用機器</fullName>
+                <default>false</default>
+                <label>59 その他電子応用機器</label>
+            </value>
+            <value>
+                <fullName>60 開閉機器単体</fullName>
+                <default>false</default>
+                <label>60 開閉機器単体</label>
+            </value>
+            <value>
+                <fullName>61 複合開閉装置</fullName>
+                <default>false</default>
+                <label>61 複合開閉装置</label>
+            </value>
+            <value>
+                <fullName>61A メタクラ</fullName>
+                <default>false</default>
+                <label>61A メタクラ</label>
+            </value>
+            <value>
+                <fullName>61B Ｃ－ＧＩＳ</fullName>
+                <default>false</default>
+                <label>61B Ｃ－ＧＩＳ</label>
+            </value>
+            <value>
+                <fullName>70 制御装置アナログ系</fullName>
+                <default>false</default>
+                <label>70 制御装置アナログ系</label>
+            </value>
+            <value>
+                <fullName>701 制御装置アナログ系</fullName>
+                <default>false</default>
+                <label>701 制御装置アナログ系</label>
+            </value>
+            <value>
+                <fullName>71 制御装置ディジタル系</fullName>
+                <default>false</default>
+                <label>71 制御装置ディジタル系</label>
+            </value>
+            <value>
+                <fullName>711 制御装置ディジタル系</fullName>
+                <default>false</default>
+                <label>711 制御装置ディジタル系</label>
+            </value>
+            <value>
+                <fullName>71110 ＦＬ‐Ｃ１</fullName>
+                <default>false</default>
+                <label>71110 ＦＬ‐Ｃ１</label>
+            </value>
+            <value>
+                <fullName>71111 ＦＬ‐Ｃ１</fullName>
+                <default>false</default>
+                <label>71111 ＦＬ‐Ｃ１</label>
+            </value>
+            <value>
+                <fullName>71112 ＦＬ‐Ｃ１</fullName>
+                <default>false</default>
+                <label>71112 ＦＬ‐Ｃ１</label>
+            </value>
+            <value>
+                <fullName>71113 ＦＬ‐Ｃ１</fullName>
+                <default>false</default>
+                <label>71113 ＦＬ‐Ｃ１</label>
+            </value>
+            <value>
+                <fullName>71114 ＦＬ‐Ｃ１</fullName>
+                <default>false</default>
+                <label>71114 ＦＬ‐Ｃ１</label>
+            </value>
+            <value>
+                <fullName>71119 ＦＬ‐Ｃ１</fullName>
+                <default>false</default>
+                <label>71119 ＦＬ‐Ｃ１</label>
+            </value>
+            <value>
+                <fullName>72 データ伝送機器</fullName>
+                <default>false</default>
+                <label>72 データ伝送機器</label>
+            </value>
+            <value>
+                <fullName>78 計装機器（制電外注）</fullName>
+                <default>false</default>
+                <label>78 計装機器（制電外注）</label>
+            </value>
+            <value>
+                <fullName>81 車両用制御装置</fullName>
+                <default>false</default>
+                <label>81 車両用制御装置</label>
+            </value>
+            <value>
+                <fullName>82 車両用ブレーキ装置</fullName>
+                <default>false</default>
+                <label>82 車両用ブレーキ装置</label>
+            </value>
+            <value>
+                <fullName>821 車両用ブレーキ装置</fullName>
+                <default>false</default>
+                <label>821 車両用ブレーキ装置</label>
+            </value>
+            <value>
+                <fullName>822 車両用ブレーキ装置</fullName>
+                <default>false</default>
+                <label>822 車両用ブレーキ装置</label>
+            </value>
+            <value>
+                <fullName>82A 空気圧縮器Ｎ７００</fullName>
+                <default>false</default>
+                <label>82A 空気圧縮器Ｎ７００</label>
+            </value>
+            <value>
+                <fullName>82B 分油フィルタＮ７００</fullName>
+                <default>false</default>
+                <label>82B 分油フィルタＮ７００</label>
+            </value>
+            <value>
+                <fullName>82F1 ブレーキ部品除単契約</fullName>
+                <default>false</default>
+                <label>82F1 ブレーキ部品除単契約</label>
+            </value>
+            <value>
+                <fullName>82F2 単契約（ブレーキ）</fullName>
+                <default>false</default>
+                <label>82F2 単契約（ブレーキ）</label>
+            </value>
+            <value>
+                <fullName>82F3 ブレーキコンプ用部品</fullName>
+                <default>false</default>
+                <label>82F3 ブレーキコンプ用部品</label>
+            </value>
+            <value>
+                <fullName>89 サ－ビス工事</fullName>
+                <default>false</default>
+                <label>89 サ－ビス工事</label>
+            </value>
+            <value>
+                <fullName>90 新エネ関連機器</fullName>
+                <default>false</default>
+                <label>90 新エネ関連機器</label>
+            </value>
+            <value>
+                <fullName>90Z1 太陽電池モジュール</fullName>
+                <default>false</default>
+                <label>90Z1 太陽電池モジュール</label>
+            </value>
+            <value>
+                <fullName>91 環境装置</fullName>
+                <default>false</default>
+                <label>91 環境装置</label>
+            </value>
+            <value>
+                <fullName>91101 オゾナイザ</fullName>
+                <default>false</default>
+                <label>91101 オゾナイザ</label>
+            </value>
+            <value>
+                <fullName>91102 オゾナイザ</fullName>
+                <default>false</default>
+                <label>91102 オゾナイザ</label>
+            </value>
+            <value>
+                <fullName>91109 オゾナイザ</fullName>
+                <default>false</default>
+                <label>91109 オゾナイザ</label>
+            </value>
+            <value>
+                <fullName>91201 脱色装置</fullName>
+                <default>false</default>
+                <label>91201 脱色装置</label>
+            </value>
+            <value>
+                <fullName>91202 脱色装置</fullName>
+                <default>false</default>
+                <label>91202 脱色装置</label>
+            </value>
+            <value>
+                <fullName>91209 脱色装置</fullName>
+                <default>false</default>
+                <label>91209 脱色装置</label>
+            </value>
+            <value>
+                <fullName>91A 産業廃棄物焼却炉</fullName>
+                <default>false</default>
+                <label>91A 産業廃棄物焼却炉</label>
+            </value>
+            <value>
+                <fullName>92 応用機器</fullName>
+                <default>false</default>
+                <label>92 応用機器</label>
+            </value>
+            <value>
+                <fullName>92101 加熱装置パッケージ</fullName>
+                <default>false</default>
+                <label>92101 加熱装置パッケージ</label>
+            </value>
+            <value>
+                <fullName>92102 加熱装置パッケージ</fullName>
+                <default>false</default>
+                <label>92102 加熱装置パッケージ</label>
+            </value>
+            <value>
+                <fullName>92109 加熱装置パッケージ</fullName>
+                <default>false</default>
+                <label>92109 加熱装置パッケージ</label>
+            </value>
+            <value>
+                <fullName>92201 加熱装置その他</fullName>
+                <default>false</default>
+                <label>92201 加熱装置その他</label>
+            </value>
+            <value>
+                <fullName>92202 加熱装置その他</fullName>
+                <default>false</default>
+                <label>92202 加熱装置その他</label>
+            </value>
+            <value>
+                <fullName>92209 加熱装置その他</fullName>
+                <default>false</default>
+                <label>92209 加熱装置その他</label>
+            </value>
+            <value>
+                <fullName>92301 焼入装置</fullName>
+                <default>false</default>
+                <label>92301 焼入装置</label>
+            </value>
+            <value>
+                <fullName>92302 焼入装置</fullName>
+                <default>false</default>
+                <label>92302 焼入装置</label>
+            </value>
+            <value>
+                <fullName>92309 焼入装置</fullName>
+                <default>false</default>
+                <label>92309 焼入装置</label>
+            </value>
+            <value>
+                <fullName>92401 電気炉低周波</fullName>
+                <default>false</default>
+                <label>92401 電気炉低周波</label>
+            </value>
+            <value>
+                <fullName>92402 電気炉低周波</fullName>
+                <default>false</default>
+                <label>92402 電気炉低周波</label>
+            </value>
+            <value>
+                <fullName>92409 電気炉低周波</fullName>
+                <default>false</default>
+                <label>92409 電気炉低周波</label>
+            </value>
+            <value>
+                <fullName>92501 電気炉高周波</fullName>
+                <default>false</default>
+                <label>92501 電気炉高周波</label>
+            </value>
+            <value>
+                <fullName>92502 電気炉高周波</fullName>
+                <default>false</default>
+                <label>92502 電気炉高周波</label>
+            </value>
+            <value>
+                <fullName>92509 電気炉高周波</fullName>
+                <default>false</default>
+                <label>92509 電気炉高周波</label>
+            </value>
+            <value>
+                <fullName>93 空調機器</fullName>
+                <default>false</default>
+                <label>93 空調機器</label>
+            </value>
+            <value>
+                <fullName>94 修理委託</fullName>
+                <default>false</default>
+                <label>94 修理委託</label>
+            </value>
+            <value>
+                <fullName>95 計算機</fullName>
+                <default>false</default>
+                <label>95 計算機</label>
+            </value>
+            <value>
+                <fullName>95110 ＦＬ‐Ｓ１</fullName>
+                <default>false</default>
+                <label>95110 ＦＬ‐Ｓ１</label>
+            </value>
+            <value>
+                <fullName>95111 ＦＬ‐Ｓ１</fullName>
+                <default>false</default>
+                <label>95111 ＦＬ‐Ｓ１</label>
+            </value>
+            <value>
+                <fullName>95112 ＦＬ‐Ｓ１</fullName>
+                <default>false</default>
+                <label>95112 ＦＬ‐Ｓ１</label>
+            </value>
+            <value>
+                <fullName>95113 ＦＬ‐Ｓ１</fullName>
+                <default>false</default>
+                <label>95113 ＦＬ‐Ｓ１</label>
+            </value>
+            <value>
+                <fullName>95114 ＦＬ‐Ｓ１</fullName>
+                <default>false</default>
+                <label>95114 ＦＬ‐Ｓ１</label>
+            </value>
+            <value>
+                <fullName>95119 ＦＬ‐Ｓ１</fullName>
+                <default>false</default>
+                <label>95119 ＦＬ‐Ｓ１</label>
+            </value>
+            <value>
+                <fullName>95220 ＭＯＣＡＲ‐１</fullName>
+                <default>false</default>
+                <label>95220 ＭＯＣＡＲ‐１</label>
+            </value>
+            <value>
+                <fullName>95221 ＭＯＣＡＲ‐１</fullName>
+                <default>false</default>
+                <label>95221 ＭＯＣＡＲ‐１</label>
+            </value>
+            <value>
+                <fullName>95222 ＭＯＣＡＲ‐１</fullName>
+                <default>false</default>
+                <label>95222 ＭＯＣＡＲ‐１</label>
+            </value>
+            <value>
+                <fullName>95223 ＭＯＣＡＲ‐１</fullName>
+                <default>false</default>
+                <label>95223 ＭＯＣＡＲ‐１</label>
+            </value>
+            <value>
+                <fullName>95224 ＭＯＣＡＲ‐１</fullName>
+                <default>false</default>
+                <label>95224 ＭＯＣＡＲ‐１</label>
+            </value>
+            <value>
+                <fullName>95229 ＭＯＣＡＲ‐１</fullName>
+                <default>false</default>
+                <label>95229 ＭＯＣＡＲ‐１</label>
+            </value>
+            <value>
+                <fullName>95230 ＭＯＣＡＲ‐２</fullName>
+                <default>false</default>
+                <label>95230 ＭＯＣＡＲ‐２</label>
+            </value>
+            <value>
+                <fullName>95231 ＭＯＣＡＲ‐２</fullName>
+                <default>false</default>
+                <label>95231 ＭＯＣＡＲ‐２</label>
+            </value>
+            <value>
+                <fullName>95232 ＭＯＣＡＲ‐２</fullName>
+                <default>false</default>
+                <label>95232 ＭＯＣＡＲ‐２</label>
+            </value>
+            <value>
+                <fullName>95233 ＭＯＣＡＲ‐２</fullName>
+                <default>false</default>
+                <label>95233 ＭＯＣＡＲ‐２</label>
+            </value>
+            <value>
+                <fullName>95234 ＭＯＣＡＲ‐２</fullName>
+                <default>false</default>
+                <label>95234 ＭＯＣＡＲ‐２</label>
+            </value>
+            <value>
+                <fullName>95239 ＭＯＣＡＲ‐２</fullName>
+                <default>false</default>
+                <label>95239 ＭＯＣＡＲ‐２</label>
+            </value>
+            <value>
+                <fullName>95A汎用機</fullName>
+                <default>false</default>
+                <label>95A汎用機</label>
+            </value>
+            <value>
+                <fullName>95BA ＥＷＳ（ＭＥＬＣＡＤ</fullName>
+                <default>false</default>
+                <label>95BA ＥＷＳ（ＭＥＬＣＡＤ</label>
+            </value>
+            <value>
+                <fullName>95BB ＥＷＳ（ＥＯＳ）</fullName>
+                <default>false</default>
+                <label>95BB ＥＷＳ（ＥＯＳ）</label>
+            </value>
+            <value>
+                <fullName>95BC ミニコン（ＩＣＳ他）</fullName>
+                <default>false</default>
+                <label>95BC ミニコン（ＩＣＳ他）</label>
+            </value>
+            <value>
+                <fullName>95C オフコン</fullName>
+                <default>false</default>
+                <label>95C オフコン</label>
+            </value>
+            <value>
+                <fullName>95D パソコン端末他</fullName>
+                <default>false</default>
+                <label>95D パソコン端末他</label>
+            </value>
+            <value>
+                <fullName>95DA パソコンＣＡＤ</fullName>
+                <default>false</default>
+                <label>95DA パソコンＣＡＤ</label>
+            </value>
+            <value>
+                <fullName>95DB パソコン端末他</fullName>
+                <default>false</default>
+                <label>95DB パソコン端末他</label>
+            </value>
+            <value>
+                <fullName>96 保守点検</fullName>
+                <default>false</default>
+                <label>96 保守点検</label>
+            </value>
+            <value>
+                <fullName>97 据付工事</fullName>
+                <default>false</default>
+                <label>97 据付工事</label>
+            </value>
+            <value>
+                <fullName>98 技術員派遣</fullName>
+                <default>false</default>
+                <label>98 技術員派遣</label>
+            </value>
+            <value>
+                <fullName>99 その他</fullName>
+                <default>false</default>
+                <label>99 その他</label>
+            </value>
+            <value>
+                <fullName>99Z1 ＰＶその他機器</fullName>
+                <default>false</default>
+                <label>99Z1 ＰＶその他機器</label>
+            </value>
+            <value>
+                <fullName>9A 改造</fullName>
+                <default>false</default>
+                <label>9A 改造</label>
+            </value>
+            <value>
+                <fullName>9B 修理委託（有期労災）</fullName>
+                <default>false</default>
+                <label>9B 修理委託（有期労災）</label>
+            </value>
+            <value>
+                <fullName>9C 保守点検（有期労災）</fullName>
+                <default>false</default>
+                <label>9C 保守点検（有期労災）</label>
+            </value>
+            <value>
+                <fullName>9D 改造（有期労災）</fullName>
+                <default>false</default>
+                <label>9D 改造（有期労災）</label>
+            </value>
+            <value>
+                <fullName>9E 原子力サービス</fullName>
+                <default>false</default>
+                <label>9E 原子力サービス</label>
+            </value>
+            <value>
+                <fullName>9F 技術照会対応</fullName>
+                <default>false</default>
+                <label>9F 技術照会対応</label>
+            </value>
+            <value>
+                <fullName>9G  技術員派遣（単価契約</fullName>
+                <default>false</default>
+                <label>9G  技術員派遣（単価契約</label>
+            </value>
+            <value>
+                <fullName>9H 技術統括</fullName>
+                <default>false</default>
+                <label>9H 技術統括</label>
+            </value>
+            <value>
+                <fullName>9I 提出図書管理</fullName>
+                <default>false</default>
+                <label>9I 提出図書管理</label>
+            </value>
+            <value>
+                <fullName>9J 管理料</fullName>
+                <default>false</default>
+                <label>9J 管理料</label>
+            </value>
+            <value>
+                <fullName>9K 原プラ現場経費</fullName>
+                <default>false</default>
+                <label>9K 原プラ現場経費</label>
+            </value>
+            <value>
+                <fullName>9L 水力建設業法対応工事</fullName>
+                <default>false</default>
+                <label>9L 水力建設業法対応工事</label>
+            </value>
+            <value>
+                <fullName>9X その他（Ｓ／Ｗ外注）</fullName>
+                <default>false</default>
+                <label>9X その他（Ｓ／Ｗ外注）</label>
+            </value>
+            <value>
+                <fullName>9Y その他（業務委託）</fullName>
+                <default>false</default>
+                <label>9Y その他（業務委託）</label>
+            </value>
+            <value>
+                <fullName>9Z その他（製品購入）</fullName>
+                <default>false</default>
+                <label>9Z その他（製品購入）</label>
+            </value>
+            <value>
+                <fullName>C1 汎用機</fullName>
+                <default>false</default>
+                <label>C1 汎用機</label>
+            </value>
+            <value>
+                <fullName>C2 オフコン</fullName>
+                <default>false</default>
+                <label>C2 オフコン</label>
+            </value>
+            <value>
+                <fullName>C3 ミニコン</fullName>
+                <default>false</default>
+                <label>C3 ミニコン</label>
+            </value>
+            <value>
+                <fullName>C4 ＥＷＳ</fullName>
+                <default>false</default>
+                <label>C4 ＥＷＳ</label>
+            </value>
+            <value>
+                <fullName>C5 パソコン</fullName>
+                <default>false</default>
+                <label>C5 パソコン</label>
+            </value>
+            <value>
+                <fullName>C9 周辺端末装置</fullName>
+                <default>false</default>
+                <label>C9 周辺端末装置</label>
+            </value>
+            <value>
+                <fullName>E1 Ｅ／Ｓ</fullName>
+                <default>false</default>
+                <label>E1 Ｅ／Ｓ</label>
+            </value>
+            <value>
+                <fullName>F1 トータルエンジ</fullName>
+                <default>false</default>
+                <label>F1 トータルエンジ</label>
+            </value>
+            <value>
+                <fullName>H1 力電・力通シ（東）</fullName>
+                <default>false</default>
+                <label>H1 力電・力通シ（東）</label>
+            </value>
+            <value>
+                <fullName>H2 力電・力通シ（西）</fullName>
+                <default>false</default>
+                <label>H2 力電・力通シ（西）</label>
+            </value>
+            <value>
+                <fullName>H3 力電・力情シ</fullName>
+                <default>false</default>
+                <label>H3 力電・力情シ</label>
+            </value>
+            <value>
+                <fullName>S1 車両部品：新車</fullName>
+                <default>false</default>
+                <label>S1 車両部品：新車</label>
+            </value>
+            <value>
+                <fullName>S2 車両部品：保証期間中</fullName>
+                <default>false</default>
+                <label>S2 車両部品：保証期間中</label>
+            </value>
+            <value>
+                <fullName>S3 車両部品：保証期間後</fullName>
+                <default>false</default>
+                <label>S3 車両部品：保証期間後</label>
+            </value>
+            <value>
+                <fullName>S4 車両予防保全</fullName>
+                <default>false</default>
+                <label>S4 車両予防保全</label>
+            </value>
+            <value>
+                <fullName>S5 車両保守請負</fullName>
+                <default>false</default>
+                <label>S5 車両保守請負</label>
+            </value>
+            <value>
+                <fullName>X0 旧営外一般</fullName>
+                <default>false</default>
+                <label>X0 旧営外一般</label>
+            </value>
+            <value>
+                <fullName>Y0 神電調達（ＴＭＥパ）</fullName>
+                <default>false</default>
+                <label>Y0 神電調達（ＴＭＥパ）</label>
+            </value>
+        </valueSetDefinition>
+    </valueSet>
+</CustomField>

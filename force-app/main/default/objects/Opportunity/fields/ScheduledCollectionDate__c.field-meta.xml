@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>ScheduledCollectionDate__c</fullName>
+    <externalId>false</externalId>
+    <inlineHelpText>空欄で保存した場合は、売上予定日の翌々月末日が自動セットされます</inlineHelpText>
+    <label>回収予定日①</label>
+    <required>false</required>
+    <trackFeedHistory>false</trackFeedHistory>
+    <trackHistory>false</trackHistory>
+    <type>Date</type>
+</CustomField>

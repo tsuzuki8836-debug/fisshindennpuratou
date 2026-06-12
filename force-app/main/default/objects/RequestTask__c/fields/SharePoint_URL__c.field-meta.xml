@@ -3,9 +3,10 @@
     <fullName>SharePoint_URL__c</fullName>
     <externalId>false</externalId>
     <label>SharePoint URL</label>
-    <required>false</required>
+    <length>4000</length>
     <trackFeedHistory>false</trackFeedHistory>
     <trackHistory>false</trackHistory>
     <trackTrending>false</trackTrending>
-    <type>Url</type>
+    <type>LongTextArea</type>
+    <visibleLines>3</visibleLines>
 </CustomField>

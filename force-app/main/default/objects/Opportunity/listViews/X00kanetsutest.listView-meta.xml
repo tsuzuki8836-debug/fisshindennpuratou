@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ListView xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>X00kanetsutest</fullName>
+    <columns>OppNumber__c</columns>
+    <columns>OpportunityNumber__c</columns>
+    <columns>OPPORTUNITY.NAME</columns>
+    <columns>SBU__c</columns>
+    <columns>ACCOUNT.NAME</columns>
+    <columns>OrderExpectation__c</columns>
+    <columns>OPPORTUNITY.STAGE_NAME</columns>
+    <columns>OPPORTUNITY.CLOSE_DATE</columns>
+    <columns>EstimatedTotalCP__c</columns>
+    <columns>EstimatedTotalWC1__c</columns>
+    <columns>PickDivision__c</columns>
+    <columns>CORE.USERS.ALIAS</columns>
+    <filterScope>Everything</filterScope>
+    <filters>
+        <field>OPPORTUNITY.STAGE_NAME</field>
+        <operation>equals</operation>
+        <value>基本計画,基本設計,実施設計,価格交渉 入札準備・入札</value>
+    </filters>
+    <filters>
+        <field>OPPORTUNITY.RECORDTYPE</field>
+        <operation>equals</operation>
+        <value>Opportunity.OpportunityRecordType1</value>
+    </filters>
+    <filters>
+        <field>PickDivision__c</field>
+        <operation>equals</operation>
+        <value>関越支　社会シ,関越支　社会シ一,関越支　社会シ二,関越支　社会シ三</value>
+    </filters>
+    <filters>
+        <field>BU__c</field>
+        <operation>equals</operation>
+        <value>施設</value>
+    </filters>
+    <label>関越支 施設の商談中の案件（関越支のみ参照可）</label>
+    <sharedTo>
+        <roleAndSubordinatesInternal>M16_kanetsushisha</roleAndSubordinatesInternal>
+    </sharedTo>
+</ListView>
