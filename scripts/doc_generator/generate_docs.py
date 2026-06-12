@@ -53,7 +53,8 @@ def draw_sheet_title(ws, title_text):
     title_cell.alignment = Alignment(horizontal="center", vertical="center")
     ws.row_dimensions[1].height = 40
 
-def render_table(ws, start_row, section_title, headers, rows, table_type="HORIZONTAL"):
+# ✨ 【修正ポイント】引数リストの末尾に `is_test_sheet=False` を追加して、呼び出し側と完全一致させました
+def render_table(ws, start_row, section_title, headers, rows, table_type="HORIZONTAL", is_test_sheet=False):
     """メタデータと描画ロジックを完全分離した、テンプレートマッピングエンジン"""
     ws.cell(row=start_row, column=1, value=section_title).font = FONT_SECTION
     
@@ -70,7 +71,7 @@ def render_table(ws, start_row, section_title, headers, rows, table_type="HORIZO
         ws.row_dimensions[current_row].height = 22 if table_type == "VERTICAL" else 20
         
         # デシジョンテーブルにおける異常系・境界値ケースの条件付きハイライト制御
-        use_fault_fill = (section_title == "### 2. デシジョンテーブル" and row_data[0] in ["TC-PW-02", "TC-PW-03", "TC-PW-04"])
+        use_fault_fill = (is_test_sheet and row_data[0] in ["TC-PW-02", "TC-PW-03", "TC-PW-04"])
         
         for c_idx, val in enumerate(row_data, 1):
             cell = ws.cell(row=current_row, column=c_idx, value=val)
@@ -113,7 +114,6 @@ def generate_mermaid_image():
     mmd_path = "flow.mmd"
     png_path = "flow.png"
     
-    # サーバー環境クラッシュ対策の動的構成生成
     with open(config_path, "w", encoding="utf-8") as f:
         json.dump({"args": ["--no-sandbox", "--disable-setuid-sandbox", "--disable-dev-shm-usage"]}, f)
     with open(mmd_path, "w", encoding="utf-8") as f:
@@ -123,21 +123,18 @@ def generate_mermaid_image():
     shell_opt = True if platform.system() == "Windows" else False
     
     try:
-        # 可観測性を担保したエラーキャッチ
-        result = subprocess.run([cmd, "-i", mmd_path, "-o", png_path, "-p", config_path], capture_output=True, text=True, shell=shell_opt, check=True)
+        subprocess.run([cmd, "-i", mmd_path, "-o", png_path, "-p", config_path], capture_output=True, text=True, shell=shell_opt, check=True)
         print("[SUCCESS] Mermaidロジックフロー図(PNG)を正常にレンダリングしました。")
     except (subprocess.CalledProcessError, FileNotFoundError) as e:
         stderr_msg = e.stderr if hasattr(e, 'stderr') else str(e)
         print(f"[INFO] ローカル環境のmmdc未検出、またはエラーのため画像埋め込みをスキップします。詳細:\n{stderr_msg}")
     finally:
-        # 冪等性を担保するためのクリーンアップ処理
         for path in [config_path, mmd_path]:
             if os.path.exists(path): os.remove(path)
 
 # ==========================================
 # 3. 設計書データセット定義 (テンプレート1対1追従)
 # ==========================================
-# シート1: テーブル1（基本情報：縦型）
 DATA_S1_T1 = {
     "section": "## 1. 基本情報",
     "headers": ["設定項目", "設定値（実際の値を記載）", "補足・仕様変更履歴"],
@@ -151,7 +148,6 @@ DATA_S1_T1 = {
     ]
 }
 
-# シート1: テーブル2（エントリ条件プロパティ：縦型）
 DATA_S1_T2 = {
     "section": "## 2. エントリ条件（プロパティ）",
     "headers": ["設定項目", "設定値（実際の値を記載）", "補足・仕様変更履歴"],
@@ -161,7 +157,6 @@ DATA_S1_T2 = {
     ]
 }
 
-# シート1: テーブル3（エントリ条件判定：横型）
 DATA_S1_T3 = {
     "section": "## 3. エントリ条件の詳細",
     "headers": ["項目ラベル", "API参照名", "演算子", "値 / 数式"],
@@ -170,7 +165,6 @@ DATA_S1_T3 = {
     ]
 }
 
-# シート3: テーブル1（リソース定義：横型）
 DATA_S3_T1 = {
     "section": "## 1. リソース定義",
     "headers": ["リソース種別", "API参照名", "データ型", "コレクション", "説明・初期値・計算式"],
@@ -184,7 +178,6 @@ DATA_S3_T1 = {
     ]
 }
 
-# シート3: テーブル2（処理ロジック：横型）
 DATA_S3_T2 = {
     "section": "## 2. 処理ロジック（ビジネスロジック）ステップ定義",
     "headers": ["ステップ名", "対象オブジェクト/コレクション", "条件（抽出/処理）", "処理内容/項目マッピング"],
@@ -196,7 +189,6 @@ DATA_S3_T2 = {
     ]
 }
 
-# シート3: テーブル3（分岐ロジック定義：横型）
 DATA_S3_T3 = {
     "section": "## 3. 分岐（決定）ロジック定義",
     "headers": ["決定要素名", "分岐名（条件名）", "分岐条件（判定ロジック）", "遷移先（次ステップ名）"],
@@ -206,7 +198,6 @@ DATA_S3_T3 = {
     ]
 }
 
-# シート4: テーブル1（テスト概要：縦型）
 DATA_S4_T1 = {
     "section": "## 1. テスト概要",
     "headers": ["検証プロパティ", "テスト概要定義（実際の定義を記載）"],
@@ -218,7 +209,6 @@ DATA_S4_T1 = {
     ]
 }
 
-# シート4: テーブル2（デシジョンテーブル：横型）
 DATA_S4_T2 = {
     "section": "## 2. デシジョンテーブル",
     "headers": ["テストケースID", "条件A（レコードの状況：Status__c）", "条件B（親タスクの所有者 / マネージャー設定）", "条件C（CC1〜CC10の入力パターン・状態）", "期待値（処理結果 / 更新内容 / エラーハンドリング）"],
