@@ -2,27 +2,28 @@ name: Automatic Architecture Document Generation
 
 on: [push]
 
+# クラウドのランナー全体に対してNode.js 24環境でのJavaScriptアクション実行を強制し、
+# 非推奨（deprecation）エラーおよび今後の自動強制シャットダウンを根本から回避するグローバルガードレール
+env:
+  FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: "true"
+
 jobs:
   build-docs:
     runs-on: ubuntu-latest
     
     steps:
       - name: Check out repository
-        uses: actions/checkout@v4  # v3 から v4 へ引き上げ
+        uses: actions/checkout@v4
 
       - name: Set up Node.js
-        uses: actions/setup-node@v4  # v3 から v4 へ引き上げ
+        uses: actions/setup-node@v4
         with:
           node-version: '18'
 
-      - name: Install mermaid-cli & Configure Puppeteer
-        run: |
-          npm install -g @mermaid-js/mermaid-cli
-          echo '{"args": ["--no-sandbox", "--disable-setuid-sandbox"]}' > puppeteerConfig.json
-
       - name: Set up Python
-        uses: actions/setup-python@v5  # v4 から v5 へ引き上げ
+        uses: actions/setup-python@v5
         with:
+          node-version: '18'
           python-version: '3.10'
 
       - name: Install Python dependencies
@@ -34,11 +35,9 @@ jobs:
         run: |
           cd scripts/doc_generator
           python generate_docs.py
-        env:
-          PUPPETEER_CONFIG: ../../puppeteerConfig.json
 
       - name: Upload Excel Artifacts
-        uses: actions/upload-artifact@v4  # ★エラーの原因となっていた箇所を v3 から最新の v4 へ修正
+        uses: actions/upload-artifact@v4
         with:
           name: Salesforce-Flow-Design-Specifications
           path: scripts/doc_generator/*.xlsx
