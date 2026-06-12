@@ -1,7 +1,16 @@
 name: Automatic Architecture Document Generation
 
-on: [push]
+on:
+  push:
+    # main または master ブランチへのプッシュ時のみに制限
+    branches:
+      - main
+      - master
+    # ★重要: scripts/doc_generator/ フォルダ内のファイルが変更された時だけActionsを起動するガードレール
+    paths:
+      - 'scripts/doc_generator/**'
 
+# クラウドのランナー全体に対してNode.js 24環境でのJavaScriptアクション実行を強制
 env:
   FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: "true"
 
@@ -18,7 +27,6 @@ jobs:
         with:
           node-version: '18'
 
-      # 不安定な npx を排し、Linuxコンテキストに完全に適合したグローバルインストールを実行
       - name: Install mermaid-cli Globally
         run: npm install -g @mermaid-js/mermaid-cli
 
