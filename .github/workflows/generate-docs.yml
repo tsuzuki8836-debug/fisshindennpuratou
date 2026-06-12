@@ -1,12 +1,6 @@
 name: Automatic Architecture Document Generation
 
-on:
-  push:
-    branches:
-      - main
-      - master
-    paths:
-      - 'scripts/doc_generator/**'
+on: [push]  # これにより、どのブランチ、どのファイルの変更でもプッシュ時に100%強制起動します
 
 jobs:
   build-docs:

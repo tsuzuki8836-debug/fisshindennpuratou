@@ -115,3 +115,5 @@ def publish_excel_with_diagram():
 
 if __name__ == "__main__":
     publish_excel_with_diagram()
+
+# debug: force run
