@@ -6,12 +6,11 @@ on:
       - main
       - master
     paths:
-      - 'scripts/doc_generator/**'  # スクリプトや定義が更新されたとき
+      - 'scripts/doc_generator/**'
 
 jobs:
   build-docs:
-    # 解決策1: 安定性と実行速度が圧倒的に高い ubuntu (Linux) に変更
-    runs-on: ubuntu-latest  
+    runs-on: ubuntu-latest
     
     steps:
       - name: Check out repository
@@ -22,11 +21,9 @@ jobs:
         with:
           node-version: '18'
 
-      # 解決策2: Linux環境に合わせたインラインPuppeteer設定を含めてmermaid-cliをインストール
       - name: Install mermaid-cli & Configure Puppeteer
         run: |
           npm install -g @mermaid-js/mermaid-cli
-          # クラウド環境でのブラウザクラッシュを完全に防ぐための設定を注入
           echo '{"args": ["--no-sandbox", "--disable-setuid-sandbox"]}' > puppeteerConfig.json
 
       - name: Set up Python
@@ -39,13 +36,11 @@ jobs:
           python -m pip install --upgrade pip
           pip install openpyxl pillow
 
-      # 解決策3: パス不備を防ぐため、グローバル展開されたmmdcを明示して安全に実行
       - name: Run Document Generator Pipeline
         run: |
           cd scripts/doc_generator
           python generate_docs.py
         env:
-          # 生成したPuppeteer設定ファイルを環境変数として引き渡すガードレール
           PUPPETEER_CONFIG: ../../puppeteerConfig.json
 
       - name: Upload Excel Artifacts
