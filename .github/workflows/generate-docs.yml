@@ -1,6 +1,6 @@
 name: Automatic Architecture Document Generation
 
-on: [push]  # これにより、どのブランチ、どのファイルの変更でもプッシュ時に100%強制起動します
+on: [push]
 
 jobs:
   build-docs:
@@ -8,10 +8,10 @@ jobs:
     
     steps:
       - name: Check out repository
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4  # v3 から v4 へ引き上げ
 
       - name: Set up Node.js
-        uses: actions/setup-node@v3
+        uses: actions/setup-node@v4  # v3 から v4 へ引き上げ
         with:
           node-version: '18'
 
@@ -21,7 +21,7 @@ jobs:
           echo '{"args": ["--no-sandbox", "--disable-setuid-sandbox"]}' > puppeteerConfig.json
 
       - name: Set up Python
-        uses: actions/setup-python@v4
+        uses: actions/setup-python@v5  # v4 から v5 へ引き上げ
         with:
           python-version: '3.10'
 
@@ -38,7 +38,7 @@ jobs:
           PUPPETEER_CONFIG: ../../puppeteerConfig.json
 
       - name: Upload Excel Artifacts
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v4  # ★エラーの原因となっていた箇所を v3 から最新の v4 へ修正
         with:
           name: Salesforce-Flow-Design-Specifications
           path: scripts/doc_generator/*.xlsx
