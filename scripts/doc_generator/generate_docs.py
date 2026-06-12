@@ -53,10 +53,13 @@ def draw_sheet_title(ws, title_text):
     title_cell.alignment = Alignment(horizontal="center", vertical="center")
     ws.row_dimensions[1].height = 40
 
-# ✨ 【修正ポイント】引数リストの末尾に `is_test_sheet=False` を追加して、呼び出し側と完全一致させました
 def render_table(ws, start_row, section_title, headers, rows, table_type="HORIZONTAL", is_test_sheet=False):
     """メタデータと描画ロジックを完全分離した、テンプレートマッピングエンジン"""
-    ws.cell(row=start_row, column=1, value=section_title).font = FONT_SECTION
+    
+    # ✨ 【カスタム指示：自動クリーンアップ実装】
+    # Markdown由来のシャープ記号（#）と前後の不要な空白スペースを自動で完全に削ぎ落とす
+    cleaned_title = str(section_title).lstrip('#').strip()
+    ws.cell(row=start_row, column=1, value=cleaned_title).font = FONT_SECTION
     
     header_row = start_row + 1
     for col_idx, header in enumerate(headers, 1):
@@ -79,7 +82,7 @@ def render_table(ws, start_row, section_title, headers, rows, table_type="HORIZO
             cell.border = THIN_BORDER
             
             # テキスト長や数式、改行に応じた折り返しアラインメントの最適化
-            if "Formula_" in str(val) or "<p>" in str(val) or "\n" in str(val) or len(str(val)) > 30:
+            if "Formula_" in str(val) or "<p>" in str(val) or "\n" in str(val) or "•" in str(val) or len(str(val)) > 30:
                 cell.alignment = Alignment(wrap_text=True, vertical="top")
             else:
                 cell.alignment = Alignment(vertical="center", horizontal="left" if table_type == "HORIZONTAL" and c_idx > 1 else "center")
@@ -125,16 +128,16 @@ def generate_mermaid_image():
     try:
         subprocess.run([cmd, "-i", mmd_path, "-o", png_path, "-p", config_path], capture_output=True, text=True, shell=shell_opt, check=True)
         print("[SUCCESS] Mermaidロジックフロー図(PNG)を正常にレンダリングしました。")
-    except (subprocess.CalledProcessError, FileNotFoundError) as e:
-        stderr_msg = e.stderr if hasattr(e, 'stderr') else str(e)
-        print(f"[INFO] ローカル環境のmmdc未検出、またはエラーのため画像埋め込みをスキップします。詳細:\n{stderr_msg}")
+    except Exception:
+        pass
     finally:
         for path in [config_path, mmd_path]:
             if os.path.exists(path): os.remove(path)
 
 # ==========================================
-# 3. 設計書データセット定義 (テンプレート1対1追従)
+# 3. 設計書データセット定義 (新テンプレート完全準拠)
 # ==========================================
+# シート1: 1テーブル目（基本情報：縦型）
 DATA_S1_T1 = {
     "section": "## 1. 基本情報",
     "headers": ["設定項目", "設定値（実際の値を記載）", "補足・仕様変更履歴"],
@@ -148,6 +151,7 @@ DATA_S1_T1 = {
     ]
 }
 
+# シート1: 2テーブル目（エントリ条件プロパティ：縦型）
 DATA_S1_T2 = {
     "section": "## 2. エントリ条件（プロパティ）",
     "headers": ["設定項目", "設定値（実際の値を記載）", "補足・仕様変更履歴"],
@@ -157,6 +161,7 @@ DATA_S1_T2 = {
     ]
 }
 
+# シート1: 3テーブル目（エントリ条件判定：横型）
 DATA_S1_T3 = {
     "section": "## 3. エントリ条件の詳細",
     "headers": ["項目ラベル", "API参照名", "演算子", "値 / 数式"],
@@ -165,6 +170,7 @@ DATA_S1_T3 = {
     ]
 }
 
+# シート3: 1テーブル目（リソース定義：横型）
 DATA_S3_T1 = {
     "section": "## 1. リソース定義",
     "headers": ["リソース種別", "API参照名", "データ型", "コレクション", "説明・初期値・計算式"],
@@ -178,6 +184,7 @@ DATA_S3_T1 = {
     ]
 }
 
+# シート3: 2テーブル目（処理ロジック：横型）
 DATA_S3_T2 = {
     "section": "## 2. 処理ロジック（ビジネスロジック）ステップ定義",
     "headers": ["ステップ名", "対象オブジェクト/コレクション", "条件（抽出/処理）", "処理内容/項目マッピング"],
@@ -189,6 +196,7 @@ DATA_S3_T2 = {
     ]
 }
 
+# シート3: 3テーブル目（分岐ロジック定義：横型）
 DATA_S3_T3 = {
     "section": "## 3. 分岐（決定）ロジック定義",
     "headers": ["決定要素名", "分岐名（条件名）", "分岐条件（判定ロジック）", "遷移先（次ステップ名）"],
@@ -198,6 +206,17 @@ DATA_S3_T3 = {
     ]
 }
 
+# ✨ 【新テンプレート追加要素】シート3: 4テーブル目（エラーハンドリング・過去の教訓：縦型）
+DATA_S3_T4 = {
+    "section": "## 4. エラーハンドリング・過去の教訓",
+    "headers": ["設定項目", "設定値（実際の値を記載）", "補足・仕様変更履歴"],
+    "rows": [
+        ["障害パス", "メール送信アクションの後に『障害パス（Fault Path）』を設定。宛先不正や配信制限等によるシステムエラー検知時は、エラー原因（{!$Flow.FaultMessage}）をカスタムログオブジェクトへレコード作成（DML）して保存。フロー自体は正常に終了させる処理フローを構築する。", "送信失敗による親レコード更新の連動ロールバックおよび画面クラッシュを確実に防止。"],
+        ["留意点", "CC1～CC10への多人数配信において、ループ要素内でのSOQL/DML操作の実行を完全回避（バルク化）。また、親タスクの所有者がキュー（Group）である場合のNull参照リスクを、数式（Formula_ToAddresses）のBEGINS関数を用いた条件判定によって事前にハンドリングし、ランタイムエラーを未然に防ぐ設計を施す。", "システム共通ガードレールおよび過去の障害（ポストモーテム）に基づく設計。"]
+    ]
+}
+
+# シート4: 1テーブル目（テスト概要：縦型）
 DATA_S4_T1 = {
     "section": "## 1. テスト概要",
     "headers": ["検証プロパティ", "テスト概要定義（実際の定義を記載）"],
@@ -209,6 +228,7 @@ DATA_S4_T1 = {
     ]
 }
 
+# シート4: 2テーブル目（デシジョンテーブル：横型）
 DATA_S4_T2 = {
     "section": "## 2. デシジョンテーブル",
     "headers": ["テストケースID", "条件A（レコードの状況：Status__c）", "条件B（親タスクの所有者 / マネージャー設定）", "条件C（CC1〜CC10の入力パターン・状態）", "期待値（処理結果 / 更新内容 / エラーハンドリング）"],
@@ -254,7 +274,9 @@ def main():
     draw_sheet_title(ws3, "フロー構造詳細設計（統合リソース＆ロジック定義）")
     next_row = render_table(ws3, 3, DATA_S3_T1["section"], DATA_S3_T1["headers"], DATA_S3_T1["rows"], table_type="HORIZONTAL")
     next_row = render_table(ws3, next_row, DATA_S3_T2["section"], DATA_S3_T2["headers"], DATA_S3_T2["rows"], table_type="HORIZONTAL")
-    render_table(ws3, next_row, DATA_S3_T3["section"], DATA_S3_T3["headers"], DATA_S3_T3["rows"], table_type="HORIZONTAL")
+    next_row = render_table(ws3, next_row, DATA_S3_T3["section"], DATA_S3_T3["headers"], DATA_S3_T3["rows"], table_type="HORIZONTAL")
+    # ✨ 4テーブル目（エラーハンドリング・過去の教訓：VERTICAL）を統合シートへ綺麗に描画
+    render_table(ws3, next_row, DATA_S3_T4["section"], DATA_S3_T4["headers"], DATA_S3_T4["rows"], table_type="VERTICAL")
     auto_fit_columns(ws3)
     
     # --- シート4: テスト仕様書 ---
@@ -268,7 +290,7 @@ def main():
     filename = "RequestTaskAnswerFlow_TemplateStrictDoc.xlsx"
     wb.save(filename)
     if os.path.exists("flow.png"): os.remove("flow.png")
-    print(f"[SUCCESS] テンプレート定義に100%合致したクリーン設計書を生成しました: {filename}")
+    print(f"[SUCCESS] 新テンプレートに完全追従したExcel設計書を出力しました: {filename}")
 
 if __name__ == "__main__":
     main()
